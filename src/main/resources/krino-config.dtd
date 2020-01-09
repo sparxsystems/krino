@@ -1,0 +1,29 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+    TODO define vocabulary identification
+    PUBLIC ID: -//vendor//vocabulary//EN
+    SYSTEM ID: http://server/path/krino-config.dtd
+
+-->
+
+<!--
+    An example how to use this DTD from your XML document:
+
+    <?xml version="1.0"?>
+
+    <!DOCTYPE configuration SYSTEM "krino-config.dtd">
+
+    <configuration>
+    ...
+    </configuration>
+-->
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT configuration (graph-db|graph-db-type)*>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT graph-db (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT graph-db-type (#PCDATA)>
