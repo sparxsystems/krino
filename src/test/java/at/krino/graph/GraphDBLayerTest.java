@@ -5,7 +5,7 @@ import static org.junit.Assert.*;
 
 /**
  *
- * @author jan
+ * @author Jan van Oort
  */
 public class GraphDBLayerTest {
     
@@ -31,6 +31,8 @@ public class GraphDBLayerTest {
         TestResult r = ( TestResult ) q.getResult();
         assertNotNull(r);
         assertTrue( r.payLoad.contains( "foobar") );
+        TestListener l = ( ( TestQuery ) q ).listener;
+        assertTrue( l.calledBack );
     }
     
 }
@@ -38,7 +40,7 @@ public class GraphDBLayerTest {
 
 class TestQuery implements GraphDBQuery< OrientDBVertex, OrientDBEdge>  {
 
-    private TestListener listener;
+     TestListener listener;
     
     GraphDBQueryResult result;
     
@@ -71,7 +73,6 @@ class TestListener implements GraphDBQueryResultListener    {
     
     @Override
     public void callBack(GraphDBQueryResult res) {
-        System.out.println( "---------> listener: callback received" );
         calledBack = true;
     }
     

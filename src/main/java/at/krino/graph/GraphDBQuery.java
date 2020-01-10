@@ -21,7 +21,7 @@ package at.krino.graph;
  * the linguistic domain. However, this interface is public as such "client" classes need to have a reference
  * to a query in order to obtain the query result.
  * 
- * @author jan
+ * @author Jan van Oort
  * @param <V> for implementing classes, the Vertex implementation they can work with
  * @param <E> for implementing classes, the Vertex implementation they can work with
  */

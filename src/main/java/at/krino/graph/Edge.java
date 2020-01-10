@@ -16,7 +16,7 @@ package at.krino.graph;
  * current package, as coupling between the graph database currently in use and the remainder of krino code
  * is to be avoided.
  * 
- * @author jan
+ * @author Jan van Oort
  */
 interface Edge {
 

@@ -22,7 +22,7 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
  * be found in this project's src/main/resources folder in an xml document, from where they are loaded 
  * by krino's ClassLoader. 
  * 
- * @author jan
+ * @author Jan van Oort
  */
 public class KrinoConfig {
 

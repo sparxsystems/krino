@@ -12,7 +12,7 @@ package at.krino;
 
 /**
  *
- * @author jan
+ * @author Jan van Oort
  */
 public class DataException extends RuntimeException {
     

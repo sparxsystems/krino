@@ -14,7 +14,7 @@ import java.util.Set;
 
 /**
  *
- * @author jan
+ * @author Jan van Oort
  */
 enum GraphDBType {
     

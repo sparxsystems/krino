@@ -16,7 +16,7 @@ package at.krino.graph;
  * been implemented on purpose. 
  * 
  * 
- * @author jan
+ * @author Jan van Oort
  */
 public interface GraphDBQueryResult {
 

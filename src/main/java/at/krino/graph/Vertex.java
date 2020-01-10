@@ -21,7 +21,7 @@ import java.util.Set;
  * Where reasonable or desired, this interface's accessor methods return instances of java.util.Set, as that interface's 
  * contract stipulates that a Set may contain no duplicate elements.
  * 
- * @author jan
+ * @author Jan van Oort
  */
 interface Vertex {
     

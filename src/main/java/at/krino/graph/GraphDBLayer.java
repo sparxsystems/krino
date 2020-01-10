@@ -22,7 +22,7 @@ import java.util.concurrent.ArrayBlockingQueue;
  * of this class. It is also this class that is responsible for performing queries to the graph db or graph db API
  * currently in use, and somehow notifying the query's originator of the result, if necessary and if any.
  * 
- * @author jan
+ * @author Jan van Oort
  */
 public class GraphDBLayer implements Runnable {
 

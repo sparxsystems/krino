@@ -16,7 +16,7 @@ package at.krino.graph;
  * the callback method. Implementing classes are completely free in dealing with the GraphDBQueryResult they 
  * are given.
  * 
- * @author jan
+ * @author Jan van Oort
  */
 public interface GraphDBQueryResultListener {
 
