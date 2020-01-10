@@ -17,7 +17,7 @@ public class GraphDBLayerTest {
      */
     @Test
     public void queueingBehaviour() throws InterruptedException {
-        System.out.println("run");
+        System.out.println("graph db isolation layer: queued query should be executed");
         GraphDBLayer instance = new GraphDBLayer();
         new Thread( instance ).start();
         GraphDBQuery q = new TestQuery();
