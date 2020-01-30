@@ -128,6 +128,13 @@
           <version>4.11</version>
           <scope>test</scope>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils -->
+        <dependency>
+            <groupId>commons-beanutils</groupId>
+            <artifactId>commons-beanutils</artifactId>
+            <version>1.9.4</version>
+        </dependency>
+
     </dependencies>
     
     
@@ -158,7 +165,30 @@
                 <configuration>
                     <connectionType>developerConnection</connectionType>
                 </configuration>
-            </plugin>            
+            </plugin>
+            <!-- Maven Shade Plugin -->
+		<plugin>
+		  <groupId>org.apache.maven.plugins</groupId>
+		  <artifactId>maven-shade-plugin</artifactId>
+		  <version>3.2.1</version>
+		  <executions>
+		     <!-- Run shade goal on package phase -->
+		    <execution>
+			<phase>package</phase>
+			<goals>
+				<goal>shade</goal>
+			</goals>
+			<configuration>
+			  <transformers>
+				<!-- add Main-Class to manifest file -->
+                                <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer">
+					<mainClass>at.krino.KrinoMain</mainClass>
+				</transformer>
+			  </transformers>
+			</configuration>
+		      </execution>
+		  </executions>
+		</plugin>
         </plugins>
         
 <pluginManagement>

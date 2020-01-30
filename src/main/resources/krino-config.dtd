@@ -20,10 +20,25 @@
 -->
 
 <!--- Put your DTDDoc comment here. -->
-<!ELEMENT configuration (graph-db|graph-db-type)*>
+<!ELEMENT configuration (graph-db|graph-db-type|events|lingo|scenery|smg|queuesize)*>
 
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT graph-db (#PCDATA)>
 
 <!--- Put your DTDDoc comment here. -->
 <!ELEMENT graph-db-type (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT events (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT lingo (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT scenery (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT smg (#PCDATA)>
+
+<!--- Put your DTDDoc comment here. -->
+<!ELEMENT queuesize (#PCDATA)>

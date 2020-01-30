@@ -12,6 +12,16 @@
  -->
 
 <configuration>
+  
     <graph-db>orientdb</graph-db>
     <graph-db-type>local</graph-db-type>
+    <events>at.krino.events.EventsMain</events>
+    <lingo>at.krino.lingo.LingoMain</lingo>
+    <scenery>at.krino.scenery.SceneryMain</scenery>
+    <smg>at.krino.smg.SMGMain</smg>
+    <queuesize>10000</queuesize>
+    
+    
+    
+    
 </configuration>

@@ -10,12 +10,12 @@
 
 package at.krino;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.configuration2.XMLConfiguration;
-import org.apache.commons.configuration2.builder.fluent.Configurations;
-import org.apache.commons.configuration2.ex.ConfigurationException;
+import java.util.Properties;
 
 /**
  * Central access point for the krino configuration. The configuration keys and values themselves can 
@@ -27,9 +27,8 @@ import org.apache.commons.configuration2.ex.ConfigurationException;
 public class KrinoConfig {
 
     
-    public final static String CONFIG_FILE="krino-config.xml";
+    public final static String CONFIG_FILE="/data/netbeansprojects/sparx/krino/src/main/resources/krino.properties";
     
-    private XMLConfiguration localConfig;
     
     private static KrinoConfig instance = null;
     
@@ -49,17 +48,22 @@ public class KrinoConfig {
     
     
     private void init() {
-        Configurations configs = new Configurations();
+
         try {
             ClassLoader classLoader = getClass().getClassLoader();
-            final URL resource = classLoader.getResource( CONFIG_FILE );
-            localConfig = configs.xml( resource );
-            localConfig.setValidating( true ); 
-            String db = localConfig.get( String.class, "graph-db" );
-            configStore.put( "db", db );
+            //final URL resource = classLoader.getResource( CONFIG_FILE );
+            File propsFile = new File( CONFIG_FILE );
+            Properties props = new Properties();
+            props.load( new FileInputStream( propsFile ));
+            configStore.put( "db", props.getProperty( "graph-db"));
+            configStore.put( "events", props.getProperty( "events"));
+            configStore.put( "lingo", props.getProperty( "lingo"));
+            configStore.put( "scenery", props.getProperty( "scenery") );
+            configStore.put( "smg", props.getProperty( "smg") );
+            configStore.put( "queue-size", props.getProperty( "queue-size"));
         }
-        catch( ConfigurationException ce )  {
-            throw new DataException( ce );
+        catch( Exception e )  {
+            throw new DataException( e );
         }
     }
     
