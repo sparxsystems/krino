@@ -12,6 +12,7 @@ package at.krino;
 
 import at.krino.ds.AdpTree;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CyclicBarrier;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
@@ -24,8 +25,11 @@ public abstract class AbstractComponent implements KrinoComponent {
     
     protected final AtomicBoolean poisonCookie = new AtomicBoolean( false );
     
-    public AbstractComponent( BlockingQueue< AdpTree > q )  {
+    protected final CyclicBarrier synch;
+    
+    public AbstractComponent( BlockingQueue< AdpTree > q, CyclicBarrier b )  {
         queue = q;
+        synch = b;
     }
     
     

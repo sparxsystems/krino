@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.CyclicBarrier;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -29,7 +30,10 @@ public class KrinoMain {
         {
             
             KrinoConfig config = KrinoConfig.get();
-            BlockingQueue< ? extends AdpTree > queue = new ArrayBlockingQueue<>( Integer.parseInt(config.get( "queue-size" )));
+            BlockingQueue< AdpTree > queue = new ArrayBlockingQueue<>( Integer.parseInt(config.get( "queue-size" )));
+            Archiver a = new Archiver( queue, null );
+            CyclicBarrier barrier = new CyclicBarrier( 4, a );
+            a.barrier = barrier;
             Set< String > componentClasses = new HashSet<>();
             Set< KrinoComponent > components = new HashSet<>();
             
@@ -42,8 +46,8 @@ public class KrinoMain {
                 Class<?> clazz = Class.forName(className);
                 Constructor<?>[] c = clazz.getConstructors();
                 for( Constructor cons: c )  {
-                    if( cons.getParameterCount() == 1 && cons.getParameterTypes()[0].equals(BlockingQueue.class ) ){
-                        KrinoComponent comp = ( KrinoComponent ) cons.newInstance( queue );
+                    if( cons.getParameterCount() == 2 ){
+                        KrinoComponent comp = ( KrinoComponent ) cons.newInstance( queue, barrier );
                         components.add( comp );
                         Thread t = new Thread( comp );
                         t.start();
@@ -52,14 +56,22 @@ public class KrinoMain {
             }
             Thread tHook = new Thread( new KrinoShutdownHook(components) );
             Runtime.getRuntime().addShutdownHook(tHook);
+            
+            try {
+                Thread.sleep( 3000 );
+                queue.offer( new DummyAdpTree() );
+            } 
+            catch (InterruptedException ex) {
+                Thread.interrupted();
+            }
 	}
 
 }
-class KrinoShutdownHook implements Runnable     {
+class KrinoShutdownHook implements Runnable  {
 
     private final Set< KrinoComponent > components;
     
-    public KrinoShutdownHook( Set< KrinoComponent > comps) {
+    public KrinoShutdownHook( Set< KrinoComponent > comps ) {
         components = comps;
     }
 
@@ -79,5 +91,33 @@ class KrinoShutdownHook implements Runnable     {
         }
         System.out.println( "Krino shut down, exiting. Goodbye cruel world." );
     }
+    
+}
+
+
+final class Archiver extends AbstractComponent     {
+
+    
+    
+    CyclicBarrier barrier;
+    
+    Archiver( final BlockingQueue< AdpTree > q, CyclicBarrier b )   {
+        super( q, b );
+    }
+    
+    
+    
+    @Override
+    public void run() {
+        try {
+            AdpTree t = queue.take();
+            System.out.println( "Archiver: everybody's done with AdpTree " + t + ", archiving now");
+            barrier.reset();
+        } 
+        catch (InterruptedException ex) {
+            Thread.interrupted();
+        }
+    }
+
     
 }

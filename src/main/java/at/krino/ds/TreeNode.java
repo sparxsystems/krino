@@ -10,6 +10,7 @@
 
 package at.krino.ds;
 
+import at.krino.lingo.LinguisticElement;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,8 +27,11 @@ public class TreeNode extends Vertex {
     private TreeNode leftChild; 
     private TreeNode rightChild;
     
-    private Map<String, String> payLoad = new HashMap<>();
+    private Map<LinguisticElement, String> payLoad = new HashMap<>();
 
+    
+    
+    
     /**
      * @return the isRoot
      */
@@ -87,14 +91,14 @@ public class TreeNode extends Vertex {
     /**
      * @return the payLoad
      */
-    public Map<String, String> getPayLoad() {
+    public Map<LinguisticElement, String> getPayLoad() {
         return payLoad;
     }
 
     /**
      * @param payLoad the payLoad to set
      */
-    public void setPayLoad(Map<String, String> payLoad) {
+    public void setPayLoad(Map<LinguisticElement, String> payLoad) {
         this.payLoad = payLoad;
     }
 
