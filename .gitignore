@@ -3,3 +3,10 @@
 ################################################################################
 
 *.suo
+/src/Krino/.vs/Krino
+/src/Krino/Krino.DomainModel.Logic.AdTree/obj
+/src/Krino/Krino.Vertical.Utils/bin/Debug
+/src/Krino/Krino.Vertical.Utils/obj
+/src/Krino/Krino.Vertical.Utils_Tests/bin/Debug
+/src/Krino/Krino.Vertical.Utils_Tests/obj
+/src/Krino/Krino.DomainModel.Logic.AdTree/bin/Debug
