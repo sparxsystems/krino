@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Infrastructure", "03 Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Vertical", "04 Vertical", "{F738F09E-3C90-41F2-9AEF-D57EE20B30AD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.DomainModel.Logic.AdTree", "Krino.DomainModel.Logic.AdTree\Krino.DomainModel.Logic.AdTree.csproj", "{18E47177-0542-48B4-9901-BB97AC555564}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAdpositionalGrammar", "Krino.DomainModel.Logic.AdTree\Krino.Domain.ConstructiveAdpositionalGrammar.csproj", "{18E47177-0542-48B4-9901-BB97AC555564}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Vertical.Utils", "Krino.Vertical.Utils\Krino.Vertical.Utils.csproj", "{2337182D-889D-466F-915B-6C4A0E205DB2}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Vertical.Utils", "Krino.Vertical.Utils\Krino.Vertical.Utils.csproj", "{2337182D-889D-466F-915B-6C4A0E205DB2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Vertical.Utils_Tests", "Krino.Vertical.Utils_Tests\Krino.Vertical.Utils_Tests.csproj", "{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Vertical.Utils_Tests", "Krino.Vertical.Utils_Tests\Krino.Vertical.Utils_Tests.csproj", "{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
