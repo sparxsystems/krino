@@ -10,3 +10,6 @@
 /src/Krino/Krino.Vertical.Utils_Tests/bin/Debug
 /src/Krino/Krino.Vertical.Utils_Tests/obj
 /src/Krino/Krino.DomainModel.Logic.AdTree/bin/Debug
+/src/Krino/Krino.Domain.ConstructiveAdpositionalGrammar/bin/Debug
+/src/Krino/Krino.Domain.ConstructiveAdpositionalGrammar/obj
+*.user

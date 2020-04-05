@@ -11,11 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Infrastructure", "03 Inf
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Vertical", "04 Vertical", "{F738F09E-3C90-41F2-9AEF-D57EE20B30AD}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAdpositionalGrammar", "Krino.DomainModel.Logic.AdTree\Krino.Domain.ConstructiveAdpositionalGrammar.csproj", "{18E47177-0542-48B4-9901-BB97AC555564}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Vertical.Utils", "Krino.Vertical.Utils\Krino.Vertical.Utils.csproj", "{2337182D-889D-466F-915B-6C4A0E205DB2}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Vertical.Utils_Tests", "Krino.Vertical.Utils_Tests\Krino.Vertical.Utils_Tests.csproj", "{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAdpositionalGrammar", "Krino.Domain.ConstructiveAdpositionalGrammar\Krino.Domain.ConstructiveAdpositionalGrammar.csproj", "{F02994F7-32A2-4D9D-9184-B55315003A77}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{18E47177-0542-48B4-9901-BB97AC555564}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{18E47177-0542-48B4-9901-BB97AC555564}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{18E47177-0542-48B4-9901-BB97AC555564}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{18E47177-0542-48B4-9901-BB97AC555564}.Release|Any CPU.Build.0 = Release|Any CPU
 		{2337182D-889D-466F-915B-6C4A0E205DB2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{2337182D-889D-466F-915B-6C4A0E205DB2}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{2337182D-889D-466F-915B-6C4A0E205DB2}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -35,14 +31,18 @@ Global
 		{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F02994F7-32A2-4D9D-9184-B55315003A77}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F02994F7-32A2-4D9D-9184-B55315003A77}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F02994F7-32A2-4D9D-9184-B55315003A77}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F02994F7-32A2-4D9D-9184-B55315003A77}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
-		{18E47177-0542-48B4-9901-BB97AC555564} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{2337182D-889D-466F-915B-6C4A0E205DB2} = {F738F09E-3C90-41F2-9AEF-D57EE20B30AD}
 		{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D} = {F738F09E-3C90-41F2-9AEF-D57EE20B30AD}
+		{F02994F7-32A2-4D9D-9184-B55315003A77} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {923BE6CA-31CF-4753-82D6-544032C43C43}
