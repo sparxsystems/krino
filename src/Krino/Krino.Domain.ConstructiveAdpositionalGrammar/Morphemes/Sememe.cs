@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
-    public class Sememe : TreeComposite<ISememe>, ISememe
+    public class Sememe : TreeBase<ISememe>, ISememe
     {
         public Sememe(string category, string value)
         {

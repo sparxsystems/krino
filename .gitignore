@@ -13,3 +13,5 @@
 /src/Krino/Krino.Domain.ConstructiveAdpositionalGrammar/bin/Debug
 /src/Krino/Krino.Domain.ConstructiveAdpositionalGrammar/obj
 *.user
+/src/Krino/Krino.Domain.ConstructiveAdpositionalGrammar.Tests/bin/Debug/netcoreapp3.1
+/src/Krino/Krino.Domain.ConstructiveAdpositionalGrammar.Tests/obj

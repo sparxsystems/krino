@@ -8,7 +8,7 @@ namespace Krino.Vertical.Utils.Collections
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [DebuggerDisplay("{Value.ToString()}")]
-    public class Tree<T> : TreeComposite<ITree<T>>, ITree<T>
+    public class Tree<T> : TreeBase<ITree<T>>, ITree<T>
     {
         public Tree(T value, List<ITree<T>> children = null)
             : base(children)
