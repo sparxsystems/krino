@@ -6,6 +6,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     public interface ISememe : ITreeBase<ISememe>
     {
         string Category { get; }
+
         string Value { get; }
 
         /// <summary>

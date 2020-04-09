@@ -1,35 +1,18 @@
-﻿using Krino.Vertical.Utils.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
-    public class Morpheme
+    public class Morpheme : IMorpheme
     {
-        public Morpheme (Morph morph, List<ISememe> sememes)
+        public Morpheme (string morph)
         {
             Morph = morph;
-            Sememes = sememes ?? new List<ISememe>();
         }
 
-        /// <summary>
-        /// Grammar character.
-        /// </summary>
-        public GrammarCharacter GrammarCharacter { get; set; }
+        public string Morph { get; private set; }
 
-        /// <summary>
-        /// In case of actant it specifies the valency it saturates.
-        /// </summary>
-        public int SaturatedValency { get; set; }
+        public List<ISememe> Sememes { get; } = new List<ISememe>();
 
-        /// <summary>
-        /// In case of Verbant defines the number of expected dependents.
-        /// </summary>
-        public int Valency { get; set; }
-
-        public Morph Morph { get; private set; }
-
-        public List<ISememe> Sememes { get; private set; }
-
-
+        public Dictionary<string, Attribute> Attributes { get; } = new Dictionary<string, Attribute>();
     }
 }
