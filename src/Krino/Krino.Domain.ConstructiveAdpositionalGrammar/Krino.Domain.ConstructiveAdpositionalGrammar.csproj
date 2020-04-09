@@ -8,8 +8,4 @@
     <ProjectReference Include="..\Krino.Vertical.Utils\Krino.Vertical.Utils.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Constructions\" />
-  </ItemGroup>
-
 </Project>

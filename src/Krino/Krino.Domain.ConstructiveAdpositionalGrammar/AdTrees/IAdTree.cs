@@ -25,7 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// Morpheme.
         /// </summary>
-        Morpheme Morpheme { get; set; }
+        IMorpheme Morpheme { get; set; }
 
         /// <summary>
         /// Reference to the AdPosition (direct parent).
@@ -46,5 +46,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Reference to the dependent (the left branch).
         /// </summary>
         IAdTree Dependent { get; set; }
+
+
+        /// <summary>
+        /// Returns the sequence of the phrase which is represented by the adtree.
+        /// </summary>
+        IEnumerable<IAdTree> Phrase { get; }
     }
 }

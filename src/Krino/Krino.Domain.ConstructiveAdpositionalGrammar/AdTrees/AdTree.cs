@@ -55,7 +55,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public Morpheme Morpheme { get; set; }
+        public IMorpheme Morpheme { get; set; }
 
         public Prominence InformationProminence { get; set; }
 
@@ -134,8 +134,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        public IEnumerable<IAdTree> Phrase
+        {
+            get
+            {
+                // TODO:
+                return null;
+            }
+        }
 
-        
+
+
         public IEnumerator<IAdTree> GetEnumerator()
         {
             // Note: using the stack has a better performance than a recursive call.
