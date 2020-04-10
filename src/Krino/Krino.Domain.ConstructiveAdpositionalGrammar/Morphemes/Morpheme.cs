@@ -1,7 +1,9 @@
 ﻿using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
+    [DebuggerDisplay("{Character}: {Morph}")]
     public class Morpheme : IMorpheme
     {
         public Morpheme (string morph)
@@ -13,6 +15,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public List<ISememe> Sememes { get; } = new List<ISememe>();
 
-        public Dictionary<string, Attribute> Attributes { get; } = new Dictionary<string, Attribute>();
+        public GrammarCharacter Character { get; set; }
+
+        public Attributes Attributes { get; set; }
     }
 }

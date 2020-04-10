@@ -18,8 +18,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         List<ISememe> Sememes { get; }
 
         /// <summary>
+        /// Grammar character.
+        /// </summary>
+        GrammarCharacter Character { get; set; }
+
+        /// <summary>
         /// Attributes of the morpheme.
         /// </summary>
-        Dictionary<string, Attribute> Attributes { get; }
+        Attributes Attributes { get; set; }
     }
 }

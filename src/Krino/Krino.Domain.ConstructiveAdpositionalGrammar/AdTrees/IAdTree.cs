@@ -18,14 +18,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         AdTreeElementType ElementType { get; }
 
         /// <summary>
-        /// Information prominance trajectory.
+        /// The relation between the governor and the dependent.
         /// </summary>
-        Prominence InformationProminence { get; set; }
+        RelationType Relation { get; }
 
         /// <summary>
         /// Morpheme.
         /// </summary>
         IMorpheme Morpheme { get; set; }
+
+        /// <summary>
+        /// If adposition then it returns the grammar character inherited from the governor.
+        /// If not adposition then it returns the own grammar character.
+        /// </summary>
+        GrammarCharacter RaisedGrammarCharacter { get; }
 
         /// <summary>
         /// Reference to the AdPosition (direct parent).
@@ -38,15 +44,40 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         IEnumerable<IAdTree> AdPositions { get; }
 
         /// <summary>
-        /// Reference to the governort (the righ branch).
+        /// The governor (the righ child).
         /// </summary>
         IAdTree Governor { get; set; }
 
         /// <summary>
-        /// Reference to the dependent (the left branch).
+        /// Sequence of all governors down the tree.
+        /// </summary>
+        IEnumerable<IAdTree> Governors { get; }
+
+        /// <summary>
+        /// the dependent (the left child).
         /// </summary>
         IAdTree Dependent { get; set; }
 
+        /// <summary>
+        /// Sibling (sibling governor or sibling dependent).
+        /// </summary>
+        IAdTree Sibling { get; }
+
+        /// <summary>
+        /// If it is a stative or a raised stative then it returns the valency it saturates. Otherwise it returns 0.
+        /// </summary>
+        int SaturatedValency { get; }
+
+        /// <summary>
+        /// If this is a verband then it returns the list of dependents which saturate particular valencies.
+        /// </summary>
+        IReadOnlyList<IAdTree> SaturatedValencies { get; }
+
+
+        /// <summary>
+        /// Returns the phrase ordered sequence of verbants.
+        /// </summary>
+        IEnumerable<IAdTree> Verbants { get; }
 
         /// <summary>
         /// Returns the sequence of the phrase which is represented by the adtree.

@@ -55,9 +55,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        // TODO:
+        public RelationType Relation => RelationType.Generic;
+
+
         public IMorpheme Morpheme { get; set; }
 
-        public Prominence InformationProminence { get; set; }
+        public GrammarCharacter RaisedGrammarCharacter
+        {
+            get
+            {
+                GrammarCharacter result = GrammarCharacter.None;
+
+                IAdTree bottomGovernor = Governors.LastOrDefault();
+                if (bottomGovernor != null)
+                {
+                    if (bottomGovernor.Morpheme != null)
+                    {
+                        result = bottomGovernor.Morpheme.Character;
+                    }
+                }
+                // If it is not adposition then return own grammar character if exists.
+                else if (Morpheme != null)
+                {
+                    result = Morpheme.Character;
+                }
+
+                return result;
+            }
+        }
+
 
         public IAdTree AdPosition
         {
@@ -112,6 +139,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        public IEnumerable<IAdTree> Governors
+        {
+            get
+            {
+                IAdTree governor = Governor;
+                while (governor != null)
+                {
+                    yield return governor;
+
+                    governor = governor.Governor;
+                }
+            }
+        }
+
         public IAdTree Dependent
         {
             get => myDependent;
@@ -134,10 +175,80 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        public IAdTree Sibling
+        {
+            get
+            {
+                IAdTree result;
+                if (AdPosition != null)
+                {
+                    result = AdPosition.Governor == this ? AdPosition.Dependent : AdPosition.Governor;
+                }
+                else
+                {
+                    result = null;
+                }
+
+                return result;
+            }
+        }
+
+        public int SaturatedValency
+        {
+            get
+            {
+                int saturatedValency = 0;
+
+                // If this is a stative.
+                if (AdPosition != null && RaisedGrammarCharacter == GrammarCharacter.O)
+                {
+                    // Try to find the parent adpostion which has the verbant as its raised grammar character.
+                    IAdTree verbantAdPosition = AdPositions.FirstOrDefault(x => x.RaisedGrammarCharacter == GrammarCharacter.I);
+                    if (verbantAdPosition != null)
+                    {
+                        // Count the distance between this stative and the verbant - that is the valency this stative saturates.
+                        saturatedValency = verbantAdPosition.Governors
+                            .Count(x => x.Dependent != null && x.Dependent.RaisedGrammarCharacter == GrammarCharacter.O || x.RaisedGrammarCharacter == GrammarCharacter.I);
+                    }
+                }
+
+                return saturatedValency;
+            }
+        }
+
+        public IReadOnlyList<IAdTree> SaturatedValencies
+        {
+            get
+            {
+                IReadOnlyList<IAdTree> result = null;
+
+                // If this is a verbant.
+                if (Morpheme != null && Morpheme.Character == GrammarCharacter.I)
+                {
+                    // Get stative dependents up to tree.
+                    result = AdPositions.Where(x => x.Dependent.RaisedGrammarCharacter == GrammarCharacter.O)
+                        .Select(x => x.Dependent)
+                        .ToList();
+                }
+
+                return result;
+            }
+        }
+
+        public IEnumerable<IAdTree> Verbants
+        {
+            get
+            {
+                IEnumerable<IAdTree> result = this.Where(x => x.Morpheme.Character == GrammarCharacter.I);
+                return result;
+            }
+        }
+
         public IEnumerable<IAdTree> Phrase
         {
             get
             {
+                //IEnumerable<IAdTree> result = this.
                 // TODO:
                 return null;
             }
