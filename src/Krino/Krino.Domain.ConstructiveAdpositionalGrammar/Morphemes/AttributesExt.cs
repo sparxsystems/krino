@@ -41,5 +41,15 @@
 
             return 0;
         }
+
+        /// <summary>
+        /// Returns true if a valency is peciefied in Attributes.
+        /// </summary>
+        /// <param name="attributes"></param>
+        /// <returns></returns>
+        public static bool IsValencySpecified(this Attributes attributes)
+        {
+            return (attributes & Attributes.AllValencies) != Attributes.None;
+        }
     }
 }

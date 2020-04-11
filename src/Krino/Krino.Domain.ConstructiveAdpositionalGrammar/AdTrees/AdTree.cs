@@ -14,71 +14,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     public class AdTree : IAdTree
     {
         private IAdTree myAdPosition;
-        private IAdTree myGovernor;
-        private IAdTree myDependent;
-
-        public AdTreeElementType ElementType
-        {
-            get
-            {
-                AdTreeElementType result;
-                if (AdPosition != null)
-                {
-                    // If the parent has this AdTree as the governor.
-                    if (AdPosition.Governor == this)
-                    {
-                        result = AdTreeElementType.Governor;
-                    }
-                    // If the parent has this AdTree as the dependent.
-                    else if (AdPosition.Dependent == this)
-                    {
-                        result = AdTreeElementType.Dependent;
-                    }
-                    else
-                    {
-                        throw new InvalidOperationException("The sub-tree has the parent but it is neither governor nor dependent.");
-                    }
-
-                    // If this AdTree has a child governor or dependent then it is also the AdPosition.
-                    if (Governor != null || Dependent != null)
-                    {
-                        result |= AdTreeElementType.AdPosition;
-                    }
-                }
-                // If this AdTree is the root then it the AdPostion.
-                else
-                {
-                    result = AdTreeElementType.AdPosition;
-                }
-
-                return result;
-            }
-        }
-
-        // TODO:
-        public RelationType Relation => RelationType.Generic;
+        private IAdTree myRightChild;
+        private IAdTree myLeftChild;
 
 
         public IMorpheme Morpheme { get; set; }
 
-        public GrammarCharacter RaisedGrammarCharacter
+        public GrammarCharacter GrammarCharacter => Morpheme?.GrammarCharacter ?? GrammarCharacter.Epsilon;
+
+        public GrammarCharacter InheritedGrammarCharacter
         {
             get
             {
-                GrammarCharacter result = GrammarCharacter.None;
+                GrammarCharacter result = GrammarCharacter.Epsilon;
 
-                IAdTree bottomGovernor = Governors.LastOrDefault();
-                if (bottomGovernor != null)
+                // Find the first element on the right branch which has defined own grammar character.
+                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon);
+                if (rightChild != null)
                 {
-                    if (bottomGovernor.Morpheme != null)
-                    {
-                        result = bottomGovernor.Morpheme.Character;
-                    }
-                }
-                // If it is not adposition then return own grammar character if exists.
-                else if (Morpheme != null)
-                {
-                    result = Morpheme.Character;
+                    result = rightChild.GrammarCharacter;
                 }
 
                 return result;
@@ -93,15 +47,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 if (myAdPosition != value)
                 {
-                    if (value != null && value.Governor != this && value.Dependent != this)
+                    if (value != null && value.RightChild != this && value.LeftChild != this)
                     {
-                        throw new InvalidOperationException($"{nameof(IAdTree.AdPosition)} must be set via setting of {nameof(IAdTree.Governor)} or {nameof(IAdTree.Dependent)}.");
+                        throw new InvalidOperationException($"{nameof(IAdTree.AdPosition)} must be set via setting of {nameof(IAdTree.RightChild)} or {nameof(IAdTree.LeftChild)}.");
                     }
 
                     myAdPosition = value;
                 }
             }
         }
+
+        public bool IsAdPosition => RightChild != null || LeftChild != null;
 
         public IEnumerable<IAdTree> AdPositions
         {
@@ -117,129 +73,162 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        public IAdTree RightChild
+        {
+            get => myRightChild;
+            set
+            {
+                if (myRightChild != value)
+                {
+                    if (myRightChild != null)
+                    {
+                        myRightChild.AdPosition = null;
+                    }
+
+                    myRightChild = value;
+
+                    if (myRightChild != null)
+                    {
+                        myRightChild.AdPosition = this;
+                    }
+                }
+            }
+        }
+
+        public IEnumerable<IAdTree> RightChildren
+        {
+            get
+            {
+                IAdTree rightChild = RightChild;
+                while (rightChild != null)
+                {
+                    yield return rightChild;
+
+                    rightChild = rightChild.RightChild;
+                }
+            }
+        }
+
+        public IAdTree LeftChild
+        {
+            get => myLeftChild;
+            set
+            {
+                if (myLeftChild != value)
+                {
+                    if (myLeftChild != null)
+                    {
+                        myLeftChild.AdPosition = null;
+                    }
+
+                    myLeftChild = value;
+
+                    if (myLeftChild != null)
+                    {
+                        myLeftChild.AdPosition = this;
+                    }
+                }
+            }
+        }
+
+        public bool IsOnRight => AdPosition != null ? AdPosition.RightChild == this : false;
+
+        public bool IsOnLeft => AdPosition != null ? AdPosition.LeftChild == this : false;
+
         public IAdTree Governor
         {
-            get => myGovernor;
-            set
-            {
-                if (myGovernor != value)
-                {
-                    if (myGovernor != null)
-                    {
-                        myGovernor.AdPosition = null;
-                    }
-
-                    myGovernor = value;
-
-                    if (myGovernor != null)
-                    {
-                        myGovernor.AdPosition = this;
-                    }
-                }
-            }
-        }
-
-        public IEnumerable<IAdTree> Governors
-        {
             get
             {
-                IAdTree governor = Governor;
-                while (governor != null)
-                {
-                    yield return governor;
+                IAdTree result = null;
 
-                    governor = governor.Governor;
-                }
-            }
-        }
-
-        public IAdTree Dependent
-        {
-            get => myDependent;
-            set
-            {
-                if (myDependent != value)
+                // If this element is not a governor.
+                if (!IsGovernor)
                 {
-                    if (myDependent != null)
+                    // If this element is the root or is located on the right.
+                    if (AdPosition == null || IsOnRight)
                     {
-                        myDependent.AdPosition = null;
+                        result = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon);
                     }
-
-                    myDependent = value;
-
-                    if (myDependent != null)
+                    // This element is not the root and is located on the left.
+                    else
                     {
-                        myDependent.AdPosition = this;
+                        // Go via all adpositions and find the first governor.
+                        result = AdPositions.SelectMany(x => x.RightChildren)
+                            .FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon && x.GrammarCharacter != GrammarCharacter.U);
                     }
-                }
-            }
-        }
-
-        public IAdTree Sibling
-        {
-            get
-            {
-                IAdTree result;
-                if (AdPosition != null)
-                {
-                    result = AdPosition.Governor == this ? AdPosition.Dependent : AdPosition.Governor;
                 }
                 else
                 {
-                    result = null;
+                    // Find the first adposition which is located on the left or it is the root.
+                    IAdTree adPositionOnLeftOrRoot = AdPositions.FirstOrDefault(x => x.IsOnLeft || x.AdPosition == null);
+
+                    // Get the governor of the governor.
+                    result = adPositionOnLeftOrRoot.Governor;
                 }
 
                 return result;
             }
         }
 
-        public int SaturatedValency
+        public bool IsGovernor => IsOnRight && GrammarCharacter != GrammarCharacter.Epsilon && GrammarCharacter != GrammarCharacter.U;
+
+        public IEnumerable<IAdTree> DependentAdPositions
         {
             get
             {
-                int saturatedValency = 0;
+                IEnumerable<IAdTree> result;
 
-                // If this is a stative.
-                if (AdPosition != null && RaisedGrammarCharacter == GrammarCharacter.O)
+                // Only governors have dependents.
+                if (IsGovernor)
                 {
-                    // Try to find the parent adpostion which has the verbant as its raised grammar character.
-                    IAdTree verbantAdPosition = AdPositions.FirstOrDefault(x => x.RaisedGrammarCharacter == GrammarCharacter.I);
-                    if (verbantAdPosition != null)
-                    {
-                        // Count the distance between this stative and the verbant - that is the valency this stative saturates.
-                        saturatedValency = verbantAdPosition.Governors
-                            .Count(x => x.Dependent != null && x.Dependent.RaisedGrammarCharacter == GrammarCharacter.O || x.RaisedGrammarCharacter == GrammarCharacter.I);
-                    }
+                    IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.GrammarCharacter == GrammarCharacter.Epsilon);
+                    result = governingAdPositions.Where(x => x.LeftChild != null && x.LeftChild.IsDependent);
                 }
-
-                return saturatedValency;
-            }
-        }
-
-        public IReadOnlyList<IAdTree> SaturatedValencies
-        {
-            get
-            {
-                IReadOnlyList<IAdTree> result = null;
-
-                // If this is a verbant.
-                if (Morpheme != null && Morpheme.Character == GrammarCharacter.I)
+                else
                 {
-                    // Get stative dependents up to tree.
-                    result = AdPositions.Where(x => x.Dependent.RaisedGrammarCharacter == GrammarCharacter.O)
-                        .Select(x => x.Dependent)
-                        .ToList();
+                    result = Enumerable.Empty<IAdTree>();
                 }
 
                 return result;
             }
         }
+
+        // Note: dependent may have the epsilon grammar character.
+        public bool IsDependent => IsOnLeft && GrammarCharacter != GrammarCharacter.U;
+
+        public IAdTree ValencyAdPosition
+        {
+            get
+            {
+                IAdTree result = null;
+
+                // If this element has not speciefied the valency attribute.
+                if (Morpheme == null || !Morpheme.Attributes.IsValencySpecified())
+                {
+                    result = ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.ValencyPosition > 0);
+                }
+                else
+                {
+                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && x.Morpheme.Attributes.IsValencySpecified());
+                }
+
+                return result;
+            }
+        }
+
+        public int ValencyPosition { get; set; }
+
+
+        public IEnumerable<IAdTree> ValencyAdPositions => IsGovernor ? AdPosition
+            .TakeWhile(x => x.IsOnRight)
+            .Where(x => x.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
+
 
         public IEnumerable<IAdTree> Verbants
         {
             get
             {
-                IEnumerable<IAdTree> result = this.Where(x => x.Morpheme.Character == GrammarCharacter.I);
+                IEnumerable<IAdTree> result = this.Where(x => x.Morpheme.GrammarCharacter == GrammarCharacter.I);
                 return result;
             }
         }
@@ -248,9 +237,82 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             get
             {
+                // If it is not an adposition (if it is not a node).
+                if (RightChild == null && LeftChild == null)
+                {
+                    yield return this;
+                }
+                // If it is a stative group.
+                else if (InheritedGrammarCharacter == GrammarCharacter.O)
+                {
+                    //foreach (IAdTree adjunctive in Governors)
+                }
+                // If it is a verbant group.
+                else if (InheritedGrammarCharacter == GrammarCharacter.I)
+                {
+                    // Try to find that verbant.
+                    IAdTree verbant = Verbants.FirstOrDefault();
+                    if (verbant != null)
+                    {
+                        // Try to find the stative on the first valency.
+                        IAdTree stative1 = verbant.ValencyAdPositions.FirstOrDefault();
+                        if (stative1 != null)
+                        {
+                            // Return phrase items of the stative1.
+                            foreach (IAdTree stativePhraseItem in stative1.Phrase)
+                            {
+                                yield return stativePhraseItem;
+                            }
+
+                            // Return the adposition of the stative1.
+                            yield return stative1.AdPosition;
+                        }
+
+                        // Try to find verbant modifiers (circumstantials).
+                        IEnumerable<IAdTree> verbantModifiers = verbant.AdPositions.Where(x => x.LeftChild.Morpheme != null && x.LeftChild.Morpheme.GrammarCharacter == GrammarCharacter.E);
+                        if (verbantModifiers != null)
+                        {
+                            // From top to down.
+                            foreach (IAdTree modifier in verbantModifiers.Reverse())
+                            {
+                                // Return the modifier.
+                                yield return modifier;
+
+                                // Also return its adposition.
+                                yield return modifier.AdPosition;
+                            }
+                        }
+
+                        // Here comes the verbant.
+                        yield return verbant;
+
+                        // Continue up the 1st valency.
+                        if (stative1.AdPosition.AdPositions != null)
+                        {
+                            foreach (IAdTree item in stative1.AdPosition.AdPositions)
+                            {
+                                // Return phrase items.
+                                foreach (IAdTree phraseOfItem in item.Phrase)
+                                {
+                                    yield return phraseOfItem;
+                                }
+
+                                // Also return the adposition of the item.
+                                yield return item.AdPosition;
+                            }
+                        }
+                    }
+                }
+                // only statives, adjunctives and adpositions
+                else
+                {
+
+                }
+
+
                 //IEnumerable<IAdTree> result = this.
                 // TODO:
-                return null;
+                //return null;
             }
         }
 
@@ -268,17 +330,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 IAdTree aThis = aStack.Pop();
                 yield return aThis;
 
-                if (aThis.Dependent != null)
+                if (aThis.LeftChild != null)
                 {
-                    aStack.Push(aThis.Dependent);
+                    aStack.Push(aThis.LeftChild);
                 }
 
-                if (aThis.Governor != null)
+                if (aThis.RightChild != null)
                 {
-                    aStack.Push(aThis.Governor);
+                    aStack.Push(aThis.RightChild);
                 }
             }
         }
+
+
+        
 
         IEnumerator IEnumerable.GetEnumerator()
         {

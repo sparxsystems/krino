@@ -20,7 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <summary>
         /// Grammar character.
         /// </summary>
-        GrammarCharacter Character { get; set; }
+        GrammarCharacter GrammarCharacter { get; set; }
 
         /// <summary>
         /// Attributes of the morpheme.

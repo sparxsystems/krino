@@ -59,5 +59,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// Valency 5.
         /// </summary>
         Pentavalent = 512,
+
+        /// <summary>
+        /// Helper used to find if any valency is specified.
+        /// </summary>
+        AllValencies = Avalent | Monovalent | Bivalent | Trivalent | Quadrivalent | Pentavalent,
     }
 }

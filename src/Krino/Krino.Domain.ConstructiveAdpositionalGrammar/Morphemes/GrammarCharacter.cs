@@ -5,7 +5,10 @@
     /// </summary>
     public enum GrammarCharacter
     {
-        None,
+        /// <summary>
+        /// Empty
+        /// </summary>
+        Epsilon,
 
         /// <summary>
         /// Verbant

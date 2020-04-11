@@ -3,7 +3,7 @@ using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
-    [DebuggerDisplay("{Character}: {Morph}")]
+    [DebuggerDisplay("{GrammarCharacter}: {Morph}")]
     public class Morpheme : IMorpheme
     {
         public Morpheme (string morph)
@@ -15,7 +15,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public List<ISememe> Sememes { get; } = new List<ISememe>();
 
-        public GrammarCharacter Character { get; set; }
+        public GrammarCharacter GrammarCharacter { get; set; }
 
         public Attributes Attributes { get; set; }
     }
