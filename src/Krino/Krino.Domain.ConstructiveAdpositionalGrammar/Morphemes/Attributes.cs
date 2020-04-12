@@ -63,6 +63,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <summary>
         /// Helper used to find if any valency is specified.
         /// </summary>
-        AllValencies = Avalent | Monovalent | Bivalent | Trivalent | Quadrivalent | Pentavalent,
+        AllValenciesMask = Avalent | Monovalent | Bivalent | Trivalent | Quadrivalent | Pentavalent,
     }
 }

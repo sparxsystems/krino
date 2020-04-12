@@ -1,5 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Patterns;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -16,25 +18,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
                     Morpheme = new Morpheme("") { GrammarCharacter = GrammarCharacter.U },
 
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
 
             Assert.AreEqual(GrammarCharacter.Epsilon, adTree.GrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.O, adTree.RightChild.LeftChild.GrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.RightChild.GrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.U, adTree.LeftChild.GrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Right.Left.GrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.Right.GrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.U, adTree.Left.GrammarCharacter);
         }
 
         [Test]
@@ -43,26 +45,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
                     Morpheme = new Morpheme("") { GrammarCharacter = GrammarCharacter.U },
 
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
 
             Assert.AreEqual(GrammarCharacter.I, adTree.InheritedGrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.RightChild.LeftChild.InheritedGrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.I, adTree.RightChild.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.Right.Left.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.Right.InheritedGrammarCharacter);
 
-            Assert.AreEqual(GrammarCharacter.O, adTree.LeftChild.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Left.InheritedGrammarCharacter);
         }
 
         [Test]
@@ -71,26 +73,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             AdTree adTree2 = new AdTree()
             {
-                RightChild = new AdTree(),
-                LeftChild = new AdTree(),
+                Right = new AdTree(),
+                Left = new AdTree(),
             };
 
             // The adTree2 does not references the adTree.RightChild.RightChild therefore it shall throw the exception.
-            Assert.Throws<InvalidOperationException>(() => adTree.RightChild.RightChild.AdPosition = adTree2);
+            Assert.Throws<InvalidOperationException>(() => adTree.Right.Right.AdPosition = adTree2);
         }
 
         [Test]
@@ -99,24 +101,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             Assert.IsTrue(adTree.IsAdPosition);
-            Assert.IsTrue(adTree.RightChild.IsAdPosition);
-            Assert.IsTrue(adTree.LeftChild.IsAdPosition);
+            Assert.IsTrue(adTree.Right.IsAdPosition);
+            Assert.IsTrue(adTree.Left.IsAdPosition);
 
-            Assert.IsFalse(adTree.LeftChild.RightChild.IsAdPosition);
-            Assert.IsFalse(adTree.LeftChild.LeftChild.IsAdPosition);
+            Assert.IsFalse(adTree.Left.Right.IsAdPosition);
+            Assert.IsFalse(adTree.Left.Left.IsAdPosition);
         }
 
         [Test]
@@ -125,24 +127,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             List<IAdTree> adPositions = adTree.AdPositions.ToList();
             Assert.AreEqual(0, adPositions.Count);
 
-            adPositions = adTree.RightChild.RightChild.AdPositions.ToList();
+            adPositions = adTree.Right.Right.AdPositions.ToList();
             Assert.AreEqual(2, adPositions.Count);
-            Assert.AreEqual(adTree.RightChild, adPositions[0]);
+            Assert.AreEqual(adTree.Right, adPositions[0]);
             Assert.AreEqual(adTree, adPositions[1]);
         }
 
@@ -151,18 +153,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void RightChild()
         {
             AdTree adTree = new AdTree();
-            Assert.IsNull(adTree.RightChild);
+            Assert.IsNull(adTree.Right);
 
             AdTree rightChild = new AdTree();
             
             // Attach the governor.
-            adTree.RightChild = rightChild;
-            Assert.AreEqual(rightChild, adTree.RightChild);
+            adTree.Right = rightChild;
+            Assert.AreEqual(rightChild, adTree.Right);
             Assert.AreEqual(adTree, rightChild.AdPosition);
 
             // Detach the governor.
-            adTree.RightChild = null;
-            Assert.IsNull(adTree.RightChild);
+            adTree.Right = null;
+            Assert.IsNull(adTree.Right);
             Assert.IsNull(rightChild.AdPosition);
         }
 
@@ -170,18 +172,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void LeftChild()
         {
             AdTree adTree = new AdTree();
-            Assert.IsNull(adTree.LeftChild);
+            Assert.IsNull(adTree.Left);
 
             AdTree leftChild = new AdTree();
 
             // Attach dependent.
-            adTree.LeftChild = leftChild;
-            Assert.AreEqual(leftChild, adTree.LeftChild);
+            adTree.Left = leftChild;
+            Assert.AreEqual(leftChild, adTree.Left);
             Assert.AreEqual(adTree, leftChild.AdPosition);
 
             // Detach the dependent.
-            adTree.LeftChild = null;
-            Assert.IsNull(adTree.LeftChild);
+            adTree.Left = null;
+            Assert.IsNull(adTree.Left);
             Assert.IsNull(leftChild.AdPosition);
         }
 
@@ -192,25 +194,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             List<IAdTree> rightChildren = adTree.RightChildren.ToList();
             Assert.AreEqual(2, rightChildren.Count);
-            Assert.AreEqual(adTree.RightChild, rightChildren[0]);
-            Assert.AreEqual(adTree.RightChild.RightChild, rightChildren[1]);
+            Assert.AreEqual(adTree.Right, rightChildren[0]);
+            Assert.AreEqual(adTree.Right.Right, rightChildren[1]);
 
 
-            rightChildren = adTree.RightChild.RightChild.RightChildren.ToList();
+            rightChildren = adTree.Right.Right.RightChildren.ToList();
             Assert.AreEqual(0, rightChildren.Count);
         }
 
@@ -220,20 +222,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
-            Assert.IsTrue(adTree.RightChild.IsOnRight);
-            Assert.IsFalse(adTree.LeftChild.IsOnRight);
+            Assert.IsTrue(adTree.Right.IsOnRight);
+            Assert.IsFalse(adTree.Left.IsOnRight);
             Assert.IsFalse(adTree.IsOnRight);
         }
 
@@ -243,20 +245,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
-            Assert.IsFalse(adTree.RightChild.IsOnLeft);
-            Assert.IsTrue(adTree.LeftChild.IsOnLeft);
+            Assert.IsFalse(adTree.Right.IsOnLeft);
+            Assert.IsTrue(adTree.Left.IsOnLeft);
             Assert.IsFalse(adTree.IsOnLeft);
         }
 
@@ -266,36 +268,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             // the governor of 'I' is the 'read'.
-            Assert.IsTrue(adTree.RightChild.RightChild == adTree.RightChild.LeftChild.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Right.Left.Governor);
 
             // the governor of 'book'-adposition is the 'read'.
-            Assert.IsTrue(adTree.RightChild.RightChild == adTree.LeftChild.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Left.Governor);
 
             // the governor of 'book' is the 'read'.
             // Note: the book is already the governor so the governor of the governor shall be found.
-            Assert.IsTrue(adTree.RightChild.RightChild == adTree.LeftChild.RightChild.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Left.Right.Governor);
 
             // the governor of 'the' is the 'book'.
-            Assert.IsTrue(adTree.LeftChild.RightChild == adTree.LeftChild.LeftChild.Governor);
+            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.Governor);
 
             // the governor of the root is the 'read'.
-            Assert.IsTrue(adTree.RightChild.RightChild == adTree.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Governor);
 
             // the governor of the 'read'-adposition is the 'read'.
-            Assert.IsTrue(adTree.RightChild.RightChild == adTree.RightChild.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Right.Governor);
         }
 
         [Test]
@@ -304,26 +306,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("hello") { GrammarCharacter = GrammarCharacter.Epsilon } },
+                    Right = new AdTree() { Morpheme = new Morpheme("hello") { GrammarCharacter = GrammarCharacter.Epsilon } },
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree()
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree()
                     {
-                        RightChild = new AdTree() { Morpheme = new Morpheme("and") { GrammarCharacter = GrammarCharacter.U } },
-                        LeftChild = new AdTree() { Morpheme = new Morpheme("bla") { GrammarCharacter = GrammarCharacter.E } }
+                        Right = new AdTree() { Morpheme = new Morpheme("and") { GrammarCharacter = GrammarCharacter.U } },
+                        Left = new AdTree() { Morpheme = new Morpheme("bla") { GrammarCharacter = GrammarCharacter.E } }
                     }
                 }
             };
 
             // the governor of 'bla' is the 'book'. (adposition U - 'bla' shall be ignored.
-            Assert.IsTrue(adTree.LeftChild.RightChild == adTree.LeftChild.LeftChild.LeftChild.Governor);
+            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.Left.Governor);
 
             // the 'book' does not have any governor.
-            Assert.IsTrue(adTree.LeftChild.RightChild.Governor == null);
+            Assert.IsTrue(adTree.Left.Right.Governor == null);
 
             // the root does not have any governor.
             Assert.IsTrue(adTree.Governor == null);
@@ -335,23 +337,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             // 'read' is governor.
-            Assert.IsTrue(adTree.RightChild.RightChild.IsGovernor);
+            Assert.IsTrue(adTree.Right.Right.IsGovernor);
 
             // 'book'-adposition is not the governor.
-            Assert.IsFalse(adTree.LeftChild.IsGovernor);
+            Assert.IsFalse(adTree.Left.IsGovernor);
 
             // root is not the governor.
             Assert.IsFalse(adTree.IsGovernor);
@@ -363,26 +365,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("hello") { GrammarCharacter = GrammarCharacter.Epsilon } },
+                    Right = new AdTree() { Morpheme = new Morpheme("hello") { GrammarCharacter = GrammarCharacter.Epsilon } },
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree()
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree()
                     {
-                        RightChild = new AdTree() { Morpheme = new Morpheme("and") { GrammarCharacter = GrammarCharacter.U } },
-                        LeftChild = new AdTree() { Morpheme = new Morpheme("bla") { GrammarCharacter = GrammarCharacter.E } }
+                        Right = new AdTree() { Morpheme = new Morpheme("and") { GrammarCharacter = GrammarCharacter.U } },
+                        Left = new AdTree() { Morpheme = new Morpheme("bla") { GrammarCharacter = GrammarCharacter.E } }
                     }
                 }
             };
 
             // hello is not the governor.
-            Assert.IsFalse(adTree.RightChild.RightChild.IsGovernor);
+            Assert.IsFalse(adTree.Right.Right.IsGovernor);
 
             // adposition 'and' is not the governor.
-            Assert.IsFalse(adTree.LeftChild.LeftChild.RightChild.IsGovernor);
+            Assert.IsFalse(adTree.Left.Left.Right.IsGovernor);
         }
 
         [Test]
@@ -391,28 +393,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             // dependents for 'read'
-            List<IAdTree> dependentAdPositions = adTree.RightChild.RightChild.DependentAdPositions.ToList();
+            List<IAdTree> dependentAdPositions = adTree.Right.Right.DependentAdPositions.ToList();
             Assert.AreEqual(2, dependentAdPositions.Count);
-            Assert.IsTrue(adTree.RightChild == dependentAdPositions[0]);
+            Assert.IsTrue(adTree.Right == dependentAdPositions[0]);
             Assert.IsTrue(adTree == dependentAdPositions[1]);
 
             // dependents for 'book'
-            dependentAdPositions = adTree.LeftChild.RightChild.DependentAdPositions.ToList();
+            dependentAdPositions = adTree.Left.Right.DependentAdPositions.ToList();
             Assert.AreEqual(1, dependentAdPositions.Count);
-            Assert.IsTrue(adTree.LeftChild == dependentAdPositions[0]);
+            Assert.IsTrue(adTree.Left == dependentAdPositions[0]);
         }
 
         [Test]
@@ -420,39 +422,41 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             AdTree adTree = new AdTree()
             {
-                ValencyPosition = 2,
+                Pattern = new Pattern() { ValencyPosition = 2 },
 
-                RightChild = new AdTree()
+                Right = new AdTree()
                 {
-                    ValencyPosition = 1,
+                    Pattern = new Pattern() { ValencyPosition = 1 },
 
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
                 },
-                LeftChild = new AdTree()
+                Left = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
                 }
             };
 
             //'I'
-            Assert.IsTrue(adTree.RightChild == adTree.RightChild.LeftChild.ValencyAdPosition);
+            Assert.IsTrue(adTree.Right == adTree.Right.Left.ValencyAdPosition);
 
             // book
-            Assert.IsTrue(adTree == adTree.LeftChild.RightChild.ValencyAdPosition);
+            Assert.IsTrue(adTree == adTree.Left.Right.ValencyAdPosition);
 
             // the
-            Assert.IsTrue(adTree == adTree.LeftChild.LeftChild.ValencyAdPosition);
+            Assert.IsTrue(adTree == adTree.Left.Left.ValencyAdPosition);
 
             // book-adposition shall return root
-            Assert.IsTrue(adTree == adTree.LeftChild.ValencyAdPosition);
+            Assert.IsTrue(adTree == adTree.Left.ValencyAdPosition);
 
             // root has defined the valency position so it should return itself
             Assert.IsTrue(adTree == adTree.ValencyAdPosition);
 
             // read shall return null - because it is the verb
-            Assert.IsTrue(null == adTree.RightChild.RightChild.ValencyAdPosition);
+            Assert.IsTrue(null == adTree.Right.Right.ValencyAdPosition);
+
+            Assert.That(true, Is.True);
         }
 
 
@@ -463,19 +467,123 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree()
             {
-                RightChild = new AdTree()
+                Morpheme = new Morpheme("."),
+
+                Right = new AdTree()
                 {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
-                },
-                LeftChild = new AdTree()
-                {
-                    RightChild = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
-                    LeftChild = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    Right = new AdTree()
+                    {
+                        Pattern = new Pattern() { IsReversed = true },
+
+                        Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                        Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacter.O, Attributes = Attributes.Unergative } }
+                    },
+                    Left = new AdTree()
+                    {
+                        Pattern = new Pattern() { IsReversed = true },
+
+                        Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                        Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A, Attributes = Attributes.AttributiveAdjective } }
+                    }
                 }
             };
 
-            string phrase = string.Join(" ", adTree.Phrase.Select(x => x.Morpheme.Morph));
+            string phrase = adTree.Phrase;
+            Assert.AreEqual("I read the book .", phrase);
+        }
+
+        [Test]
+        public void Phrase_Janitor()
+        {
+            // The phrase:  That amount of carbon dioxide will run out in about 12 years of current business as usual.
+            // Note: Sentence 8.3 page 32.
+            AdTree adTree = new AdTree()
+            {
+                Morpheme = new Morpheme(".") { GrammarCharacter = GrammarCharacter.U },
+
+                Right = new AdTree()
+                {
+                    Morpheme = new Morpheme("in") { GrammarCharacter = GrammarCharacter.U },
+
+                    Right = new AdTree()
+                    {
+                        Pattern = new Pattern() { ValencyPosition = 1, IsReversed = true },
+
+                        Right = new AdTree()
+                        {
+                            Right = new AdTree()
+                            {
+                                Pattern = new Pattern() { IsReversed = true },
+
+                                Right = new AdTree() { Morpheme = new Morpheme("run") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Monovalent } },
+                                Left = new AdTree() { Morpheme = new Morpheme("will") { GrammarCharacter = GrammarCharacter.E } }
+                            },
+
+                            Left = new AdTree() { Morpheme = new Morpheme("out") { GrammarCharacter = GrammarCharacter.E } },
+                        },
+
+                        Left = new AdTree()
+                        {
+                            Morpheme = new Morpheme("of") { GrammarCharacter = GrammarCharacter.U },
+
+                            Right = new AdTree()
+                            {
+                                Pattern = new Pattern() { IsReversed = true },
+
+                                Right = new AdTree() { Morpheme = new Morpheme("amount") { GrammarCharacter = GrammarCharacter.O } },
+                                Left = new AdTree() { Morpheme = new Morpheme("That") { GrammarCharacter = GrammarCharacter.A } },
+                            },
+
+                            Left = new AdTree()
+                            {
+                                Right = new AdTree() { Morpheme = new Morpheme("carbon") { GrammarCharacter = GrammarCharacter.O } },
+                                Left = new AdTree() { Morpheme = new Morpheme("dioxide") { GrammarCharacter = GrammarCharacter.A } },
+                            }
+                        }
+                    },
+
+                    Left = new AdTree()
+                    {
+                        Morpheme = new Morpheme("of") { GrammarCharacter = GrammarCharacter.U },
+
+                        Right = new AdTree()
+                        {
+                            Pattern = new Pattern() { IsReversed = true },
+
+                            Right = new AdTree()
+                            {
+                                Pattern = new Pattern() { IsReversed = true },
+
+                                Right = new AdTree() { Morpheme = new Morpheme("years") { GrammarCharacter = GrammarCharacter.O } },
+                                Left = new AdTree() { Morpheme = new Morpheme("12") { GrammarCharacter = GrammarCharacter.A } },
+                            },
+
+                            Left = new AdTree() { Morpheme = new Morpheme("about") { GrammarCharacter = GrammarCharacter.A } },
+                        },
+
+                        Left = new AdTree()
+                        {
+                            Pattern = new Pattern() { IsReversed = true },
+
+                            Right = new AdTree()
+                            {
+                                Right = new AdTree()
+                                {
+                                    Right = new AdTree() { Morpheme = new Morpheme("business") { GrammarCharacter = GrammarCharacter.O } },
+                                    Left = new AdTree() { Morpheme = new Morpheme("as") { GrammarCharacter = GrammarCharacter.A } },
+                                },
+
+                                Left = new AdTree() { Morpheme = new Morpheme("usual") { GrammarCharacter = GrammarCharacter.A } },
+                            },
+
+                            Left = new AdTree() { Morpheme = new Morpheme("current") { GrammarCharacter = GrammarCharacter.A } },
+                        }
+                    }
+                }
+            };
+
+            string phrase = adTree.Phrase;
+            Assert.AreEqual("That amount of carbon dioxide will run out in about 12 years of current business as usual .", phrase);
         }
     }
 }

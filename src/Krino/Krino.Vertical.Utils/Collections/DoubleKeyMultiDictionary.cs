@@ -5,6 +5,12 @@ using System.Linq;
 
 namespace Krino.Vertical.Utils.Collections
 {
+    /// <summary>
+    /// Dictionary with two keys which can have multiple values for each key pair.
+    /// </summary>
+    /// <typeparam name="K1"></typeparam>
+    /// <typeparam name="K2"></typeparam>
+    /// <typeparam name="V"></typeparam>
     public class DoubleKeyMultiDictionary<K1, K2, V> : IEnumerable<Tuple<K1, K2, V>>
     {
         private IEqualityComparer<K1> myK1Comparer;

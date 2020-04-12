@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using System.Collections.Generic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
@@ -8,6 +9,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// </summary>
     public interface IAdTree : IEnumerable<IAdTree>
     {
+        /// <summary>
+        /// Pattern followed by the adtree element.
+        /// </summary>
+        IPattern Pattern { get; set; }
+
         /// <summary>
         /// Morpheme.
         /// </summary>
@@ -47,7 +53,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// The righ child.
         /// </summary>
-        IAdTree RightChild { get; set; }
+        IAdTree Right { get; set; }
 
         /// <summary>
         /// The sequence of elements on the right branch.
@@ -57,7 +63,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// The left child.
         /// </summary>
-        IAdTree LeftChild { get; set; }
+        IAdTree Left { get; set; }
 
         /// <summary>
         /// Returns true if this tree element is located on the right branch.
@@ -110,17 +116,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </remarks>
         IAdTree ValencyAdPosition { get; }
 
-        /// <summary>
-        /// Gets or sets the valency position the element saturates.
-        /// </summary>
-        /// <remarks>
-        /// According to 'Constructive Adpositional Grammar' page 23 the valency is a feature of the governor and not
-        /// necessarily restricted to verbal entities.<br/>
-        /// <br/>
-        /// If the value is 0 the valency position is not set.
-        /// </remarks>
-        int ValencyPosition { get; set; }
-        
 
         /// <summary>
         /// It returns the sequence of dependents which saturate particular valencies.
@@ -134,8 +129,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         IEnumerable<IAdTree> Verbants { get; }
 
         /// <summary>
-        /// Returns the sequence of the phrase which is represented by the adtree.
+        /// Returns the phrase sequence of elements.
         /// </summary>
-        IEnumerable<IAdTree> Phrase { get; }
+        IEnumerable<IAdTree> PhraseElements { get; }
+
+        /// <summary>
+        /// Returns the phrase text represented by this adtree.
+        /// </summary>
+        string Phrase { get; }
+
+
     }
 }

@@ -39,6 +39,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes
             Assert.IsTrue(Attributes.Trivalent.IsValencySpecified());
             Assert.IsTrue(Attributes.Quadrivalent.IsValencySpecified());
             Assert.IsTrue(Attributes.Pentavalent.IsValencySpecified());
+
+            Assert.IsTrue((Attributes.Bivalent | Attributes.Trivalent | Attributes.PredicativeAdjective).IsValencySpecified());
+
+            Assert.IsFalse(Attributes.Unaccusative.IsValencySpecified());
         }
     }
 }

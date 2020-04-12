@@ -49,7 +49,7 @@
         /// <returns></returns>
         public static bool IsValencySpecified(this Attributes attributes)
         {
-            return (attributes & Attributes.AllValencies) != Attributes.None;
+            return (attributes & Attributes.AllValenciesMask) != Attributes.None;
         }
     }
 }

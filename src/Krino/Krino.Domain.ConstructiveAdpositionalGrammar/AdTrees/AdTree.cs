@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -17,6 +18,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         private IAdTree myRightChild;
         private IAdTree myLeftChild;
 
+
+        public IPattern Pattern { get; set; } = new Pattern();
 
         public IMorpheme Morpheme { get; set; }
 
@@ -47,9 +50,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 if (myAdPosition != value)
                 {
-                    if (value != null && value.RightChild != this && value.LeftChild != this)
+                    if (value != null && value.Right != this && value.Left != this)
                     {
-                        throw new InvalidOperationException($"{nameof(IAdTree.AdPosition)} must be set via setting of {nameof(IAdTree.RightChild)} or {nameof(IAdTree.LeftChild)}.");
+                        throw new InvalidOperationException($"{nameof(IAdTree.AdPosition)} must be set via setting of {nameof(IAdTree.Right)} or {nameof(IAdTree.Left)}.");
                     }
 
                     myAdPosition = value;
@@ -57,7 +60,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public bool IsAdPosition => RightChild != null || LeftChild != null;
+        public bool IsAdPosition => Right != null || Left != null;
 
         public IEnumerable<IAdTree> AdPositions
         {
@@ -73,7 +76,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public IAdTree RightChild
+        public IAdTree Right
         {
             get => myRightChild;
             set
@@ -99,17 +102,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             get
             {
-                IAdTree rightChild = RightChild;
+                IAdTree rightChild = Right;
                 while (rightChild != null)
                 {
                     yield return rightChild;
 
-                    rightChild = rightChild.RightChild;
+                    rightChild = rightChild.Right;
                 }
             }
         }
 
-        public IAdTree LeftChild
+        public IAdTree Left
         {
             get => myLeftChild;
             set
@@ -131,9 +134,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public bool IsOnRight => AdPosition != null ? AdPosition.RightChild == this : false;
+        public bool IsOnRight => AdPosition != null ? AdPosition.Right == this : false;
 
-        public bool IsOnLeft => AdPosition != null ? AdPosition.LeftChild == this : false;
+        public bool IsOnLeft => AdPosition != null ? AdPosition.Left == this : false;
 
         public IAdTree Governor
         {
@@ -182,7 +185,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 if (IsGovernor)
                 {
                     IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.GrammarCharacter == GrammarCharacter.Epsilon);
-                    result = governingAdPositions.Where(x => x.LeftChild != null && x.LeftChild.IsDependent);
+                    result = governingAdPositions.Where(x => x.Left != null && x.Left.IsDependent);
                 }
                 else
                 {
@@ -205,7 +208,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // If this element has not speciefied the valency attribute.
                 if (Morpheme == null || !Morpheme.Attributes.IsValencySpecified())
                 {
-                    result = ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.ValencyPosition > 0);
+                    result = Pattern.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
                 }
                 else
                 {
@@ -216,12 +219,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public int ValencyPosition { get; set; }
-
-
         public IEnumerable<IAdTree> ValencyAdPositions => IsGovernor ? AdPosition
             .TakeWhile(x => x.IsOnRight)
-            .Where(x => x.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
+            .Where(x => x.Pattern.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
 
 
         public IEnumerable<IAdTree> Verbants
@@ -233,89 +233,62 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public IEnumerable<IAdTree> Phrase
+        public IEnumerable<IAdTree> PhraseElements
         {
             get
             {
-                // If it is not an adposition (if it is not a node).
-                if (RightChild == null && LeftChild == null)
+                // If it is not an adposition.
+                if (!IsAdPosition)
                 {
                     yield return this;
                 }
-                // If it is a stative group.
-                else if (InheritedGrammarCharacter == GrammarCharacter.O)
+                else
                 {
-                    //foreach (IAdTree adjunctive in Governors)
-                }
-                // If it is a verbant group.
-                else if (InheritedGrammarCharacter == GrammarCharacter.I)
-                {
-                    // Try to find that verbant.
-                    IAdTree verbant = Verbants.FirstOrDefault();
-                    if (verbant != null)
+                    if (!Pattern.IsReversed)
                     {
-                        // Try to find the stative on the first valency.
-                        IAdTree stative1 = verbant.ValencyAdPositions.FirstOrDefault();
-                        if (stative1 != null)
+                        if (Right != null)
                         {
-                            // Return phrase items of the stative1.
-                            foreach (IAdTree stativePhraseItem in stative1.Phrase)
+                            foreach (IAdTree element in Right.PhraseElements)
                             {
-                                yield return stativePhraseItem;
-                            }
-
-                            // Return the adposition of the stative1.
-                            yield return stative1.AdPosition;
-                        }
-
-                        // Try to find verbant modifiers (circumstantials).
-                        IEnumerable<IAdTree> verbantModifiers = verbant.AdPositions.Where(x => x.LeftChild.Morpheme != null && x.LeftChild.Morpheme.GrammarCharacter == GrammarCharacter.E);
-                        if (verbantModifiers != null)
-                        {
-                            // From top to down.
-                            foreach (IAdTree modifier in verbantModifiers.Reverse())
-                            {
-                                // Return the modifier.
-                                yield return modifier;
-
-                                // Also return its adposition.
-                                yield return modifier.AdPosition;
+                                yield return element;
                             }
                         }
 
-                        // Here comes the verbant.
-                        yield return verbant;
+                        yield return this;
 
-                        // Continue up the 1st valency.
-                        if (stative1.AdPosition.AdPositions != null)
+                        if (Left != null)
                         {
-                            foreach (IAdTree item in stative1.AdPosition.AdPositions)
+                            foreach (IAdTree element in Left.PhraseElements)
                             {
-                                // Return phrase items.
-                                foreach (IAdTree phraseOfItem in item.Phrase)
-                                {
-                                    yield return phraseOfItem;
-                                }
+                                yield return element;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        if (Left != null)
+                        {
+                            foreach (IAdTree element in Left.PhraseElements)
+                            {
+                                yield return element;
+                            }
+                        }
 
-                                // Also return the adposition of the item.
-                                yield return item.AdPosition;
+                        yield return this;
+
+                        if (Right != null)
+                        {
+                            foreach (IAdTree element in Right.PhraseElements)
+                            {
+                                yield return element;
                             }
                         }
                     }
                 }
-                // only statives, adjunctives and adpositions
-                else
-                {
-
-                }
-
-
-                //IEnumerable<IAdTree> result = this.
-                // TODO:
-                //return null;
             }
         }
 
+        public string Phrase => string.Join(" ", PhraseElements.Where(x => x.Morpheme?.Morph != null).Select(x => x.Morpheme.Morph));
 
 
         public IEnumerator<IAdTree> GetEnumerator()
@@ -330,14 +303,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 IAdTree aThis = aStack.Pop();
                 yield return aThis;
 
-                if (aThis.LeftChild != null)
+                if (aThis.Left != null)
                 {
-                    aStack.Push(aThis.LeftChild);
+                    aStack.Push(aThis.Left);
                 }
 
-                if (aThis.RightChild != null)
+                if (aThis.Right != null)
                 {
-                    aStack.Push(aThis.RightChild);
+                    aStack.Push(aThis.Right);
                 }
             }
         }

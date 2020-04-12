@@ -1,26 +1,25 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using System.Collections.Generic;
-using System.Linq;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Patterns;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
     public class Pattern : IPattern
     {
-        public Pattern(IAdTree rule)
-        {
-            Rule = rule;
-        }
+        public IMorpheme Morpheme { get; set; }
 
-        public IReadOnlyList<IMorpheme> Match
-        {
-            get
-            {
-                List<IMorpheme> result = Rule.Phrase.Select(x => x.Morpheme).ToList();
-                return result;
-            }
-        }
+        public int ValencyPosition { get; set; }
 
-        public IAdTree Rule { get; private set; }
+        public bool IsReversed { get; set; }
+
+        public IRule<IPattern> AdPosition { get; set; } = It.IsAny<IPattern>();
+
+        public IRule<IPattern> RightChild { get; set; } = It.IsAny<IPattern>();
+
+        public IRule<IPattern> LeftChild { get; set; } = It.IsAny<IPattern>();
+
+        public bool Equals(IPattern other)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }
