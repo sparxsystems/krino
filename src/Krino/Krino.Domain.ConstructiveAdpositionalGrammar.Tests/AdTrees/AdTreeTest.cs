@@ -493,7 +493,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void Phrase_Janitor()
+        public void Phrase_Sentence_8_3()
         {
             // The phrase:  That amount of carbon dioxide will run out in about 12 years of current business as usual.
             // Note: Sentence 8.3 page 32.
@@ -584,6 +584,61 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             string phrase = adTree.Phrase;
             Assert.AreEqual("That amount of carbon dioxide will run out in about 12 years of current business as usual .", phrase);
+        }
+
+
+        [Test]
+        public void Phrase_Correlative()
+        {
+            // The phrase: I read the book.
+            AdTree adTree = new AdTree()
+            {
+                Pattern = new Pattern() { IsCorrelativeAdposition = true },
+                Morpheme = new Morpheme("which") { GrammarCharacter = GrammarCharacter.U },
+
+                Right = new AdTree()
+                {
+                    Pattern = new Pattern { IsReversed = true },
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacter.O } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A } },
+                },
+
+                Left = new AdTree()
+                {
+                    Morpheme = new Morpheme("for") { GrammarCharacter = GrammarCharacter.U },
+
+                    Right = new AdTree()
+                    {
+                        Pattern = new Pattern() { ValencyPosition = 2 },
+                        Right = new AdTree()
+                        {
+                            Pattern = new Pattern() { ValencyPosition = 1, IsReversed = true },
+                            Right = new AdTree() { Morpheme = new Morpheme("bought") { GrammarCharacter = GrammarCharacter.I, Attributes = Attributes.Bivalent } },
+                            Left = new AdTree()
+                            {
+                                Pattern = new Pattern { IsReversed = true },
+                                Right = new AdTree() { Morpheme = new Morpheme("man") { GrammarCharacter = GrammarCharacter.O } },
+                                Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A } },
+                            }
+                        },
+                        Left = new AdTree()
+                        {
+                            Pattern = new Pattern() { IsCorrelativeSubstitute = true },
+                            Morpheme = new Morpheme("") { GrammarCharacter = GrammarCharacter.O }
+                        }
+                    },
+                    Left = new AdTree()
+                    {
+                        Pattern = new Pattern() { IsReversed = true },
+                        Right = new AdTree() { Morpheme = new Morpheme("girl") { GrammarCharacter = GrammarCharacter.O } },
+                        Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacter.A } },
+                    }
+                }
+
+            };
+
+            string phrase = adTree.Phrase;
+            Assert.AreEqual("the book which the man bought for the girl", phrase);
         }
     }
 }

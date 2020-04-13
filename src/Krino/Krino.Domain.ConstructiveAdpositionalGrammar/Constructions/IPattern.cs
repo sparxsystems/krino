@@ -12,15 +12,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
     public interface IPattern : IEquatable<IPattern>
     {
         /// <summary>
-        /// The pattern specified morpheme.
+        /// The morpheme specified by the pattern.
         /// </summary>
         IMorpheme Morpheme { get; }
 
         /// <summary>
-        /// The valency position the element saturates.
+        /// The valency position the element shall saturates.
         /// </summary>
         /// <remarks>
-        /// According to 'Constructive Adpositional Grammar' page 23 the valency is a feature of the governor and not
+        /// Note: According to 'Constructive Adpositional Grammar' page 23 the valency is a feature of the governor and not
         /// necessarily restricted to verbal entities.<br/>
         /// <br/>
         /// If the value is 0 the valency position is not set.
@@ -28,23 +28,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         int ValencyPosition { get; }
 
         /// <summary>
-        /// True if the order RightChild-LeftChild is reversed in the phrase.
+        /// True if the element represents a correlative adposition.
+        /// </summary>
+        /// <remarks>
+        /// Correlatives are words which transform a secondary phrase or even a sentence into a stative, adjunctive or circumstantial of the main phrase.
+        /// </remarks>
+        bool IsCorrelativeAdposition { get; }
+
+        /// <summary>
+        /// True if the pattern represents an element which is substituted by the correlative adposition.
+        /// </summary>
+        bool IsCorrelativeSubstitute { get; }
+
+        /// <summary>
+        /// True if the textual phrase has reversed order, i.e. Left-Right.
         /// </summary>
         bool IsReversed { get; }
 
         /// <summary>
-        /// The rule for fitting parent adposition.
+        /// The rule which specifies which adpositions fit this pattern.
         /// </summary>
         IRule<IPattern> AdPosition { get; }
 
         /// <summary>
-        /// The rule for fitting right child.
+        /// The rule which specifies which right children fit this pattern.
         /// </summary>
-        IRule<IPattern> RightChild { get; }
+        IRule<IPattern> Right { get; }
 
         /// <summary>
-        /// The rule for fitting left child.
+        /// The rule which specifies which left children fit this pattern.
         /// </summary>
-        IRule<IPattern> LeftChild { get; }
+        IRule<IPattern> Left { get; }
     }
 }

@@ -288,7 +288,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public string Phrase => string.Join(" ", PhraseElements.Where(x => x.Morpheme?.Morph != null).Select(x => x.Morpheme.Morph));
+        public string Phrase => string.Join(" ", PhraseElements.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
 
 
         public IEnumerator<IAdTree> GetEnumerator()
