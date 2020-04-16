@@ -6,6 +6,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
@@ -233,62 +234,51 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public IEnumerable<IAdTree> PhraseElements
+
+        public async Task<IEnumerable<IAdTree>> GetPhraseElementsAsync()
         {
-            get
+            // Collapse the call-stack and schedule the continuation to the queue.
+            await Task.Yield();
+
+            IEnumerable<IAdTree> result = Enumerable.Empty<IAdTree>();
+
+            if (!Pattern.IsReversed)
             {
-                // If it is not an adposition.
-                if (!IsAdPosition)
+                if (Right != null)
                 {
-                    yield return this;
+                    IEnumerable<IAdTree> subFraseElements = await Right.GetPhraseElementsAsync();
+                    result = result.Concat(subFraseElements);
                 }
-                else
+
+                result = result.Concat(new[] { this });
+
+                if (Left != null)
                 {
-                    if (!Pattern.IsReversed)
-                    {
-                        if (Right != null)
-                        {
-                            foreach (IAdTree element in Right.PhraseElements)
-                            {
-                                yield return element;
-                            }
-                        }
-
-                        yield return this;
-
-                        if (Left != null)
-                        {
-                            foreach (IAdTree element in Left.PhraseElements)
-                            {
-                                yield return element;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (Left != null)
-                        {
-                            foreach (IAdTree element in Left.PhraseElements)
-                            {
-                                yield return element;
-                            }
-                        }
-
-                        yield return this;
-
-                        if (Right != null)
-                        {
-                            foreach (IAdTree element in Right.PhraseElements)
-                            {
-                                yield return element;
-                            }
-                        }
-                    }
+                    IEnumerable<IAdTree> subFraseElements = await Left.GetPhraseElementsAsync();
+                    result = result.Concat(subFraseElements);
                 }
             }
+            else
+            {
+                if (Left != null)
+                {
+                    IEnumerable<IAdTree> subFraseElements = await Left.GetPhraseElementsAsync();
+                    result = result.Concat(subFraseElements);
+                }
+
+                result = result.Concat(new[] { this });
+
+                if (Right != null)
+                {
+                    IEnumerable<IAdTree> subFraseElements = await Right.GetPhraseElementsAsync();
+                    result = result.Concat(subFraseElements);
+                }
+            }
+
+            return result;
         }
 
-        public string Phrase => string.Join(" ", PhraseElements.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
+        public string Phrase => string.Join(" ", GetPhraseElementsAsync().Result.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
 
 
         public IEnumerator<IAdTree> GetEnumerator()

@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
@@ -131,7 +132,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// Returns the phrase sequence of elements.
         /// </summary>
-        IEnumerable<IAdTree> PhraseElements { get; }
+        /// <remarks>
+        /// Note: The method is async to avoid recursive calls.
+        /// </remarks>
+        Task<IEnumerable<IAdTree>> GetPhraseElementsAsync();
 
         /// <summary>
         /// Returns the phrase text represented by this adtree.
