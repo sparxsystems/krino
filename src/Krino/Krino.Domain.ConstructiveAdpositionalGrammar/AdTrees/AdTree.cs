@@ -242,37 +242,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
             IEnumerable<IAdTree> result = Enumerable.Empty<IAdTree>();
 
-            if (!Pattern.IsReversed)
+            IAdTree first = Pattern.IsReversed ? Left : Right;
+            IAdTree second = this;
+            IAdTree third = Pattern.IsReversed ? Right : Left;
+
+            if (first != null)
             {
-                if (Right != null)
-                {
-                    IEnumerable<IAdTree> subFraseElements = await Right.GetPhraseElementsAsync();
-                    result = result.Concat(subFraseElements);
-                }
-
-                result = result.Concat(new[] { this });
-
-                if (Left != null)
-                {
-                    IEnumerable<IAdTree> subFraseElements = await Left.GetPhraseElementsAsync();
-                    result = result.Concat(subFraseElements);
-                }
+                IEnumerable<IAdTree> subFraseElements = await first.GetPhraseElementsAsync();
+                result = result.Concat(subFraseElements);
             }
-            else
+
+            result = result.Concat(new[] { second });
+
+            if (third != null)
             {
-                if (Left != null)
-                {
-                    IEnumerable<IAdTree> subFraseElements = await Left.GetPhraseElementsAsync();
-                    result = result.Concat(subFraseElements);
-                }
-
-                result = result.Concat(new[] { this });
-
-                if (Right != null)
-                {
-                    IEnumerable<IAdTree> subFraseElements = await Right.GetPhraseElementsAsync();
-                    result = result.Concat(subFraseElements);
-                }
+                IEnumerable<IAdTree> subFraseElements = await third.GetPhraseElementsAsync();
+                result = result.Concat(subFraseElements);
             }
 
             return result;
