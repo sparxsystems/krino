@@ -7,11 +7,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     {
         public Sememe(string category, string value)
         {
-            Category = category;
+            Meaning = category;
             Value = value;
         }
 
-        public string Category { get; private set; }
+        public string Meaning { get; private set; }
 
         public string Value { get; private set; }
 

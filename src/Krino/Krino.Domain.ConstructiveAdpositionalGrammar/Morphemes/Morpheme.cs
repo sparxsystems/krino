@@ -15,10 +15,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public List<ISememe> Sememes { get; } = new List<ISememe>();
 
-        public GrammarCharacter GrammarCharacter { get; set; }
+        public GrammarCharacterType GrammarCharacter { get; set; }
 
-        public AdpositionTypes Adposition { get; set; }
+        public AdpositionType Adposition { get; set; }
 
-        public Attributes Attributes { get; set; }
+        public AttributeTypes Attributes { get; set; }
     }
 }

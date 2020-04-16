@@ -35,7 +35,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
             foreach (ISememe sememe in obj.Sememes)
             {
-                hash = (hash * 16777619) ^ sememe.Category.GetHashCode();
+                hash = (hash * 16777619) ^ sememe.Meaning.GetHashCode();
                 hash = (hash * 16777619) ^ sememe.Value.GetHashCode();
             }
 
@@ -49,14 +49,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
             IEnumerable<IEnumerable<ISememe>> pathsOfLeaves = leaves.Select(x => x.Parents.Concat(x))
                 .Reverse()
-                .OrderBy(x => x.First().Category)
+                .OrderBy(x => x.First().Meaning)
                 .ThenBy(x => x.First().Value);
 
             StringBuilder builder = new StringBuilder();
 
             foreach (IEnumerable<ISememe> sememePath in pathsOfLeaves)
             {
-                builder.AppendLine(string.Join("; ", sememePath.Select(x => string.Join(":", x.Category, x.Value))));
+                builder.AppendLine(string.Join("; ", sememePath.Select(x => string.Join(":", x.Meaning, x.Value))));
             }
 
             return builder.ToString();

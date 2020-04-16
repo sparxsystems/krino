@@ -24,16 +24,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public IMorpheme Morpheme { get; set; }
 
-        public GrammarCharacter GrammarCharacter => Morpheme?.GrammarCharacter ?? GrammarCharacter.Epsilon;
+        public GrammarCharacterType GrammarCharacter => Morpheme?.GrammarCharacter ?? GrammarCharacterType.Epsilon;
 
-        public GrammarCharacter InheritedGrammarCharacter
+        public GrammarCharacterType InheritedGrammarCharacter
         {
             get
             {
-                GrammarCharacter result = GrammarCharacter.Epsilon;
+                GrammarCharacterType result = GrammarCharacterType.Epsilon;
 
                 // Find the first element on the right branch which has defined own grammar character.
-                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon);
+                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacterType.Epsilon);
                 if (rightChild != null)
                 {
                     result = rightChild.GrammarCharacter;
@@ -151,14 +151,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     // If this element is the root or is located on the right.
                     if (AdPosition == null || IsOnRight)
                     {
-                        result = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon);
+                        result = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacterType.Epsilon);
                     }
                     // This element is not the root and is located on the left.
                     else
                     {
                         // Go via all adpositions and find the first governor.
                         result = AdPositions.SelectMany(x => x.RightChildren)
-                            .FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon && x.GrammarCharacter != GrammarCharacter.U);
+                            .FirstOrDefault(x => x.GrammarCharacter != GrammarCharacterType.Epsilon && x.GrammarCharacter != GrammarCharacterType.U);
                     }
                 }
                 else
@@ -174,7 +174,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public bool IsGovernor => IsOnRight && GrammarCharacter != GrammarCharacter.Epsilon && GrammarCharacter != GrammarCharacter.U;
+        public bool IsGovernor => IsOnRight && GrammarCharacter != GrammarCharacterType.Epsilon && GrammarCharacter != GrammarCharacterType.U;
 
         public IEnumerable<IAdTree> DependentAdPositions
         {
@@ -185,7 +185,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // Only governors have dependents.
                 if (IsGovernor)
                 {
-                    IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.GrammarCharacter == GrammarCharacter.Epsilon);
+                    IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.GrammarCharacter == GrammarCharacterType.Epsilon);
                     result = governingAdPositions.Where(x => x.Left != null && x.Left.IsDependent);
                 }
                 else
@@ -198,7 +198,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         }
 
         // Note: dependent may have the epsilon grammar character.
-        public bool IsDependent => IsOnLeft && GrammarCharacter != GrammarCharacter.U;
+        public bool IsDependent => IsOnLeft && GrammarCharacter != GrammarCharacterType.U;
 
         public IAdTree ValencyAdPosition
         {
@@ -229,7 +229,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             get
             {
-                IEnumerable<IAdTree> result = this.Where(x => x.Morpheme.GrammarCharacter == GrammarCharacter.I);
+                IEnumerable<IAdTree> result = this.Where(x => x.Morpheme.GrammarCharacter == GrammarCharacterType.I);
                 return result;
             }
         }

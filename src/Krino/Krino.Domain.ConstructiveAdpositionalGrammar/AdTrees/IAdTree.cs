@@ -23,7 +23,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// The grammar character of this tree element.
         /// </summary>
-        GrammarCharacter GrammarCharacter { get; }
+        GrammarCharacterType GrammarCharacter { get; }
 
         /// <summary>
         /// Grammar character inherited from the governor. If this is the governor then it returns its grammar character.
@@ -31,7 +31,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <remarks>
         /// If there is no a child governor then it returns Epsilon.
         /// </remarks>
-        GrammarCharacter InheritedGrammarCharacter { get; }
+        GrammarCharacterType InheritedGrammarCharacter { get; }
 
         /// <summary>
         /// Reference to the AdPosition (direct parent). Null if it is the root.

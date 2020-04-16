@@ -20,16 +20,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <summary>
         /// Grammar character.
         /// </summary>
-        GrammarCharacter GrammarCharacter { get; set; }
+        GrammarCharacterType GrammarCharacter { get; set; }
 
         /// <summary>
         /// Type of the adposition this morpheme represents.
         /// </summary>
-        AdpositionTypes Adposition { get; set; }
+        AdpositionType Adposition { get; set; }
 
         /// <summary>
         /// Attributes of the morpheme.
         /// </summary>
-        Attributes Attributes { get; set; }
+        AttributeTypes Attributes { get; set; }
     }
 }
