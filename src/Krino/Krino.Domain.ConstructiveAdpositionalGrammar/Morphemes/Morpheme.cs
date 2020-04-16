@@ -17,6 +17,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public GrammarCharacter GrammarCharacter { get; set; }
 
+        public AdpositionTypes Adposition { get; set; }
+
         public Attributes Attributes { get; set; }
     }
 }
