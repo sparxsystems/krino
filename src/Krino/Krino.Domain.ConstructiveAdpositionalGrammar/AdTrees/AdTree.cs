@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Semantics;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -207,13 +208,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 IAdTree result = null;
 
                 // If this element has not speciefied the valency attribute.
-                if (Morpheme == null || !Morpheme.Attributes.IsValencySpecified())
+                if (Morpheme == null || !Morpheme.VerbAttributes.IsValencySpecified())
                 {
                     result = Pattern.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
                 }
                 else
                 {
-                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && x.Morpheme.Attributes.IsValencySpecified());
+                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && x.Morpheme.VerbAttributes.IsValencySpecified());
                 }
 
                 return result;

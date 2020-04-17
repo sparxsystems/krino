@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Semantics;
+using System.Collections.Generic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
@@ -13,23 +14,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         string Morph { get; }
 
         /// <summary>
-        /// List of sememe trees.
-        /// </summary>
-        List<ISememe> Sememes { get; }
-
-        /// <summary>
         /// Grammar character.
         /// </summary>
         GrammarCharacterType GrammarCharacter { get; set; }
 
         /// <summary>
-        /// Type of the adposition this morpheme represents.
+        /// Attributes in case the morpheme is a stative.
         /// </summary>
-        AdpositionType Adposition { get; set; }
+        StativeAttributeTypes StativeAttributes { get; set; }
 
         /// <summary>
-        /// Attributes of the morpheme.
+        /// Attributes in case the morpheme is a verb.
         /// </summary>
-        AttributeTypes Attributes { get; set; }
+        VerbAttributeTypes VerbAttributes { get; set; }
+
+        /// <summary>
+        /// Attributes in case the morpheme is an adjunctive.
+        /// </summary>
+        AdjunctiveAttributeTypes AdjunctiveAttributes { get; set; }
+
+        /// <summary>
+        /// Attributes in case the morpheme is an adposition.
+        /// </summary>
+        AdpositionAttributeTypes AdpositionAttributes { get; set; }
     }
 }

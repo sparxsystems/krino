@@ -11,15 +11,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         {
             if (x.Morph == y.Morph &&
                 x.GrammarCharacter == y.GrammarCharacter &&
-                x.Attributes == y.Attributes)
+                x.StativeAttributes == y.StativeAttributes &&
+                x.VerbAttributes == y.VerbAttributes &&
+                x.AdjunctiveAttributes == y.AdjunctiveAttributes &&
+                x.AdpositionAttributes == y.AdpositionAttributes)
             {
-                string xSememe = SememesToString(x.Sememes);
-                string ySememe = SememesToString(y.Sememes);
-
-                if (xSememe == ySememe)
-                {
-                    return true;
-                }
+                return true;
             }
 
             return false;
@@ -31,35 +28,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
             hash = (hash * 16777619) ^ obj.Morph.GetHashCode();
             hash = (hash * 16777619) ^ obj.GrammarCharacter.GetHashCode();
-            hash = (hash * 16777619) ^ obj.Attributes.GetHashCode();
-
-            foreach (ISememe sememe in obj.Sememes)
-            {
-                hash = (hash * 16777619) ^ sememe.Meaning.GetHashCode();
-                hash = (hash * 16777619) ^ sememe.Value.GetHashCode();
-            }
+            hash = (hash * 16777619) ^ obj.StativeAttributes.GetHashCode();
+            hash = (hash * 16777619) ^ obj.VerbAttributes.GetHashCode();
+            hash = (hash * 16777619) ^ obj.AdjunctiveAttributes.GetHashCode();
+            hash = (hash * 16777619) ^ obj.AdpositionAttributes.GetHashCode();
 
             return hash;
         }
 
-        private string SememesToString(IEnumerable<ISememe> sememes)
-        {
-            IEnumerable<ISememe> leaves = sememes.SelectMany(x => x)
-                .Where(x => x.Hyponymies == null || !x.Hyponymies.Any());
+        //private string SememesToString(IEnumerable<ISememe> sememes)
+        //{
+        //    IEnumerable<ISememe> leaves = sememes.SelectMany(x => x)
+        //        .Where(x => x.Hyponymies == null || !x.Hyponymies.Any());
 
-            IEnumerable<IEnumerable<ISememe>> pathsOfLeaves = leaves.Select(x => x.Parents.Concat(x))
-                .Reverse()
-                .OrderBy(x => x.First().Meaning)
-                .ThenBy(x => x.First().Value);
+        //    IEnumerable<IEnumerable<ISememe>> pathsOfLeaves = leaves.Select(x => x.Parents.Concat(x))
+        //        .Reverse()
+        //        .OrderBy(x => x.First().Meaning)
+        //        .ThenBy(x => x.First().Value);
 
-            StringBuilder builder = new StringBuilder();
+        //    StringBuilder builder = new StringBuilder();
 
-            foreach (IEnumerable<ISememe> sememePath in pathsOfLeaves)
-            {
-                builder.AppendLine(string.Join("; ", sememePath.Select(x => string.Join(":", x.Meaning, x.Value))));
-            }
+        //    foreach (IEnumerable<ISememe> sememePath in pathsOfLeaves)
+        //    {
+        //        builder.AppendLine(string.Join("; ", sememePath.Select(x => string.Join(":", x.Meaning, x.Value))));
+        //    }
 
-            return builder.ToString();
-        }
+        //    return builder.ToString();
+        //}
     }
 }

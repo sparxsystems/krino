@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Semantics;
 using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
@@ -13,12 +13,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public string Morph { get; private set; }
 
-        public List<ISememe> Sememes { get; } = new List<ISememe>();
-
         public GrammarCharacterType GrammarCharacter { get; set; }
 
-        public AdpositionType Adposition { get; set; }
+        public StativeAttributeTypes StativeAttributes { get; set; }
 
-        public AttributeTypes Attributes { get; set; }
+        public VerbAttributeTypes VerbAttributes { get; set; }
+
+        public AdjunctiveAttributeTypes AdjunctiveAttributes { get; set; }
+
+        public AdpositionAttributeTypes AdpositionAttributes { get; set; }
     }
 }
