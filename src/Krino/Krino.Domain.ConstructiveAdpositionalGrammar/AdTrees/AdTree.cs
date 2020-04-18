@@ -1,6 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Semantics;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -207,14 +207,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 IAdTree result = null;
 
-                // If this element has not speciefied the valency attribute.
-                if (Morpheme == null || !Morpheme.VerbAttributes.IsValencySpecified())
+                // If this element does not have specified any valency attribute.
+                if (Morpheme == null || !MorphemeAttributes.Verb.IsValencySpecified(Morpheme.Attributes))
                 {
                     result = Pattern.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
                 }
                 else
                 {
-                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && x.Morpheme.VerbAttributes.IsValencySpecified());
+                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && MorphemeAttributes.Verb.IsValencySpecified(Morpheme.Attributes));
                 }
 
                 return result;
@@ -243,9 +243,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
             IEnumerable<IAdTree> result = Enumerable.Empty<IAdTree>();
 
-            IAdTree first = Pattern.IsReversed ? Left : Right;
+            bool isLeftBeforeRight = IsLeftBeforeRight();
+
+            IAdTree first =  isLeftBeforeRight ? Left : Right;
             IAdTree second = this;
-            IAdTree third = Pattern.IsReversed ? Right : Left;
+            IAdTree third = isLeftBeforeRight ? Right : Left;
 
             if (first != null)
             {
@@ -291,7 +293,34 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        private bool IsLeftBeforeRight()
+        {
+            bool isLeftBeforeRight = false;
 
+            // If this is an adposition wich specifies the left child.
+            if (Left != null)
+            {
+                // If this adposition specifies the first valency.
+                if (Pattern != null && Pattern.ValencyPosition == 1)
+                {
+                    isLeftBeforeRight = true;
+                }
+                else if (Left.Morpheme != null)
+                {
+                    if (MorphemeAttributes.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
+                        MorphemeAttributes.Determiner.IsIn(Left.Morpheme.Attributes) ||
+                        MorphemeAttributes.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
+                        MorphemeAttributes.Preposition.IsIn(Left.Morpheme.Attributes) ||
+                        MorphemeAttributes.Numeral.IsIn(Left.Morpheme.Attributes)
+                        )
+                    {
+                        isLeftBeforeRight = true;
+                    }
+                }
+            }
+
+            return isLeftBeforeRight;
+        }
         
 
         IEnumerator IEnumerable.GetEnumerator()

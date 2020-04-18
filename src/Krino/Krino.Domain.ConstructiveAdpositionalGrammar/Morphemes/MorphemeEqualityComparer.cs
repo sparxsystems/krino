@@ -11,10 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         {
             if (x.Morph == y.Morph &&
                 x.GrammarCharacter == y.GrammarCharacter &&
-                x.StativeAttributes == y.StativeAttributes &&
-                x.VerbAttributes == y.VerbAttributes &&
-                x.AdjunctiveAttributes == y.AdjunctiveAttributes &&
-                x.AdpositionAttributes == y.AdpositionAttributes)
+                x.Attributes == y.Attributes)
             {
                 return true;
             }
@@ -28,10 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
             hash = (hash * 16777619) ^ obj.Morph.GetHashCode();
             hash = (hash * 16777619) ^ obj.GrammarCharacter.GetHashCode();
-            hash = (hash * 16777619) ^ obj.StativeAttributes.GetHashCode();
-            hash = (hash * 16777619) ^ obj.VerbAttributes.GetHashCode();
-            hash = (hash * 16777619) ^ obj.AdjunctiveAttributes.GetHashCode();
-            hash = (hash * 16777619) ^ obj.AdpositionAttributes.GetHashCode();
+            hash = (hash * 16777619) ^ obj.Attributes.GetHashCode();
 
             return hash;
         }

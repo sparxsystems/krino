@@ -1,8 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Semantics;
-using Krino.Vertical.Utils.Patterns;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -21,15 +20,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Morpheme = new Morpheme("") { GrammarCharacter = GrammarCharacterType.U },
 
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -48,15 +47,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Morpheme = new Morpheme("") { GrammarCharacter = GrammarCharacterType.U },
 
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -76,13 +75,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -104,13 +103,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -130,13 +129,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -197,13 +196,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -225,13 +224,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -248,13 +247,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -271,13 +270,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -340,13 +339,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -396,13 +395,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -429,13 +428,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 {
                     Pattern = new Pattern() { ValencyPosition = 1 },
 
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, Attributes = MorphemeAttributes.Verb.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O } }
                 },
                 Left = new AdTree()
                 {
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } }
                 }
             };
 
@@ -472,19 +471,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
+                    Pattern = new Pattern() { ValencyPosition = 2 },
+
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { IsReversed = true },
+                        Pattern = new Pattern() { ValencyPosition = 1 },
 
-                        Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
-                        Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O, VerbAttributes = VerbAttributeTypes.Unergative } }
+                        Right = new AdTree() { Morpheme = new Morpheme("read") { GrammarCharacter = GrammarCharacterType.I, Attributes = MorphemeAttributes.Verb.Bivalent | MorphemeAttributes.Verb.Unergative } },
+                        Left = new AdTree() { Morpheme = new Morpheme("I") { GrammarCharacter = GrammarCharacterType.O , Attributes = MorphemeAttributes.Pronoun.Subjective } }
                     },
                     Left = new AdTree()
                     {
-                        Pattern = new Pattern() { IsReversed = true },
-
-                        Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                        Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, AdjunctiveAttributes = AdjunctiveAttributeTypes.Attributive } }
+                        Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O, Attributes = MorphemeAttributes.Noun.Common.Concrete } },
+                        Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Determiner.DefiniteArticle } }
                     }
                 }
             };
@@ -508,16 +507,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { ValencyPosition = 1, IsReversed = true },
+                        Pattern = new Pattern() { ValencyPosition = 1, },
 
                         Right = new AdTree()
                         {
                             Right = new AdTree()
                             {
-                                Pattern = new Pattern() { IsReversed = true },
-
-                                Right = new AdTree() { Morpheme = new Morpheme("run") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Monovalent } },
-                                Left = new AdTree() { Morpheme = new Morpheme("will") { GrammarCharacter = GrammarCharacterType.E } }
+                                Right = new AdTree() { Morpheme = new Morpheme("run") { GrammarCharacter = GrammarCharacterType.I, Attributes = MorphemeAttributes.Verb.Monovalent } },
+                                Left = new AdTree() { Morpheme = new Morpheme("will") { GrammarCharacter = GrammarCharacterType.I, Attributes = MorphemeAttributes.Verb.Modal } }
                             },
 
                             Left = new AdTree() { Morpheme = new Morpheme("out") { GrammarCharacter = GrammarCharacterType.E } },
@@ -529,10 +526,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                             Right = new AdTree()
                             {
-                                Pattern = new Pattern() { IsReversed = true },
-
                                 Right = new AdTree() { Morpheme = new Morpheme("amount") { GrammarCharacter = GrammarCharacterType.O } },
-                                Left = new AdTree() { Morpheme = new Morpheme("That") { GrammarCharacter = GrammarCharacterType.A } },
+                                Left = new AdTree() { Morpheme = new Morpheme("That") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Determiner } },
                             },
 
                             Left = new AdTree()
@@ -549,23 +544,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                         Right = new AdTree()
                         {
-                            Pattern = new Pattern() { IsReversed = true },
-
                             Right = new AdTree()
                             {
-                                Pattern = new Pattern() { IsReversed = true },
-
-                                Right = new AdTree() { Morpheme = new Morpheme("years") { GrammarCharacter = GrammarCharacterType.O } },
-                                Left = new AdTree() { Morpheme = new Morpheme("12") { GrammarCharacter = GrammarCharacterType.A } },
+                                Right = new AdTree() { Morpheme = new Morpheme("years") { GrammarCharacter = GrammarCharacterType.O, Attributes = MorphemeAttributes.Noun } },
+                                Left = new AdTree() { Morpheme = new Morpheme("12") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Numeral } },
                             },
 
-                            Left = new AdTree() { Morpheme = new Morpheme("about") { GrammarCharacter = GrammarCharacterType.A } },
+                            Left = new AdTree() { Morpheme = new Morpheme("about") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Preposition } },
                         },
 
                         Left = new AdTree()
                         {
-                            Pattern = new Pattern() { IsReversed = true },
-
                             Right = new AdTree()
                             {
                                 Right = new AdTree()
@@ -577,7 +566,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                                 Left = new AdTree() { Morpheme = new Morpheme("usual") { GrammarCharacter = GrammarCharacterType.A } },
                             },
 
-                            Left = new AdTree() { Morpheme = new Morpheme("current") { GrammarCharacter = GrammarCharacterType.A } },
+                            Left = new AdTree() { Morpheme = new Morpheme("current") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Adjective.Attributive } },
                         }
                     }
                 }
@@ -599,9 +588,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
-                    Pattern = new Pattern { IsReversed = true },
                     Right = new AdTree() { Morpheme = new Morpheme("book") { GrammarCharacter = GrammarCharacterType.O } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Determiner.DefiniteArticle } },
                 },
 
                 Left = new AdTree()
@@ -613,13 +601,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                         Pattern = new Pattern() { ValencyPosition = 2 },
                         Right = new AdTree()
                         {
-                            Pattern = new Pattern() { ValencyPosition = 1, IsReversed = true },
-                            Right = new AdTree() { Morpheme = new Morpheme("bought") { GrammarCharacter = GrammarCharacterType.I, VerbAttributes = VerbAttributeTypes.Bivalent } },
+                            Pattern = new Pattern() { ValencyPosition = 1 },
+                            Right = new AdTree() { Morpheme = new Morpheme("bought") { GrammarCharacter = GrammarCharacterType.I, Attributes = MorphemeAttributes.Verb.Bivalent } },
                             Left = new AdTree()
                             {
-                                Pattern = new Pattern { IsReversed = true },
                                 Right = new AdTree() { Morpheme = new Morpheme("man") { GrammarCharacter = GrammarCharacterType.O } },
-                                Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } },
+                                Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Determiner.DefiniteArticle } },
                             }
                         },
                         Left = new AdTree()
@@ -630,9 +617,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                     },
                     Left = new AdTree()
                     {
-                        Pattern = new Pattern() { IsReversed = true },
                         Right = new AdTree() { Morpheme = new Morpheme("girl") { GrammarCharacter = GrammarCharacterType.O } },
-                        Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A } },
+                        Left = new AdTree() { Morpheme = new Morpheme("the") { GrammarCharacter = GrammarCharacterType.A, Attributes = MorphemeAttributes.Determiner.DefiniteArticle } },
                     }
                 }
 

@@ -13,8 +13,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
         public bool IsCorrelativeSubstitute { get; set; }
 
-        public bool IsReversed { get; set; }
-
         public IRule<IPattern> AdPosition { get; set; } = It.IsAny<IPattern>();
 
         public IRule<IPattern> Right { get; set; } = It.IsAny<IPattern>();

@@ -40,10 +40,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// </summary>
         bool IsCorrelativeSubstitute { get; }
 
-        /// <summary>
-        /// True if the textual phrase has reversed order, i.e. Left-Right.
-        /// </summary>
-        bool IsReversed { get; }
 
         /// <summary>
         /// The rule which specifies which adpositions fit this pattern.
