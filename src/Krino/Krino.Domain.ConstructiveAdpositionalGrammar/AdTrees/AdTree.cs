@@ -300,21 +300,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             // If this is an adposition wich specifies the left child.
             if (Left != null)
             {
-                // If this adposition specifies the first valency.
-                if (Pattern != null && Pattern.ValencyPosition == 1)
+                // If this is a structural adposition.
+                if (GrammarCharacter == GrammarCharacterType.Epsilon)
                 {
-                    isLeftBeforeRight = true;
-                }
-                else if (Left.Morpheme != null)
-                {
-                    if (MorphemeAttributes.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
-                        MorphemeAttributes.Determiner.IsIn(Left.Morpheme.Attributes) ||
-                        MorphemeAttributes.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
-                        MorphemeAttributes.Preposition.IsIn(Left.Morpheme.Attributes) ||
-                        MorphemeAttributes.Numeral.IsIn(Left.Morpheme.Attributes)
-                        )
+                    // If this adposition specifies the first valency.
+                    if (Pattern != null && Pattern.ValencyPosition == 1)
                     {
                         isLeftBeforeRight = true;
+                    }
+                    else if (Left.Morpheme != null)
+                    {
+                        if (MorphemeAttributes.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
+                            MorphemeAttributes.Determiner.IsIn(Left.Morpheme.Attributes) ||
+                            MorphemeAttributes.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
+                            MorphemeAttributes.Preposition.IsIn(Left.Morpheme.Attributes) ||
+                            MorphemeAttributes.Numeral.IsIn(Left.Morpheme.Attributes)
+                            )
+                        {
+                            isLeftBeforeRight = true;
+                        }
                     }
                 }
             }

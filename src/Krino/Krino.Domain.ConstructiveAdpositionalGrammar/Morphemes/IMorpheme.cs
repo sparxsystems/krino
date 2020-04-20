@@ -15,7 +15,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <summary>
         /// Grammar character.
         /// </summary>
-        GrammarCharacterType GrammarCharacter { get; set; }
+        GrammarCharacterType GrammarCharacter { get; }
 
         /// <summary>
         /// Encodes grammar classification attributes the morphem carries.
