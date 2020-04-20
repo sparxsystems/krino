@@ -5,7 +5,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// <summary>
     /// Declares a structural enum with grammatical attributes for morphemes.
     /// </summary>
-    public class MorphemeAttributes : EnumRootGroupBase
+    public class MorphemeAttributes : EnumRootBase
     {
         private MorphemeAttributes() : base(11) { }
 

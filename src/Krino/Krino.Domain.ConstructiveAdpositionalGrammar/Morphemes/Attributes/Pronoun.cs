@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// </summary>
     public class Pronoun : EnumGroupBase
     {
-        public Pronoun(EnumGroupBase parent, int localPosition) : base(parent, 4, localPosition)
+        public Pronoun(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 4)
         {
             Subjective = new EnumValue(this, 1);
             Objective = new EnumValue(this, 2);

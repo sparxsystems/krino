@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// </summary>
     public class Noun : EnumGroupBase
     {
-        public Noun(EnumGroupBase parent, int localPosition) : base(parent, 4, localPosition)
+        public Noun(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 4)
         {
             Proper = new EnumValue(this, 1);
             Common = new CommonNoun(this, 2);

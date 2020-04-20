@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// </summary>
     public class Determiner : EnumGroupBase
     {
-        public Determiner(EnumGroupBase parent, int localPosition) : base(parent, 3, localPosition)
+        public Determiner(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
         {
             DefiniteArticle = new EnumValue(this, 1);
             IndefiniteArticle = new EnumValue(this, 2);

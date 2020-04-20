@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// </summary>
     public class Verb : EnumGroupBase
     {
-        public Verb(EnumGroupBase parent, int localPosition) : base(parent, 9, localPosition)
+        public Verb(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 9)
         {
             Modal = new EnumValue(this, 1);
             Unergative = new EnumValue(this, 2);

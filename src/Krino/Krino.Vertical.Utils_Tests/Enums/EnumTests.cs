@@ -7,7 +7,7 @@ namespace Krino.Vertical.Utils_Tests.Enums
     [TestFixture]
     public class EnumTests
     {
-        public class DummyEnumRoot : EnumRootGroupBase
+        public class DummyEnumRoot : EnumRootBase
         {
             private DummyEnumRoot() : base(2) { }
 
@@ -21,7 +21,7 @@ namespace Krino.Vertical.Utils_Tests.Enums
 
         public class DummyCategory1 : EnumGroupBase
         {
-            public DummyCategory1(EnumGroupBase parent, int localPosition) : base(parent, 2, localPosition)
+            public DummyCategory1(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2)
             {
                 Category2 = new DummyCategory2(this, 1);
                 Val1 = new EnumValue(this, 2);
@@ -33,7 +33,7 @@ namespace Krino.Vertical.Utils_Tests.Enums
 
         public class DummyCategory2 : EnumGroupBase
         {
-            public DummyCategory2(EnumGroupBase parent, int localPosition) : base(parent, 3, localPosition)
+            public DummyCategory2(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
             {
                 Attr1 = new EnumValue(this, 1);
                 Attr2 = new EnumValue(this, 2);
@@ -48,7 +48,7 @@ namespace Krino.Vertical.Utils_Tests.Enums
 
         public class ExceedingGroupLength : EnumGroupBase
         {
-            public ExceedingGroupLength(EnumGroupBase parent, int localPosition) : base(parent, 2, localPosition)
+            public ExceedingGroupLength(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 4)
             {
                 // The group length is 2 but here are three enum properties.
                 Attr1 = new EnumValue(this, 1);
@@ -101,17 +101,17 @@ namespace Krino.Vertical.Utils_Tests.Enums
             Assert.Throws<ArgumentOutOfRangeException>(() => new ExceedingGroupLength(null, 0));
         }
 
-        public class DummyEnumRoot62 : EnumRootGroupBase
+        public class DummyEnumRoot62 : EnumRootBase
         {
             public DummyEnumRoot62() : base(62) { }
         }
         public class DummyEnum2 : EnumGroupBase
         {
-            public DummyEnum2(EnumGroupBase parent, int localPosition) : base(parent, 2, localPosition) { }
+            public DummyEnum2(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2) { }
         }
         public class DummyEnum3 : EnumGroupBase
         {
-            public DummyEnum3(EnumGroupBase parent, int localPosition) : base(parent, 3, localPosition) { }
+            public DummyEnum3(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3) { }
         }
 
         [Test]

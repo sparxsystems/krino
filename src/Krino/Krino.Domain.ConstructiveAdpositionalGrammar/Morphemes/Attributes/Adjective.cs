@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// </summary>
     public class Adjective : EnumGroupBase
     {
-        public Adjective(EnumGroupBase parent, int localPosition) : base(parent, 10, localPosition)
+        public Adjective(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 10)
         {
             Positive = new EnumValue(this, 1);
             Comparative = new EnumValue(this, 2);

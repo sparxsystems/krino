@@ -10,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// </remarks>
     public class Numeral : EnumGroupBase
     {
-        public Numeral(EnumGroupBase parent, int localPosition) : base(parent, 2, localPosition)
+        public Numeral(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2)
         {
             Cardinal = new EnumValue(this, 1);
             Ordinal = new EnumValue(this, 2);

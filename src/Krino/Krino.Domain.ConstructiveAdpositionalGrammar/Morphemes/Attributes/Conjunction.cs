@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes
     /// </summary>
     public class Conjunction : EnumGroupBase
     {
-        public Conjunction(EnumGroupBase parent, int localPosition) : base(parent, 3, localPosition)
+        public Conjunction(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
         {
             Coordinating = new EnumValue(this, 1);
             Subordinating = new EnumValue(this, 2);
