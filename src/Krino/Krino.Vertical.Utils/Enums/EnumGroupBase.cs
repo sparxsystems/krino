@@ -30,9 +30,9 @@ namespace Krino.Vertical.Utils.Enums
 
             Length = groupLength;
 
-            if (StartPosition + Length > 64)
+            if (StartPosition + Length > sizeof(ulong) * 8)
             {
-                throw new ArgumentOutOfRangeException($"Failed to add element into '{parent.GetType()}' because the starting position {StartPosition} + the group length {Length} exceeds the 64 bit capacity of the ulong type.");
+                throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType().Name}' because the start position {StartPosition} + the group length {Length} exceeds the 64 bit capacity.");
             }
         }
 

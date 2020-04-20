@@ -23,9 +23,14 @@ namespace Krino.Vertical.Utils.Enums
         {
             if (parent != null)
             {
+                if (localPositionInParent < 1)
+                {
+                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType()}' because the position {localPositionInParent} is less than 1.");
+                }
+
                 if (localPositionInParent > parent.Length)
                 {
-                    throw new ArgumentOutOfRangeException($"Failed to add element into '{parent.GetType()}' because the position {localPositionInParent} exceeds the group length {parent.Length}.");
+                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType()}' because the position {localPositionInParent} exceeds the group length {parent.Length}.");
                 }
 
                 myValue = parent | (((ulong)1) << (parent.StartPosition + localPositionInParent - 1));

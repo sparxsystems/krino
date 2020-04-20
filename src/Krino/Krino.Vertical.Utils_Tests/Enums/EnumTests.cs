@@ -48,7 +48,7 @@ namespace Krino.Vertical.Utils_Tests.Enums
 
         public class ExceedingGroupLength : EnumGroupBase
         {
-            public ExceedingGroupLength(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 4)
+            public ExceedingGroupLength(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2)
             {
                 // The group length is 2 but here are three enum properties.
                 Attr1 = new EnumValue(this, 1);
