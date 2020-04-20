@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Krino.Vertical.Utils.Enums
 {
@@ -9,17 +10,41 @@ namespace Krino.Vertical.Utils.Enums
     public abstract class EnumGroupBase : EnumBase
     {
         /// <summary>
-        /// Constructs the enum group.
+        /// Instantiates the enum group.
         /// </summary>
         /// <param name="parent">Parent enum group.</param>
         /// <param name="localPosition">Local position of this group in the parent group.</param>
-        /// <param name="groupLength">Max number of enums on the root.</param>
-        public EnumGroupBase(EnumGroupBase parent, int localPosition, int groupLength)
-            : base(parent != null ? parent : (ulong)0,
-                   parent != null ? parent.StartPosition : 0,
-                   parent != null ? parent.Length : 0,
-                   localPosition, groupLength)
-        { }
+        /// <param name="groupLength">Max number of enums in this group.</param>
+        protected EnumGroupBase(EnumGroupBase parent, int localPosition, int groupLength)
+            : base(parent, localPosition)
+        {
+            // If the group is the root.
+            if (parent == null)
+            {
+                StartPosition = 0;
+            }
+            else
+            {
+                StartPosition = parent.StartPosition + parent.Length;
+            }
 
+            Length = groupLength;
+
+            if (StartPosition + Length > 64)
+            {
+                throw new ArgumentOutOfRangeException($"Failed to add element into '{parent.GetType()}' because the starting position {StartPosition} + the group length {Length} exceeds the 64 bit capacity of the ulong type.");
+            }
+        }
+
+
+        /// <summary>
+        /// Start position of this group.
+        /// </summary>
+        public int StartPosition { get; private set; }
+
+        /// <summary>
+        /// Max number of enums this group can host.
+        /// </summary>
+        public int Length { get; private set; }
     }
 }

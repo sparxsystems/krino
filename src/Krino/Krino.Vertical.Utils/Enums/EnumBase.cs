@@ -14,36 +14,23 @@ namespace Krino.Vertical.Utils.Enums
     {
         private ulong myValue;
 
-        protected EnumBase(ulong parentMask, int parentStartPosition, int parentLength, int localPositionInParent, int length)
+        /// <summary>
+        /// Instantiates the enum.
+        /// </summary>
+        /// <param name="parent">Parent enum group.</param>
+        /// <param name="localPositionInParent">Position within the parent enum.</param>
+        protected EnumBase(EnumGroupBase parent, int localPositionInParent)
         {
-            // If it is the root.
-            if (parentLength == 0)
+            if (parent != null)
             {
-                StartPosition = 0;
-                Length = length;
-                myValue = 0;
-            }
-            else
-            {
-                if (localPositionInParent > parentLength)
+                if (localPositionInParent > parent.Length)
                 {
-                    throw new ArgumentOutOfRangeException($"Failed to add element into '{parentMask.GetType()}' because the position {localPositionInParent} exceeds the group length {parentLength}.");
+                    throw new ArgumentOutOfRangeException($"Failed to add element into '{parent.GetType()}' because the position {localPositionInParent} exceeds the group length {parent.Length}.");
                 }
 
-                StartPosition = parentStartPosition + parentLength;
-                Length = length;
-                myValue = parentMask | (((ulong)1) << (parentStartPosition + localPositionInParent - 1));
-            }
-
-            if (StartPosition + Length > 64)
-            {
-                throw new ArgumentOutOfRangeException($"Failed to add element into '{parentMask.GetType()}' because the starting position {StartPosition} + the group length {Length} exceeds the 64 bit capacity of the ulong type.");
+                myValue = parent | (((ulong)1) << (parent.StartPosition + localPositionInParent - 1));
             }
         }
-
-        public int StartPosition { get; private set; }
-
-        public int Length { get; private set; }
 
 
         /// <summary>

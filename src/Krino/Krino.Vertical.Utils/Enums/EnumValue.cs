@@ -8,11 +8,7 @@ namespace Krino.Vertical.Utils.Enums
     [DebuggerDisplay("{(ulong)this}")]
     public class EnumValue : EnumBase
     {
-        public EnumValue(EnumBase parent, int localPosition)
-            : base(parent,
-                   parent != null ? parent.StartPosition : 0,
-                   parent != null ? parent.Length : 0,
-                   localPosition,
-                   0) { }
+        public EnumValue(EnumGroupBase parent, int localPosition)
+            : base(parent, localPosition) { }
     }
 }

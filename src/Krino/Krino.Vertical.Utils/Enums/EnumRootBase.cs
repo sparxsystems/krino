@@ -9,6 +9,6 @@
         /// Constructs the root of the structured enum.
         /// </summary>
         /// <param name="groupLength">Max number of enums on the root.</param>
-        public EnumRootBase(int groupLength) : base(null, 0, groupLength) { }
+        protected EnumRootBase(int groupLength) : base(null, 0, groupLength) { }
     }
 }
