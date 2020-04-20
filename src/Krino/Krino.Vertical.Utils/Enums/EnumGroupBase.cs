@@ -23,6 +23,12 @@ namespace Krino.Vertical.Utils.Enums
             {
                 StartPosition = 0;
             }
+            // If the parent of this group is the root.
+            else if (parent.StartPosition == 0)
+            {
+                StartPosition = parent.StartPosition + 1 + parent.Length;
+            }
+            // The group starts behind its parent.
             else
             {
                 StartPosition = parent.StartPosition + parent.Length;
@@ -30,9 +36,10 @@ namespace Krino.Vertical.Utils.Enums
 
             Length = groupLength;
 
-            if (StartPosition + Length > sizeof(ulong) * 8)
+            if (StartPosition > 0 && StartPosition - 1 + Length > sizeof(ulong) * 8 ||
+                StartPosition == 0 && StartPosition + Length > sizeof(ulong) * 8)
             {
-                throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType().Name}' because the start position {StartPosition} + the group length {Length} exceeds the 64 bit capacity.");
+                throw new ArgumentOutOfRangeException($"Failed to create enum '{GetType().Name}' because its start position {StartPosition} + the group length {Length} exceeds the 64 bit capacity.");
             }
         }
 

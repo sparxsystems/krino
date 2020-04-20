@@ -12,6 +12,7 @@ namespace Krino.Vertical.Utils.Enums
     [DebuggerDisplay("{(ulong)this}")]
     public abstract class EnumBase
     {
+        private const ulong HIGHEST_BIT = 0x80_00_00_00_00_00_00_00;
         private ulong myValue;
 
         /// <summary>
@@ -25,15 +26,19 @@ namespace Krino.Vertical.Utils.Enums
             {
                 if (localPositionInParent < 1)
                 {
-                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType()}' because the position {localPositionInParent} is less than 1.");
+                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType().Name}' because the position {localPositionInParent} is less than 1.");
                 }
 
                 if (localPositionInParent > parent.Length)
                 {
-                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType()}' because the position {localPositionInParent} exceeds the group length {parent.Length}.");
+                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType().Name}' because the position {localPositionInParent} exceeds the group length {parent.Length}.");
                 }
 
-                myValue = parent | (((ulong)1) << (parent.StartPosition + localPositionInParent - 1));
+                // Note: in case the parent is the root then its startPosition as well as groupLength is 0.
+                int parentStartIndex = parent.StartPosition > 0 ? parent.StartPosition - 1 : 0;
+                int localIndexInParent = localPositionInParent - 1;
+
+                myValue = parent | (HIGHEST_BIT >> (parentStartIndex + localIndexInParent));
             }
         }
 

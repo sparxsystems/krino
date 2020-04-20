@@ -9,46 +9,48 @@ namespace Krino.Vertical.Utils_Tests.Enums
     {
         public class DummyEnumRoot : EnumRootBase
         {
+            public class DummyCategory1 : EnumGroupBase
+            {
+                public class DummyCategory12 : EnumGroupBase
+                {
+                    public DummyCategory12(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
+                    {
+                        Attr111 = new EnumValue(this, 1);
+                        Attr112 = new EnumValue(this, 2);
+                        Attr113 = new EnumValue(this, 3);
+                    }
+
+                    public EnumValue Attr111 { get; }
+                    public EnumValue Attr112 { get; }
+                    public EnumValue Attr113 { get; }
+                }
+
+                public DummyCategory1(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2)
+                {
+                    Category11 = new DummyCategory12(this, 1);
+                    Val12 = new EnumValue(this, 2);
+                }
+
+                public DummyCategory12 Category11 { get; }
+                public EnumValue Val12 { get; }
+            }
+
+
+
             private DummyEnumRoot() : base(2) { }
 
-            public static DummyEnumRoot Instance { get; } = new DummyEnumRoot();
+            private static DummyEnumRoot Instance { get; } = new DummyEnumRoot();
 
             public static DummyCategory1 Category1 { get; } = new DummyCategory1(Instance, 1);
 
-            public static EnumValue Val0 { get; } = new EnumValue(Instance, 2);
+            public static EnumValue Val2 { get; } = new EnumValue(Instance, 2);
 
         }
 
-        public class DummyCategory1 : EnumGroupBase
+
+        public class ExceedingLengthEnumRoot : EnumRootBase
         {
-            public DummyCategory1(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2)
-            {
-                Category2 = new DummyCategory2(this, 1);
-                Val1 = new EnumValue(this, 2);
-            }
-
-            public DummyCategory2 Category2 { get; }
-            public EnumValue Val1 { get; }
-        }
-
-        public class DummyCategory2 : EnumGroupBase
-        {
-            public DummyCategory2(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
-            {
-                Attr1 = new EnumValue(this, 1);
-                Attr2 = new EnumValue(this, 2);
-                Attr3 = new EnumValue(this, 3);
-            }
-
-            public EnumValue Attr1 { get; }
-            public EnumValue Attr2 { get; }
-            public EnumValue Attr3 { get; }
-        }
-
-
-        public class ExceedingGroupLength : EnumGroupBase
-        {
-            public ExceedingGroupLength(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2)
+            public ExceedingLengthEnumRoot() : base(2)
             {
                 // The group length is 2 but here are three enum properties.
                 Attr1 = new EnumValue(this, 1);
@@ -65,63 +67,114 @@ namespace Krino.Vertical.Utils_Tests.Enums
         [Test]
         public void EncodedValue_ulong()
         {
-            //                                 01        01        010
-            ulong encodedValue = DummyEnumRoot.Category1.Category2.Attr2;
-            Assert.AreEqual(0b010_01_01, encodedValue);
+            // 10 10 100
+            ulong encodedValue = DummyEnumRoot.Category1.Category11.Attr112;
+            Assert.AreEqual(0xA4_00_00_00_00_00_00_00, encodedValue);
 
-            //                           01        10
-            encodedValue = DummyEnumRoot.Category1.Val1;
-            Assert.AreEqual(0b10_01, encodedValue);
+            // 10 01
+            encodedValue = DummyEnumRoot.Category1.Val12;
+            Assert.AreEqual(0x90_00_00_00_00_00_00_00, encodedValue);
 
-            //                           01        10        100
-            encodedValue = DummyEnumRoot.Category1.Category2.Attr3;
-            Assert.AreEqual(0b100_01_01, encodedValue);
+            // 10 10 001
+            encodedValue = DummyEnumRoot.Category1.Category11.Attr113;
+            Assert.AreEqual(0xA2_00_00_00_00_00_00_00, encodedValue);
+        }
+
+        [Test]
+        public void EncodedValue_comparing()
+        {
+            Assert.IsTrue(DummyEnumRoot.Category1.Category11.Attr111 > DummyEnumRoot.Category1.Category11.Attr112);
+            Assert.IsTrue(DummyEnumRoot.Category1.Category11.Attr112 > DummyEnumRoot.Category1.Category11.Attr113);
+            Assert.IsTrue(DummyEnumRoot.Category1.Category11.Attr113 > DummyEnumRoot.Category1.Category11);
+            Assert.IsTrue(DummyEnumRoot.Category1.Category11 > DummyEnumRoot.Category1.Val12);
+            Assert.IsTrue(DummyEnumRoot.Category1.Val12 > DummyEnumRoot.Category1);
+            Assert.IsTrue(DummyEnumRoot.Category1 > DummyEnumRoot.Val2);
         }
 
         [Test]
         public void IsIn()
         {
-            ulong encodedValue = DummyEnumRoot.Category1.Category2.Attr2 | DummyEnumRoot.Val0;
+            ulong encodedValue = DummyEnumRoot.Category1.Category11.Attr112 | DummyEnumRoot.Val2;
 
             Assert.IsTrue(DummyEnumRoot.Category1.IsIn(encodedValue));
-            Assert.IsTrue(DummyEnumRoot.Category1.Category2.IsIn(encodedValue));
-            Assert.IsTrue(DummyEnumRoot.Category1.Category2.Attr2.IsIn(encodedValue));
+            Assert.IsTrue(DummyEnumRoot.Category1.Category11.IsIn(encodedValue));
+            Assert.IsTrue(DummyEnumRoot.Category1.Category11.Attr112.IsIn(encodedValue));
 
-            Assert.IsTrue(DummyEnumRoot.Val0.IsIn(encodedValue));
+            Assert.IsTrue(DummyEnumRoot.Val2.IsIn(encodedValue));
 
-            Assert.IsFalse(DummyEnumRoot.Category1.Val1.IsIn(encodedValue));
-            Assert.IsFalse(DummyEnumRoot.Category1.Category2.Attr1.IsIn(encodedValue));
-            Assert.IsFalse(DummyEnumRoot.Category1.Category2.Attr3.IsIn(encodedValue));
+            Assert.IsFalse(DummyEnumRoot.Category1.Val12.IsIn(encodedValue));
+            Assert.IsFalse(DummyEnumRoot.Category1.Category11.Attr111.IsIn(encodedValue));
+            Assert.IsFalse(DummyEnumRoot.Category1.Category11.Attr113.IsIn(encodedValue));
         }
 
         [Test]
         public void ExceedingCapacity_of_Group()
         {
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ExceedingGroupLength(DummyEnumRoot.Instance, 1));
-            Assert.Throws<ArgumentOutOfRangeException>(() => new ExceedingGroupLength(null, 0));
+            Assert.Throws<ArgumentOutOfRangeException>(() => new ExceedingLengthEnumRoot());
         }
 
         public class DummyEnumRoot62 : EnumRootBase
         {
-            public DummyEnumRoot62() : base(62) { }
+            public class DummyCategory2 : EnumGroupBase
+            {
+                public DummyCategory2(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2) { }
+            }
+
+            private DummyEnumRoot62() : base(62) {}
+
+            public static DummyEnumRoot62 Instance { get; } = new DummyEnumRoot62();
+
+            public static DummyCategory2 Category2 { get; } = new DummyCategory2(Instance, 1);
         }
-        public class DummyEnum2 : EnumGroupBase
+
+        public class DummyEnumRoot63 : EnumRootBase
         {
-            public DummyEnum2(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2) { }
+            public class DummyCategory2 : EnumGroupBase
+            {
+                public DummyCategory2(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2) { }
+            }
+
+            private DummyEnumRoot63() : base(63) { }
+
+            public static DummyEnumRoot63 Instance { get; } = new DummyEnumRoot63();
+
+            public static DummyCategory2 Category2 { get; } = new DummyCategory2(Instance, 1);
         }
-        public class DummyEnum3 : EnumGroupBase
+
+        public class DummyEnumRoot64 : EnumRootBase
         {
-            public DummyEnum3(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3) { }
+            public DummyEnumRoot64() : base(64) { }
+        }
+
+        public class DummyEnumRoot65 : EnumRootBase
+        {
+            public DummyEnumRoot65() : base(65) { }
         }
 
         [Test]
         public void Capacity_of_uint()
         {
-            // 3 + 61 = 64 -> OK
-            new DummyEnum2(new DummyEnumRoot62(), 1);
+            // 62 + 2 = 64 -> OK
+            var _ = DummyEnumRoot62.Category2;
 
-            // 3 + 62 = 65 -> exception
-            Assert.Throws<ArgumentOutOfRangeException>(() => new DummyEnum3(new DummyEnumRoot62(), 1));
+            // 64 -> OK
+            new DummyEnumRoot64();
+
+            // 63 + 2 = 65 -> exception
+            bool isRightException = false;
+            try
+            {
+                var a1 = DummyEnumRoot63.Category2;
+            }
+            catch (TypeInitializationException err)
+            {
+                isRightException = err.InnerException is ArgumentOutOfRangeException;
+            }
+            Assert.IsTrue(isRightException);
+
+
+            // 65 -> exception
+            Assert.Throws<ArgumentOutOfRangeException>(() => new DummyEnumRoot65());
         }
     }
 }
