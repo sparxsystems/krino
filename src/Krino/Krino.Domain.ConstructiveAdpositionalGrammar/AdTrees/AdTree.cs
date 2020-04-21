@@ -1,6 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributes;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -208,13 +208,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 IAdTree result = null;
 
                 // If this element does not have specified any valency attribute.
-                if (Morpheme == null || !MorphemeAttributes.Verb.IsValencySpecified(Morpheme.Attributes))
+                if (Morpheme == null || !StructAttributes.Verb.IsValencySpecified(Morpheme.Attributes))
                 {
                     result = Pattern.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
                 }
                 else
                 {
-                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && MorphemeAttributes.Verb.IsValencySpecified(Morpheme.Attributes));
+                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && StructAttributes.Verb.IsValencySpecified(Morpheme.Attributes));
                 }
 
                 return result;
@@ -310,11 +310,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     }
                     else if (Left.Morpheme != null)
                     {
-                        if (MorphemeAttributes.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
-                            MorphemeAttributes.Determiner.IsIn(Left.Morpheme.Attributes) ||
-                            MorphemeAttributes.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
-                            MorphemeAttributes.Preposition.IsIn(Left.Morpheme.Attributes) ||
-                            MorphemeAttributes.Numeral.IsIn(Left.Morpheme.Attributes)
+                        if (StructAttributes.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
+                            StructAttributes.Determiner.IsIn(Left.Morpheme.Attributes) ||
+                            StructAttributes.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
+                            StructAttributes.Preposition.IsIn(Left.Morpheme.Attributes) ||
+                            StructAttributes.Numeral.IsIn(Left.Morpheme.Attributes)
                             )
                         {
                             isLeftBeforeRight = true;

@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.Attributes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributes;
 using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
@@ -19,23 +19,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
             {
                 GrammarCharacterType result;
 
-                if (MorphemeAttributes.Verb.IsIn(Attributes) ||
-                    MorphemeAttributes.Interjection.IsIn(Attributes))
+                if (StructAttributes.Verb.IsIn(Attributes) ||
+                    StructAttributes.Interjection.IsIn(Attributes))
                 {
                     result = GrammarCharacterType.I;
                 }
-                else if (MorphemeAttributes.Noun.IsIn(Attributes) ||
-                         MorphemeAttributes.Pronoun.IsIn(Attributes))
+                else if (StructAttributes.Noun.IsIn(Attributes) ||
+                         StructAttributes.Pronoun.IsIn(Attributes))
                 {
                     result = GrammarCharacterType.O;
                 }
-                else if (MorphemeAttributes.Adjective.IsIn(Attributes) ||
-                         MorphemeAttributes.Determiner.IsIn(Attributes) ||
-                         MorphemeAttributes.Numeral.IsIn(Attributes))
+                else if (StructAttributes.Adjective.IsIn(Attributes) ||
+                         StructAttributes.Determiner.IsIn(Attributes) ||
+                         StructAttributes.Numeral.IsIn(Attributes))
                 {
                     result = GrammarCharacterType.A;
                 }
-                else if (MorphemeAttributes.Adverb.IsIn(Attributes))
+                else if (StructAttributes.Adverb.IsIn(Attributes))
                 {
                     result = GrammarCharacterType.E;
                 }
