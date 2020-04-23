@@ -7,12 +7,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class Noun : EnumGroupBase
     {
-        public Noun(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 4)
+        public Noun(EnumGroupBase parent) : base(parent)
         {
-            Proper = new EnumValue(this, 1);
-            Common = new CommonNoun(this, 2);
-            Countable = new EnumValue(this, 3);
-            UnCountable = new EnumValue(this, 4);
+            Proper = new EnumValue(this);
+            Common = new CommonNoun(this);
+            Countable = new EnumValue(this);
+            UnCountable = new EnumValue(this);
         }
 
         /// <summary>

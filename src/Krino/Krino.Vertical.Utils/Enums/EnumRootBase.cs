@@ -8,7 +8,11 @@
         /// <summary>
         /// Constructs the root of the structured enum.
         /// </summary>
-        /// <param name="groupLength">Max number of enums on the root.</param>
-        protected EnumRootBase(int groupLength) : base(null, 0, groupLength) { }
+        protected EnumRootBase() : base(null) { }
+
+        /// <summary>
+        /// Number of bits the enum occupies.
+        /// </summary>
+        public int Length { get; internal set; }
     }
 }

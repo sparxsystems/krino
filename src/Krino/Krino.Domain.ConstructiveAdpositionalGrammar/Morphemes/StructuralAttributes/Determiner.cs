@@ -7,11 +7,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class Determiner : EnumGroupBase
     {
-        public Determiner(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
+        public Determiner(EnumGroupBase parent) : base(parent)
         {
-            DefiniteArticle = new EnumValue(this, 1);
-            IndefiniteArticle = new EnumValue(this, 2);
-            Possessive = new EnumValue(this, 3);
+            DefiniteArticle = new EnumValue(this);
+            IndefiniteArticle = new EnumValue(this);
+            Possessive = new EnumValue(this);
         }
 
         /// <summary>

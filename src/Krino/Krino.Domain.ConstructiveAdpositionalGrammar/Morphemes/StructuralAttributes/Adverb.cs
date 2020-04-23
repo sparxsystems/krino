@@ -7,11 +7,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class Adverb : EnumGroupBase
     {
-        public Adverb(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
+        public Adverb(EnumGroupBase parent) : base(parent)
         {
-            Positive = new EnumValue(this, 1);
-            Comparative = new EnumValue(this, 2);
-            Superlative = new EnumValue(this, 3);
+            Positive = new EnumValue(this);
+            Comparative = new EnumValue(this);
+            Superlative = new EnumValue(this);
         }
 
         /// <summary>

@@ -7,64 +7,62 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class StructAttributes : EnumRootBase
     {
-        private StructAttributes() : base(11) { }
-
         private static StructAttributes Instance { get; } = new StructAttributes();
 
         /// <summary>
         /// Noun attributes.
         /// </summary>
-        public static Noun Noun { get; } = new Noun(Instance, 1);
+        public static Noun Noun { get; } = new Noun(Instance);
 
         /// <summary>
         /// Verb attributes.
         /// </summary>
-        public static Verb Verb { get; } = new Verb(Instance, 2);
+        public static Verb Verb { get; } = new Verb(Instance);
 
         /// <summary>
         /// Adjective attributes.
         /// </summary>
-        public static Adjective Adjective { get; } = new Adjective(Instance, 3);
+        public static Adjective Adjective { get; } = new Adjective(Instance);
 
         /// <summary>
         /// Adverb attributes.
         /// </summary>
-        public static Adverb Adverb { get; } = new Adverb(Instance, 4);
+        public static Adverb Adverb { get; } = new Adverb(Instance);
 
 
         /// <summary>
         /// Determiner (the word that introduces a noun) attributes.
         /// </summary>
-        public static Determiner Determiner { get; } = new Determiner(Instance, 5);
+        public static Determiner Determiner { get; } = new Determiner(Instance);
 
         /// <summary>
         /// Pronoun (refers to specific people or things e.g. I, me, mine, you, yours ..., they, them) attributes.
         /// </summary>
-        public static Pronoun Pronoun { get; } = new Pronoun(Instance, 6);
+        public static Pronoun Pronoun { get; } = new Pronoun(Instance);
 
         /// <summary>
         /// Numeral attributes.
         /// </summary>
-        public static Numeral Numeral { get; } = new Numeral(Instance, 7);
+        public static Numeral Numeral { get; } = new Numeral(Instance);
 
         /// <summary>
         /// Preposition attributes.
         /// </summary>
-        public static EnumValue Preposition { get; } = new EnumValue(Instance, 8);
+        public static EnumValue Preposition { get; } = new EnumValue(Instance);
 
         /// <summary>
         /// The only postposition in english is the word ego. E.g. three years ego.
         /// </summary>
-        public static EnumValue Postposition { get; } = new EnumValue(Instance, 9);
+        public static EnumValue Postposition { get; } = new EnumValue(Instance);
 
         /// <summary>
         /// Conjunction attributes.
         /// </summary>
-        public static Conjunction Conjunction { get; } = new Conjunction(Instance, 10);
+        public static Conjunction Conjunction { get; } = new Conjunction(Instance);
 
         /// <summary>
         /// Attributes of exclamation (expresses strong emotion, greeting or congratulation e.g. wonderful, Hello).
         /// </summary>
-        public static EnumValue Interjection { get; } = new EnumValue(Instance, 11);
+        public static EnumValue Interjection { get; } = new EnumValue(Instance);
     }
 }

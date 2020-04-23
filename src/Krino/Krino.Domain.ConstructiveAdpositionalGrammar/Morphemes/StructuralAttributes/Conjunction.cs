@@ -7,11 +7,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class Conjunction : EnumGroupBase
     {
-        public Conjunction(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
+        public Conjunction(EnumGroupBase parent) : base(parent)
         {
-            Coordinating = new EnumValue(this, 1);
-            Subordinating = new EnumValue(this, 2);
-            Starting = new EnumValue(this, 3);
+            Coordinating = new EnumValue(this);
+            Subordinating = new EnumValue(this);
+            Starting = new EnumValue(this);
         }
 
         /// <summary>

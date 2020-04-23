@@ -10,10 +10,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </remarks>
     public class Numeral : EnumGroupBase
     {
-        public Numeral(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 2)
+        public Numeral(EnumGroupBase parent) : base(parent)
         {
-            Cardinal = new EnumValue(this, 1);
-            Ordinal = new EnumValue(this, 2);
+            Cardinal = new EnumValue(this);
+            Ordinal = new EnumValue(this);
         }
 
         /// <summary>

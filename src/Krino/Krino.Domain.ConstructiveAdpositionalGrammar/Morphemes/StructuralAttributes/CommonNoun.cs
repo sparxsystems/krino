@@ -7,11 +7,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class CommonNoun : EnumGroupBase
     {
-        public CommonNoun(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 3)
+        public CommonNoun(EnumGroupBase parent) : base(parent)
         {
-            Collective = new EnumValue(this, 1);
-            Concrete = new EnumValue(this, 2);
-            Abstract = new EnumValue(this, 3);
+            Collective = new EnumValue(this);
+            Concrete = new EnumValue(this);
+            Abstract = new EnumValue(this);
         }
 
         /// <summary>

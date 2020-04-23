@@ -7,17 +7,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class Verb : EnumGroupBase
     {
-        public Verb(EnumGroupBase parent, int localPosition) : base(parent, localPosition, 9)
+        public Verb(EnumGroupBase parent) : base(parent)
         {
-            Modal = new EnumValue(this, 1);
-            Unergative = new EnumValue(this, 2);
-            Unaccusative = new EnumValue(this, 3);
-            Avalent = new EnumValue(this, 4);
-            Monovalent = new EnumValue(this, 5);
-            Bivalent = new EnumValue(this, 6);
-            Trivalent = new EnumValue(this, 7);
-            Quadrivalent = new EnumValue(this, 8);
-            Pentavalent = new EnumValue(this, 9);
+            Modal = new EnumValue(this);
+            Unergative = new EnumValue(this);
+            Unaccusative = new EnumValue(this);
+            Avalent = new EnumValue(this);
+            Monovalent = new EnumValue(this);
+            Bivalent = new EnumValue(this);
+            Trivalent = new EnumValue(this);
+            Quadrivalent = new EnumValue(this);
+            Pentavalent = new EnumValue(this);
         }
 
         /// <summary>

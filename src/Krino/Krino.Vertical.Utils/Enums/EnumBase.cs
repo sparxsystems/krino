@@ -1,5 +1,8 @@
 ﻿using System;
+using System.Collections;
+using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 
 namespace Krino.Vertical.Utils.Enums
 {
@@ -19,28 +22,44 @@ namespace Krino.Vertical.Utils.Enums
         /// Instantiates the enum.
         /// </summary>
         /// <param name="parent">Parent enum group.</param>
-        /// <param name="localPositionInParent">Position within the parent enum.</param>
-        protected EnumBase(EnumGroupBase parent, int localPositionInParent)
+        /// <param name="globalIndex">Index within the whole bit array.</param>
+        protected EnumBase(EnumGroupBase parent)
         {
             if (parent != null)
             {
-                if (localPositionInParent < 1)
+                ParentEnum = parent;
+
+                EnumRootBase root = ParentEnums.OfType<EnumRootBase>().LastOrDefault();
+                if (root == null)
                 {
-                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType().Name}' because the position {localPositionInParent} is less than 1.");
+                    throw new InvalidOperationException($"Could not instantiate the enum because the root enum of type {nameof(EnumRootBase)} is missing.");
                 }
 
-                if (localPositionInParent > parent.Length)
-                {
-                    throw new ArgumentOutOfRangeException($"Failed to add enum into '{parent.GetType().Name}' because the position {localPositionInParent} exceeds the group length {parent.Length}.");
-                }
+                int globalIndexOfThisEnum = root.Length;
 
-                // Note: in case the parent is the root then its startPosition as well as groupLength is 0.
-                int parentStartIndex = parent.StartPosition > 0 ? parent.StartPosition - 1 : 0;
-                int localIndexInParent = localPositionInParent - 1;
+                myValue = parent | (HIGHEST_BIT >> globalIndexOfThisEnum);
 
-                myValue = parent | (HIGHEST_BIT >> (parentStartIndex + localIndexInParent));
+                // Increase number of registered enums.
+                ++root.Length;
             }
         }
+
+        public EnumGroupBase ParentEnum { get; private set; }
+
+        public IEnumerable<EnumGroupBase> ParentEnums
+        {
+            get
+            {
+                EnumGroupBase parent = ParentEnum;
+                while (parent != null)
+                {
+                    yield return parent;
+                    parent = parent.ParentEnum;
+                }
+            }
+        }
+
+        private EnumRootBase EnumRoot { get { return ParentEnum == null ? this as EnumRootBase : ParentEnums.OfType<EnumRootBase>().Last(); } }
 
 
         /// <summary>
