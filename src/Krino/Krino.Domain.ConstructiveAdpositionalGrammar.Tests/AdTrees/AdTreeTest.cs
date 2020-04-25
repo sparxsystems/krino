@@ -1,6 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Attributes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using NUnit.Framework;

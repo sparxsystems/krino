@@ -13,12 +13,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         string Morph { get; }
 
         /// <summary>
-        /// Encodes grammar classification attributes the morphem carries.
+        /// Encodes structural attributes the morphem carries.
         /// </summary>
         ulong Attributes { get; set; }
 
         /// <summary>
-        /// Grammar character.
+        /// Returns the grammar character of the morpheme.
         /// </summary>
         GrammarCharacter GrammarCharacter { get; }
     }

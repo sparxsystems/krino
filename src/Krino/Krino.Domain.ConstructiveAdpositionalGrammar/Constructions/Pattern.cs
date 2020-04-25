@@ -1,23 +1,34 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Attributes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Vertical.Utils.Rules;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
     public class Pattern : IPattern
     {
-        public IMorpheme Morpheme { get; set; }
 
         public ulong Attributes { get; set; }
 
-        public IPattern RequiredAdPosition { get; set; }
+        public MorphemeRule MorphemeMatchingRule { get; set; }
 
-        public IPattern RequiredLeft { get; set; }
+        /// <summary>
+        /// Rules for the matching adposition.
+        /// </summary>
+        public PatternRule AdPositionPatternMatchingRule { get; set; }
 
-        public IPattern RequiredRight { get; set; }
+        /// <summary>
+        /// Rules for the matching left child.
+        /// </summary>
+        public PatternRule LeftPatternMatchingRule { get; set; }
 
-        public IPattern RequiredGovernor { get; set; }
+        /// <summary>
+        /// Rules for the matching right child.
+        /// </summary>
+        public PatternRule RightPatternMatchingRule { get; set; }
 
-        public int ValencyPosition => Constructions.Attributes.PatternAttributes.ValencyPosition.GetValencyPosition(Attributes);
+        /// <summary>
+        /// Rules for the matching governor.
+        /// </summary>
+        public PatternRule GovernorPatternMatchingRule { get; set; }
+
+        public int ValencyPosition => PatternAttributes.ValencyPosition.GetValencyPosition(Attributes);
     }
 }

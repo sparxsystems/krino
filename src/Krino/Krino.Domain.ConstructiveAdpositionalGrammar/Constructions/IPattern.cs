@@ -1,9 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Attributes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Vertical.Utils.Rules;
-using System;
-using System.Collections.Generic;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
@@ -13,24 +8,38 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
     public interface IPattern
     {
         /// <summary>
-        /// The morpheme specified by the pattern.
-        /// </summary>
-        IMorpheme Morpheme { get; }
-
-        /// <summary>
-        /// Pattern attributes.
+        /// Attributes of this pattern.
         /// </summary>
         ulong Attributes { get; }
 
+        /// <summary>
+        /// Rules for the matching morpheme.
+        /// </summary>
+        MorphemeRule MorphemeMatchingRule { get; }
 
-        IPattern RequiredAdPosition { get; }
+        /// <summary>
+        /// Rules for the matching adposition.
+        /// </summary>
+        PatternRule AdPositionPatternMatchingRule { get; }
 
-        IPattern RequiredLeft { get; }
+        /// <summary>
+        /// Rules for the matching left child.
+        /// </summary>
+        PatternRule LeftPatternMatchingRule { get; }
 
-        IPattern RequiredRight { get; }
+        /// <summary>
+        /// Rules for the matching right child.
+        /// </summary>
+        PatternRule RightPatternMatchingRule { get; }
 
-        IPattern RequiredGovernor { get; }
+        /// <summary>
+        /// Rules for the matching governor.
+        /// </summary>
+        PatternRule GovernorPatternMatchingRule { get; }
 
+        /// <summary>
+        /// Returns the valency position.
+        /// </summary>
         int ValencyPosition { get; }
     }
 }

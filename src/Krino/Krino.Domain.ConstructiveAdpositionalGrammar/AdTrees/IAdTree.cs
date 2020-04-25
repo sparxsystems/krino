@@ -104,7 +104,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Returns true if this tree element is dependent.
         /// </summary>
         /// <remarks>
-        /// The element is dependent if it is located on left.
+        /// The element is dependent if it is located on left and its grammar character is not U.
         /// In contrary to IsGovernor its grammar character can be epsilon.
         /// </remarks>
         bool IsDependent { get; }

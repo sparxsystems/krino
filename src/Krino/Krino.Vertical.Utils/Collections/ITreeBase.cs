@@ -7,7 +7,7 @@ namespace Krino.Vertical.Utils.Collections
     /// </summary>
     /// <typeparam name="C"></typeparam>
     public interface ITreeBase<C> : ICollection<C>
-        where C : ITreeBase<C>
+        where C : class, ITreeBase<C>
     {
         /// <summary>
         /// Distance from the root.
