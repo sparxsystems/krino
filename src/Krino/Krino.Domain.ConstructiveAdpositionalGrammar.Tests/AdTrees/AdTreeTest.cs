@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Attributes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributes;
 using NUnit.Framework;
@@ -421,11 +422,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             AdTree adTree = new AdTree()
             {
-                Pattern = new Pattern() { ValencyPosition = 2 },
+                Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
 
                 Right = new AdTree()
                 {
-                    Pattern = new Pattern() { ValencyPosition = 1 },
+                    Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
 
                     Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructAttributes.Verb.Bivalent } },
                     Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
@@ -470,11 +471,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
-                    Pattern = new Pattern() { ValencyPosition = 2 },
+                    Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { ValencyPosition = 1 },
+                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
 
                         Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructAttributes.Verb.Bivalent | StructAttributes.Verb.Unergative } },
                         Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun.Subjective } }
@@ -506,7 +507,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { ValencyPosition = 1, },
+                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First, },
 
                         Right = new AdTree()
                         {
@@ -582,7 +583,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: the book which the man bought for the girl
             AdTree adTree = new AdTree()
             {
-                Pattern = new Pattern() { IsCorrelativeAdposition = true },
+                Pattern = new Pattern() { PatternAttributes = PatternAttributes.CorrelativeAdposition },
                 Morpheme = new Morpheme("which") { Attributes = StructAttributes.Pronoun },
 
                 Right = new AdTree()
@@ -597,10 +598,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { ValencyPosition = 2 },
+                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
                         Right = new AdTree()
                         {
-                            Pattern = new Pattern() { ValencyPosition = 1 },
+                            Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
                             Right = new AdTree() { Morpheme = new Morpheme("bought") { Attributes = StructAttributes.Verb.Bivalent } },
                             Left = new AdTree()
                             {
@@ -610,7 +611,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                         },
                         Left = new AdTree()
                         {
-                            Pattern = new Pattern() { IsCorrelativeSubstitute = true },
+                            Pattern = new Pattern() { PatternAttributes = PatternAttributes.CorrelativeSubstitute },
                             Morpheme = new Morpheme("") { Attributes = StructAttributes.Noun }
                         }
                     },

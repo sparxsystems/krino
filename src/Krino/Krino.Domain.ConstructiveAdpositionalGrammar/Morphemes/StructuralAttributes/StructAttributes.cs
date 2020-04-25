@@ -7,6 +7,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
     /// </summary>
     public class StructAttributes : EnumRootBase
     {
+        /// <summary>
+        /// Hiding the constructor.
+        /// </summary>
+        private StructAttributes() { }
+
         private static StructAttributes Instance { get; } = new StructAttributes();
 
         /// <summary>

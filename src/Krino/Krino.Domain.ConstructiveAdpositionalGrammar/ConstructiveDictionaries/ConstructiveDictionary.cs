@@ -7,8 +7,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 {
     public class ConstructiveDictionary : IConstructiveDictionary
     {
-        public List<IPattern> Patterns { get; set; } = new List<IPattern>();
+        public List<IPattern> Patterns { get; } = new List<IPattern>();
 
-        public MultiDictionary<string, IMorpheme> Lexemes { get; set; } = new MultiDictionary<string, IMorpheme>();
+        public MultiDictionary<string, IMorpheme> Lexemes { get; } = new MultiDictionary<string, IMorpheme>();
     }
 }

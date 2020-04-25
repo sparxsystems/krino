@@ -1,5 +1,6 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Vertical.Utils.Patterns;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Attributes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Rules;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
@@ -7,21 +8,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
     {
         public IMorpheme Morpheme { get; set; }
 
-        public int ValencyPosition { get; set; }
+        public ulong PatternAttributes { get; set; }
 
-        public bool IsCorrelativeAdposition { get; set; }
+        public IPattern RequiredAdPosition { get; set; }
 
-        public bool IsCorrelativeSubstitute { get; set; }
+        public IPattern RequiredLeft { get; set; }
 
-        public IRule<IPattern> AdPosition { get; set; } = It.IsAny<IPattern>();
+        public IPattern RequiredRight { get; set; }
 
-        public IRule<IPattern> Right { get; set; } = It.IsAny<IPattern>();
+        public IPattern RequiredGovernor { get; set; }
 
-        public IRule<IPattern> Left { get; set; } = It.IsAny<IPattern>();
-
-        public bool Equals(IPattern other)
-        {
-            throw new System.NotImplementedException();
-        }
+        public int ValencyPosition => Attributes.PatternAttributes.ValencyPosition.GetValencyPosition(PatternAttributes);
     }
 }
