@@ -8,7 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
     {
         public IMorpheme Morpheme { get; set; }
 
-        public ulong PatternAttributes { get; set; }
+        public ulong Attributes { get; set; }
 
         public IPattern RequiredAdPosition { get; set; }
 
@@ -18,6 +18,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
         public IPattern RequiredGovernor { get; set; }
 
-        public int ValencyPosition => Attributes.PatternAttributes.ValencyPosition.GetValencyPosition(PatternAttributes);
+        public int ValencyPosition => Constructions.Attributes.PatternAttributes.ValencyPosition.GetValencyPosition(Attributes);
     }
 }

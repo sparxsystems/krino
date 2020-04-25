@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -23,7 +24,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// The grammar character of this tree element.
         /// </summary>
-        GrammarCharacterType GrammarCharacter { get; }
+        GrammarCharacter GrammarCharacter { get; }
 
         /// <summary>
         /// Grammar character inherited from the governor. If this is the governor then it returns its grammar character.
@@ -31,7 +32,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <remarks>
         /// If there is no a child governor then it returns Epsilon.
         /// </remarks>
-        GrammarCharacterType InheritedGrammarCharacter { get; }
+        GrammarCharacter InheritedGrammarCharacter { get; }
 
         /// <summary>
         /// Reference to the AdPosition (direct parent). Null if it is the root.

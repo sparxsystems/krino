@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
@@ -13,40 +13,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public string Morph { get; private set; }
 
-        public GrammarCharacterType GrammarCharacter
-        {
-            get
-            {
-                GrammarCharacterType result;
-
-                if (StructAttributes.Verb.IsIn(Attributes) ||
-                    StructAttributes.Interjection.IsIn(Attributes))
-                {
-                    result = GrammarCharacterType.I;
-                }
-                else if (StructAttributes.Noun.IsIn(Attributes) ||
-                         StructAttributes.Pronoun.IsIn(Attributes))
-                {
-                    result = GrammarCharacterType.O;
-                }
-                else if (StructAttributes.Adjective.IsIn(Attributes) ||
-                         StructAttributes.Determiner.IsIn(Attributes) ||
-                         StructAttributes.Numeral.IsIn(Attributes))
-                {
-                    result = GrammarCharacterType.A;
-                }
-                else if (StructAttributes.Adverb.IsIn(Attributes))
-                {
-                    result = GrammarCharacterType.E;
-                }
-                else
-                {
-                    result = GrammarCharacterType.U;
-                }
-
-                return result;
-            }
-        }
+        public GrammarCharacter GrammarCharacter => StructuralAttributes.GetGrammarCharacter(Attributes);
 
         public ulong Attributes { get; set; }
     }

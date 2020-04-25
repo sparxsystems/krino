@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
@@ -13,13 +13,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         string Morph { get; }
 
         /// <summary>
-        /// Grammar character.
-        /// </summary>
-        GrammarCharacterType GrammarCharacter { get; }
-
-        /// <summary>
         /// Encodes grammar classification attributes the morphem carries.
         /// </summary>
         ulong Attributes { get; set; }
+
+        /// <summary>
+        /// Grammar character.
+        /// </summary>
+        GrammarCharacter GrammarCharacter { get; }
     }
 }

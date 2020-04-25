@@ -18,9 +18,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         IMorpheme Morpheme { get; }
 
         /// <summary>
-        /// Attributes of the pattern.
+        /// Pattern attributes.
         /// </summary>
-        ulong PatternAttributes { get; }
+        ulong Attributes { get; }
 
 
         IPattern RequiredAdPosition { get; }

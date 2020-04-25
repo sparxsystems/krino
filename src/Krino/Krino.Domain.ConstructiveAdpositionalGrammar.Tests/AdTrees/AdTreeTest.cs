@@ -2,7 +2,7 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Attributes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -21,23 +21,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Morpheme = new Morpheme("") { },
+                    Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
 
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
 
-            Assert.AreEqual(GrammarCharacterType.Epsilon, adTree.GrammarCharacter);
-            Assert.AreEqual(GrammarCharacterType.O, adTree.Right.Left.GrammarCharacter);
-            Assert.AreEqual(GrammarCharacterType.Epsilon, adTree.Right.GrammarCharacter);
-            Assert.AreEqual(GrammarCharacterType.U, adTree.Left.GrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.GrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Right.Left.GrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.Right.GrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.U, adTree.Left.GrammarCharacter);
         }
 
         [Test]
@@ -48,24 +48,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
                     Morpheme = new Morpheme("") { },
 
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
 
-            Assert.AreEqual(GrammarCharacterType.I, adTree.InheritedGrammarCharacter);
-            Assert.AreEqual(GrammarCharacterType.Epsilon, adTree.Right.Left.InheritedGrammarCharacter);
-            Assert.AreEqual(GrammarCharacterType.I, adTree.Right.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.Right.Left.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.Right.InheritedGrammarCharacter);
 
-            Assert.AreEqual(GrammarCharacterType.O, adTree.Left.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Left.InheritedGrammarCharacter);
         }
 
         [Test]
@@ -76,13 +76,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -104,13 +104,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -130,13 +130,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -197,13 +197,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -225,13 +225,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -248,13 +248,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -271,13 +271,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -312,11 +312,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
                     Left = new AdTree()
                     {
-                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = StructAttributes.Conjunction } },
-                        Left = new AdTree() { Morpheme = new Morpheme("bla") { Attributes = StructAttributes.Adverb } }
+                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = StructuralAttributes.U.Conjunction } },
+                        Left = new AdTree() { Morpheme = new Morpheme("bla") { Attributes = StructuralAttributes.E.Adverb } }
                     }
                 }
             };
@@ -339,13 +339,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -371,11 +371,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
                     Left = new AdTree()
                     {
-                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = StructAttributes.Conjunction } },
-                        Left = new AdTree() { Morpheme = new Morpheme("bla") { Attributes = StructAttributes.Adverb } }
+                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = StructuralAttributes.U.Conjunction } },
+                        Left = new AdTree() { Morpheme = new Morpheme("bla") { Attributes = StructuralAttributes.E.Adverb } }
                     }
                 }
             };
@@ -395,13 +395,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructAttributes.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes  = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -422,19 +422,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             AdTree adTree = new AdTree()
             {
-                Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
+                Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.Second },
 
                 Right = new AdTree()
                 {
-                    Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
+                    Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First },
 
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructAttributes.Verb.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
                 }
             };
 
@@ -471,19 +471,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
-                    Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
+                    Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.Second },
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
+                        Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First },
 
-                        Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructAttributes.Verb.Bivalent | StructAttributes.Verb.Unergative } },
-                        Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructAttributes.Pronoun.Subjective } }
+                        Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent | StructuralAttributes.I.Verb.Unergative } },
+                        Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun.Subjective } }
                     },
                     Left = new AdTree()
                     {
-                        Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun.Common.Concrete } },
-                        Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner.DefiniteArticle } }
+                        Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun.Common.Concrete } },
+                        Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle } }
                     }
                 }
             };
@@ -503,54 +503,54 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
-                    Morpheme = new Morpheme("in") { Attributes = StructAttributes.Preposition },
+                    Morpheme = new Morpheme("in") { Attributes = StructuralAttributes.U.Preposition },
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First, },
+                        Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First, },
 
                         Right = new AdTree()
                         {
                             Right = new AdTree()
                             {
-                                Right = new AdTree() { Morpheme = new Morpheme("run") { Attributes = StructAttributes.Verb.Monovalent } },
-                                Left = new AdTree() { Morpheme = new Morpheme("will") { Attributes = StructAttributes.Verb.Modal } }
+                                Right = new AdTree() { Morpheme = new Morpheme("run") { Attributes = StructuralAttributes.I.Verb.Monovalent } },
+                                Left = new AdTree() { Morpheme = new Morpheme("will") { Attributes = StructuralAttributes.I.Verb.Modal } }
                             },
 
-                            Left = new AdTree() { Morpheme = new Morpheme("out") { Attributes = StructAttributes.Adverb } },
+                            Left = new AdTree() { Morpheme = new Morpheme("out") { Attributes = StructuralAttributes.E.Adverb } },
                         },
 
                         Left = new AdTree()
                         {
-                            Morpheme = new Morpheme("of") { Attributes = StructAttributes.Preposition },
+                            Morpheme = new Morpheme("of") { Attributes = StructuralAttributes.U.Preposition },
 
                             Right = new AdTree()
                             {
-                                Right = new AdTree() { Morpheme = new Morpheme("amount") { Attributes = StructAttributes.Noun } },
-                                Left = new AdTree() { Morpheme = new Morpheme("That") { Attributes = StructAttributes.Determiner } },
+                                Right = new AdTree() { Morpheme = new Morpheme("amount") { Attributes = StructuralAttributes.O.Noun } },
+                                Left = new AdTree() { Morpheme = new Morpheme("That") { Attributes = StructuralAttributes.A.Determiner } },
                             },
 
                             Left = new AdTree()
                             {
-                                Right = new AdTree() { Morpheme = new Morpheme("carbon") { Attributes = StructAttributes.Noun } },
-                                Left = new AdTree() { Morpheme = new Morpheme("dioxide") { Attributes = StructAttributes.Adjective } },
+                                Right = new AdTree() { Morpheme = new Morpheme("carbon") { Attributes = StructuralAttributes.O.Noun } },
+                                Left = new AdTree() { Morpheme = new Morpheme("dioxide") { Attributes = StructuralAttributes.A.Adjective } },
                             }
                         }
                     },
 
                     Left = new AdTree()
                     {
-                        Morpheme = new Morpheme("of") { Attributes = StructAttributes.Preposition },
+                        Morpheme = new Morpheme("of") { Attributes = StructuralAttributes.U.Preposition },
 
                         Right = new AdTree()
                         {
                             Right = new AdTree()
                             {
-                                Right = new AdTree() { Morpheme = new Morpheme("years") { Attributes = StructAttributes.Noun } },
-                                Left = new AdTree() { Morpheme = new Morpheme("12") { Attributes = StructAttributes.Numeral } },
+                                Right = new AdTree() { Morpheme = new Morpheme("years") { Attributes = StructuralAttributes.O.Noun } },
+                                Left = new AdTree() { Morpheme = new Morpheme("12") { Attributes = StructuralAttributes.A.Numeral } },
                             },
 
-                            Left = new AdTree() { Morpheme = new Morpheme("about") { Attributes = StructAttributes.Preposition } },
+                            Left = new AdTree() { Morpheme = new Morpheme("about") { Attributes = StructuralAttributes.U.Preposition } },
                         },
 
                         Left = new AdTree()
@@ -559,14 +559,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                             {
                                 Right = new AdTree()
                                 {
-                                    Right = new AdTree() { Morpheme = new Morpheme("business") { Attributes = StructAttributes.Noun } },
-                                    Left = new AdTree() { Morpheme = new Morpheme("as") { Attributes = StructAttributes.Adjective } },
+                                    Right = new AdTree() { Morpheme = new Morpheme("business") { Attributes = StructuralAttributes.O.Noun } },
+                                    Left = new AdTree() { Morpheme = new Morpheme("as") { Attributes = StructuralAttributes.A.Adjective } },
                                 },
 
-                                Left = new AdTree() { Morpheme = new Morpheme("usual") { Attributes = StructAttributes.Adjective } },
+                                Left = new AdTree() { Morpheme = new Morpheme("usual") { Attributes = StructuralAttributes.A.Adjective } },
                             },
 
-                            Left = new AdTree() { Morpheme = new Morpheme("current") { Attributes = StructAttributes.Adjective.Attributive } },
+                            Left = new AdTree() { Morpheme = new Morpheme("current") { Attributes = StructuralAttributes.A.Adjective.Attributive } },
                         }
                     }
                 }
@@ -583,42 +583,42 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: the book which the man bought for the girl
             AdTree adTree = new AdTree()
             {
-                Pattern = new Pattern() { PatternAttributes = PatternAttributes.CorrelativeAdposition },
-                Morpheme = new Morpheme("which") { Attributes = StructAttributes.Pronoun },
+                Pattern = new Pattern() { Attributes = PatternAttributes.CorrelativeAdposition },
+                Morpheme = new Morpheme("which") { Attributes = StructuralAttributes.O.Pronoun },
 
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructAttributes.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner.DefiniteArticle } },
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle } },
                 },
 
                 Left = new AdTree()
                 {
-                    Morpheme = new Morpheme("for") { Attributes = StructAttributes.Preposition },
+                    Morpheme = new Morpheme("for") { Attributes = StructuralAttributes.U.Preposition },
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
+                        Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.Second },
                         Right = new AdTree()
                         {
-                            Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
-                            Right = new AdTree() { Morpheme = new Morpheme("bought") { Attributes = StructAttributes.Verb.Bivalent } },
+                            Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First },
+                            Right = new AdTree() { Morpheme = new Morpheme("bought") { Attributes = StructuralAttributes.I.Verb.Bivalent } },
                             Left = new AdTree()
                             {
-                                Right = new AdTree() { Morpheme = new Morpheme("man") { Attributes = StructAttributes.Noun } },
-                                Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner.DefiniteArticle } },
+                                Right = new AdTree() { Morpheme = new Morpheme("man") { Attributes = StructuralAttributes.O.Noun } },
+                                Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle } },
                             }
                         },
                         Left = new AdTree()
                         {
-                            Pattern = new Pattern() { PatternAttributes = PatternAttributes.CorrelativeSubstitute },
-                            Morpheme = new Morpheme("") { Attributes = StructAttributes.Noun }
+                            Pattern = new Pattern() { Attributes = PatternAttributes.CorrelativeSubstitute },
+                            Morpheme = new Morpheme("") { Attributes = StructuralAttributes.O.Noun }
                         }
                     },
                     Left = new AdTree()
                     {
-                        Right = new AdTree() { Morpheme = new Morpheme("girl") { Attributes = StructAttributes.Noun } },
-                        Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructAttributes.Determiner.DefiniteArticle } },
+                        Right = new AdTree() { Morpheme = new Morpheme("girl") { Attributes = StructuralAttributes.O.Noun } },
+                        Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle } },
                     }
                 }
 
