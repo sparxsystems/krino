@@ -1,34 +1,31 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
-
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
+﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
     public class Pattern : IPattern
     {
-
-        public ulong Attributes { get; set; }
+        public ulong PatternAttributes { get; set; }
 
         public MorphemeRule MorphemeMatchingRule { get; set; }
 
         /// <summary>
         /// Rules for the matching adposition.
         /// </summary>
-        public PatternRule AdPositionPatternMatchingRule { get; set; }
+        public PatternRule AdPositionMatchingRule { get; set; }
 
         /// <summary>
         /// Rules for the matching left child.
         /// </summary>
-        public PatternRule LeftPatternMatchingRule { get; set; }
+        public PatternRule LeftMatchingRule { get; set; }
 
         /// <summary>
         /// Rules for the matching right child.
         /// </summary>
-        public PatternRule RightPatternMatchingRule { get; set; }
+        public PatternRule RightMatchingRule { get; set; }
 
         /// <summary>
         /// Rules for the matching governor.
         /// </summary>
-        public PatternRule GovernorPatternMatchingRule { get; set; }
+        public PatternRule GovernorMatchingRule { get; set; }
 
-        public int ValencyPosition => PatternAttributes.ValencyPosition.GetValencyPosition(Attributes);
+        public int ValencyPosition => PatternAttributesArrangement.PatternAttributes.ValencyPosition.GetValencyPosition(PatternAttributes);
     }
 }

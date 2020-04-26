@@ -39,6 +39,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
         /// </summary>
         public static AdPositionAttributes U { get; } = new AdPositionAttributes(Instance);
 
+        /// <summary>
+        /// Epsilon - i.e. without the grammar character.
+        /// </summary>
+        public static EnumValue Epsilon { get; } = new EnumValue(Instance);
+
 
         /// <summary>
         /// Returns the grammar character encoded in the provided attributes.

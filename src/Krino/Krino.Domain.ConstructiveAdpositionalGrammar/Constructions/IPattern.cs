@@ -10,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// <summary>
         /// Attributes of this pattern.
         /// </summary>
-        ulong Attributes { get; }
+        ulong PatternAttributes { get; }
 
         /// <summary>
         /// Rules for the matching morpheme.
@@ -20,22 +20,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// <summary>
         /// Rules for the matching adposition.
         /// </summary>
-        PatternRule AdPositionPatternMatchingRule { get; }
+        PatternRule AdPositionMatchingRule { get; }
 
         /// <summary>
         /// Rules for the matching left child.
         /// </summary>
-        PatternRule LeftPatternMatchingRule { get; }
+        PatternRule LeftMatchingRule { get; }
 
         /// <summary>
         /// Rules for the matching right child.
         /// </summary>
-        PatternRule RightPatternMatchingRule { get; }
+        PatternRule RightMatchingRule { get; }
 
         /// <summary>
         /// Rules for the matching governor.
         /// </summary>
-        PatternRule GovernorPatternMatchingRule { get; }
+        PatternRule GovernorMatchingRule { get; }
 
         /// <summary>
         /// Returns the valency position.

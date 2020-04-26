@@ -67,8 +67,17 @@ namespace Krino.Vertical.Utils.Enums
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool IsIn(ulong value) => (value & myValue) == myValue;
-        
+        public bool IsIn(ulong value) => IsIn(myValue, value);
+
+        /// <summary>
+        /// True if the tested value encodes the expected value.
+        /// </summary>
+        /// <param name="expected"></param>
+        /// <param name="testedValue"></param>
+        /// <returns></returns>
+        public static bool IsIn(ulong expected, ulong testedValue) => (testedValue & expected) == expected;
+
+
         /// <summary>
         /// Implicitly converts the enum into the ulong.
         /// </summary>

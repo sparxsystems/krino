@@ -5,8 +5,8 @@ using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
@@ -14,6 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// <summary>
     /// Implements the AdTree as defined in the document Constructive Adposition Grammar.
     /// </summary>
+    [DebuggerDisplay("{GrammarCharacter}: {Morpheme?.Morph}")]
     public class AdTree : IAdTree
     {
         private IAdTree myAdPosition;
@@ -77,6 +78,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 }
             }
         }
+
+        public IAdTree Root => AdPosition == null ? this : AdPositions.Last();
 
         public IAdTree Right
         {
@@ -268,27 +271,55 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public string Phrase => string.Join(" ", GetPhraseElementsAsync().Result.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
 
+        public IAdTree MakeShallowCopy()
+        {
+            // <original, copy>
+            Stack<Tuple<IAdTree, IAdTree>> stack = new Stack<Tuple<IAdTree, IAdTree>>();
+            IAdTree rootCopy = new AdTree() { Morpheme = Morpheme, Pattern = Pattern };
+            stack.Push(Tuple.Create<IAdTree, IAdTree>(this, rootCopy));
+
+            while (stack.Count > 0)
+            {
+                Tuple<IAdTree, IAdTree> aThis = stack.Pop();
+
+                if (aThis.Item1.Left != null)
+                {
+                    IAdTree leftCopy = new AdTree() { Morpheme = aThis.Item1.Left.Morpheme, Pattern = aThis.Item1.Left.Pattern };
+                    aThis.Item2.Left = leftCopy;
+                    stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
+                }
+
+                if (aThis.Item1.Right != null)
+                {
+                    IAdTree rightCopy = new AdTree() { Morpheme = aThis.Item1.Right.Morpheme, Pattern = aThis.Item1.Right.Pattern };
+                    aThis.Item2.Right = rightCopy;
+                    stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
+                }
+            }
+
+            return rootCopy;
+        }
 
         public IEnumerator<IAdTree> GetEnumerator()
         {
             // Note: using the stack has a better performance than a recursive call.
             //       Also there is not a danger of of the stack overflow.
-            Stack<IAdTree> aStack = new Stack<IAdTree>();
-            aStack.Push(this);
+            Stack<IAdTree> stack = new Stack<IAdTree>();
+            stack.Push(this);
 
-            while (aStack.Count > 0)
+            while (stack.Count > 0)
             {
-                IAdTree aThis = aStack.Pop();
+                IAdTree aThis = stack.Pop();
                 yield return aThis;
 
                 if (aThis.Left != null)
                 {
-                    aStack.Push(aThis.Left);
+                    stack.Push(aThis.Left);
                 }
 
                 if (aThis.Right != null)
                 {
-                    aStack.Push(aThis.Right);
+                    stack.Push(aThis.Right);
                 }
             }
         }

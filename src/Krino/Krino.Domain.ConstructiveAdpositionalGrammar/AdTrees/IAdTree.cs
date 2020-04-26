@@ -53,6 +53,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         IEnumerable<IAdTree> AdPositions { get; }
 
         /// <summary>
+        /// Returns the root of the adtree.
+        /// </summary>
+        IAdTree Root { get; }
+
+        /// <summary>
         /// The righ child.
         /// </summary>
         IAdTree Right { get; set; }
@@ -143,6 +148,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         string Phrase { get; }
 
-
+        /// <summary>
+        /// Returns the shallow copy of the adtree (Morpheme and Pattern are not duplicated).
+        /// </summary>
+        /// <returns></returns>
+        IAdTree MakeShallowCopy();
     }
 }

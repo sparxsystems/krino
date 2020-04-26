@@ -422,11 +422,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             AdTree adTree = new AdTree()
             {
-                Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.Second },
+                Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
 
                 Right = new AdTree()
                 {
-                    Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First },
+                    Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
 
                     Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent } },
                     Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
@@ -471,11 +471,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
-                    Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.Second },
+                    Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First },
+                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
 
                         Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent | StructuralAttributes.I.Verb.Unergative } },
                         Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun.Subjective } }
@@ -507,7 +507,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First, },
+                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First, },
 
                         Right = new AdTree()
                         {
@@ -583,7 +583,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: the book which the man bought for the girl
             AdTree adTree = new AdTree()
             {
-                Pattern = new Pattern() { Attributes = PatternAttributes.CorrelativeAdposition },
+                Pattern = new Pattern() { PatternAttributes = PatternAttributes.CorrelativeAdposition },
                 Morpheme = new Morpheme("which") { Attributes = StructuralAttributes.O.Pronoun },
 
                 Right = new AdTree()
@@ -598,10 +598,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                     Right = new AdTree()
                     {
-                        Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.Second },
+                        Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second },
                         Right = new AdTree()
                         {
-                            Pattern = new Pattern() { Attributes = PatternAttributes.ValencyPosition.First },
+                            Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
                             Right = new AdTree() { Morpheme = new Morpheme("bought") { Attributes = StructuralAttributes.I.Verb.Bivalent } },
                             Left = new AdTree()
                             {
@@ -611,7 +611,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                         },
                         Left = new AdTree()
                         {
-                            Pattern = new Pattern() { Attributes = PatternAttributes.CorrelativeSubstitute },
+                            Pattern = new Pattern() { PatternAttributes = PatternAttributes.CorrelativeSubstitute },
                             Morpheme = new Morpheme("") { Attributes = StructuralAttributes.O.Noun }
                         }
                     },
@@ -626,6 +626,52 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             string phrase = adTree.Phrase;
             Assert.AreEqual("the book which the man bought for the girl", phrase);
+        }
+
+
+        [Test]
+        public void MakeShallowCopy()
+        {
+            // The phrase: I read the book.
+            AdTree adTree = new AdTree()
+            {
+                Right = new AdTree()
+                {
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
+                },
+                Left = new AdTree()
+                {
+                    Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
+
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
+                }
+            };
+
+            IAdTree copy = adTree.MakeShallowCopy();
+
+
+            Assert.IsTrue(adTree.Morpheme ==  copy.Morpheme);
+            Assert.IsTrue(adTree.Pattern == copy.Pattern);
+
+            Assert.IsTrue(adTree.Right.Morpheme == copy.Right.Morpheme);
+            Assert.IsTrue(adTree.Right.Pattern == copy.Right.Pattern);
+
+            Assert.IsTrue(adTree.Right.Right.Morpheme == copy.Right.Right.Morpheme);
+            Assert.IsTrue(adTree.Right.Right.Pattern == copy.Right.Right.Pattern);
+
+            Assert.IsTrue(adTree.Right.Left.Morpheme == copy.Right.Left.Morpheme);
+            Assert.IsTrue(adTree.Right.Left.Pattern == copy.Right.Left.Pattern);
+
+            Assert.IsTrue(adTree.Left.Morpheme == copy.Left.Morpheme);
+            Assert.IsTrue(adTree.Left.Pattern == copy.Left.Pattern);
+
+            Assert.IsTrue(adTree.Left.Right.Morpheme == copy.Left.Right.Morpheme);
+            Assert.IsTrue(adTree.Left.Right.Pattern == copy.Left.Right.Pattern);
+
+            Assert.IsTrue(adTree.Left.Left.Morpheme == copy.Left.Left.Morpheme);
+            Assert.IsTrue(adTree.Left.Left.Pattern == copy.Left.Left.Pattern);
         }
     }
 }
