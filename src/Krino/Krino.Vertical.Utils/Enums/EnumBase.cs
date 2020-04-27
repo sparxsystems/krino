@@ -75,7 +75,7 @@ namespace Krino.Vertical.Utils.Enums
         /// <param name="expected"></param>
         /// <param name="testedValue"></param>
         /// <returns></returns>
-        public static bool IsIn(ulong expected, ulong testedValue) => (testedValue & expected) == expected;
+        public static bool IsIn(ulong expected, ulong testedValue) => (expected & testedValue) == expected;
 
 
         /// <summary>

@@ -13,16 +13,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     public class AdTreeBuilderTest
     {
         [Test]
-        public void AddMorpheme_FindingPatternForMorpheme()
+        public void AddMorpheme_I_read()
         {
             List<IPattern> patterns = new List<IPattern>()
             {
                 new Pattern()
                 {
-                    MorphemeMatchingRule = MorphemeRule.O,
-                    AdPositionMatchingRule = PatternRule.Epsilon,
-                    RightMatchingRule = PatternRule.Nothing,
-                    LeftMatchingRule = PatternRule.Nothing,
+                    MorphemeRule = MorphemeRule.O,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern()
+                {
+                    MorphemeRule = MorphemeRule.I,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern()
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.First,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Anything.Where(MorphemeRule.I),
+                    LeftRule = PatternRule.Anything.Where(MorphemeRule.O),
                 },
             };
 
@@ -31,22 +48,60 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
+            morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            patterns = new List<IPattern>()
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Left.Morpheme.Morph == "I" && builder.ActiveAdTrees[0].Left.Morpheme.GrammarCharacter == GrammarCharacter.O);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Morpheme.Morph == "read" && builder.ActiveAdTrees[0].Right.Morpheme.GrammarCharacter == GrammarCharacter.I);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Morpheme.Morph == "" && builder.ActiveAdTrees[0].Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
+        }
+
+        [Test]
+        public void AddMorpheme_the_good_book()
+        {
+            List<IPattern> patterns = new List<IPattern>()
             {
                 new Pattern()
                 {
-                    MorphemeMatchingRule = MorphemeRule.O,
-                    AdPositionMatchingRule = PatternRule.Epsilon,
-                    RightMatchingRule = PatternRule.Nothing,
-                    LeftMatchingRule = PatternRule.Nothing,
+                    MorphemeRule = MorphemeRule.A,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern()
+                {
+                    MorphemeRule = MorphemeRule.O,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern()
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Anything.Where(MorphemeRule.O),
+                    LeftRule = PatternRule.Anything.Where(MorphemeRule.A),
                 },
             };
 
-            builder = new AdTreeBuilder(patterns);
+            AdTreeBuilder builder = new AdTreeBuilder(patterns);
 
-            morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb };
-            Assert.IsFalse(builder.AddMorpheme(morpheme));
+            Morpheme morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("good") { Attributes = StructuralAttributes.A.Adjective.Attributive };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Left.Morpheme.Morph == "I" && builder.ActiveAdTrees[0].Left.Morpheme.GrammarCharacter == GrammarCharacter.O);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Morpheme.Morph == "read" && builder.ActiveAdTrees[0].Right.Morpheme.GrammarCharacter == GrammarCharacter.I);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Morpheme.Morph == "" && builder.ActiveAdTrees[0].Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
         }
 
         [Test]
@@ -57,19 +112,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Noun
                 new Pattern()
                 {
-                    MorphemeMatchingRule = MorphemeRule.O,
-                    AdPositionMatchingRule = PatternRule.Epsilon,
-                    RightMatchingRule = PatternRule.Nothing,
-                    LeftMatchingRule = PatternRule.Nothing,
+                    MorphemeRule = MorphemeRule.O,
+                    AdPositionRule = PatternRule.Epsilon,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
                 },
 
                 // Epsilon
                 new Pattern()
                 {
-                    MorphemeMatchingRule = MorphemeRule.Epsilon,
-                    AdPositionMatchingRule = PatternRule.Anything,
-                    RightMatchingRule = PatternRule.Anything,
-                    LeftMatchingRule = PatternRule.Anything,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Anything,
+                    LeftRule = PatternRule.Anything,
                 },
             };
 
@@ -105,49 +160,46 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Pattern()
                 {
-                    MorphemeMatchingRule = MorphemeRule.O,
-                    AdPositionMatchingRule = PatternRule.Epsilon,
-                    RightMatchingRule = PatternRule.Nothing,
-                    LeftMatchingRule = PatternRule.Nothing,
+                    MorphemeRule = MorphemeRule.O,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
                 },
                 new Pattern()
                 {
-                    MorphemeMatchingRule = MorphemeRule.O,
-                    AdPositionMatchingRule = PatternRule.Epsilon,
-                    RightMatchingRule = PatternRule.Nothing,
-                    LeftMatchingRule = PatternRule.Nothing,
-                    GovernorMatchingRule = new PatternRule(new MorphemeRule(null, null, StructuralAttributes.I.Verb.Bivalent, 0), 0, 0),
+                    MorphemeRule = MorphemeRule.I,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
                 },
                 new Pattern()
                 {
-                    MorphemeMatchingRule = MorphemeRule.I2,
-                    AdPositionMatchingRule = PatternRule.Epsilon,
-                    RightMatchingRule = PatternRule.Nothing,
-                    LeftMatchingRule = PatternRule.Nothing,
-                },
-                new Pattern()
-                {
-                    MorphemeMatchingRule = MorphemeRule.A,
-                    AdPositionMatchingRule = PatternRule.Epsilon,
-                    RightMatchingRule = PatternRule.Nothing,
-                    LeftMatchingRule = PatternRule.Nothing,
-                },
-
-                new Pattern()
-                {
-                    MorphemeMatchingRule = MorphemeRule.Epsilon,
-                    AdPositionMatchingRule = PatternRule.Anything,
-                    RightMatchingRule = PatternRule.Anything,
-                    LeftMatchingRule = PatternRule.Anything,
+                    MorphemeRule = MorphemeRule.A,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
                 },
                 new Pattern()
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
-
-                    MorphemeMatchingRule = MorphemeRule.Epsilon,
-                    AdPositionMatchingRule = PatternRule.Anything,
-                    RightMatchingRule = PatternRule.Anything,
-                    LeftMatchingRule = PatternRule.Anything,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Anything.Where(MorphemeRule.I),
+                    LeftRule = PatternRule.Anything.Where(MorphemeRule.O),
+                },
+                new Pattern()
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.Second,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Anything.Where(MorphemeRule.I),
+                    LeftRule = PatternRule.Anything.Where(MorphemeRule.O),
+                },
+                new Pattern()
+                {
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Anything.Where(MorphemeRule.O),
+                    LeftRule = PatternRule.Anything.Where(MorphemeRule.A),
                 },
             };
 

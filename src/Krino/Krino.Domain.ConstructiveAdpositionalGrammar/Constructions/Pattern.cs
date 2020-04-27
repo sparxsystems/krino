@@ -4,27 +4,27 @@
     {
         public ulong PatternAttributes { get; set; }
 
-        public MorphemeRule MorphemeMatchingRule { get; set; }
+        public MorphemeRule MorphemeRule { get; set; }
 
         /// <summary>
         /// Rules for the matching adposition.
         /// </summary>
-        public PatternRule AdPositionMatchingRule { get; set; }
+        public PatternRule AdPositionRule { get; set; }
 
         /// <summary>
         /// Rules for the matching left child.
         /// </summary>
-        public PatternRule LeftMatchingRule { get; set; }
+        public PatternRule LeftRule { get; set; }
 
         /// <summary>
         /// Rules for the matching right child.
         /// </summary>
-        public PatternRule RightMatchingRule { get; set; }
+        public PatternRule RightRule { get; set; }
 
         /// <summary>
         /// Rules for the matching governor.
         /// </summary>
-        public PatternRule GovernorMatchingRule { get; set; }
+        public PatternRule GovernorRule { get; set; }
 
         public int ValencyPosition => PatternAttributesArrangement.PatternAttributes.ValencyPosition.GetValencyPosition(PatternAttributes);
     }

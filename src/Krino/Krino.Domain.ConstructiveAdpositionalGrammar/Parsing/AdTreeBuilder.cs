@@ -3,6 +3,7 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
@@ -29,40 +30,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 List<IAdTree> newListOfAdTrees = new List<IAdTree>();
 
-                // Go via active adtrees (i.e. separate adtrees which are still candidates to become the result adtree).
-                foreach(IAdTree adTreeRoot in myActiveAdTrees)
+                // Go via active adtrees (i.e. adtrees which are still candidates to become the final adtree).
+                foreach(IAdTree currentAdTree in myActiveAdTrees)
                 {
                     // Go via patterns which match the incoming morpheme.
                     foreach (IPattern pattern in morphemeMatchingPatterns)
                     {
-                        IAdTree adTreeCopy = adTreeRoot.MakeShallowCopy();
-
                         IAdTree newAdTreeElement = new AdTree()
                         {
                             Morpheme = morpheme,
                             Pattern = pattern,
                         };
 
-                        // Attach the new adtree element to the adtree.
-                        if (newAdTreeElement.GrammarCharacter == GrammarCharacter.U ||
-                            newAdTreeElement.GrammarCharacter == GrammarCharacter.Epsilon)
-                        {
-                            newAdTreeElement.Left = adTreeCopy;
-                        }
-                        else if (adTreeCopy.Left == null)
-                        {
-                            adTreeCopy.Left = newAdTreeElement;
-                        }
-                        else if (adTreeCopy.Right == null)
-                        {
-                            adTreeCopy.Right = newAdTreeElement;
-                        }
-
-                        // Check if the attached tree element matches.
-                        if (IsMatch(newAdTreeElement))
-                        {
-                            newListOfAdTrees.Add(newAdTreeElement.Root);
-                        }
+                        AttachAdTreeElement(currentAdTree, newAdTreeElement, newListOfAdTrees);
                     }
                 }
 
@@ -101,95 +81,97 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             foreach (IPattern pattern in myPatterns)
             {
-                if (pattern.MorphemeMatchingRule.IsMatch(morpheme.Morph, morpheme.Attributes))
+                if (pattern.MorphemeRule.IsMatch(morpheme.Morph, morpheme.Attributes))
                 {
                     yield return pattern;
                 }
             }
         }
 
-        private bool IsMatch(IAdTree attachedAdTree)
+        private void AttachAdTreeElement(IAdTree adTree, IAdTree newAdTreeElement, List<IAdTree> adTrees)
         {
-            bool isMatch = false;
-
-            // The attachedAdtree is attached to the adposition.
-            if (attachedAdTree.IsAdPosition)
+            // If the new adtree element is an adposition then try to attach the adtree to its left ot right branch.
+            if (newAdTreeElement.Pattern.LeftRule != PatternRule.Nothing || newAdTreeElement.Pattern.LeftRule != PatternRule.Nothing)
             {
-                // If it is attached via the left child.
-                if (attachedAdTree.Left != null)
+                // If the new adtree element is an adposition then try to attach adtree to the left.
+                if (newAdTreeElement.Pattern.LeftRule != PatternRule.Nothing)
                 {
-                    // Check adposition->left connection.
-                    isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree.Left, attachedAdTree.Pattern.LeftMatchingRule);
-                    if (isMatch)
+                    if (newAdTreeElement.CanAttachToLeft(adTree))
                     {
-                        // Also check left->adposition connection.
-                        isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree, attachedAdTree.Left.Pattern.AdPositionMatchingRule);
+                        IAdTree copy = adTree.MakeShallowCopy();
+                        newAdTreeElement.Left = adTree;
+                        adTrees.Add(newAdTreeElement);
                     }
                 }
-                else if (attachedAdTree.Right != null)
-                {
-                    // Check adposition->right connection.
-                    isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree.Right, attachedAdTree.Pattern.LeftMatchingRule);
-                    if (isMatch)
-                    {
-                        // Also check right->adposition connection.
-                        isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree, attachedAdTree.Right.Pattern.AdPositionMatchingRule);
-                    }
-                }
-            }
-            // The attachedAdtree is attached to the left child.
-            else if (attachedAdTree.IsOnLeft)
-            {
-                // Check left->adposition connection.
-                isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree.AdPosition, attachedAdTree.Pattern.AdPositionMatchingRule);
-                if (isMatch)
-                {
-                    // Also check adposition->left connection.
-                    isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree, attachedAdTree.AdPosition.Pattern.LeftMatchingRule);
-                }
 
-                // If the attachedAdTree is a dependent (i.e. not a "technical" adtree).
-                if (isMatch && attachedAdTree.IsDependent)
+                // If the new adtree element is an adposition then try to attach adtree to the right.
+                if (newAdTreeElement.Pattern.LeftRule != PatternRule.Nothing)
                 {
-                    // Check the governor too.
-                    IAdTree governor = attachedAdTree.Governor;
-                    if (governor != null)
+                    if (newAdTreeElement.CanAttachToRight(adTree))
                     {
-                        isMatch = IsMatchOfAdTreeAndPatternRule(governor, attachedAdTree.Pattern.GovernorMatchingRule);
+                        IAdTree copy = adTree.MakeShallowCopy();
+                        newAdTreeElement.Right = adTree;
+                        adTrees.Add(newAdTreeElement);
                     }
                 }
             }
-            else if (attachedAdTree.IsOnRight)
+            // If the new adtree element is not the adposition.
+            else
             {
-                // Check right->adposition connection.
-                isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree.AdPosition, attachedAdTree.Pattern.AdPositionMatchingRule);
-                if (isMatch)
+                // If the adtree is an adposition then try to attach the new element to its left or right branch.
+                if (adTree.Pattern.LeftRule != PatternRule.Nothing || adTree.Pattern.RightRule != PatternRule.Nothing)
                 {
-                    // Also check adposition->left connection.
-                    isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree, attachedAdTree.AdPosition.Pattern.RightMatchingRule);
-                }
-
-                if (isMatch && attachedAdTree.IsGovernor)
-                {
-                    // Check if it matches with all dependents.
-                    foreach (IAdTree dependent in attachedAdTree.DependentAdPositions)
+                    // If the adtree is an adposition which does not have attached a left child.
+                    if (adTree.Pattern.LeftRule != PatternRule.Nothing && adTree.Left == null)
                     {
-                        isMatch = IsMatchOfAdTreeAndPatternRule(attachedAdTree, dependent.Pattern.GovernorMatchingRule);
-                        if (!isMatch)
+                        if (adTree.CanAttachToLeft(newAdTreeElement))
                         {
-                            break;
+                            IAdTree copy = adTree.MakeShallowCopy();
+                            copy.Left = newAdTreeElement;
+                            adTrees.Add(newAdTreeElement);
+                        }
+                    }
+
+                    // If the adtree is an adposition which does not have attached a right child.
+                    if (adTree.Pattern.RightRule != PatternRule.Nothing && adTree.Right == null)
+                    {
+                        if (adTree.CanAttachToRight(newAdTreeElement))
+                        {
+                            IAdTree copy = adTree.MakeShallowCopy();
+                            copy.Right = newAdTreeElement;
+                            adTrees.Add(newAdTreeElement);
+                        }
+                    }
+                }
+                // adtree as well as the new element are not adpositions so try to connect them via a matching adposition.
+                else
+                {
+                    foreach (IPattern pattern in myPatterns)
+                    {
+                        if (pattern.CanAttachToLeft(adTree) && pattern.CanAttachToRight(newAdTreeElement))
+                        {
+                            IAdTree copy = adTree.MakeShallowCopy();
+
+                            IAdTree newAdPosition = new AdTree() { Morpheme = new Morpheme(pattern.MorphemeRule.RequiredMorph) { Attributes = pattern.MorphemeRule.RequiredAttributes } };
+                            newAdPosition.Right = newAdTreeElement;
+                            newAdPosition.Left = copy;
+
+                            adTrees.Add(newAdPosition);
+                        }
+
+                        if (pattern.CanAttachToLeft(newAdTreeElement) && pattern.CanAttachToRight(adTree))
+                        {
+                            IAdTree copy = adTree.MakeShallowCopy();
+
+                            IAdTree newAdPosition = new AdTree() { Morpheme = new Morpheme(pattern.MorphemeRule.RequiredMorph) { Attributes = pattern.MorphemeRule.RequiredAttributes } };
+                            newAdPosition.Right = copy;
+                            newAdPosition.Left = newAdTreeElement;
+
+                            adTrees.Add(newAdPosition);
                         }
                     }
                 }
             }
-
-            return isMatch;
-        }
-
-        private bool IsMatchOfAdTreeAndPatternRule(IAdTree adTree, PatternRule rule)
-        {
-            bool isMatch = rule.IsMatch(adTree.Morpheme.Morph, adTree.Morpheme.Attributes, adTree.Pattern.PatternAttributes);
-            return isMatch;
         }
     }
 }

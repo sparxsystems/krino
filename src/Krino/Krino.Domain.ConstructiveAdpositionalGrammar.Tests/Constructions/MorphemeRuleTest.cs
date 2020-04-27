@@ -10,14 +10,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
     public class MorphemeRuleTest
     {
         [Test]
-        public void IsMatch_DefaultConstructor()
+        public void Anything()
         {
-            // Default constructor created rule shall accept everything.
-            MorphemeRule morphemeRule = new MorphemeRule();
+            Assert.IsTrue(MorphemeRule.Anything.IsMatch("", 0));
+            Assert.IsTrue(MorphemeRule.Anything.IsMatch(null, 0));
+            Assert.IsTrue(MorphemeRule.Anything.IsMatch("bla", ulong.MaxValue));
+        }
 
-            Assert.IsTrue(morphemeRule.IsMatch("", 0));
-            Assert.IsTrue(morphemeRule.IsMatch(null, 0));
-            Assert.IsTrue(morphemeRule.IsMatch("bla", ulong.MaxValue));
+        [Test]
+        public void Nothing()
+        {
+            Assert.IsFalse(MorphemeRule.Nothing.IsMatch("", 0));
+            Assert.IsFalse(MorphemeRule.Nothing.IsMatch(null, 0));
+            Assert.IsFalse(MorphemeRule.Nothing.IsMatch("bla", ulong.MaxValue));
+            Assert.IsFalse(MorphemeRule.Nothing.IsMatch("bla", 123));
         }
 
         [Test]

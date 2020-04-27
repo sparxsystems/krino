@@ -4,7 +4,7 @@ using Krino.Vertical.Utils.Enums;
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
     /// <summary>
-    /// Represents data of the morpheme rules.
+    /// Rule to eveluate if something (e.g. morpheme inside an adtree element) matches the morpheme.
     /// </summary>
     public struct MorphemeRule
     {
@@ -45,12 +45,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         public string RejectedMorph { get; private set; }
 
         /// <summary>
-        /// The required morpheme attributes.
+        /// Attributes requiered to be present in order to match the morpheme rule. (0 means any attributes will match.)
         /// </summary>
         public ulong RequiredAttributes { get; private set; }
 
         /// <summary>
-        /// The morpheme attributes which are not allowed.
+        /// Attributes which cannot be present in order to math the morpheme rule. (0 means there are no rejected attributes.)
         /// </summary>
         public ulong RejectedAttributes { get; private set; }
 
@@ -62,21 +62,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// <returns></returns>
         public bool IsMatch(string morph, ulong morphemeAttributes)
         {
-            bool isMatch = CheckMorphs(RequiredMorph, morph);
-            if (isMatch)
-            {
-                if (RejectedMorph != null)
-                {
-                    isMatch = !CheckMorphs(RejectedMorph, morph);
-                }
-            }
+            bool isMatch = !(RejectedAttributes == ulong.MaxValue);
 
             if (isMatch)
             {
-                isMatch = EnumBase.IsIn(RequiredAttributes, morphemeAttributes);
-                if (isMatch && RejectedAttributes != 0)
+                isMatch = CheckMorphs(RequiredMorph, morph);
+                if (isMatch)
                 {
-                    isMatch = !EnumBase.IsIn(RejectedAttributes, morphemeAttributes);
+                    if (RejectedMorph != null)
+                    {
+                        isMatch = !CheckMorphs(RejectedMorph, morph);
+                    }
+                }
+
+                if (isMatch)
+                {
+                    isMatch = EnumBase.IsIn(RequiredAttributes, morphemeAttributes);
+                    if (isMatch && RejectedAttributes != 0)
+                    {
+                        isMatch = !EnumBase.IsIn(RejectedAttributes, morphemeAttributes);
+                    }
                 }
             }
 

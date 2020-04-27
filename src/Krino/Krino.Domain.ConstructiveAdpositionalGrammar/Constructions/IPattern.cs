@@ -1,6 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
+﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
     /// <summary>
     /// Declares the pattern which gives the form to the linguistic construction.
@@ -15,27 +13,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// <summary>
         /// Rules for the matching morpheme.
         /// </summary>
-        MorphemeRule MorphemeMatchingRule { get; }
+        MorphemeRule MorphemeRule { get; }
 
         /// <summary>
         /// Rules for the matching adposition.
         /// </summary>
-        PatternRule AdPositionMatchingRule { get; }
+        PatternRule AdPositionRule { get; }
 
         /// <summary>
         /// Rules for the matching left child.
         /// </summary>
-        PatternRule LeftMatchingRule { get; }
+        PatternRule LeftRule { get; }
 
         /// <summary>
         /// Rules for the matching right child.
         /// </summary>
-        PatternRule RightMatchingRule { get; }
+        PatternRule RightRule { get; }
 
         /// <summary>
         /// Rules for the matching governor.
         /// </summary>
-        PatternRule GovernorMatchingRule { get; }
+        PatternRule GovernorRule { get; }
 
         /// <summary>
         /// Returns the valency position.

@@ -22,48 +22,48 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             new Pattern()
             {
-                MorphemeMatchingRule = MorphemeRule.O,
-                AdPositionMatchingRule = PatternRule.Epsilon,
-                RightMatchingRule = PatternRule.Nothing,
-                LeftMatchingRule = PatternRule.Nothing,
+                MorphemeRule = MorphemeRule.O,
+                AdPositionRule = PatternRule.Epsilon,
+                RightRule = PatternRule.Nothing,
+                LeftRule = PatternRule.Nothing,
             },
             new Pattern()
             {
-                MorphemeMatchingRule = MorphemeRule.O,
-                AdPositionMatchingRule = PatternRule.EpsilonValency1,
-                RightMatchingRule = PatternRule.Nothing,
-                LeftMatchingRule = PatternRule.Nothing,
+                MorphemeRule = MorphemeRule.O,
+                AdPositionRule = PatternRule.EpsilonValency1,
+                RightRule = PatternRule.Nothing,
+                LeftRule = PatternRule.Nothing,
             },
             new Pattern()
             {
-                MorphemeMatchingRule = MorphemeRule.I2,
-                AdPositionMatchingRule = PatternRule.Epsilon,
-                RightMatchingRule = PatternRule.Nothing,
-                LeftMatchingRule = PatternRule.Nothing,
+                MorphemeRule = MorphemeRule.I2,
+                AdPositionRule = PatternRule.Epsilon,
+                RightRule = PatternRule.Nothing,
+                LeftRule = PatternRule.Nothing,
             },
             new Pattern()
             {
-                MorphemeMatchingRule = MorphemeRule.A,
-                AdPositionMatchingRule = PatternRule.Epsilon,
-                RightMatchingRule = PatternRule.Nothing,
-                LeftMatchingRule = PatternRule.Nothing,
+                MorphemeRule = MorphemeRule.A,
+                AdPositionRule = PatternRule.Epsilon,
+                RightRule = PatternRule.Nothing,
+                LeftRule = PatternRule.Nothing,
             },
 
             new Pattern()
             {
-                MorphemeMatchingRule = MorphemeRule.Epsilon,
-                AdPositionMatchingRule = PatternRule.Anything,
-                RightMatchingRule = PatternRule.Anything,
-                LeftMatchingRule = PatternRule.Anything,
+                MorphemeRule = MorphemeRule.Epsilon,
+                AdPositionRule = PatternRule.Anything,
+                RightRule = PatternRule.Anything,
+                LeftRule = PatternRule.Anything,
             },
             new Pattern()
             {
                 PatternAttributes = PatternAttributes.ValencyPosition.First,
 
-                MorphemeMatchingRule = MorphemeRule.Epsilon,
-                AdPositionMatchingRule = PatternRule.Anything,
-                RightMatchingRule = PatternRule.Anything,
-                LeftMatchingRule = PatternRule.Anything,
+                MorphemeRule = MorphemeRule.Epsilon,
+                AdPositionRule = PatternRule.Anything,
+                RightRule = PatternRule.Anything,
+                LeftRule = PatternRule.Anything,
             },
         };
 

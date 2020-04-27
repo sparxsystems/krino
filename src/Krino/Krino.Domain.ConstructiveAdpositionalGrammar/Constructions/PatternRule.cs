@@ -3,6 +3,9 @@ using Krino.Vertical.Utils.Enums;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
+    /// <summary>
+    /// Rule to eveluate if something (e.g. adtree element) matches the pattern.
+    /// </summary>
     public struct PatternRule
     {
         // Note: it is the struct to avoid incosistent situations if the PatternRule is null.
@@ -23,26 +26,49 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             RejectedPatternAttributes = rejectedPatternAttributes;
         }
 
+        /// <summary>
+        /// Morpheme rule which needs to match in order to match this pattern rule.
+        /// </summary>
         public MorphemeRule MorphemeRule { get; private set; }
 
+        /// <summary>
+        /// Attributes requiered to be present in order to match the pattern rule. (0 means any attributes will match.)
+        /// </summary>
         public ulong RequiredPatternAttributes { get; private set; }
+
+        /// <summary>
+        /// Attributes which cannot be present in order to math the pattern rule. (0 means there are no rejected attributes.)
+        /// </summary>
         public ulong RejectedPatternAttributes { get; private set; }
 
+        /// <summary>
+        /// Returns true if it matches the pattern rule.
+        /// </summary>
+        /// <param name="morph"></param>
+        /// <param name="morphemeAttributes"></param>
+        /// <param name="patternAttributes"></param>
+        /// <returns></returns>
         public bool IsMatch(string morph, ulong morphemeAttributes, ulong patternAttributes)
         {
-            bool isMatch = MorphemeRule.IsMatch(morph, morphemeAttributes);
+            bool isMatch = !(RejectedPatternAttributes == ulong.MaxValue);
+
             if (isMatch)
             {
-                isMatch = EnumBase.IsIn(RequiredPatternAttributes, patternAttributes);
-                if (isMatch && RejectedPatternAttributes != 0)
+                isMatch = MorphemeRule.IsMatch(morph, morphemeAttributes);
+                if (isMatch)
                 {
-                    isMatch = !EnumBase.IsIn(RejectedPatternAttributes, patternAttributes);
+                    isMatch = EnumBase.IsIn(RequiredPatternAttributes, patternAttributes);
+                    if (isMatch && RejectedPatternAttributes != 0)
+                    {
+                        isMatch = !EnumBase.IsIn(RejectedPatternAttributes, patternAttributes);
+                    }
                 }
             }
 
             return isMatch;
         }
 
+        public PatternRule Where(MorphemeRule morphemeRule) => new PatternRule(morphemeRule, RequiredPatternAttributes, RejectedPatternAttributes);
 
         public override bool Equals(object obj) => obj is PatternRule rule && this == rule;
 
@@ -56,7 +82,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
             return hash;
         }
-
 
         public static bool operator ==(PatternRule rule1, PatternRule rule2) =>
             rule1.MorphemeRule == rule2.MorphemeRule &&
