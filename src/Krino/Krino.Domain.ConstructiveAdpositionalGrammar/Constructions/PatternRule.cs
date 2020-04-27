@@ -44,6 +44,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         }
 
 
+        public override bool Equals(object obj) => obj is PatternRule rule && this == rule;
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ MorphemeRule.GetHashCode();
+            hash = (hash * 16777619) ^ RequiredPatternAttributes.GetHashCode();
+            hash = (hash * 16777619) ^ RejectedPatternAttributes.GetHashCode();
+
+            return hash;
+        }
+
+
         public static bool operator ==(PatternRule rule1, PatternRule rule2) =>
             rule1.MorphemeRule == rule2.MorphemeRule &&
             rule1.RequiredPatternAttributes == rule2.RequiredPatternAttributes &&

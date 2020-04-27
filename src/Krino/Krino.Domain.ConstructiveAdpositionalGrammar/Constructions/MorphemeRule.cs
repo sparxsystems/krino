@@ -98,6 +98,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             return isMatch;
         }
 
+        public override bool Equals(object obj) => obj is MorphemeRule rule && this == rule;
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ RequiredMorph.GetHashCode();
+            hash = (hash * 16777619) ^ RejectedMorph.GetHashCode();
+            hash = (hash * 16777619) ^ RequiredAttributes.GetHashCode();
+            hash = (hash * 16777619) ^ RejectedAttributes.GetHashCode();
+
+            return hash;
+        }
+
         public static bool operator ==(MorphemeRule rule1, MorphemeRule rule2) =>
             rule1.RequiredMorph == rule2.RequiredMorph &&
             rule1.RejectedMorph == rule2.RejectedMorph &&
