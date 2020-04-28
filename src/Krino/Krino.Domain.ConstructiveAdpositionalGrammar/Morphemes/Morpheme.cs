@@ -9,6 +9,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         public Morpheme (string morph)
         {
             Morph = morph;
+
+            // Initialize attributes to Epsilon.
+            Attributes = StructuralAttributes.Epsilon;
         }
 
         public string Morph { get; private set; }

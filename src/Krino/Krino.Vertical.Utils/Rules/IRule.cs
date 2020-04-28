@@ -1,18 +1,16 @@
-﻿using System;
-
-namespace Krino.Vertical.Utils.Rules
+﻿namespace Krino.Vertical.Utils.Rules
 {
     /// <summary>
-    /// Declares the rule.
+    /// Declares the rule builder.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public interface IRule<T> : IEquatable<IRule<T>>
+    /// <typeparam name="T">type of the value which shall be evaluated.</typeparam>
+    public interface IRule<T>
     {
         /// <summary>
-        /// Evaluates the rule for the specifed value.
+        /// Evaluates the rule.
         /// </summary>
         /// <remarks>
-        /// Returns true if the rule passed.
+        /// Returns true if the value complies the rule.
         /// </remarks>
         /// <param name="value"></param>
         /// <returns></returns>

@@ -1,0 +1,68 @@
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
+using Krino.Vertical.Utils.Rules;
+
+namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
+{
+    /// <summary>
+    /// Rule to eveluate if something (e.g. morpheme inside an adtree element) matches the morpheme.
+    /// </summary>
+    public class MorphemeRule
+    {
+        // Note: it is the struct to avoid incosistent situations if the MorphemeRule is null.
+
+        public static MorphemeRule Anything = new MorphemeRule(Rule.Anything<string>(), Rule.Anything<ulong>());
+        public static MorphemeRule Nothing = new MorphemeRule(Rule.Nothing<string>(), Rule.Nothing<ulong>());
+        public static MorphemeRule O = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.O));
+        public static MorphemeRule I = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I));
+        public static MorphemeRule I1 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Modal));
+        public static MorphemeRule I2 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Bivalent));
+        public static MorphemeRule I3 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Trivalent));
+        public static MorphemeRule I4 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Quadrivalent));
+        public static MorphemeRule I5 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Pentavalent));
+        public static MorphemeRule A = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.A));
+        public static MorphemeRule E = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.E));
+        public static MorphemeRule U = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.U));
+        public static MorphemeRule Epsilon = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.Epsilon));
+
+
+        private IRule<string> myMorphRule;
+        private IRule<ulong> myAttributesRule;
+
+        public MorphemeRule(IRule<string> morphRule, IRule<ulong> attributesRule)
+        {
+            myMorphRule = morphRule;
+            myAttributesRule = attributesRule;
+        }
+
+        /// <summary>
+        /// Checks if the morph and morphemeAttributes match the morpheme rule.
+        /// </summary>
+        /// <param name="morph"></param>
+        /// <param name="morphemeAttributes"></param>
+        /// <returns></returns>
+        public bool IsMatch(string morph, ulong morphemeAttributes)
+        {
+            bool result = myMorphRule.Evaluate(morph) && myAttributesRule.Evaluate(morphemeAttributes);
+            return result;
+        }
+
+        public override bool Equals(object obj) => obj is MorphemeRule rule && this == rule;
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ myMorphRule.GetHashCode();
+            hash = (hash * 16777619) ^ myAttributesRule.GetHashCode();
+
+            return hash;
+        }
+
+        public static bool operator ==(MorphemeRule rule1, MorphemeRule rule2) =>
+            rule1.myMorphRule == rule2.myMorphRule &&
+            rule1.myAttributesRule == rule2.myAttributesRule;
+
+        public static bool operator !=(MorphemeRule rule1, MorphemeRule rule2) => !(rule1 == rule2);
+
+    }
+}

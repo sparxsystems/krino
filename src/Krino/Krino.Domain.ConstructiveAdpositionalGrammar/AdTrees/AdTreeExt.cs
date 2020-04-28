@@ -29,27 +29,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         }
 
         /// <summary>
-        /// Returns true if an adtree element with the provided pattern can be attached to the right.
-        /// </summary>
-        /// <param name="adTree"></param>
-        /// <param name="pattern"></param>
-        /// <returns></returns>
-        public static bool CanAttachToRight(this IAdTree adTree, IPattern pattern)
-        {
-            // If the rule for the right child matches with the pattern.
-            if (adTree.Pattern.RightRule.IsMatch(pattern.MorphemeRule.RequiredMorph, pattern.MorphemeRule.RequiredAttributes, pattern.PatternAttributes))
-            {
-                // If the pattern rule for the adposition matches the adtree.
-                if (pattern.AdPositionRule.IsMatch(adTree.Morpheme.Morph, adTree.Morpheme.Attributes, adTree.Pattern.PatternAttributes))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
-
-        /// <summary>
         /// Returns true if the adTreeElement can be attached to the left banch of the adTree.
         /// </summary>
         /// <param name="adTree"></param>
@@ -70,25 +49,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return false;
         }
 
-        /// <summary>
-        /// Returns true if an adtree element with the provided pattern can be attached to the left.
-        /// </summary>
-        /// <param name="adTree"></param>
-        /// <param name="pattern"></param>
-        /// <returns></returns>
-        public static bool CanAttachToLeft(this IAdTree adTree, IPattern pattern)
-        {
-            // If the rule for the right child matches with the pattern.
-            if (adTree.Pattern.LeftRule.IsMatch(pattern.MorphemeRule.RequiredMorph, pattern.MorphemeRule.RequiredAttributes, pattern.PatternAttributes))
-            {
-                // If the pattern rule for the adposition matches the adtree.
-                if (pattern.AdPositionRule.IsMatch(adTree.Morpheme.Morph, adTree.Morpheme.Attributes, adTree.Pattern.PatternAttributes))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
     }
 }

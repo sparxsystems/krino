@@ -24,9 +24,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public IPattern Pattern { get; set; } = new Pattern();
 
-        public IMorpheme Morpheme { get; set; }
+        public IMorpheme Morpheme { get; set; } = new Morpheme(null);
 
-        public GrammarCharacter GrammarCharacter => Morpheme?.GrammarCharacter ?? GrammarCharacter.Epsilon;
+        public GrammarCharacter GrammarCharacter => Morpheme.GrammarCharacter;
 
         public GrammarCharacter InheritedGrammarCharacter
         {
@@ -53,9 +53,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 if (myAdPosition != value)
                 {
+                    // Note: only the parent can set the adposition property.
+                    // If the parent adposition is not set.
                     if (value != null && value.Right != this && value.Left != this)
                     {
-                        throw new InvalidOperationException($"{nameof(IAdTree.AdPosition)} must be set via setting of {nameof(IAdTree.Right)} or {nameof(IAdTree.Left)}.");
+                        throw new InvalidOperationException($"{nameof(IAdTree.AdPosition)} must be first set by the parent via {nameof(IAdTree.Right)} or {nameof(IAdTree.Left)}.");
+                    }
+                    if (value == null && (myAdPosition.Right == this || myAdPosition.Left == this))
+                    {
+                        throw new InvalidOperationException($"{nameof(IAdTree.AdPosition)} must be first set to null by the parent via {nameof(IAdTree.Right)} or {nameof(IAdTree.Left)}.");
                     }
 
                     myAdPosition = value;

@@ -1,4 +1,6 @@
-﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+
+namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
     /// <summary>
     /// Declares the pattern which gives the form to the linguistic construction.

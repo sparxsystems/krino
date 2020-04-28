@@ -94,6 +94,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             // The adTree2 does not references the adTree.RightChild.RightChild therefore it shall throw the exception.
             Assert.Throws<InvalidOperationException>(() => adTree.Right.Right.AdPosition = adTree2);
+
+            // Also it shall not be possible to assign null.
+            Assert.Throws<InvalidOperationException>(() => adTree.Right.Right.AdPosition = null);
         }
 
         [Test]
