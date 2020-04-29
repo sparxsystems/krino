@@ -37,6 +37,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// </summary>
         PatternRule GovernorRule { get; }
 
+
         /// <summary>
         /// Returns the valency position.
         /// </summary>

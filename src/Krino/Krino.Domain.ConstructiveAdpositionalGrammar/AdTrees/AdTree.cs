@@ -14,13 +14,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// <summary>
     /// Implements the AdTree as defined in the document Constructive Adposition Grammar.
     /// </summary>
-    [DebuggerDisplay("{GrammarCharacter}: {Morpheme?.Morph}")]
+    [DebuggerDisplay("{Left?.Morpheme?.Morph} <- {Morpheme?.Morph} -> {Right?.Morpheme?.Morph}")]
     public class AdTree : IAdTree
     {
         private IAdTree myAdPosition;
         private IAdTree myRightChild;
         private IAdTree myLeftChild;
 
+
+        public AdTree() { }
+
+        public AdTree(IMorpheme morpheme, IPattern pattern)
+        {
+            Morpheme = morpheme;
+            Pattern = pattern;
+        }
 
         public IPattern Pattern { get; set; } = new Pattern();
 
@@ -94,12 +102,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 if (myRightChild != value)
                 {
-                    if (myRightChild != null)
-                    {
-                        myRightChild.AdPosition = null;
-                    }
+                    IAdTree previousRightChild = myRightChild;
 
                     myRightChild = value;
+
+                    // Correctly unset the previous right child.
+                    if (previousRightChild != null)
+                    {
+                        previousRightChild.AdPosition = null;
+                    }
 
                     if (myRightChild != null)
                     {
@@ -128,19 +139,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             get => myLeftChild;
             set
             {
-                if (myLeftChild != value)
+                IAdTree previousLeftChild = myLeftChild;
+
+                myLeftChild = value;
+
+                // Correctly unset the previous left child.
+                if (previousLeftChild != null)
                 {
-                    if (myLeftChild != null)
-                    {
-                        myLeftChild.AdPosition = null;
-                    }
+                    previousLeftChild.AdPosition = null;
+                }
 
-                    myLeftChild = value;
-
-                    if (myLeftChild != null)
-                    {
-                        myLeftChild.AdPosition = this;
-                    }
+                if (myLeftChild != null)
+                {
+                    myLeftChild.AdPosition = this;
                 }
             }
         }
@@ -216,14 +227,29 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 IAdTree result = null;
 
-                // If this element does not have specified any valency attribute.
-                if (Morpheme == null || !StructuralAttributes.I.Verb.IsValencySpecified(Morpheme.Attributes))
+                // If this element is left child.
+                if (IsOnLeft)
                 {
+                    // then if this element saturates a valency position return it otherwise
+                    // just iterate up and find the first adposition which saturates an adposition.
                     result = Pattern.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
                 }
+                else if (IsOnRight)
+                {
+                    // Iterate up and find the first adposition which is on left.
+                    IAdTree onLeftAdPosition = AdPositions.FirstOrDefault(x => x.IsOnLeft);
+                    if (onLeftAdPosition != null)
+                    {
+                        result = onLeftAdPosition.ValencyAdPosition;
+                    }
+                }
+                // This is the root.
                 else
                 {
-                    result = AdPositions.FirstOrDefault(x => x.Morpheme != null && StructuralAttributes.I.Verb.IsValencySpecified(Morpheme.Attributes));
+                    if (Pattern.ValencyPosition > 0)
+                    {
+                        result = this;
+                    }
                 }
 
                 return result;
@@ -345,7 +371,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     {
                         isLeftBeforeRight = true;
                     }
-                    else if (Left.Morpheme != null)
+                    else
                     {
                         if (StructuralAttributes.A.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
                             StructuralAttributes.A.Determiner.IsIn(Left.Morpheme.Attributes) ||

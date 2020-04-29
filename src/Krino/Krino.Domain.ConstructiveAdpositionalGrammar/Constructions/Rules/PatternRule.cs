@@ -1,15 +1,16 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Vertical.Utils.Rules;
+using System;
+using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 {
     /// <summary>
     /// Rule to eveluate if something (e.g. adtree element) matches the pattern.
     /// </summary>
-    public class PatternRule
+    [DebuggerDisplay("{myMorphemeRule} && {myPatternAttributesRule}")]
+    public class PatternRule : IEquatable<PatternRule>
     {
-        // Note: it is the struct to avoid incosistent situations if the PatternRule is null.
-
         public static PatternRule Anything = new PatternRule(MorphemeRule.Anything, Rule.Anything<ulong>());
         public static PatternRule Nothing = new PatternRule(MorphemeRule.Nothing, Rule.Nothing<ulong>());
         public static PatternRule Epsilon = new PatternRule(MorphemeRule.Epsilon, Rule.Anything<ulong>());
@@ -22,10 +23,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         private MorphemeRule myMorphemeRule;
         private IRule<ulong> myPatternAttributesRule;
 
+        public PatternRule(MorphemeRule morphemeRule) : this(morphemeRule, Rule.Anything<ulong>())
+        {
+        }
+
         public PatternRule(MorphemeRule morphemeRule, IRule<ulong> patternAttributesRule)
         {
-            myMorphemeRule = morphemeRule;
-            myPatternAttributesRule = patternAttributesRule;
+            myMorphemeRule = morphemeRule ?? throw new ArgumentNullException(nameof(morphemeRule));
+            myPatternAttributesRule = patternAttributesRule ?? throw new ArgumentNullException(nameof(patternAttributesRule));
         }
 
 
@@ -42,9 +47,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
             return isMatch;
         }
 
-        //public PatternRule Where(MorphemeRule morphemeRule) => new PatternRule(morphemeRule, RequiredPatternAttributes, RejectedPatternAttributes);
 
-        public override bool Equals(object obj) => obj is PatternRule rule && this == rule;
+        public bool Equals(PatternRule other)
+        {
+            bool result = myMorphemeRule.Equals(other.myMorphemeRule) &&
+                          myPatternAttributesRule.Equals(other.myPatternAttributesRule);
+            return result;
+        }
+
+        public override bool Equals(object obj) => obj is PatternRule rule && Equals(rule);
 
         public override int GetHashCode()
         {
@@ -55,11 +66,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
             return hash;
         }
-
-        public static bool operator ==(PatternRule rule1, PatternRule rule2) =>
-            rule1.myMorphemeRule == rule2.myMorphemeRule &&
-            rule1.myPatternAttributesRule == rule2.myPatternAttributesRule;
-
-        public static bool operator !=(PatternRule rule1, PatternRule rule2) => !(rule1 == rule2);
     }
 }

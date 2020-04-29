@@ -14,7 +14,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttr
 
         private static PatternAttributes Instance { get; } = new PatternAttributes();
 
-
         /// <summary>
         /// Indicates which valancy position is saturated.
         /// </summary>

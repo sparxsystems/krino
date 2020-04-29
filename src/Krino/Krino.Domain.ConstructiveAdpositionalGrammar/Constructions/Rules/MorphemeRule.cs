@@ -1,12 +1,15 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using Krino.Vertical.Utils.Rules;
+using System;
+using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 {
     /// <summary>
     /// Rule to eveluate if something (e.g. morpheme inside an adtree element) matches the morpheme.
     /// </summary>
-    public class MorphemeRule
+    [DebuggerDisplay("{myMorphRule} && {myAttributesRule}")]
+    public class MorphemeRule : IEquatable<MorphemeRule>
     {
         // Note: it is the struct to avoid incosistent situations if the MorphemeRule is null.
 
@@ -30,8 +33,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public MorphemeRule(IRule<string> morphRule, IRule<ulong> attributesRule)
         {
-            myMorphRule = morphRule;
-            myAttributesRule = attributesRule;
+            myMorphRule = morphRule ?? throw new ArgumentNullException(nameof(morphRule));
+            myAttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
         }
 
         /// <summary>
@@ -46,7 +49,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
             return result;
         }
 
-        public override bool Equals(object obj) => obj is MorphemeRule rule && this == rule;
+
+        public bool Equals(MorphemeRule other)
+        {
+            bool result = myMorphRule.Equals(other.myMorphRule) &&
+                          myAttributesRule.Equals(other.myAttributesRule);
+            return result;
+        }
+
+        public override bool Equals(object obj) => obj is MorphemeRule rule && Equals(rule);
 
         public override int GetHashCode()
         {
@@ -57,12 +68,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
             return hash;
         }
-
-        public static bool operator ==(MorphemeRule rule1, MorphemeRule rule2) =>
-            rule1.myMorphRule == rule2.myMorphRule &&
-            rule1.myAttributesRule == rule2.myAttributesRule;
-
-        public static bool operator !=(MorphemeRule rule1, MorphemeRule rule2) => !(rule1 == rule2);
 
     }
 }

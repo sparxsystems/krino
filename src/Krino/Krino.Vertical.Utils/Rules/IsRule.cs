@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace Krino.Vertical.Utils.Rules
 {
@@ -6,6 +7,7 @@ namespace Krino.Vertical.Utils.Rules
     /// Simple rule evaluation.
     /// </summary>
     /// <typeparam name="T"></typeparam>
+    [DebuggerDisplay("{myRequiredValue}")]
     public class IsRule<T> : IRule<T>
         where T : IEquatable<T>
     {
@@ -17,6 +19,10 @@ namespace Krino.Vertical.Utils.Rules
         }
 
         public bool Evaluate(T value) => myRequiredValue.Equals(value);
+
+
+        public bool Equals(IRule<T> other) => other is IsRule<T> isRule && myRequiredValue.Equals(isRule.myRequiredValue);
+
 
         /// <summary>
         /// Implicitly converts the value into the rule.
