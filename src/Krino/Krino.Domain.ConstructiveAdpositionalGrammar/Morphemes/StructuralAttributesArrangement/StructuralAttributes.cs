@@ -78,5 +78,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
 
             return GrammarCharacter.Epsilon;
         }
+
+        /// <summary>
+        /// Returns structural attributes for the provided grammar character.
+        /// </summary>
+        /// <param name="grammarCharacter"></param>
+        /// <returns></returns>
+        public static ulong GetAttributes(GrammarCharacter grammarCharacter)
+        {
+            if (grammarCharacter == GrammarCharacter.O)
+            {
+                return O;
+            }
+            if (grammarCharacter == GrammarCharacter.I)
+            {
+                return I;
+            }
+            if (grammarCharacter == GrammarCharacter.A)
+            {
+                return A;
+            }
+            if (grammarCharacter == GrammarCharacter.E)
+            {
+                return E;
+            }
+            if (grammarCharacter == GrammarCharacter.U)
+            {
+                return U;
+            }
+
+            return Epsilon;
+        }
     }
 }

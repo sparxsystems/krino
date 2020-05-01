@@ -30,7 +30,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             Pattern = pattern;
         }
 
-        public IPattern Pattern { get; set; } = new Pattern();
+        public IPattern Pattern { get; set; }
 
         public IMorpheme Morpheme { get; set; } = new Morpheme(null);
 

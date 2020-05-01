@@ -14,7 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// Pattern followed by the adtree element.
         /// </summary>
-        IPattern Pattern { get; set; }
+        IPattern Pattern { get; }
 
         /// <summary>
         /// Morpheme.

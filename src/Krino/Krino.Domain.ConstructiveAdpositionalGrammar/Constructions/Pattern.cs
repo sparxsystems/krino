@@ -1,11 +1,18 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
-    [DebuggerDisplay("{LeftRule} <- {AdPositionRule} -> {RightRule}", Name = "{myName}")]
+    [DebuggerDisplay("{LeftRule} <- -> {RightRule}", Name = "{myName}")]
     public class Pattern : IPattern
     {
+        public static Pattern O = new Pattern("O") { MorphemeRule = MorphemeRule.O, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
+        public static Pattern I = new Pattern("I") { MorphemeRule = MorphemeRule.I, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
+        public static Pattern A = new Pattern("A") { MorphemeRule = MorphemeRule.A, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
+        public static Pattern E_Preposition = new Pattern("E Preposition") { MorphemeRule = MorphemeRule.E_Preposition, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
+        public static Pattern E_adverb = new Pattern("E Adverb") { MorphemeRule = MorphemeRule.E_Adverb, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
+
         // Optional information for the debugging purposes.
         private string myName;
 
@@ -18,14 +25,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
         public MorphemeRule MorphemeRule { get; set; } = MorphemeRule.Anything;
 
-        /// <summary>
-        /// Rules for the matching left child.
-        /// </summary>
+
         public PatternRule LeftRule { get; set; } = PatternRule.Anything;
 
-        /// <summary>
-        /// Rules for the matching right child.
-        /// </summary>
         public PatternRule RightRule { get; set; } = PatternRule.Anything;
 
 

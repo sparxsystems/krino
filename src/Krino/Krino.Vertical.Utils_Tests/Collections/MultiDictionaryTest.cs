@@ -11,7 +11,7 @@ namespace Krino.Vertical.Utils_Tests.Collections
         [Test]
         public void Add()
         {
-            MultiDictionary<string, string> dictionary = new MultiDictionary<string, string>();
+            MultiDictionaryUniqueValue<string, string> dictionary = new MultiDictionaryUniqueValue<string, string>();
             
             dictionary.Add("1", "2");
             Assert.AreEqual(1, dictionary.Count);
@@ -40,7 +40,7 @@ namespace Krino.Vertical.Utils_Tests.Collections
         [Test]
         public void Add_Sequence()
         {
-            MultiDictionary<string, string> dictionary = new MultiDictionary<string, string>();
+            MultiDictionaryUniqueValue<string, string> dictionary = new MultiDictionaryUniqueValue<string, string>();
 
             dictionary.Add("1", new List<string>() { "2", "3" });
             Assert.AreEqual(2, dictionary.Count);
@@ -52,7 +52,7 @@ namespace Krino.Vertical.Utils_Tests.Collections
         [Test]
         public void Indexer()
         {
-            MultiDictionary<string, string> dictionary = new MultiDictionary<string, string>();
+            MultiDictionaryUniqueValue<string, string> dictionary = new MultiDictionaryUniqueValue<string, string>();
 
             dictionary["1"] = new ReadOnlySet<string>(new HashSet<string>() { "2", "3" });
             ISet<string> result = dictionary["1"];
@@ -65,7 +65,7 @@ namespace Krino.Vertical.Utils_Tests.Collections
         [Test]
         public void Remove()
         {
-            MultiDictionary<string, string> dictionary = new MultiDictionary<string, string>()
+            MultiDictionaryUniqueValue<string, string> dictionary = new MultiDictionaryUniqueValue<string, string>()
             {
                 { "1", "2" },
                 { "1", "3" },
@@ -89,7 +89,7 @@ namespace Krino.Vertical.Utils_Tests.Collections
         [Test]
         public void TryGetValues()
         {
-            MultiDictionary<string, string> dictionary = new MultiDictionary<string, string>()
+            MultiDictionaryUniqueValue<string, string> dictionary = new MultiDictionaryUniqueValue<string, string>()
             {
                 { "1", "2" },
                 { "1", "3" },

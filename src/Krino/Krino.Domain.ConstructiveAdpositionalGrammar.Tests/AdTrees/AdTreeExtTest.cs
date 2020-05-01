@@ -71,10 +71,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
                 Pattern = new Pattern() { RightRule = new PatternRule(MorphemeRule.O), }
             };
-            IAdTree adTreeElement = new AdTree()
-            {
-                Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.O },
-            };
+            IAdTree adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.O }, Pattern.O);
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
 
 
@@ -84,11 +81,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 // Stative (O) can connect to the right child.
                 Pattern = new Pattern() { RightRule = new PatternRule(MorphemeRule.O), }
             };
-            adTreeElement = new AdTree()
-            {
-                // But the element is the verbant (I)
-                Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.I },
-            };
+            // But the element is the verbant (I)
+            adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.I }, Pattern.I);
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
         }
 
@@ -183,10 +177,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
                 Pattern = new Pattern() { LeftRule = new PatternRule(MorphemeRule.O), }
             };
-            IAdTree adTreeElement = new AdTree()
-            {
-                Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.O },
-            };
+            IAdTree adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.O }, new Pattern());
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
 
 
@@ -196,11 +187,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 // Stative (O) can connect to the left child.
                 Pattern = new Pattern() { LeftRule = new PatternRule(MorphemeRule.O), }
             };
-            adTreeElement = new AdTree()
-            {
-                // But the element is the verbant (I)
-                Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.I },
-            };
+            // But the element is the verbant (I)
+            adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.I }, new Pattern());
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
         }
     }

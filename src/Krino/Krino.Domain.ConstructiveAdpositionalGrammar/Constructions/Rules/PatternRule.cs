@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
@@ -13,7 +14,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     {
         public static PatternRule Anything = new PatternRule(MorphemeRule.Anything, Rule.Anything<ulong>());
         public static PatternRule Nothing = new PatternRule(MorphemeRule.Nothing, Rule.Nothing<ulong>());
-        public static PatternRule Epsilon = new PatternRule(MorphemeRule.Epsilon, Rule.Anything<ulong>());
         public static PatternRule EpsilonValency1 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.First));
         public static PatternRule EpsilonValency2 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Second));
         public static PatternRule EpsilonValency3 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Third));
@@ -33,6 +33,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
             myPatternAttributesRule = patternAttributesRule ?? throw new ArgumentNullException(nameof(patternAttributesRule));
         }
 
+        /// <summary>
+        /// Returns true if the morpheme rule accepts the provided grammar character.
+        /// </summary>
+        /// <param name="grammarCharacter"></param>
+        /// <returns></returns>
+        public bool IsMatch(GrammarCharacter grammarCharacter)
+        {
+            bool result = myMorphemeRule.IsMatch(grammarCharacter);
+            return result;
+        }
 
         /// <summary>
         /// Returns true if it matches the pattern rule.

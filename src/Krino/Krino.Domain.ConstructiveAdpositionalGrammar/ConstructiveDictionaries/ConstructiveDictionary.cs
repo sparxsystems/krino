@@ -10,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 {
     public class ConstructiveDictionary : IConstructiveDictionary
     {
-        public MultiDictionary<string, IMorpheme> Lexemes { get; } = new MultiDictionary<string, IMorpheme>()
+        public MultiDictionaryUniqueValue<string, IMorpheme> Lexemes { get; } = new MultiDictionaryUniqueValue<string, IMorpheme>()
         {
             {"I", new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun.Subjective } },
             {"book", new Morpheme("book") { Attributes = StructuralAttributes.O.Noun.Common.Concrete | StructuralAttributes.O.Noun.Countable } },
@@ -21,45 +21,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public List<IPattern> Patterns { get; } = new List<IPattern>()
         {
-            new Pattern()
-            {
-                MorphemeRule = MorphemeRule.O,
-                RightRule = PatternRule.Nothing,
-                LeftRule = PatternRule.Nothing,
-            },
-            new Pattern()
-            {
-                MorphemeRule = MorphemeRule.O,
-                RightRule = PatternRule.Nothing,
-                LeftRule = PatternRule.Nothing,
-            },
-            new Pattern()
-            {
-                MorphemeRule = MorphemeRule.I2,
-                RightRule = PatternRule.Nothing,
-                LeftRule = PatternRule.Nothing,
-            },
-            new Pattern()
-            {
-                MorphemeRule = MorphemeRule.A,
-                RightRule = PatternRule.Nothing,
-                LeftRule = PatternRule.Nothing,
-            },
-
-            new Pattern()
-            {
-                MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = PatternRule.Anything,
-                LeftRule = PatternRule.Anything,
-            },
-            new Pattern()
-            {
-                PatternAttributes = PatternAttributes.ValencyPosition.First,
-
-                MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = PatternRule.Anything,
-                LeftRule = PatternRule.Anything,
-            },
         };
 
         

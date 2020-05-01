@@ -11,8 +11,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{myMorphRule} && {myAttributesRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
-        // Note: it is the struct to avoid incosistent situations if the MorphemeRule is null.
-
         public static MorphemeRule Anything = new MorphemeRule(Rule.Anything<string>(), Rule.Anything<ulong>());
         public static MorphemeRule Nothing = new MorphemeRule(Rule.Nothing<string>(), Rule.Nothing<ulong>());
         public static MorphemeRule O = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.O));
@@ -36,6 +34,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         {
             myMorphRule = morphRule ?? throw new ArgumentNullException(nameof(morphRule));
             myAttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
+        }
+
+        /// <summary>
+        /// Returns true if the morpheme rule accepts the provided grammar character.
+        /// </summary>
+        /// <param name="grammarCharacter"></param>
+        /// <returns></returns>
+        public bool IsMatch(GrammarCharacter grammarCharacter)
+        {
+            ulong attributes = StructuralAttributes.GetAttributes(grammarCharacter);
+            if (myAttributesRule.Evaluate(attributes))
+            {
+                return true;
+            }
+
+            return false;
         }
 
         /// <summary>

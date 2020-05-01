@@ -20,6 +20,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <summary>
         /// List of known lexemes.
         /// </summary>
-        MultiDictionary<string, IMorpheme> Lexemes { get; }
+        MultiDictionaryUniqueValue<string, IMorpheme> Lexemes { get; }
     }
 }

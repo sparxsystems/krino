@@ -1,9 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Krino.Vertical.Utils.Graphs
+﻿namespace Krino.Vertical.Utils.Graphs
 {
+    /// <summary>
+    /// Vertex of the graph.
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
     public class Vertex<T>
     {
         public Vertex(string id)
@@ -11,6 +11,9 @@ namespace Krino.Vertical.Utils.Graphs
             Id = id;
         }
 
+        /// <summary>
+        /// Unique identifier of the vertex.
+        /// </summary>
         public string Id { get; private set; }
 
         public T Value { get; set; }

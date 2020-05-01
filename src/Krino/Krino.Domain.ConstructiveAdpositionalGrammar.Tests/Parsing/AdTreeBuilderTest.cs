@@ -100,53 +100,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void AddMorpheme_FindingPatternForAdTreeElement()
-        {
-            List<IPattern> patterns = new List<IPattern>()
-            {
-                // Noun
-                new Pattern()
-                {
-                    MorphemeRule = MorphemeRule.O,
-                    RightRule = PatternRule.Nothing,
-                    LeftRule = PatternRule.Nothing,
-                },
-
-                // Epsilon
-                new Pattern()
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = PatternRule.Anything,
-                    LeftRule = PatternRule.Anything,
-                },
-            };
-
-            AdTreeBuilder builder = new AdTreeBuilder(patterns);
-
-            Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
-
-            // Adding the morpheme which match to the adposition.
-            morpheme = new Morpheme("") { Attributes = StructuralAttributes.Epsilon };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
-            Assert.AreEqual(1, builder.ActiveAdTrees.Count());
-            Assert.AreEqual(2, builder.ActiveAdTrees[0].Count());
-
-
-
-            builder = new AdTreeBuilder(patterns);
-
-            morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
-
-            // Adding the morpheme which does not match.
-            morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun };
-            Assert.IsFalse(builder.AddMorpheme(morpheme));
-            Assert.AreEqual(1, builder.ActiveAdTrees.Count());
-            Assert.AreEqual(1, builder.ActiveAdTrees[0].Count());
-        }
-
-        [Test]
         public void I_read_the_book()
         {
             List<IPattern> patterns = new List<IPattern>()

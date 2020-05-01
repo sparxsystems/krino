@@ -431,13 +431,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 {
                     Pattern = new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First },
 
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent }, Pattern = Pattern.I },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun }, Pattern = Pattern.O }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
+                    Pattern = new Pattern(),
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun }, Pattern = Pattern.O },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner }, Pattern = Pattern.A }
                 }
             };
 
