@@ -40,7 +40,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
         public static AdPositionAttributes U { get; } = new AdPositionAttributes(Instance);
 
         /// <summary>
-        /// Epsilon - i.e. without the grammar character.
+        /// Epsilon - i.e. if the adposition does not convey any relation, it is purely syntactic.
         /// </summary>
         public static EnumValue Epsilon { get; } = new EnumValue(Instance);
 

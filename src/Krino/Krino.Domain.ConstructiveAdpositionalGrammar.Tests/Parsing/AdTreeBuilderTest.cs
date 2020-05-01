@@ -14,7 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     public class AdTreeBuilderTest
     {
         [Test]
-        public void AddMorpheme_I_read()
+        public void I_read()
         {
             List<IPattern> patterns = new List<IPattern>()
             {
@@ -59,7 +59,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void AddMorpheme_the_good_book()
+        public void The_good_book()
         {
             List<IPattern> patterns = new List<IPattern>()
             {
@@ -155,32 +155,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void AddMorpheme_I_read_the_book()
+        public void I_read_the_book()
         {
             List<IPattern> patterns = new List<IPattern>()
             {
-                new Pattern()
+                new Pattern("O")
                 {
                     MorphemeRule = MorphemeRule.O,
                     AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
-                new Pattern()
+                new Pattern("I")
                 {
                     MorphemeRule = MorphemeRule.I,
                     AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
-                new Pattern()
+                new Pattern("A")
                 {
                     MorphemeRule = MorphemeRule.A,
                     AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
-                new Pattern()
+                new Pattern("1st Valency")
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
@@ -188,7 +188,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
-                new Pattern()
+                new Pattern("2nd Valency")
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
@@ -196,7 +196,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
-                new Pattern()
+                new Pattern("A<->O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
                     AdPositionRule = PatternRule.Anything,
@@ -210,8 +210,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
-            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
-            Assert.IsTrue(builder.ActiveAdTrees[0].Pattern == patterns[0]);
 
             morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
@@ -221,6 +219,103 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual("I", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+            Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Left.Morpheme.Morph);
+            Assert.AreEqual("book", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
+        }
+
+
+        [Test]
+        public void I_read_the_book_in_the_room()
+        {
+            List<IPattern> patterns = new List<IPattern>()
+            {
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+                new Pattern("I")
+                {
+                    MorphemeRule = MorphemeRule.I,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+                new Pattern("A")
+                {
+                    MorphemeRule = MorphemeRule.A,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+                new Pattern("1st Valency")
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.First,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = new PatternRule(MorphemeRule.I),
+                    LeftRule = new PatternRule(MorphemeRule.O)
+                },
+                new Pattern("2nd Valency")
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.Second,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = new PatternRule(MorphemeRule.I),
+                    LeftRule = new PatternRule(MorphemeRule.O)
+                },
+                new Pattern("A<->O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = new PatternRule(MorphemeRule.O),
+                    LeftRule = new PatternRule(MorphemeRule.A)
+                },
+                new Pattern("E")
+                {
+                    MorphemeRule = MorphemeRule.E_Preposition,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = new PatternRule(MorphemeRule.I),
+                    LeftRule = new PatternRule(MorphemeRule.O)
+                },
+            };
+
+            AdTreeBuilder builder = new AdTreeBuilder(patterns);
+
+
+            Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("in") { Attributes = StructuralAttributes.E.Preposition };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("room") { Attributes = StructuralAttributes.O.Noun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual("I", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+            Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Left.Morpheme.Morph);
+            Assert.AreEqual("book", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
         }
     }
 }

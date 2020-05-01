@@ -506,7 +506,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
-                    Morpheme = new Morpheme("in") { Attributes = StructuralAttributes.U.Preposition },
+                    Morpheme = new Morpheme("in") { Attributes = StructuralAttributes.E.Preposition },
 
                     Right = new AdTree()
                     {
@@ -525,7 +525,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                         Left = new AdTree()
                         {
-                            Morpheme = new Morpheme("of") { Attributes = StructuralAttributes.U.Preposition },
+                            Morpheme = new Morpheme("of") { Attributes = StructuralAttributes.E.Preposition },
 
                             Right = new AdTree()
                             {
@@ -543,7 +543,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                     Left = new AdTree()
                     {
-                        Morpheme = new Morpheme("of") { Attributes = StructuralAttributes.U.Preposition },
+                        Morpheme = new Morpheme("of") { Attributes = StructuralAttributes.E.Preposition },
 
                         Right = new AdTree()
                         {
@@ -553,7 +553,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                                 Left = new AdTree() { Morpheme = new Morpheme("12") { Attributes = StructuralAttributes.A.Numeral } },
                             },
 
-                            Left = new AdTree() { Morpheme = new Morpheme("about") { Attributes = StructuralAttributes.U.Preposition } },
+                            Left = new AdTree() { Morpheme = new Morpheme("about") { Attributes = StructuralAttributes.E.Preposition } },
                         },
 
                         Left = new AdTree()
@@ -597,7 +597,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Left = new AdTree()
                 {
-                    Morpheme = new Morpheme("for") { Attributes = StructuralAttributes.U.Preposition },
+                    Morpheme = new Morpheme("for") { Attributes = StructuralAttributes.E.Preposition },
 
                     Right = new AdTree()
                     {

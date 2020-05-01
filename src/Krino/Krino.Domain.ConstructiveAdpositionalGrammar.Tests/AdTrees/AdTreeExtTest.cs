@@ -165,6 +165,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(valency2.CanAttachToRight(adTree));
 
 
+            // Try to connect the first valency position.
+            AdTree valency1 = new AdTree()
+            {
+                Pattern = new Pattern()
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.First,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    AdPositionRule = PatternRule.Anything,
+                    RightRule = new PatternRule(MorphemeRule.I),
+                    LeftRule = new PatternRule(MorphemeRule.O)
+                },
+            };
+
+            // The first valency is already there so it should be false.
+            Assert.IsFalse(valency1.CanAttachToRight(adTree));
+
             // Try to connect the third valency position.
             AdTree valency3 = new AdTree()
             {

@@ -3,9 +3,17 @@ using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
-    [DebuggerDisplay("{LeftRule} <- {AdPositionRule} -> {RightRule}")]
+    [DebuggerDisplay("{LeftRule} <- {AdPositionRule} -> {RightRule}", Name = "{myName}")]
     public class Pattern : IPattern
     {
+        // Optional information for the debugging purposes.
+        private string myName;
+
+        public Pattern(string name = null)
+        {
+            myName = name;
+        }
+
         public ulong PatternAttributes { get; set; }
 
         public MorphemeRule MorphemeRule { get; set; } = MorphemeRule.Anything;

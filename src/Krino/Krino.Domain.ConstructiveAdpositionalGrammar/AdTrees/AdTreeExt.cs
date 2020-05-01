@@ -65,31 +65,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Returns true if the adTreeElement can be attached to the right branch of the adTree.
         /// </summary>
         /// <param name="adTree"></param>
-        /// <param name="adTreeElement"></param>
+        /// <param name="adTreeElementToRight"></param>
         /// <returns></returns>
-        public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeElement)
+        public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeElementToRight)
         {
             // If the rule allows to attach something to the right.
             if (!adTree.Pattern.RightRule.Equals(PatternRule.Nothing))
             {
-                // If the valency position is specified.
-                if (adTree.Pattern.ValencyPosition > 1)
+                // If the valency position is specified then check correctness with regard to presence of previous valencies.
+                if (adTree.Pattern.ValencyPosition > 0)
                 {
-                    // Check if previous valency is present in the element which shall be attached.
-                    if (adTree.Pattern.ValencyPosition - 1 != adTreeElement.Pattern.ValencyPosition &&
-                        !adTreeElement.RightChildren.Any(x => adTree.Pattern.ValencyPosition - 1 == x.Pattern.ValencyPosition))
+                    IAdTree closestValencyAdPosition = new IAdTree[] { adTreeElementToRight }.Concat(adTreeElementToRight.RightChildren)
+                        .FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
+
+                    if (closestValencyAdPosition == null && adTree.Pattern.ValencyPosition > 1 ||
+                        closestValencyAdPosition != null && adTree.Pattern.ValencyPosition != closestValencyAdPosition.Pattern.ValencyPosition + 1)
                     {
                         return false;
                     }
                 }
 
                 // If the right rule of the adtree matches the element.
-                if (adTree.Pattern.RightRule.IsMatch(adTreeElement.Morpheme.Morph, adTreeElement.Morpheme.Attributes, adTreeElement.Pattern.PatternAttributes) ||
+                if (adTree.Pattern.RightRule.IsMatch(adTreeElementToRight.Morpheme.Morph, adTreeElementToRight.Morpheme.Attributes, adTreeElementToRight.Pattern.PatternAttributes) ||
                     // or if the right rule of the adtree matches the right rule of the element - inheritance.
-                    adTree.Pattern.RightRule.Equals(adTreeElement.Pattern.RightRule))
+                    adTree.Pattern.RightRule.Equals(adTreeElementToRight.Pattern.RightRule))
                 {
                     // If the adposition rule matches the adtree.
-                    if (adTreeElement.Pattern.AdPositionRule.IsMatch(adTree.Morpheme.Morph, adTree.Morpheme.Attributes, adTree.Pattern.PatternAttributes))
+                    if (adTreeElementToRight.Pattern.AdPositionRule.IsMatch(adTree.Morpheme.Morph, adTree.Morpheme.Attributes, adTree.Pattern.PatternAttributes))
                     {
                         return true;
                     }

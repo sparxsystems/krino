@@ -376,7 +376,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                         if (StructuralAttributes.A.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
                             StructuralAttributes.A.Determiner.IsIn(Left.Morpheme.Attributes) ||
                             StructuralAttributes.I.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
-                            StructuralAttributes.U.Preposition.IsIn(Left.Morpheme.Attributes) ||
+                            StructuralAttributes.E.Preposition.IsIn(Left.Morpheme.Attributes) ||
                             StructuralAttributes.A.Numeral.IsIn(Left.Morpheme.Attributes)
                             )
                         {

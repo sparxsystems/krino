@@ -23,7 +23,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static MorphemeRule I4 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Quadrivalent));
         public static MorphemeRule I5 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Pentavalent));
         public static MorphemeRule A = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.A));
-        public static MorphemeRule E = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.E));
+        public static MorphemeRule E_Preposition = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.E.Preposition));
+        public static MorphemeRule E_Adverb = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.E.Adverb));
         public static MorphemeRule U = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.U));
         public static MorphemeRule Epsilon = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.Epsilon));
 
