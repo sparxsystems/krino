@@ -21,7 +21,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.O,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -29,7 +28,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.I,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -38,7 +36,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
@@ -66,7 +63,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.A,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -74,7 +70,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.O,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -82,7 +77,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.O),
                     LeftRule = new PatternRule(MorphemeRule.A)
                 },
@@ -114,7 +108,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.O,
-                    AdPositionRule = PatternRule.Epsilon,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -123,7 +116,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Anything,
                     LeftRule = PatternRule.Anything,
                 },
@@ -162,21 +154,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("O")
                 {
                     MorphemeRule = MorphemeRule.O,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
                 new Pattern("I")
                 {
                     MorphemeRule = MorphemeRule.I,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
                 new Pattern("A")
                 {
                     MorphemeRule = MorphemeRule.A,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -184,7 +173,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
@@ -192,14 +180,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
                 new Pattern("A<->O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.O),
                     LeftRule = new PatternRule(MorphemeRule.A)
                 },
@@ -237,21 +223,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("O")
                 {
                     MorphemeRule = MorphemeRule.O,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
                 new Pattern("I")
                 {
                     MorphemeRule = MorphemeRule.I,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
                 new Pattern("A")
                 {
                     MorphemeRule = MorphemeRule.A,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -259,7 +242,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
@@ -267,21 +249,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
                 new Pattern("A<->O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.O),
                     LeftRule = new PatternRule(MorphemeRule.A)
                 },
                 new Pattern("E")
                 {
                     MorphemeRule = MorphemeRule.E_Preposition,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },

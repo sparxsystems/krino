@@ -24,28 +24,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             new Pattern()
             {
                 MorphemeRule = MorphemeRule.O,
-                AdPositionRule = PatternRule.Epsilon,
                 RightRule = PatternRule.Nothing,
                 LeftRule = PatternRule.Nothing,
             },
             new Pattern()
             {
                 MorphemeRule = MorphemeRule.O,
-                AdPositionRule = PatternRule.EpsilonValency1,
                 RightRule = PatternRule.Nothing,
                 LeftRule = PatternRule.Nothing,
             },
             new Pattern()
             {
                 MorphemeRule = MorphemeRule.I2,
-                AdPositionRule = PatternRule.Epsilon,
                 RightRule = PatternRule.Nothing,
                 LeftRule = PatternRule.Nothing,
             },
             new Pattern()
             {
                 MorphemeRule = MorphemeRule.A,
-                AdPositionRule = PatternRule.Epsilon,
                 RightRule = PatternRule.Nothing,
                 LeftRule = PatternRule.Nothing,
             },
@@ -53,7 +49,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             new Pattern()
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                AdPositionRule = PatternRule.Anything,
                 RightRule = PatternRule.Anything,
                 LeftRule = PatternRule.Anything,
             },
@@ -62,7 +57,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 PatternAttributes = PatternAttributes.ValencyPosition.First,
 
                 MorphemeRule = MorphemeRule.Epsilon,
-                AdPositionRule = PatternRule.Anything,
                 RightRule = PatternRule.Anything,
                 LeftRule = PatternRule.Anything,
             },

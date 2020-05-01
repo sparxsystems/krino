@@ -90,11 +90,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     // or if the right rule of the adtree matches the right rule of the element - inheritance.
                     adTree.Pattern.RightRule.Equals(adTreeElementToRight.Pattern.RightRule))
                 {
-                    // If the adposition rule matches the adtree.
-                    if (adTreeElementToRight.Pattern.AdPositionRule.IsMatch(adTree.Morpheme.Morph, adTree.Morpheme.Attributes, adTree.Pattern.PatternAttributes))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 
@@ -117,11 +113,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     // or if the LEFT rule of the adtree matches the RIGHT rule of the element - inheritance works always via the right branch.
                     adTree.Pattern.LeftRule.Equals(adTreeElement.Pattern.RightRule))
                 {
-                    // If there is a match from the adtree element to the adtree via the adposition.
-                    if (adTreeElement.Pattern.AdPositionRule.IsMatch(adTree.Morpheme.Morph, adTree.Morpheme.Attributes, adTree.Pattern.PatternAttributes))
-                    {
-                        return true;
-                    }
+                    return true;
                 }
             }
 

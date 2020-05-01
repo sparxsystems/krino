@@ -19,11 +19,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         public MorphemeRule MorphemeRule { get; set; } = MorphemeRule.Anything;
 
         /// <summary>
-        /// Rules for the matching adposition.
-        /// </summary>
-        public PatternRule AdPositionRule { get; set; } = PatternRule.Anything;
-
-        /// <summary>
         /// Rules for the matching left child.
         /// </summary>
         public PatternRule LeftRule { get; set; } = PatternRule.Anything;
@@ -33,10 +28,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// </summary>
         public PatternRule RightRule { get; set; } = PatternRule.Anything;
 
-        /// <summary>
-        /// Rules for the matching governor.
-        /// </summary>
-        public PatternRule GovernorRule { get; set; } = PatternRule.Anything;
 
         public int ValencyPosition => PatternAttributesArrangement.PatternAttributes.ValencyPosition.GetValencyPosition(PatternAttributes);
     }

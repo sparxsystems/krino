@@ -74,7 +74,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             IAdTree adTreeElement = new AdTree()
             {
                 Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.O },
-                Pattern = new Pattern() { AdPositionRule = new PatternRule(MorphemeRule.U), }
             };
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
 
@@ -89,23 +88,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 // But the element is the verbant (I)
                 Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.I },
-                Pattern = new Pattern() { AdPositionRule = new PatternRule(MorphemeRule.U), }
-            };
-            Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
-
-
-            adTree = new AdTree()
-            {
-                // The adposition is circumstantial (E)
-                Morpheme = new Morpheme("") { Attributes = StructuralAttributes.E },
-                Pattern = new Pattern() { RightRule = new PatternRule(MorphemeRule.O), }
-            };
-            adTreeElement = new AdTree()
-            {
-                Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.O },
-
-                // It is expected the adposition is the adposition (U).
-                Pattern = new Pattern() { AdPositionRule = new PatternRule(MorphemeRule.U), }
             };
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
         }
@@ -120,7 +102,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
@@ -131,7 +112,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                     Pattern = new Pattern()
                     {
                         MorphemeRule = MorphemeRule.I2,
-                        AdPositionRule = PatternRule.Anything,
                         RightRule = PatternRule.Nothing,
                         LeftRule = PatternRule.Nothing,
                     },
@@ -142,7 +122,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                     Pattern = new Pattern()
                     {
                         MorphemeRule = MorphemeRule.O,
-                        AdPositionRule = PatternRule.Anything,
                         RightRule = PatternRule.Nothing,
                         LeftRule = PatternRule.Nothing,
                     },
@@ -156,7 +135,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
@@ -172,7 +150,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
@@ -188,7 +165,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.Third,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    AdPositionRule = PatternRule.Anything,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
@@ -210,7 +186,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             IAdTree adTreeElement = new AdTree()
             {
                 Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.O },
-                Pattern = new Pattern() { AdPositionRule = new PatternRule(MorphemeRule.U), }
             };
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
 
@@ -225,23 +200,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 // But the element is the verbant (I)
                 Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.I },
-                Pattern = new Pattern() { AdPositionRule = new PatternRule(MorphemeRule.U), }
-            };
-            Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
-
-
-            adTree = new AdTree()
-            {
-                // The adposition is circumstantial (E)
-                Morpheme = new Morpheme("") { Attributes = StructuralAttributes.E },
-                Pattern = new Pattern() { LeftRule = new PatternRule(MorphemeRule.O), }
-            };
-            adTreeElement = new AdTree()
-            {
-                Morpheme = new Morpheme("hello") { Attributes = StructuralAttributes.O },
-
-                // It is expected the adposition is the adposition (U).
-                Pattern = new Pattern() { AdPositionRule = new PatternRule(MorphemeRule.U), }
             };
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
         }

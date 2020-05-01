@@ -18,11 +18,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         MorphemeRule MorphemeRule { get; }
 
         /// <summary>
-        /// Rules for the matching adposition.
-        /// </summary>
-        PatternRule AdPositionRule { get; }
-
-        /// <summary>
         /// Rules for the matching left child.
         /// </summary>
         PatternRule LeftRule { get; }
@@ -31,11 +26,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// Rules for the matching right child.
         /// </summary>
         PatternRule RightRule { get; }
-
-        /// <summary>
-        /// Rules for the matching governor.
-        /// </summary>
-        PatternRule GovernorRule { get; }
 
 
         /// <summary>
