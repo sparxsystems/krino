@@ -36,7 +36,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public string Serialize(IAdTree adTree)
         {
-            throw new NotImplementedException();
+            string result = adTree.Phrase;
+            return result;
         }
     }
 }
