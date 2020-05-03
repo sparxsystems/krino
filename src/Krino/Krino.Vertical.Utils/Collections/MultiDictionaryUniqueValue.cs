@@ -5,7 +5,7 @@ using System.Linq;
 namespace Krino.Vertical.Utils.Collections
 {
     /// <summary>
-    /// Dictionary where each key can have multiple values but each value within a particular key can occure maximum one time.
+    /// Dictionary where each key can have multiple values but each value within a particular key is unique.
     /// </summary>
     /// <typeparam name="K"></typeparam>
     /// <typeparam name="V"></typeparam>

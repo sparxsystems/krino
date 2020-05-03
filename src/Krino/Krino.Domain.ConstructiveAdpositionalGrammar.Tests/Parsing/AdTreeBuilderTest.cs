@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
@@ -41,13 +42,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            AdTreeBuilder builder = new AdTreeBuilder(patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
             Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.IsTrue(builder.ActiveAdTrees[0].Left.Morpheme.Morph == "I" && builder.ActiveAdTrees[0].Left.Morpheme.GrammarCharacter == GrammarCharacter.O);
@@ -82,16 +85,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            AdTreeBuilder builder = new AdTreeBuilder(patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
             Morpheme morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("good") { Attributes = StructuralAttributes.A.Adjective.Attributive };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
@@ -144,20 +149,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            AdTreeBuilder builder = new AdTreeBuilder(patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
 
             Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
@@ -219,29 +226,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            AdTreeBuilder builder = new AdTreeBuilder(patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
 
             Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb.Bivalent };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("in") { Attributes = StructuralAttributes.E.Preposition };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner.DefiniteArticle };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             morpheme = new Morpheme("room") { Attributes = StructuralAttributes.O.Noun };
-            Assert.IsTrue(builder.AddMorpheme(morpheme));
+            Assert.IsTrue(builder.AddLexeme(morpheme));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.AreEqual("I", builder.ActiveAdTrees[0].Right.Right.Left.Morpheme.Morph);

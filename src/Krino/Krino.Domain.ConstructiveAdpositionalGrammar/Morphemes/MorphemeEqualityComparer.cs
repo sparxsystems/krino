@@ -1,10 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
+    /// <summary>
+    /// Comparer to check if two morphemes are equal.
+    /// </summary>
     public class MorphemeEqualityComparer : IEqualityComparer<IMorpheme>
     {
         public bool Equals(IMorpheme x, IMorpheme y)
@@ -29,25 +29,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
             return hash;
         }
-
-        //private string SememesToString(IEnumerable<ISememe> sememes)
-        //{
-        //    IEnumerable<ISememe> leaves = sememes.SelectMany(x => x)
-        //        .Where(x => x.Hyponymies == null || !x.Hyponymies.Any());
-
-        //    IEnumerable<IEnumerable<ISememe>> pathsOfLeaves = leaves.Select(x => x.Parents.Concat(x))
-        //        .Reverse()
-        //        .OrderBy(x => x.First().Meaning)
-        //        .ThenBy(x => x.First().Value);
-
-        //    StringBuilder builder = new StringBuilder();
-
-        //    foreach (IEnumerable<ISememe> sememePath in pathsOfLeaves)
-        //    {
-        //        builder.AppendLine(string.Join("; ", sememePath.Select(x => string.Join(":", x.Meaning, x.Value))));
-        //    }
-
-        //    return builder.ToString();
-        //}
     }
 }

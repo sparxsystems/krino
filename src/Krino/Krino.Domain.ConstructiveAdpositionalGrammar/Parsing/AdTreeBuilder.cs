@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using Krino.Vertical.Utils.Graphs;
@@ -35,53 +36,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             BottomRight,
         };
 
-        private DirectedGraph<GrammarCharacter, IPattern> myPatternGraph;
-        private List<IPattern> myMorphemePatterns;
+        private IConstructiveDictionary myConstructiveDictionary;
 
         private List<IAdTree> myActiveAdTrees = new List<IAdTree>();
 
-        public AdTreeBuilder(IEnumerable<IPattern> patterns)
+        public AdTreeBuilder(IConstructiveDictionary constructiveDictionary)
         {
-            myMorphemePatterns = patterns.Where(x => !x.MorphemeRule.Equals(MorphemeRule.Epsilon)).ToList();
-
-            GrammarCharacter[] grammarCharacters = Enum.GetValues(typeof(GrammarCharacter)).Cast<GrammarCharacter>().ToArray();
-
-            myPatternGraph = new DirectedGraph<GrammarCharacter, IPattern>();
-            foreach (GrammarCharacter grammarCharacter in grammarCharacters)
-            {
-                myPatternGraph.AddVertex(grammarCharacter.ToString(), grammarCharacter);
-            }
-
-            foreach (IPattern pattern in patterns)
-            {
-                // If it is an adposition related rule.
-                if (!pattern.LeftRule.Equals(PatternRule.Nothing) && !pattern.RightRule.Equals(PatternRule.Nothing))
-                {
-                    foreach (GrammarCharacter leftGrammarCharacter in grammarCharacters)
-                    {
-                        if (pattern.LeftRule.IsMatch(leftGrammarCharacter))
-                        {
-                            foreach (GrammarCharacter rightGrammarCharacter in grammarCharacters)
-                            {
-                                if (pattern.RightRule.IsMatch(rightGrammarCharacter))
-                                {
-                                    myPatternGraph.AddEdge(leftGrammarCharacter.ToString(), rightGrammarCharacter.ToString(), pattern);
-                                    myPatternGraph.AddEdge(rightGrammarCharacter.ToString(), leftGrammarCharacter.ToString(), pattern);
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            myConstructiveDictionary = constructiveDictionary;
         }
 
         public IReadOnlyList<IAdTree> ActiveAdTrees => myActiveAdTrees.Select(x => x.Root).ToList();
 
-        public bool AddMorpheme(IMorpheme morpheme)
+        public bool AddMorph(string morph)
+        {
+            IEnumerable<IMorpheme> lexemes = myConstructiveDictionary.FindLexemes(morph);
+            bool result = AddSameMorphLexemes(lexemes);
+            return result;
+        }
+
+        public bool AddLexeme(IMorpheme lexeme)
+        {
+            bool result = AddSameMorphLexemes(new IMorpheme[] { lexeme });
+            return result;
+        }
+
+        public bool AddSameMorphLexemes(IEnumerable<IMorpheme> sameMorphLexemes)
         {
             bool isAdded = false;
-
-            IEnumerable<IPattern> morphemeMatchingPatterns = myMorphemePatterns.Where(x => x.MorphemeRule.IsMatch(morpheme.Morph, morpheme.Attributes));
 
             // Update active adtrees.
             if (myActiveAdTrees.Count != 0)
@@ -89,16 +70,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 List<IAdTree> newListOfAdTrees = new List<IAdTree>();
 
                 // Go via active adtrees (i.e. adtrees which are still candidates to become the final adtree).
-                foreach(IAdTree currentAdTree in myActiveAdTrees)
+                foreach (IAdTree currentAdTree in myActiveAdTrees)
                 {
-                    // Go via patterns which match the incoming morpheme.
-                    foreach (IPattern pattern in morphemeMatchingPatterns)
+                    foreach (IMorpheme sameMorphLexeme in sameMorphLexemes)
                     {
-                        // Create the adtree element from the incoming morpheme and its pattern.
-                        IAdTree newAdTreeElement = new AdTree(morpheme, pattern);
+                        IEnumerable<IPattern> lexemeMatchingPatterns = myConstructiveDictionary.FindLexemeMatchingPatterns(sameMorphLexeme);
 
-                        // Try to attach the morpheme element to the adtree.
-                        TryToAttachAdTreeElement(currentAdTree, newAdTreeElement, newListOfAdTrees);
+                        // Go via patterns which match the incoming morpheme.
+                        foreach (IPattern pattern in lexemeMatchingPatterns)
+                        {
+                            // Create the adtree element from the incoming morpheme and its pattern.
+                            IAdTree newAdTreeElement = new AdTree(sameMorphLexeme, pattern);
+
+                            // Try to attach the morpheme element to the adtree.
+                            TryToAttachAdTreeElement(currentAdTree, newAdTreeElement, newListOfAdTrees);
+                        }
                     }
                 }
 
@@ -111,10 +97,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             // Create new adtrees.
             else
             {
-                foreach (IPattern pattern in morphemeMatchingPatterns)
+                foreach (IMorpheme sameMorphLexeme in sameMorphLexemes)
                 {
-                    AdTree newAdTree = new AdTree(morpheme, pattern);
-                    myActiveAdTrees.Add(newAdTree);
+                    IEnumerable<IPattern> lexemeMatchingPatterns = myConstructiveDictionary.FindLexemeMatchingPatterns(sameMorphLexeme);
+
+                    foreach (IPattern pattern in lexemeMatchingPatterns)
+                    {
+                        AdTree newAdTree = new AdTree(sameMorphLexeme, pattern);
+                        myActiveAdTrees.Add(newAdTree);
+                    }
                 }
 
                 if (myActiveAdTrees.Count > 0)
@@ -263,7 +254,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 foreach (GrammarCharacter endGrammarCharacter in endGrammarCharacters)
                 {
                     // Get possibile ways how to connect new element.
-                    IEnumerable<IReadOnlyList<DirectedEdge<IPattern>>> connectionPaths = myPatternGraph
+                    IEnumerable<IReadOnlyList<DirectedEdge<IPattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
                         .FindAllPaths(startGrammarCharacter.ToString(), endGrammarCharacter.ToString());
 
                     // Go via all possible ways.
