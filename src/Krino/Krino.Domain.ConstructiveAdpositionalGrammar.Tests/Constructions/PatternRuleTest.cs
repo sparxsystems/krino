@@ -1,16 +1,33 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
 {
     [TestFixture]
     public class PatternRuleTest
     {
+        [Test]
+        public void GetMatchingGrammarCharacters()
+        {
+            PatternRule rule = new PatternRule(MorphemeRule.I);
+
+            List<GrammarCharacter> grammarCharacters = rule.GetMatchingGrammarCharacters().ToList();
+            Assert.AreEqual(1, grammarCharacters.Count);
+            Assert.AreEqual(GrammarCharacter.I, grammarCharacters[0]);
+
+
+            rule = new PatternRule(new MorphemeRule(Rule.Anything<string>(),
+                Rule.Is<ulong>(StructuralAttributes.A).Or(Rule.Is<ulong>(StructuralAttributes.O))));
+            grammarCharacters = rule.GetMatchingGrammarCharacters().ToList();
+            Assert.AreEqual(2, grammarCharacters.Count);
+            Assert.IsTrue(grammarCharacters.Contains(GrammarCharacter.A));
+            Assert.IsTrue(grammarCharacters.Contains(GrammarCharacter.O));
+        }
+
         [Test]
         public void IsMatch_Anything()
         {

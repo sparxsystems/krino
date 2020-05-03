@@ -2,6 +2,7 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using Krino.Vertical.Utils.Rules;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
@@ -31,6 +32,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         {
             myMorphemeRule = morphemeRule ?? throw new ArgumentNullException(nameof(morphemeRule));
             myPatternAttributesRule = patternAttributesRule ?? throw new ArgumentNullException(nameof(patternAttributesRule));
+        }
+
+        /// <summary>
+        /// Returns grammar characters which can be accepted by the rule.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerable<GrammarCharacter> GetMatchingGrammarCharacters()
+        {
+            GrammarCharacter[] allGrammarCharacters = GrammarCharacterExt.GetValues();
+            foreach (GrammarCharacter grammarCharacter in allGrammarCharacters)
+            {
+                if (IsMatch(grammarCharacter))
+                {
+                    yield return grammarCharacter;
+                }
+            }
         }
 
         /// <summary>

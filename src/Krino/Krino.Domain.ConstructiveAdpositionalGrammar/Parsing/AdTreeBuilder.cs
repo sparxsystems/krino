@@ -12,6 +12,29 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
     public class AdTreeBuilder
     {
+        private enum EAttachPosition
+        {
+            /// <summary>
+            /// The element attached as the left child.
+            /// </summary>
+            TopLeft,
+
+            /// <summary>
+            /// The element attached as the right child.
+            /// </summary>
+            TopRight,
+
+            /// <summary>
+            /// The elemet is the adposition (parent) attaching to the left.
+            /// </summary>
+            BottomLeft,
+
+            /// <summary>
+            /// The elemet is the adposition (parent) attaching to the right.
+            /// </summary>
+            BottomRight,
+        };
+
         private DirectedGraph<GrammarCharacter, IPattern> myPatternGraph;
         private List<IPattern> myMorphemePatterns;
 
@@ -104,38 +127,52 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return isAdded;
         }
 
-        private void TryToAttachAdTreeElement(IAdTree adTree, IAdTree newAdTreeElement, List<IAdTree> adTrees)
+        private void TryToAttachAdTreeElement(IAdTree adTree, IAdTree newAdTreeElement, List<IAdTree> results)
         {
-            bool isAttached = false;
-
-            // Try to use the adtree as the adposition and attach the new element to its left.
-            if (adTree.Left == null && adTree.CanAttachToLeft(newAdTreeElement))
+            // If the adtree can attach something to left.
+            if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(PatternRule.Nothing))
             {
-                IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-                IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-                adTreeCopy.Left = newAdTreeElementCopy;
+                // Try to attach the new element directly.
+                if (adTree.CanAttachToLeft(newAdTreeElement))
+                {
+                    IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
+                    IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
+                    adTreeCopy.Left = newAdTreeElementCopy;
 
-                IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                adTrees.Add(workInProgress);
-
-                isAttached = true;
+                    IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
+                    results.Add(workInProgress);
+                }
+                // Try to attach the new element indirectly.
+                else
+                {
+                    TryToAttachIndirectly(EAttachPosition.BottomLeft, adTree, newAdTreeElement, results);
+                }
             }
-            // Try to use the adtree as the adposition and attach the new element to its right.
-            else if (adTree.Right == null && adTree.CanAttachToRight(newAdTreeElement))
+
+            // If adtree can attach something to right.
+            if (adTree.Right == null && !adTree.Pattern.RightRule.Equals(PatternRule.Nothing))
             {
-                IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-                IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-                adTreeCopy.Right = newAdTreeElementCopy;
+                // Try to attach the new element directly.
+                if (adTree.CanAttachToRight(newAdTreeElement))
+                {
+                    IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
+                    IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
+                    adTreeCopy.Right = newAdTreeElementCopy;
 
-                IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                adTrees.Add(workInProgress);
-
-                isAttached = true;
+                    IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
+                    results.Add(workInProgress);
+                }
+                // Try to attach the new element indirectly.
+                else
+                {
+                    TryToAttachIndirectly(EAttachPosition.BottomRight, adTree, newAdTreeElement, results);
+                }
             }
-            // If the adtree adposition is free to connect.
-            else if (adTree.AdPosition == null)
+
+            // If the adtree has free adposition - i.e. it can be attached to left or right.
+            if (adTree.AdPosition == null)
             {
-                // Try to use the new element as the adposition and attach the adtree to its left.
+                // Try to attach the adtree directly via new element's left.
                 if (newAdTreeElement.CanAttachToLeft(adTree))
                 {
                     IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
@@ -143,303 +180,208 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     newAdTreeElementCopy.Left = adTreeCopy;
 
                     IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                    adTrees.Add(workInProgress);
-
-                    isAttached = true;
+                    results.Add(workInProgress);
                 }
-                // Try to use the new element as the adposition and attach the adtree to its right.
-                else if (newAdTreeElement.CanAttachToRight(adTree))
+                // Try to attach the adtree indirectly via new element's left.
+                else
+                {
+                    TryToAttachIndirectly(EAttachPosition.BottomLeft, newAdTreeElement, adTree, results);
+                }
+
+                // Try to attach the adtree directly via new element's right.
+                if (newAdTreeElement.CanAttachToRight(adTree))
                 {
                     IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
                     IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
                     newAdTreeElementCopy.Right = adTreeCopy;
 
                     IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                    adTrees.Add(workInProgress);
-
-                    isAttached = true;
+                    results.Add(workInProgress);
                 }
+                // Try to attach the adtree indirectly via new element's right.
+                else
+                {
+                    TryToAttachIndirectly(EAttachPosition.BottomRight, newAdTreeElement, adTree, results);
+                }
+
+                // Also try to connect the adtree and the new element indirectly via adtree adposition.
+                TryToAttachIndirectly(EAttachPosition.TopLeft, adTree, newAdTreeElement, results);
+                TryToAttachIndirectly(EAttachPosition.TopRight, adTree, newAdTreeElement, results);
+            }
+        }
+
+        private void TryToAttachIndirectly(EAttachPosition initialAttachPosition, IAdTree start, IAdTree end, List<IAdTree> results)
+        {
+            IEnumerable<GrammarCharacter> startGrammarCharacters = Enumerable.Empty<GrammarCharacter>();
+            IEnumerable<GrammarCharacter> endGrammarCharacters = Enumerable.Empty<GrammarCharacter>();
+
+            // If start adTree connects the bridge via its left.
+            if (initialAttachPosition == EAttachPosition.BottomLeft)
+            {
+                startGrammarCharacters = start.Pattern.LeftRule.GetMatchingGrammarCharacters().Where(x => x != GrammarCharacter.Epsilon);
+                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
+                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
+                    .Where(x => x != GrammarCharacter.Epsilon)
+                    .Distinct();
+            }
+            // If start adTree connects the bridge via its right.
+            else if (initialAttachPosition == EAttachPosition.BottomRight)
+            {
+                startGrammarCharacters = start.Pattern.RightRule.GetMatchingGrammarCharacters().Where(x => x != GrammarCharacter.Epsilon);
+                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
+                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
+                    .Where(x => x != GrammarCharacter.Epsilon)
+                    .Distinct();
+            }
+            // If the bridge connects the start adtree via its left.
+            else if (initialAttachPosition == EAttachPosition.TopLeft)
+            {
+                startGrammarCharacters = new GrammarCharacter[] { start.GrammarCharacter, start.InheritedGrammarCharacter }
+                    .Concat(start.Pattern.RightRule.GetMatchingGrammarCharacters())
+                    .Where(x => x != GrammarCharacter.Epsilon)
+                    .Distinct();
+                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
+                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
+                    .Where(x => x != GrammarCharacter.Epsilon)
+                    .Distinct();
+            }
+            // If the bridge connects the start adtree via its right.
+            else if (initialAttachPosition == EAttachPosition.TopRight)
+            {
+                startGrammarCharacters = new GrammarCharacter[] { start.GrammarCharacter, start.InheritedGrammarCharacter }
+                    .Concat(start.Pattern.RightRule.GetMatchingGrammarCharacters())
+                    .Where(x => x != GrammarCharacter.Epsilon)
+                    .Distinct();
+                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
+                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
+                    .Where(x => x != GrammarCharacter.Epsilon)
+                    .Distinct();
             }
 
-            // If it is not possible to directly attach the element then try to attach it via bridging 'epsilon' adtrees.
-            if (!isAttached)
+            foreach (GrammarCharacter startGrammarCharacter in startGrammarCharacters)
             {
-                //// left: 1; adposition: 2; right: 3
-                //int attachPosition = 0;
-                //if (adTree.Left != null && adTree.Right != null && adTree.AdPosition == null)
-                //{
-                //    // AdPosition
-                //    attachPosition = 2;
-                //}
-                //else if (adTree.Left == null)
-                //{
-                //    attachPosition = 1;
-                //}
-                //else if (adTree.Right == null)
-                //{
-                //    attachPosition = 3;
-                //}
-                //else
-                //{
-                //    // Note: the position for attaching was not identified.
-                //    return;
-                //}
-
-
-                GrammarCharacter adTreeGrammarCharacter = adTree.GrammarCharacter != GrammarCharacter.Epsilon ? adTree.GrammarCharacter : adTree.InheritedGrammarCharacter;
-                //if (attachPosition == 2)
-                //{
-                //    adTreeGrammarCharacter = adTree.InheritedGrammarCharacter;
-                //}
-                //else if (attachPosition == )
-                //{
-                //    adTreeGrammarCharacter = adTree.Left.InheritedGrammarCharacter;
-                //}
-
-
-
-                GrammarCharacter newAdTreeElementGrammarCharacter = newAdTreeElement.GrammarCharacter;
-
-                // Get possibilities how to connect new element.
-                IEnumerable<IReadOnlyList<DirectedEdge<IPattern>>> connectionPaths = myPatternGraph
-                    .FindAllPaths(adTreeGrammarCharacter.ToString(), newAdTreeElementGrammarCharacter.ToString());
-
-                foreach (IReadOnlyList<DirectedEdge<IPattern>> path in connectionPaths)
+                foreach (GrammarCharacter endGrammarCharacter in endGrammarCharacters)
                 {
-                    // If the path contains only epsilon adpositions.
-                    if (path.All(x => x.Value.MorphemeRule.IsMatch(GrammarCharacter.Epsilon)))
+                    // Get possibile ways how to connect new element.
+                    IEnumerable<IReadOnlyList<DirectedEdge<IPattern>>> connectionPaths = myPatternGraph
+                        .FindAllPaths(startGrammarCharacter.ToString(), endGrammarCharacter.ToString());
+
+                    // Go via all possible ways.
+                    foreach (IReadOnlyList<DirectedEdge<IPattern>> path in connectionPaths)
                     {
-                        IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-                        IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-
-                        IAdTree previousBridgingAdTree = null;
-
-                        // Go via the path.
-                        for (int i = 0; i < path.Count; ++i)
+                        // The path is usable only if all its parts have epsilon grammar character.
+                        if (path.All(x => x.Value.MorphemeRule.IsMatch(GrammarCharacter.Epsilon)))
                         {
-                            DirectedEdge<IPattern> edge = path[i];
+                            IAdTree startCopy = GetCopyOnSamePath(start);
+                            IAdTree endCopy = GetCopyOnSamePath(end);
 
-                            IAdTree bridgingAdTree = new AdTree(new Morpheme(""), edge.Value);
+                            IAdTree previousBridge = null;
 
-                            // If it is the first item on the path.
-                            if (i == 0)
+                            // Go via the path.
+                            for (int i = 0; i < path.Count; ++i)
                             {
-                                if (bridgingAdTree.CanAttachToLeft(adTree))
+                                DirectedEdge<IPattern> edge = path[i];
+
+                                IAdTree bridge = new AdTree(new Morpheme(""), edge.Value);
+
+                                // If it is the first item on the path.
+                                if (i == 0)
                                 {
-                                    bridgingAdTree.Left = adTreeCopy;
-                                }
-                                else if (bridgingAdTree.CanAttachToRight(adTree))
-                                {
-                                    bridgingAdTree.Right = adTreeCopy;
+                                    if (initialAttachPosition == EAttachPosition.BottomLeft)
+                                    {
+                                        if (startCopy.Left == null && startCopy.CanAttachToLeft(bridge))
+                                        {
+                                            startCopy.Left = bridge;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else if (initialAttachPosition == EAttachPosition.BottomRight)
+                                    {
+                                        if (startCopy.Right == null && startCopy.CanAttachToRight(bridge))
+                                        {
+                                            startCopy.Right = bridge;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else if (initialAttachPosition == EAttachPosition.TopLeft)
+                                    {
+                                        if (bridge.Left == null && bridge.CanAttachToLeft(startCopy))
+                                        {
+                                            bridge.Left = startCopy;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
+                                    else if (initialAttachPosition == EAttachPosition.TopRight)
+                                    {
+                                        if (bridge.Right == null && bridge.CanAttachToRight(startCopy))
+                                        {
+                                            bridge.Right = startCopy;
+                                        }
+                                        else
+                                        {
+                                            break;
+                                        }
+                                    }
                                 }
                                 else
                                 {
-                                    // Note: this should never happen but do not throw exception.
-                                    //       It is not worth to interrupt krino.
-                                    break;
+                                    if (previousBridge.Left == null && previousBridge.CanAttachToLeft(bridge))
+                                    {
+                                        previousBridge.Left = bridge;
+                                    }
+                                    else if (previousBridge.Right == null && previousBridge.CanAttachToRight(bridge))
+                                    {
+                                        previousBridge.Right = bridge;
+                                    }
+                                    else
+                                    {
+                                        // Note: this should never happen but do not throw exception.
+                                        //       It is not worth to interrupt krino.
+                                        break;
+                                    }
                                 }
+
+                                // If it is the last item in the path.
+                                if (i == path.Count - 1)
+                                {
+                                    if (bridge.Left == null && bridge.CanAttachToLeft(end))
+                                    {
+                                        bridge.Left = endCopy;
+
+                                        IAdTree workInProgress = GetWorkInProgressAdTree(endCopy);
+                                        results.Add(workInProgress);
+                                    }
+                                    else if (bridge.Right == null && bridge.CanAttachToRight(end))
+                                    {
+                                        bridge.Right = endCopy;
+
+                                        IAdTree workInProgress = GetWorkInProgressAdTree(endCopy);
+                                        results.Add(workInProgress);
+                                    }
+                                    else
+                                    {
+                                        // Note: this should never happen but do not throw exception.
+                                        //       It is not worth to interrupt krino.
+                                        break;
+                                    }
+                                }
+
+                                previousBridge = bridge;
                             }
-                            else
-                            {
-                                if (previousBridgingAdTree.Left == null && previousBridgingAdTree.CanAttachToLeft(bridgingAdTree))
-                                {
-                                    previousBridgingAdTree.Left = bridgingAdTree;
-                                }
-                                else if (previousBridgingAdTree.Right == null && previousBridgingAdTree.CanAttachToRight(bridgingAdTree))
-                                {
-                                    previousBridgingAdTree.Right = bridgingAdTree;
-                                }
-                                else
-                                {
-                                    // Note: this should never happen but do not throw exception.
-                                    //       It is not worth to interrupt krino.
-                                    break;
-                                }
-                            }
-
-                            // If it is the last item on the path.
-                            if (i == path.Count - 1)
-                            {
-                                if (bridgingAdTree.CanAttachToRight(newAdTreeElement))
-                                {
-                                    bridgingAdTree.Right = newAdTreeElementCopy;
-
-                                    IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                                    adTrees.Add(workInProgress);
-                                }
-                                else if (bridgingAdTree.CanAttachToLeft(newAdTreeElement))
-                                {
-                                    bridgingAdTree.Left = newAdTreeElementCopy;
-
-                                    IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                                    adTrees.Add(workInProgress);
-                                }
-                                else
-                                {
-                                    // Note: this should never happen but do not throw exception.
-                                    //       It is not worth to interrupt krino.
-                                    break;
-                                }
-                            }
-
-                            previousBridgingAdTree = bridgingAdTree;
                         }
-
                     }
                 }
             }
         }
-
-
-        //private void AttachAdTreeElement(IAdTree adTree, IAdTree newAdTreeElement, List<IAdTree> adTrees)
-        //{
-        //    // Try to use the adtree as the adposition and attach the new element to its left.
-        //    if (adTree.Left == null && adTree.CanAttachToLeft(newAdTreeElement))
-        //    {
-        //        IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-        //        IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //        adTreeCopy.Left = newAdTreeElementCopy;
-
-        //        IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-        //        adTrees.Add(workInProgress);
-        //    }
-
-        //    // Try to use the adtree as the adposition and attach the new element to its right.
-        //    if (adTree.Right == null && adTree.CanAttachToRight(newAdTreeElement))
-        //    {
-        //        IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-        //        IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //        adTreeCopy.Right = newAdTreeElementCopy;
-
-        //        IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-        //        adTrees.Add(workInProgress);
-        //    }
-
-
-        //    // If the adtree adposition is still free.
-        //    if (adTree.AdPosition == null)
-        //    {
-        //        // Try to use the new element as the adposition and attach the adtree to its left.
-        //        if (newAdTreeElement.CanAttachToLeft(adTree))
-        //        {
-        //            IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-        //            IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //            newAdTreeElementCopy.Left = adTreeCopy;
-
-        //            IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-        //            adTrees.Add(workInProgress);
-        //        }
-
-        //        // Try to use the new element as the adposition and attach the adtree to its right.
-        //        if (newAdTreeElement.CanAttachToRight(adTree))
-        //        {
-        //            IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-        //            IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //            newAdTreeElementCopy.Right = adTreeCopy;
-
-        //            IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-        //            adTrees.Add(workInProgress);
-        //        }
-
-        //        // Try to attach the new element via the bridging adposition.
-        //        foreach (IPattern pattern in myPatterns)
-        //        {
-        //            // If the pattern can be a technical (epsilon) adposition.
-        //            if (pattern.MorphemeRule.Equals(MorphemeRule.Epsilon) &&
-        //                !pattern.LeftRule.Equals(PatternRule.Nothing) && !pattern.RightRule.Equals(PatternRule.Nothing))
-        //            {
-        //                IAdTree bridgingAdposition = new AdTree(new Morpheme(""), pattern);
-
-        //                bool canAttachAdTreeToLeft = bridgingAdposition.CanAttachToLeft(adTree);
-        //                bool canAttachAdTreeToRight = bridgingAdposition.CanAttachToRight(adTree);
-
-
-        //                // If the adtree can be attached to the left and the new element to the right.
-        //                if (canAttachAdTreeToLeft && bridgingAdposition.CanAttachToRight(newAdTreeElement))
-        //                {
-        //                    IAdTree bridgingAdPositionCopy = GetCopyOnSamePath(bridgingAdposition);
-        //                    IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //                    IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-
-        //                    bridgingAdPositionCopy.Right = newAdTreeElementCopy;
-        //                    bridgingAdPositionCopy.Left = adTreeCopy;
-
-        //                    IAdTree workInProgress = GetWorkInProgressAdTree(bridgingAdPositionCopy);
-        //                    adTrees.Add(workInProgress);
-        //                }
-
-        //                // If the adtree can be attached to the right and the new element to the left.
-        //                if (canAttachAdTreeToRight && bridgingAdposition.CanAttachToLeft(newAdTreeElement))
-        //                {
-        //                    IAdTree bridgingAdPositionCopy = GetCopyOnSamePath(bridgingAdposition);
-        //                    IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //                    IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-
-        //                    bridgingAdPositionCopy.Right = adTreeCopy;
-        //                    bridgingAdPositionCopy.Left = newAdTreeElementCopy;
-
-        //                    IAdTree workInProgress = GetWorkInProgressAdTree(bridgingAdPositionCopy);
-        //                    adTrees.Add(workInProgress);
-        //                }
-
-        //                // If one more between bridge could be used.
-        //                if (canAttachAdTreeToLeft || canAttachAdTreeToRight)
-        //                {
-        //                    foreach (IPattern pattern2 in myPatterns)
-        //                    {
-        //                        // If the pattern can be a technical (epsilon) adposition.
-        //                        if (pattern.MorphemeRule.Equals(MorphemeRule.Epsilon) &&
-        //                            !pattern2.LeftRule.Equals(PatternRule.Nothing) && !pattern2.RightRule.Equals(PatternRule.Nothing))
-        //                        {
-        //                            IAdTree betweenBridgingAdposition = new AdTree(new Morpheme(""), pattern2);
-
-        //                            // If the adtree can be attached to the left and a between bridge can be attach to the right and
-        //                            // the new element to the left of the between bridge.
-        //                            if (bridgingAdposition.CanAttachToLeft(adTree) && bridgingAdposition.CanAttachToRight(betweenBridgingAdposition) &&
-        //                                betweenBridgingAdposition.CanAttachToLeft(newAdTreeElement))
-        //                            {
-        //                                IAdTree bridgingAdPositionCopy = GetCopyOnSamePath(bridgingAdposition);
-        //                                IAdTree betweenbridgingAdPositionCopy = GetCopyOnSamePath(betweenBridgingAdposition);
-        //                                IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //                                IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-
-        //                                // Note: we do not need to make a copy until there is multiple assignment possibilities for pattern2.
-        //                                bridgingAdPositionCopy.Right = betweenbridgingAdPositionCopy;
-        //                                bridgingAdPositionCopy.Left = adTreeCopy;
-
-        //                                betweenbridgingAdPositionCopy.Left = newAdTreeElementCopy;
-
-        //                                IAdTree workInProgress = GetWorkInProgressAdTree(betweenbridgingAdPositionCopy);
-        //                                adTrees.Add(workInProgress);
-        //                            }
-
-
-        //                            // If the adtree can be attached to the right and a between bridge can be attach to the left and
-        //                            // the new element to the left of the between bridge.
-        //                            if (bridgingAdposition.CanAttachToRight(adTree) && bridgingAdposition.CanAttachToLeft(betweenBridgingAdposition) &&
-        //                                betweenBridgingAdposition.CanAttachToLeft(newAdTreeElement))
-        //                            {
-        //                                IAdTree bridgingAdPositionCopy = GetCopyOnSamePath(bridgingAdposition);
-        //                                IAdTree betweenbridgingAdPositionCopy = GetCopyOnSamePath(betweenBridgingAdposition);
-        //                                IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-        //                                IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-
-        //                                // Note: we do not need to make a copy until there is multiple assignment possibilities for pattern2.
-        //                                bridgingAdPositionCopy.Right = adTreeCopy;
-        //                                bridgingAdPositionCopy.Left = betweenbridgingAdPositionCopy;
-
-        //                                betweenbridgingAdPositionCopy.Left = newAdTreeElementCopy;
-
-        //                                IAdTree workInProgress = GetWorkInProgressAdTree(betweenbridgingAdPositionCopy);
-        //                                adTrees.Add(workInProgress);
-        //                            }
-        //                        }
-        //                    }
-        //                }
-        //            }
-        //        }
-        //    }
-        //}
 
         private IAdTree GetWorkInProgressAdTree(IAdTree currentWorkInProgressAdTree)
         {
