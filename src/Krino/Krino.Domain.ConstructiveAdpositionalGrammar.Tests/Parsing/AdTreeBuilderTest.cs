@@ -205,7 +205,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
                 },
-                new Pattern("A<->O")
+                new Pattern("A-O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = new PatternRule(MorphemeRule.O),
@@ -248,6 +248,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Right.Morpheme.Morph);
             Assert.AreEqual("the", builder.ActiveAdTrees[0].Right.Left.Left.Morpheme.Morph);
             Assert.AreEqual("book", builder.ActiveAdTrees[0].Right.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("in", builder.ActiveAdTrees[0].Morpheme.Morph);
+            Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Left.Morpheme.Morph);
+            Assert.AreEqual("room", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
         }
     }
 }
