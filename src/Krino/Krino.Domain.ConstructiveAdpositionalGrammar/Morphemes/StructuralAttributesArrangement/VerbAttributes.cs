@@ -1,4 +1,5 @@
 ﻿using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement
 {
@@ -70,7 +71,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public bool IsValencySpecified(ulong value)
+        public bool IsValencySpecified(BigInteger value)
         {
             bool result = (Avalent & value) == Avalent ||
                 (Monovalent & value) == Monovalent ||
@@ -90,7 +91,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
         /// </remarks>
         /// <param name="value"></param>
         /// <returns></returns>
-        public int GetNumberOfValencies(ulong value)
+        public int GetNumberOfValencies(BigInteger value)
         {
             if (Avalent.IsIn(value))
             {

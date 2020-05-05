@@ -1,5 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
@@ -11,7 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// <summary>
         /// Attributes of this pattern.
         /// </summary>
-        ulong PatternAttributes { get; }
+        BigInteger PatternAttributes { get; }
 
         /// <summary>
         /// Rules for the matching morpheme.

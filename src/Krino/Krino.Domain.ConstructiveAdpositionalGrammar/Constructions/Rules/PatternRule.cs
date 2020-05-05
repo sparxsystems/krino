@@ -4,6 +4,7 @@ using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 {
@@ -13,8 +14,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{myMorphemeRule} && {myPatternAttributesRule}")]
     public class PatternRule : IEquatable<PatternRule>
     {
-        public static PatternRule Anything = new PatternRule(MorphemeRule.Anything, Rule.Anything<ulong>());
-        public static PatternRule Nothing = new PatternRule(MorphemeRule.Nothing, Rule.Nothing<ulong>());
+        public static PatternRule Anything = new PatternRule(MorphemeRule.Anything, Rule.Anything<BigInteger>());
+        public static PatternRule Nothing = new PatternRule(MorphemeRule.Nothing, Rule.Nothing<BigInteger>());
         public static PatternRule EpsilonValency1 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.First));
         public static PatternRule EpsilonValency2 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Second));
         public static PatternRule EpsilonValency3 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Third));
@@ -22,13 +23,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static PatternRule EpsilonValency5 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Fifth));
 
         private MorphemeRule myMorphemeRule;
-        private IRule<ulong> myPatternAttributesRule;
+        private IRule<BigInteger> myPatternAttributesRule;
 
-        public PatternRule(MorphemeRule morphemeRule) : this(morphemeRule, Rule.Anything<ulong>())
+        public PatternRule(MorphemeRule morphemeRule) : this(morphemeRule, Rule.Anything<BigInteger>())
         {
         }
 
-        public PatternRule(MorphemeRule morphemeRule, IRule<ulong> patternAttributesRule)
+        public PatternRule(MorphemeRule morphemeRule, IRule<BigInteger> patternAttributesRule)
         {
             myMorphemeRule = morphemeRule ?? throw new ArgumentNullException(nameof(morphemeRule));
             myPatternAttributesRule = patternAttributesRule ?? throw new ArgumentNullException(nameof(patternAttributesRule));
@@ -68,7 +69,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         /// <param name="morphemeAttributes"></param>
         /// <param name="patternAttributes"></param>
         /// <returns></returns>
-        public bool IsMatch(string morph, ulong morphemeAttributes, ulong patternAttributes)
+        public bool IsMatch(string morph, BigInteger morphemeAttributes, BigInteger patternAttributes)
         {
             bool isMatch = myMorphemeRule.IsMatch(morph, morphemeAttributes) && myPatternAttributesRule.Evaluate(patternAttributes);
             return isMatch;

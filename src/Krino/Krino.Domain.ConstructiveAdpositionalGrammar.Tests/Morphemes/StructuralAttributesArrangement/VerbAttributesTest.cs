@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using NUnit.Framework;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes.StructuralAttributesArrangement
 {
@@ -16,7 +17,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes.Structura
             Assert.AreEqual(4, StructuralAttributes.I.Verb.GetNumberOfValencies(StructuralAttributes.I.Verb.Quadrivalent));
             Assert.AreEqual(5, StructuralAttributes.I.Verb.GetNumberOfValencies(StructuralAttributes.I.Verb.Pentavalent));
 
-            ulong attributes = StructuralAttributes.I.Verb.Bivalent | StructuralAttributes.I.Verb.Unaccusative;
+            BigInteger attributes = StructuralAttributes.I.Verb.Bivalent | StructuralAttributes.I.Verb.Unaccusative;
             int count = StructuralAttributes.I.Verb.GetNumberOfValencies(attributes);
             Assert.AreEqual(2, count);
 

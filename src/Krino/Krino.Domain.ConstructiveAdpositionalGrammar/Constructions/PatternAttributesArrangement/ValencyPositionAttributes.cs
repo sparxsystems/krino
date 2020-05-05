@@ -1,4 +1,5 @@
 ﻿using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement
 {
@@ -46,7 +47,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttr
         /// </summary>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public int GetValencyPosition(ulong attributes)
+        public int GetValencyPosition(BigInteger attributes)
         {
             if (First.IsIn(attributes))
             {

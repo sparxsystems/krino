@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
@@ -18,6 +19,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public GrammarCharacter GrammarCharacter => StructuralAttributes.GetGrammarCharacter(Attributes);
 
-        public ulong Attributes { get; set; }
+        public BigInteger Attributes { get; set; }
+
+        public BigInteger SememeAttributes { get; set; }
     }
 }

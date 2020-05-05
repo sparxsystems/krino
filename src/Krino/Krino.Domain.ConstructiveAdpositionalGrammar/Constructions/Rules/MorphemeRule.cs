@@ -2,6 +2,7 @@
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 {
@@ -11,8 +12,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{myMorphRule} && {myAttributesRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
-        public static MorphemeRule Anything = new MorphemeRule(Rule.Anything<string>(), Rule.Anything<ulong>());
-        public static MorphemeRule Nothing = new MorphemeRule(Rule.Nothing<string>(), Rule.Nothing<ulong>());
+        public static MorphemeRule Anything = new MorphemeRule(Rule.Anything<string>(), Rule.Anything<BigInteger>());
+        public static MorphemeRule Nothing = new MorphemeRule(Rule.Nothing<string>(), Rule.Nothing<BigInteger>());
         public static MorphemeRule O = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.O));
         public static MorphemeRule I = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I));
         public static MorphemeRule I1 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Modal));
@@ -28,9 +29,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
 
         private IRule<string> myMorphRule;
-        private IRule<ulong> myAttributesRule;
+        private IRule<BigInteger> myAttributesRule;
 
-        public MorphemeRule(IRule<string> morphRule, IRule<ulong> attributesRule)
+        public MorphemeRule(IRule<string> morphRule, IRule<BigInteger> attributesRule)
         {
             myMorphRule = morphRule ?? throw new ArgumentNullException(nameof(morphRule));
             myAttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
@@ -43,7 +44,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         /// <returns></returns>
         public bool IsMatch(GrammarCharacter grammarCharacter)
         {
-            ulong attributes = StructuralAttributes.GetAttributes(grammarCharacter);
+            BigInteger attributes = StructuralAttributes.GetAttributes(grammarCharacter);
             if (myAttributesRule.Evaluate(attributes))
             {
                 return true;
@@ -58,7 +59,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         /// <param name="morph"></param>
         /// <param name="morphemeAttributes"></param>
         /// <returns></returns>
-        public bool IsMatch(string morph, ulong morphemeAttributes)
+        public bool IsMatch(string morph, BigInteger morphemeAttributes)
         {
             bool result = myMorphRule.Evaluate(morph) && myAttributesRule.Evaluate(morphemeAttributes);
             return result;

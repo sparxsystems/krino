@@ -1,4 +1,5 @@
 ﻿using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement
 {
@@ -53,7 +54,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
         /// </remarks>
         /// <param name="attributes"></param>
         /// <returns></returns>
-        public static GrammarCharacter GetGrammarCharacter(ulong attributes)
+        public static GrammarCharacter GetGrammarCharacter(BigInteger attributes)
         {
             if (O.IsIn(attributes))
             {
@@ -84,7 +85,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
         /// </summary>
         /// <param name="grammarCharacter"></param>
         /// <returns></returns>
-        public static ulong GetAttributes(GrammarCharacter grammarCharacter)
+        public static BigInteger GetAttributes(GrammarCharacter grammarCharacter)
         {
             if (grammarCharacter == GrammarCharacter.O)
             {

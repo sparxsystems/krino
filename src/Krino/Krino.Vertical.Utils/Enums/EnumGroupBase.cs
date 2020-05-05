@@ -1,12 +1,8 @@
-﻿using System;
-using System.Diagnostics;
-
-namespace Krino.Vertical.Utils.Enums
+﻿namespace Krino.Vertical.Utils.Enums
 {
     /// <summary>
     /// Abstract class to declare the enum group.
     /// </summary>
-    [DebuggerDisplay("{(ulong)this}")]
     public abstract class EnumGroupBase : EnumBase
     {
         /// <summary>

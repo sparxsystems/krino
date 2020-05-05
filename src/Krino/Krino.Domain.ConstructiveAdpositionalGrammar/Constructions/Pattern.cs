@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
@@ -21,7 +22,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             myName = name;
         }
 
-        public ulong PatternAttributes { get; set; }
+        public BigInteger PatternAttributes { get; set; }
 
         public MorphemeRule MorphemeRule { get; set; } = MorphemeRule.Anything;
 

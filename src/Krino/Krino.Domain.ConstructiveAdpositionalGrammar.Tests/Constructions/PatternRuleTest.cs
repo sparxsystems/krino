@@ -4,6 +4,7 @@ using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
 {
@@ -21,7 +22,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
 
 
             rule = new PatternRule(new MorphemeRule(Rule.Anything<string>(),
-                Rule.Is<ulong>(StructuralAttributes.A).Or(Rule.Is<ulong>(StructuralAttributes.O))));
+                Rule.Is<BigInteger>(StructuralAttributes.A).Or(Rule.Is<BigInteger>(StructuralAttributes.O))));
             grammarCharacters = rule.GetMatchingGrammarCharacters().ToList();
             Assert.AreEqual(2, grammarCharacters.Count);
             Assert.IsTrue(grammarCharacters.Contains(GrammarCharacter.A));
@@ -42,7 +43,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         public void IsMatch()
         {
             // Pattern rule which matches any morpheme and requires the mask where the 2nd bit is set and the fourth bit is not set.
-            PatternRule rule = new PatternRule(MorphemeRule.Anything, MaskRule.Is(2ul).And(Rule.Is(4ul).Not()));
+            PatternRule rule = new PatternRule(MorphemeRule.Anything, MaskRule.Is(2ul).And(Rule.Is((BigInteger)4).Not()));
             Assert.IsTrue(rule.IsMatch("", 0, 3));
             Assert.IsTrue(rule.IsMatch(null, 0, 3));
             Assert.IsTrue(rule.IsMatch("hello", 0, 3));
