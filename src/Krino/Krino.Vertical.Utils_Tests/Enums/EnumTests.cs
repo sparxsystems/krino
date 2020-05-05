@@ -1,5 +1,6 @@
 ﻿using Krino.Vertical.Utils.Enums;
 using NUnit.Framework;
+using System.Collections;
 
 namespace Krino.Vertical.Utils_Tests.Enums
 {

@@ -18,6 +18,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         ulong Attributes { get; set; }
 
         /// <summary>
+        /// Encodes semantic attributes the morpheme carries.
+        /// </summary>
+        ulong SememeAttributes { get; set; }
+
+        /// <summary>
         /// Returns the grammar character of the morpheme.
         /// </summary>
         GrammarCharacter GrammarCharacter { get; }
