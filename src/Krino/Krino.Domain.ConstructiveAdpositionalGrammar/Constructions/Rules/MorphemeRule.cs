@@ -26,6 +26,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static MorphemeRule E_Adverb = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.E.Adverb));
         public static MorphemeRule U = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.U));
         public static MorphemeRule Epsilon = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.Epsilon));
+        public static MorphemeRule NonLexeme = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.NonLexeme));
 
 
         private IRule<string> myMorphRule;

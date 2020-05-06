@@ -5,9 +5,11 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 {
@@ -39,6 +41,65 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = new PatternRule(MorphemeRule.I),
                     LeftRule = new PatternRule(MorphemeRule.O)
+                },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+            Morpheme morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun };
+            Assert.IsTrue(builder.AddLexeme(morpheme));
+
+            morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb };
+            Assert.IsTrue(builder.AddLexeme(morpheme));
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Left.Morpheme.Morph == "I" && builder.ActiveAdTrees[0].Left.Morpheme.GrammarCharacter == GrammarCharacter.O);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Morpheme.Morph == "read" && builder.ActiveAdTrees[0].Right.Morpheme.GrammarCharacter == GrammarCharacter.I);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Morpheme.Morph == "" && builder.ActiveAdTrees[0].Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
+        }
+
+        [Test]
+        public void He_read_s()
+        {
+            List<IPattern> patterns = new List<IPattern>()
+            {
+                new Pattern()
+                {
+                    MorphemeRule = MorphemeRule.O,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern()
+                {
+                    MorphemeRule = MorphemeRule.I,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern()
+                {
+                    MorphemeRule = new MorphemeRule(PostfixRule.Is("s"), MaskRule.Is(StructuralAttributes.NonLexeme)),
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern()
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.First,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.I),
+                    LeftRule = new PatternRule(MorphemeRule.O)
+                },
+
+                // Transference pattern.
+                new Pattern("I>I")
+                {
+                    MorphemeRule = MorphemeRule.I,
+                    RightRule = new PatternRule(new MorphemeRule(Rule.Anything<string>(), MaskRule.Is(StructuralAttributes.I).And(MaskRule.Is(StructuralAttributes.I.Verb.Modal).Not()))),
+                    LeftRule = new PatternRule(MorphemeRule.NonLexeme),
                 },
             };
 

@@ -20,6 +20,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttr
         public static ValencyPositionAttributes ValencyPosition { get; } = new ValencyPositionAttributes(Instance);
 
         /// <summary>
+        /// Indicates the pattern represents a transference.
+        /// </summary>
+        public static TransferenceAttributes Transference { get; } = new TransferenceAttributes(Instance);
+
+        /// <summary>
         /// Indicates the adposition is correlative.
         /// </summary>
         public static CorrelativeAttributes CorrelativeAdposition { get; } = new CorrelativeAttributes(Instance);

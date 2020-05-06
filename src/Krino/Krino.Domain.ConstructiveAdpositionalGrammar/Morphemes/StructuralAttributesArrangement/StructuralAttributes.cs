@@ -45,6 +45,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttri
         /// </summary>
         public static EnumValue Epsilon { get; } = new EnumValue(Instance);
 
+        /// <summary>
+        /// Indicates it is a non-lexeme morpheme.
+        /// </summary>
+        public static EnumValue NonLexeme { get; } = new EnumValue(Instance);
+
 
         /// <summary>
         /// Returns the grammar character encoded in the provided attributes.
