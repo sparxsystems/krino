@@ -45,7 +45,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         /// <returns></returns>
         public bool IsMatch(GrammarCharacter grammarCharacter)
         {
-            BigInteger attributes = StructuralAttributes.GetAttributes(grammarCharacter);
+            BigInteger attributes = grammarCharacter.GetAttributes();
             if (myAttributesRule.Evaluate(attributes))
             {
                 return true;

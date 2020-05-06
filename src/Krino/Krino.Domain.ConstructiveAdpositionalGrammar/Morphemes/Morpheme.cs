@@ -17,7 +17,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public string Morph { get; private set; }
 
-        public GrammarCharacter GrammarCharacter => StructuralAttributes.GetGrammarCharacter(Attributes);
+        public GrammarCharacter GrammarCharacter => GrammarCharacterExt.GetGrammarCharacter(Attributes);
 
         public BigInteger Attributes { get; set; }
 
