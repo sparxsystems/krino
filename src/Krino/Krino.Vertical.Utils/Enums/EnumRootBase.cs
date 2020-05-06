@@ -11,8 +11,8 @@
         protected EnumRootBase() : base(null) { }
 
         /// <summary>
-        /// Number of bits the enum occupies.
+        /// Number of bits the whole enum occupies.
         /// </summary>
-        public int Length { get; internal set; }
+        new public int Length { get; internal set; }
     }
 }

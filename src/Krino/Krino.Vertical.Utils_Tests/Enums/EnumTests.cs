@@ -1,6 +1,5 @@
 ﻿using Krino.Vertical.Utils.Enums;
 using NUnit.Framework;
-using System.Collections;
 using System.Numerics;
 
 namespace Krino.Vertical.Utils_Tests.Enums
@@ -30,8 +29,11 @@ namespace Krino.Vertical.Utils_Tests.Enums
                         Attr113 = new EnumValue(this);
                     }
 
+                    // 3rd bit
                     public EnumValue Attr111 { get; }
+                    // 4th bit
                     public EnumValue Attr112 { get; }
+                    // 5th bit
                     public EnumValue Attr113 { get; }
                 }
 
@@ -41,18 +43,20 @@ namespace Krino.Vertical.Utils_Tests.Enums
                     Val12 = new EnumValue(this);
                 }
 
+                // 2nd bit
                 public DummyCategory12 Category11 { get; }
+                // 6th bit
                 public EnumValue Val12 { get; }
             }
 
 
 
-            private static DummyEnumRoot Instance { get; } = new DummyEnumRoot();
+            public static DummyEnumRoot Instance { get; } = new DummyEnumRoot();
 
+            // 1st bit
             public static DummyCategory1 Category1 { get; } = new DummyCategory1(Instance);
-
+            // 7th bit
             public static EnumValue Val2 { get; } = new EnumValue(Instance);
-
         }
 
         [Test]
@@ -85,13 +89,32 @@ namespace Krino.Vertical.Utils_Tests.Enums
         }
 
         [Test]
+        public void Clear()
+        {
+            // Clearing of the sub-group (2, 3, 4 and 5 bit)
+            BigInteger encodedValue = 0b11111111;
+            BigInteger result = DummyEnumRoot.Category1.Category11.Clear(encodedValue);
+            Assert.AreEqual(0b10000111, (byte)result);
+
+            // Clearing of top-most group.
+            encodedValue = 0b11111111;
+            result = DummyEnumRoot.Category1.Clear(encodedValue);
+            Assert.AreEqual(0b00000011, (byte)result);
+
+            // Clearing of the root.
+            encodedValue = 0b11111111;
+            result = DummyEnumRoot.Instance.Clear(encodedValue);
+            Assert.AreEqual(0, (byte)result);
+        }
+
+        [Test]
         public void EncodedValue_comparing()
         {
             Assert.IsTrue(DummyEnumRoot.Category1.Category11.Attr111 > DummyEnumRoot.Category1.Category11.Attr112);
             Assert.IsTrue(DummyEnumRoot.Category1.Category11.Attr112 > DummyEnumRoot.Category1.Category11.Attr113);
             Assert.IsTrue(DummyEnumRoot.Category1.Category11.Attr113 > DummyEnumRoot.Category1.Category11);
-            Assert.IsTrue(DummyEnumRoot.Category1.Category11.Value > DummyEnumRoot.Category1.Val12);
-            Assert.IsTrue(DummyEnumRoot.Category1.Val12.Value > DummyEnumRoot.Category1);
+            Assert.IsTrue(DummyEnumRoot.Category1.Category11 > DummyEnumRoot.Category1.Val12);
+            Assert.IsTrue(DummyEnumRoot.Category1.Val12 > DummyEnumRoot.Category1);
             Assert.IsTrue(DummyEnumRoot.Category1 > DummyEnumRoot.Val2);
         }
 

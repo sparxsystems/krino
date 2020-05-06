@@ -15,42 +15,40 @@ namespace Krino.Vertical.Utils.Enums
     [DebuggerDisplay("{(System.Numerics.BigInteger)this}")]
     public abstract class EnumBase
     {
-        private int myBitIndex;
-
         /// <summary>
         /// Instantiates the enum.
         /// </summary>
         /// <param name="parent">Parent enum group.</param>
-        /// <param name="globalIndex">Index within the whole bit array.</param>
         protected EnumBase(EnumGroupBase parent)
         {
+            // If this is not the root.
             if (parent != null)
             {
                 ParentEnum = parent;
 
-                // Ensure the root is properly defined.
-                EnumRootBase root = ParentEnums.OfType<EnumRootBase>().LastOrDefault();
-                if (root == null)
-                {
-                    throw new InvalidOperationException($"Could not instantiate the enum because the root enum of type {nameof(EnumRootBase)} is missing.");
-                }
+                EnumGroupBase root = ParentEnums.Last();
 
-                myBitIndex = root.Length;
+                BitIndex = root.Length;
 
                 // Increase number of registered enums.
-                ++root.Length;
+                foreach (EnumGroupBase parentGroup in ParentEnums)
+                {
+                    ++parentGroup.Length;
+                }
             }
         }
+
+        protected int BitIndex { get; private set; }
 
         /// <summary>
         /// Returns the parent enum group f this enum.
         /// </summary>
-        public EnumGroupBase ParentEnum { get; private set; }
+        protected EnumGroupBase ParentEnum { get; private set; }
 
         /// <summary>
         /// Returns the sequence of parents to the root.
         /// </summary>
-        public IEnumerable<EnumGroupBase> ParentEnums
+        protected IEnumerable<EnumGroupBase> ParentEnums
         {
             get
             {
@@ -64,15 +62,14 @@ namespace Krino.Vertical.Utils.Enums
         }
 
         /// <summary>
-        /// Returns the root 
+        /// True if the value encodes this enum.
         /// </summary>
-        public EnumRootBase EnumRoot { get { return ParentEnum == null ? this as EnumRootBase : ParentEnums.OfType<EnumRootBase>().Last(); } }
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool IsIn(BigInteger value) => IsIn(Value, value);
 
 
-        /// <summary>
-        /// Returns the value of this enum.
-        /// </summary>
-        public BigInteger Value
+        protected BigInteger Value
         {
             get
             {
@@ -82,20 +79,12 @@ namespace Krino.Vertical.Utils.Enums
             }
         }
 
-
-        /// <summary>
-        /// True if the value encodes this enum.
-        /// </summary>
-        /// <param name="value"></param>
-        /// <returns></returns>
-        public bool IsIn(BigInteger value) => IsIn(Value, value);
-
         private byte[] GetValueInBytes()
         {
             byte[] result;
 
             // If this is root.
-            if (this is EnumRootBase root)
+            if (ParentEnum == null && this is EnumGroupBase root)
             {
                 int arrayLength = root.Length % 8 == 0 ? 1 + root.Length / 8 : 1 + root.Length / 8 + 1;
                 result = new byte[arrayLength];
@@ -106,7 +95,7 @@ namespace Krino.Vertical.Utils.Enums
 
                 // Note: the most significant byte is at the end so count the bit position from the end of the array.
                 //       and to get the unsigned number the very last byte stays 00.
-                result[result.Length - myBitIndex / 8 - 2] |= (byte)(0x80 >> (myBitIndex % 8));
+                result[result.Length - BitIndex / 8 - 2] |= (byte)(0x80 >> (BitIndex % 8));
             }
 
             return result;
