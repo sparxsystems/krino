@@ -1,4 +1,6 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
@@ -14,19 +16,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     {
         public static MorphemeRule Anything = new MorphemeRule(Rule.Anything<string>(), Rule.Anything<BigInteger>());
         public static MorphemeRule Nothing = new MorphemeRule(Rule.Nothing<string>(), Rule.Nothing<BigInteger>());
-        public static MorphemeRule O = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.O));
-        public static MorphemeRule I = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I));
-        public static MorphemeRule I1 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Modal));
-        public static MorphemeRule I2 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Bivalent));
-        public static MorphemeRule I3 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Trivalent));
-        public static MorphemeRule I4 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Quadrivalent));
-        public static MorphemeRule I5 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.I.Verb.Pentavalent));
-        public static MorphemeRule A = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.A));
-        public static MorphemeRule E_Preposition = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.E.Preposition));
-        public static MorphemeRule E_Adverb = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.E.Adverb));
-        public static MorphemeRule U = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.U));
-        public static MorphemeRule Epsilon = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.Epsilon));
-        public static MorphemeRule NonLexeme = new MorphemeRule(Rule.Anything<string>(), new MaskRule(StructuralAttributes.NonLexeme));
+        public static MorphemeRule O = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.O));
+        public static MorphemeRule I = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.I));
+        public static MorphemeRule I1 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Modal));
+        public static MorphemeRule I2 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Bivalent));
+        public static MorphemeRule I3 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Trivalent));
+        public static MorphemeRule I4 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Quadrivalent));
+        public static MorphemeRule I5 = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Pentavalent));
+        public static MorphemeRule A = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.A));
+        public static MorphemeRule E_Preposition = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.E.Preposition));
+        public static MorphemeRule E_Adverb = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.E.Adverb));
+        public static MorphemeRule U = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.U));
+        public static MorphemeRule Epsilon = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.Epsilon));
+        public static MorphemeRule NonLexeme = new MorphemeRule(Rule.Anything<string>(), new MaskRule(Attributes.NonLexeme));
 
 
         private IRule<string> myMorphRule;

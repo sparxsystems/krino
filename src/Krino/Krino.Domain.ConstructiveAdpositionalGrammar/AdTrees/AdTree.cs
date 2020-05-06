@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -373,11 +374,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     }
                     else
                     {
-                        if (StructuralAttributes.A.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
-                            StructuralAttributes.A.Determiner.IsIn(Left.Morpheme.Attributes) ||
-                            StructuralAttributes.I.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
-                            StructuralAttributes.E.Preposition.IsIn(Left.Morpheme.Attributes) ||
-                            StructuralAttributes.A.Numeral.IsIn(Left.Morpheme.Attributes)
+                        if (Attributes.A.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.A.Determiner.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.I.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.E.Preposition.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.A.Numeral.IsIn(Left.Morpheme.Attributes)
                             )
                         {
                             isLeftBeforeRight = true;

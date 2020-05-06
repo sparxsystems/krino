@@ -3,7 +3,8 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using NUnit.Framework;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
@@ -18,13 +19,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = Attributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = Attributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = Attributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = Attributes.A.Determiner } }
                 }
             };
 
@@ -45,13 +46,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb } },
-                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun } }
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = Attributes.I.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = Attributes.O.Pronoun } }
                 },
                 Left = new AdTree()
                 {
-                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = StructuralAttributes.O.Noun } },
-                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = StructuralAttributes.A.Determiner } }
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = Attributes.O.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = Attributes.A.Determiner } }
                 }
             };
 
@@ -68,21 +69,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             IAdTree adTree = new AdTree()
             {
-                Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
+                Morpheme = new Morpheme("") { Attributes = Attributes.U },
                 Pattern = new Pattern() { RightRule = new PatternRule(MorphemeRule.O), }
             };
-            IAdTree adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.O }, Pattern.O);
+            IAdTree adTreeElement = new AdTree(new Morpheme("hello") { Attributes = Attributes.O }, Pattern.O);
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
 
 
             adTree = new AdTree()
             {
-                Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
+                Morpheme = new Morpheme("") { Attributes = Attributes.U },
                 // Stative (O) can connect to the right child.
                 Pattern = new Pattern() { RightRule = new PatternRule(MorphemeRule.O), }
             };
             // But the element is the verbant (I)
-            adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.I }, Pattern.I);
+            adTreeElement = new AdTree(new Morpheme("hello") { Attributes = Attributes.I }, Pattern.I);
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
         }
 
@@ -102,7 +103,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
                 Right = new AdTree()
                 {
-                    Morpheme = new Morpheme("read") { Attributes = StructuralAttributes.I.Verb },
+                    Morpheme = new Morpheme("read") { Attributes = Attributes.I.Verb },
                     Pattern = new Pattern()
                     {
                         MorphemeRule = MorphemeRule.I2,
@@ -112,7 +113,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 },
                 Left = new AdTree()
                 {
-                    Morpheme = new Morpheme("I") { Attributes = StructuralAttributes.O.Pronoun},
+                    Morpheme = new Morpheme("I") { Attributes = Attributes.O.Pronoun},
                     Pattern = new Pattern()
                     {
                         MorphemeRule = MorphemeRule.O,
@@ -174,21 +175,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             IAdTree adTree = new AdTree()
             {
-                Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
+                Morpheme = new Morpheme("") { Attributes = Attributes.U },
                 Pattern = new Pattern() { LeftRule = new PatternRule(MorphemeRule.O), }
             };
-            IAdTree adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.O }, new Pattern());
+            IAdTree adTreeElement = new AdTree(new Morpheme("hello") { Attributes = Attributes.O }, new Pattern());
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
 
 
             adTree = new AdTree()
             {
-                Morpheme = new Morpheme("") { Attributes = StructuralAttributes.U },
+                Morpheme = new Morpheme("") { Attributes = Attributes.U },
                 // Stative (O) can connect to the left child.
                 Pattern = new Pattern() { LeftRule = new PatternRule(MorphemeRule.O), }
             };
             // But the element is the verbant (I)
-            adTreeElement = new AdTree(new Morpheme("hello") { Attributes = StructuralAttributes.I }, new Pattern());
+            adTreeElement = new AdTree(new Morpheme("hello") { Attributes = Attributes.I }, new Pattern());
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
         }
     }

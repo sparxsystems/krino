@@ -1,5 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
-using System.Numerics;
+﻿using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
@@ -14,14 +13,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         string Morph { get; }
 
         /// <summary>
-        /// Encodes structural attributes the morphem carries.
+        /// Structural and semantic attributes the morphem carries.
         /// </summary>
         BigInteger Attributes { get; set; }
-
-        /// <summary>
-        /// Encodes semantic attributes the morpheme carries.
-        /// </summary>
-        BigInteger SememeAttributes { get; set; }
 
         /// <summary>
         /// Returns the grammar character of the morpheme.

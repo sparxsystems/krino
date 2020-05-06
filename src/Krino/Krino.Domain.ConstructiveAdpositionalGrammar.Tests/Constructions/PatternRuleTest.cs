@@ -1,5 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -22,7 +24,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
 
 
             rule = new PatternRule(new MorphemeRule(Rule.Anything<string>(),
-                Rule.Is<BigInteger>(StructuralAttributes.A).Or(Rule.Is<BigInteger>(StructuralAttributes.O))));
+                Rule.Is<BigInteger>(Attributes.A).Or(Rule.Is<BigInteger>(Attributes.O))));
             grammarCharacters = rule.GetMatchingGrammarCharacters().ToList();
             Assert.AreEqual(2, grammarCharacters.Count);
             Assert.IsTrue(grammarCharacters.Contains(GrammarCharacter.A));

@@ -1,5 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.StructuralAttributesArrangement;
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
@@ -12,7 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
             Morph = morph;
 
             // Initialize attributes to Epsilon.
-            Attributes = StructuralAttributes.Epsilon;
+            Attributes = AttributesArrangement.Attributes.Epsilon;
         }
 
         public string Morph { get; private set; }
@@ -20,7 +19,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         public GrammarCharacter GrammarCharacter => GrammarCharacterExt.GetGrammarCharacter(Attributes);
 
         public BigInteger Attributes { get; set; }
-
-        public BigInteger SememeAttributes { get; set; }
     }
 }
