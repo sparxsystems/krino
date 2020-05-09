@@ -3,6 +3,7 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Graphs;
 using System;
 using System.Collections.Generic;
@@ -46,20 +47,78 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public IReadOnlyList<IAdTree> ActiveAdTrees => myActiveAdTrees.Select(x => x.Root).ToList();
 
-        public bool AddMorph(string morph)
+        public bool AddWord(string value)
         {
-            IEnumerable<IMorpheme> lexemes = myConstructiveDictionary.FindLexemes(morph);
-            bool result = AddSameMorphLexemes(lexemes);
+            List<IAdTree> adTreesToAdd = new List<IAdTree>();
+
+            IEnumerable<IReadOnlyList<IMorpheme>> morphemeSequences = myConstructiveDictionary.FindMorphemeSequences(value);
+
+            // Go via sequences.
+            foreach (IReadOnlyList<IMorpheme> sequence in morphemeSequences)
+            {
+                bool isCancelled = false;
+                IMorpheme lexeme = null;
+                AdTreeBuilder localAdTreeBuilder = new AdTreeBuilder(myConstructiveDictionary);
+                foreach (IMorpheme morpheme in sequence)
+                {
+                    if (morpheme.IsLexeme)
+                    {
+                        if (lexeme != null)
+                        {
+                            if (!localAdTreeBuilder.AddMorpheme(lexeme))
+                            {
+                                isCancelled = true;
+                                break;
+                            }
+                        }
+
+                        lexeme = morpheme;
+                    }
+                    else
+                    {
+                        if (!localAdTreeBuilder.AddMorpheme(morpheme))
+                        {
+                            isCancelled = true;
+                            break;
+                        }
+                    }
+                }
+
+                if (!isCancelled)
+                {
+                    if (lexeme != null)
+                    {
+                        if (!localAdTreeBuilder.AddMorpheme(lexeme))
+                        {
+                            isCancelled = true;
+                        }
+                    }
+
+                    if (!isCancelled)
+                    {
+                        adTreesToAdd.AddRange(localAdTreeBuilder.ActiveAdTrees);
+                    }
+                }
+            }
+
+            bool result = AddHomonyms(adTreesToAdd);
             return result;
         }
 
-        public bool AddLexeme(IMorpheme lexeme)
+        public bool AddMorpheme(IMorpheme lexeme)
         {
-            bool result = AddSameMorphLexemes(new IMorpheme[] { lexeme });
+            bool result = AddHomonyms(new IMorpheme[] { lexeme });
             return result;
         }
 
-        public bool AddSameMorphLexemes(IEnumerable<IMorpheme> sameMorphLexemes)
+        public bool AddHomonyms(IEnumerable<IMorpheme> homonymMorphemes)
+        {
+            IEnumerable<IAdTree> homonymAdTrees = GetAdTrees(homonymMorphemes);
+            bool isAdded = AddHomonyms(homonymAdTrees);
+            return isAdded;
+        }
+
+        public bool AddHomonyms(IEnumerable<IAdTree> homonymAdTrees)
         {
             bool isAdded = false;
 
@@ -68,22 +127,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 List<IAdTree> newListOfAdTrees = new List<IAdTree>();
 
-                // Go via active adtrees (i.e. adtrees which are still candidates to become the final adtree).
-                foreach (IAdTree currentAdTree in myActiveAdTrees)
+                foreach (IAdTree activeAdTree in myActiveAdTrees)
                 {
-                    foreach (IMorpheme sameMorphLexeme in sameMorphLexemes)
+                    foreach (IAdTree newAdTree in homonymAdTrees)
                     {
-                        IEnumerable<IPattern> lexemeMatchingPatterns = myConstructiveDictionary.FindLexemeMatchingPatterns(sameMorphLexeme);
-
-                        // Go via patterns which match the incoming morpheme.
-                        foreach (IPattern pattern in lexemeMatchingPatterns)
-                        {
-                            // Create the adtree element from the incoming morpheme and its pattern.
-                            IAdTree newAdTreeElement = new AdTree(sameMorphLexeme, pattern);
-
-                            // Try to attach the morpheme element to the adtree.
-                            TryToAttachAdTreeElement(currentAdTree, newAdTreeElement, newListOfAdTrees);
-                        }
+                        TryToAttachAdTree(activeAdTree, newAdTree, newListOfAdTrees);
                     }
                 }
 
@@ -96,16 +144,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             // Create new adtrees.
             else
             {
-                foreach (IMorpheme sameMorphLexeme in sameMorphLexemes)
-                {
-                    IEnumerable<IPattern> lexemeMatchingPatterns = myConstructiveDictionary.FindLexemeMatchingPatterns(sameMorphLexeme);
-
-                    foreach (IPattern pattern in lexemeMatchingPatterns)
-                    {
-                        AdTree newAdTree = new AdTree(sameMorphLexeme, pattern);
-                        myActiveAdTrees.Add(newAdTree);
-                    }
-                }
+                myActiveAdTrees.AddRange(homonymAdTrees);
 
                 if (myActiveAdTrees.Count > 0)
                 {
@@ -113,11 +152,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 }
             }
 
-
             return isAdded;
         }
 
-        private void TryToAttachAdTreeElement(IAdTree adTree, IAdTree newAdTreeElement, List<IAdTree> results)
+
+        private IEnumerable<IAdTree> GetAdTrees(IEnumerable<IMorpheme> morphemes)
+        {
+            foreach (IMorpheme morpheme in morphemes)
+            {
+                IEnumerable<IPattern> matchingPatterns = myConstructiveDictionary.FindMatchingPatterns(morpheme);
+
+                // Go via patterns matching the incoming morpheme.
+                foreach (IPattern pattern in matchingPatterns)
+                {
+                    // Create the adtree element from the incoming morpheme and its pattern.
+                    IAdTree newAdTree = new AdTree(morpheme, pattern);
+
+                    yield return newAdTree;
+                }
+            }
+        }
+
+        private void TryToAttachAdTree(IAdTree adTree, IAdTree newAdTreeElement, List<IAdTree> results)
         {
             // If the adtree can attach something to left.
             if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(PatternRule.Nothing))
@@ -401,5 +457,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             throw new InvalidOperationException("Failed to properly copy the adtree.");
         }
+
+        
     }
 }

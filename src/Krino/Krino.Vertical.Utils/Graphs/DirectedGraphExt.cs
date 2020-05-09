@@ -3,6 +3,9 @@ using System.Linq;
 
 namespace Krino.Vertical.Utils.Graphs
 {
+    /// <summary>
+    /// Utility and extending functionality for DirectedGraph.
+    /// </summary>
     public static class DirectedGraphExt
     {
         /// <summary>
@@ -29,8 +32,6 @@ namespace Krino.Vertical.Utils.Graphs
             HashSet<string> visited)
         {
             visited.Add(currentVertexId);
-
-            IEnumerable<IReadOnlyList<DirectedEdge<E>>> result = Enumerable.Empty<IReadOnlyList<DirectedEdge<E>>>();
 
             IEnumerable<DirectedEdge<E>> edgesGoingFrom = graph.GetEdgesGoingFrom(currentVertexId);
             foreach (DirectedEdge<E> edge in edgesGoingFrom)

@@ -16,8 +16,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public string Morph { get; private set; }
 
+        public BigInteger Attributes { get; set; }
+
         public GrammarCharacter GrammarCharacter => GrammarCharacterExt.GetGrammarCharacter(Attributes);
 
-        public BigInteger Attributes { get; set; }
+        public bool IsLexeme => !AttributesArrangement.Attributes.NonLexeme.IsIn(Attributes);
     }
 }

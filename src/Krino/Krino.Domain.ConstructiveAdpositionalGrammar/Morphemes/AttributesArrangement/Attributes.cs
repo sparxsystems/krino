@@ -48,8 +48,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
         /// <summary>
         /// Indicates it is a non-lexeme morpheme.
         /// </summary>
-        public static EnumValue NonLexeme { get; } = new EnumValue(Instance);
-
-        
+        public static NonLexemeAttributes NonLexeme { get; } = new NonLexemeAttributes(Instance);
     }
 }

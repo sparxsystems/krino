@@ -28,6 +28,8 @@ namespace Krino.Vertical.Utils.Collections
             set => myDictionary[key] = new HashSet<V>(value, myValueComparer);
         }
 
+        public IEnumerable<K> Keys => myDictionary.Keys;
+
         public bool Add(K key, V value)
         {
             myDictionary.TryGetValue(key, out HashSet<V> values);

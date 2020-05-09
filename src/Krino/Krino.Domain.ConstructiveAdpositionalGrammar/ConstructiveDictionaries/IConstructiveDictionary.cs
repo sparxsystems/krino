@@ -18,11 +18,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         IEnumerable<IMorpheme> FindLexemes(string morph);
 
         /// <summary>
+        /// Finds all non-lexemes matching the morph.
+        /// </summary>
+        /// <param name="morph"></param>
+        /// <returns></returns>
+        IEnumerable<IMorpheme> FindNonLexemes(string morph);
+
+        /// <summary>
+        /// Finds all possible combinations of morphemes for the given word.
+        /// </summary>
+        /// <param name="word"></param>
+        /// <returns></returns>
+        IEnumerable<IReadOnlyList<IMorpheme>> FindMorphemeSequences(string word);
+
+        /// <summary>
         /// Finds patterns matching the lexeme.
         /// </summary>
         /// <param name="lexeme"></param>
         /// <returns></returns>
-        IEnumerable<IPattern> FindLexemeMatchingPatterns(IMorpheme lexeme);
+        IEnumerable<IPattern> FindMatchingPatterns(IMorpheme lexeme);
+
+        /// <summary>
+        /// All non-lexemes.
+        /// </summary>
+        IEnumerable<IMorpheme> NonLexemes { get; }
+
 
         /// <summary>
         /// All patterns.

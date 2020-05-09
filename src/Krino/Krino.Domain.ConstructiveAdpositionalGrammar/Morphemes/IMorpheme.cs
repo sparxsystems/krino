@@ -21,5 +21,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// Returns the grammar character of the morpheme.
         /// </summary>
         GrammarCharacter GrammarCharacter { get; }
+
+        /// <summary>
+        /// Returns true if the morpheme is a lexeme.
+        /// </summary>
+        bool IsLexeme { get; }
     }
 }

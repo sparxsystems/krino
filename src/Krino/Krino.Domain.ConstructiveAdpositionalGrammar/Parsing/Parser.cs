@@ -25,7 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 string[] words = text.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string word in words)
                 {
-                    builder.AddMorph(word);
+                    builder.AddWord(word);
                 }
 
                 result = builder.ActiveAdTrees.FirstOrDefault();
