@@ -101,7 +101,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                                 if (pattern.RightRule.IsMatch(rightGrammarCharacter))
                                 {
                                     PatternGraph.AddEdge(leftGrammarCharacter.ToString(), rightGrammarCharacter.ToString(), pattern);
-                                    PatternGraph.AddEdge(rightGrammarCharacter.ToString(), leftGrammarCharacter.ToString(), pattern);
+
+                                    if (leftGrammarCharacter != rightGrammarCharacter)
+                                    {
+                                        PatternGraph.AddEdge(rightGrammarCharacter.ToString(), leftGrammarCharacter.ToString(), pattern);
+                                    }
                                 }
                             }
                         }

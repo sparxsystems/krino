@@ -50,13 +50,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
+            
+            // Note: the grammar characters are vertices.
+            //       the path consists of edges.
+            //       The edge is represented by the pattern which can connect two grammar characters.
             List<IReadOnlyList<DirectedEdge<IPattern>>> paths = dictionary.PatternGraph.FindAllPaths("I", "I").ToList();
+            
             Assert.AreEqual(1, paths.Count);
-            Assert.AreEqual(2, paths[0].Count);
+            Assert.AreEqual(1, paths[0].Count);
+
             Assert.AreEqual(GrammarCharacter.I.ToString(), paths[0][0].From);
-            Assert.AreEqual(GrammarCharacter.Epsilon.ToString(), paths[0][0].To);
-            Assert.AreEqual(GrammarCharacter.Epsilon.ToString(), paths[0][1].From);
-            Assert.AreEqual(GrammarCharacter.I.ToString(), paths[0][1].To);
+            Assert.AreEqual(GrammarCharacter.I.ToString(), paths[0][0].To);
         }
 
         [Test]

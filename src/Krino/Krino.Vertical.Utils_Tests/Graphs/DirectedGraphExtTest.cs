@@ -26,8 +26,6 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddEdge("2", "1", "21");
             graph.AddEdge("1", "3", "13");
 
-            IEnumerable<IReadOnlyList<DirectedEdge<string>>> result = graph.FindAllPaths("2", "3");
-
             List<string> allPaths = graph.FindAllPaths("2", "3").Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
             Assert.AreEqual(5, allPaths.Count);
             Assert.IsTrue(allPaths.Contains("20-03"));
@@ -52,6 +50,22 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             Assert.IsTrue(allPaths.Contains("20-02"));
             Assert.IsTrue(allPaths.Contains("*20-02"));
             Assert.IsTrue(allPaths.Contains("22"));
+        }
+
+        [Test]
+        public void FindAllPaths_ToItself()
+        {
+            DirectedGraph<int, string> graph = new DirectedGraph<int, string>();
+            graph.AddVertex("A", 0);
+            graph.AddEdge("A", "A", ""); // goes to itself
+
+            // Get all paths from A to A.
+            List<IReadOnlyList<DirectedEdge<string>>> result = graph.FindAllPaths("A", "A").ToList();
+
+            Assert.AreEqual(1, result.Count);
+            Assert.AreEqual(1, result[0].Count);
+            Assert.AreEqual("A", result[0][0].From);
+            Assert.AreEqual("A", result[0][0].To);
         }
     }
 }

@@ -42,7 +42,7 @@ namespace Krino.Vertical.Utils.Graphs
                     {
                         localPath.Add(edge);
                         
-                        yield return localPath;
+                        yield return localPath.ToList();
                         
                         localPath.RemoveAt(localPath.Count - 1);
                     }
