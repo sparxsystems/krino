@@ -3,9 +3,9 @@
 namespace Krino.Vertical.Utils.Rules
 {
     /// <summary>
-    /// Declares the rule builder.
+    /// Declares the rule.
     /// </summary>
-    /// <typeparam name="T">type of the value which shall be evaluated.</typeparam>
+    /// <typeparam name="T">Type of the value which shall be evaluated.</typeparam>
     public interface IRule<T> : IEquatable<IRule<T>>
     {
         /// <summary>

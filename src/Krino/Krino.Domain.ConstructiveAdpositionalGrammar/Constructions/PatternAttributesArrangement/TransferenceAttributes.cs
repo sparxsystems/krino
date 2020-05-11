@@ -18,7 +18,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttr
         }
 
         /// <summary>
-        /// E.g. adds a postfix.
+        /// E.g. adds a prefix or suffix.
         /// </summary>
         public EnumValue Derivation { get; }
 

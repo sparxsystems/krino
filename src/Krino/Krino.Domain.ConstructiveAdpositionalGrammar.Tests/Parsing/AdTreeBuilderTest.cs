@@ -1,12 +1,15 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules.Strings;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferences;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Vertical.Utils.Rules;
+using Krino.Vertical.Utils.Transformations;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -122,6 +125,56 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("he", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
             Assert.AreEqual("s", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
             Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+        }
+
+        [Test]
+        public void Writ_er()
+        {
+            List<IMorpheme> morphemes = new List<IMorpheme>()
+            {
+                new Morpheme("write") { Attributes = Attributes.I.Verb },
+                new Morpheme("er") { Attributes = Attributes.O | Attributes.NonLexeme.Affix.Suffix },
+            };
+
+            List<IPattern> patterns = new List<IPattern>()
+            {
+                new Pattern("I")
+                {
+                    MorphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern("-er")
+                {
+                    MorphemeRule = new MorphemeRule(SuffixRule.Is("er"), Rule.Is(GrammarCharacter.O), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                // Transference pattern.
+                new Pattern("I>O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.I),
+                    LeftRule = new PatternRule(new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.O), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
+
+                    //RevertTransference = Transference.Derivation(
+                    //    Trans.If(SuffixRule.Is(
+                    //    )
+                },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+            // Decomposing transference needs to add 'e' to the end of 'writ' once the suffix 'er' is separated.
+            Assert.IsTrue(builder.AddWord("writer"));
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual("er", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
+            Assert.AreEqual("write", builder.ActiveAdTrees[0].Right.Morpheme.Morph);
         }
 
         [Test]

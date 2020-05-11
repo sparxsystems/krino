@@ -1,4 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferences;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Transformations;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
@@ -28,6 +31,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// </summary>
         PatternRule RightRule { get; }
 
+        /// <summary>
+        /// Transformation of the governor morpheme.
+        /// </summary>
+        ITransformation<IMorpheme> Transference { get; }
+
+        /// <summary>
+        /// Transformation to revert the transference.
+        /// </summary>
+        ITransformation<IMorpheme> RevertTransference { get; }
 
         /// <summary>
         /// Returns the valency position.
