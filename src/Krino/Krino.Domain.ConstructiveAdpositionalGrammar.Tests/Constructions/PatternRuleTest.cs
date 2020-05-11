@@ -24,7 +24,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
 
 
             rule = new PatternRule(new MorphemeRule(Rule.Anything<string>(),
-                Rule.Is<BigInteger>(Attributes.A).Or(Rule.Is<BigInteger>(Attributes.O))));
+                Rule.Is(GrammarCharacter.A).Or(Rule.Is(GrammarCharacter.O)),
+                Rule.Anything<BigInteger>()));
             grammarCharacters = rule.GetMatchingGrammarCharacters().ToList();
             Assert.AreEqual(2, grammarCharacters.Count);
             Assert.IsTrue(grammarCharacters.Contains(GrammarCharacter.A));

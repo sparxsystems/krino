@@ -29,13 +29,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         [Test]
         public void IsMatch()
         {
-            MorphemeRule morphemeRule = new MorphemeRule(Rule.Anything<string>(), MaskRule.Is(Attributes.I).Or(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
+            MorphemeRule morphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).Or(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
             Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I | Attributes.NonLexeme.Affix.Suffix));
             Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I));
             Assert.IsTrue(morphemeRule.IsMatch("", Attributes.NonLexeme.Affix.Suffix));
             Assert.IsFalse(morphemeRule.IsMatch("", Attributes.O));
 
-            morphemeRule = new MorphemeRule(Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
+            morphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
             Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I | Attributes.NonLexeme.Affix.Suffix));
             Assert.IsFalse(morphemeRule.IsMatch("", Attributes.I));
             Assert.IsFalse(morphemeRule.IsMatch("", Attributes.NonLexeme.Affix.Suffix));
@@ -45,7 +45,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         [Test]
         public void IsMatch_GrammarCharacter()
         {
-            MorphemeRule morphemeRule = new MorphemeRule(Rule.Anything<string>(), MaskRule.Is(Attributes.I).Or(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
+            MorphemeRule morphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).Or(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
             Assert.IsTrue(morphemeRule.IsMatch(GrammarCharacter.I));
             Assert.IsFalse(morphemeRule.IsMatch(GrammarCharacter.O));
             Assert.IsFalse(morphemeRule.IsMatch(GrammarCharacter.E));
@@ -53,7 +53,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             Assert.IsFalse(morphemeRule.IsMatch(GrammarCharacter.U));
             Assert.IsFalse(morphemeRule.IsMatch(GrammarCharacter.Epsilon));
 
-            morphemeRule = new MorphemeRule(Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
+            morphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
             Assert.IsTrue(morphemeRule.IsMatch(GrammarCharacter.I));
             Assert.IsFalse(morphemeRule.IsMatch(GrammarCharacter.O));
             Assert.IsFalse(morphemeRule.IsMatch(GrammarCharacter.E));

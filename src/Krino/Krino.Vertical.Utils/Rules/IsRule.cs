@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 
 namespace Krino.Vertical.Utils.Rules
@@ -9,19 +10,20 @@ namespace Krino.Vertical.Utils.Rules
     /// <typeparam name="T"></typeparam>
     [DebuggerDisplay("{myRequiredValue}")]
     public class IsRule<T> : IRule<T>
-        where T : IEquatable<T>
     {
+        private IEqualityComparer<T> myComparer;
         private T myRequiredValue;
 
         public IsRule(T requiredValue)
         {
+            myComparer = EqualityComparer<T>.Default;
             myRequiredValue = requiredValue;
         }
 
         public bool Evaluate(T value) => myRequiredValue.Equals(value);
 
 
-        public bool Equals(IRule<T> other) => other is IsRule<T> isRule && myRequiredValue.Equals(isRule.myRequiredValue);
+        public bool Equals(IRule<T> other) => other is IsRule<T> isRule && myComparer.Equals(myRequiredValue, isRule.myRequiredValue);
 
 
         /// <summary>

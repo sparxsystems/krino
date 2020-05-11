@@ -13,7 +13,7 @@ namespace Krino.Vertical.Utils.Rules
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
         /// <returns></returns>
-        public static IRule<T> Is<T>(T value) where T : IEquatable<T> => new IsRule<T>(value);
+        public static IRule<T> Is<T>(T value) => new IsRule<T>(value);
 
         /// <summary>
         /// Creates the rule which accept all values i.e. always returns true.
