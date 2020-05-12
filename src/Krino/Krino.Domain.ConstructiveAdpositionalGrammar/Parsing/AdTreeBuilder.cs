@@ -46,11 +46,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public IReadOnlyList<IAdTree> ActiveAdTrees => myActiveAdTrees.Select(x => x.Root).ToList();
 
-        public bool AddWord(string value)
+        public bool AddWord(string value, int maxMorphDistance = 0)
         {
             List<IAdTree> adTreesToAdd = new List<IAdTree>();
 
-            IEnumerable<IReadOnlyList<IMorpheme>> morphemeSequences = myConstructiveDictionary.FindMorphemeSequences(value);
+            IEnumerable<IReadOnlyList<IMorpheme>> morphemeSequences = myConstructiveDictionary.FindMorphemeSequences(value, maxMorphDistance);
 
             // Go via sequences.
             foreach (IReadOnlyList<IMorpheme> sequence in morphemeSequences)

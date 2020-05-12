@@ -16,8 +16,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     public class ConstructiveDictionary : IConstructiveDictionary
     {
         private List<IPattern> myLexemePatterns;
-        private MultiDictionaryUniqueValue<string, IMorpheme> myLexemes;
-        private MultiDictionaryUniqueValue<string, IMorpheme> myNonLexemes;
+        private MultiKeyDistinctValueDictionary<string, IMorpheme> myLexemes;
+        private MultiKeyDistinctValueDictionary<string, IMorpheme> myNonLexemes;
 
         public ConstructiveDictionary(IEnumerable<IMorpheme> morphemes, IEnumerable<IPattern> patterns)
         {
@@ -29,21 +29,44 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             InitializePatternGraph();
         }
 
-        public IEnumerable<IMorpheme> FindLexemes(string morph)
+        public IEnumerable<IMorpheme> FindLexemes(string morph, int maxDistance)
         {
-            myLexemes.TryGetValues(morph, out ISet<IMorpheme> result);
-            return result ?? Enumerable.Empty<IMorpheme>();
+            IEnumerable<IMorpheme> result = Enumerable.Empty<IMorpheme>();
+
+            // Try to find exact lexemes.
+            if (myLexemes.TryGetValues(morph, out ReadOnlySet<IMorpheme> lexemes))
+            {
+                result = lexemes;
+            }
+
+            if (maxDistance > 0)
+            {
+                // Also try to find lexemes which have similar morph.
+                IEnumerable<string> similarMorphs = myLexemes.Keys.FindSimilar(morph, maxDistance);
+
+                if (lexemes != null)
+                {
+                    // Note: exclude morphemes already returned among exact lexemes.
+                    result = result.Concat(similarMorphs.SelectMany(x => myLexemes[x].Where(y => !lexemes.Contains(y))));
+                }
+                else
+                {
+                    result = result.Concat(similarMorphs.SelectMany(x => myLexemes[x]));
+                }
+            }
+
+            return result;
         }
 
         public IEnumerable<IMorpheme> FindNonLexemes(string morph)
         {
-            myNonLexemes.TryGetValues(morph, out ISet<IMorpheme> result);
+            myNonLexemes.TryGetValues(morph, out ReadOnlySet<IMorpheme> result);
             return result ?? Enumerable.Empty<IMorpheme>();
         }
 
-        public IEnumerable<IReadOnlyList<IMorpheme>> FindMorphemeSequences(string word)
+        public IEnumerable<IReadOnlyList<IMorpheme>> FindMorphemeSequences(string word, int maxMorphDistance)
         {
-            IEnumerable<IReadOnlyList<IMorpheme>> result = FindAllMorphemeSequences(word, new List<IMorpheme>());
+            IEnumerable<IReadOnlyList<IMorpheme>> result = FindAllMorphemeSequences(word, maxMorphDistance, new List<IMorpheme>());
             return result;
         }
 
@@ -62,8 +85,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         private void InitializeMorphemes(IEnumerable<IMorpheme> morphemes)
         {
             MorphemeEqualityComparer morphemeEqualityComparer = new MorphemeEqualityComparer();
-            myLexemes = new MultiDictionaryUniqueValue<string, IMorpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
-            myNonLexemes = new MultiDictionaryUniqueValue<string, IMorpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
+            myLexemes = new MultiKeyDistinctValueDictionary<string, IMorpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
+            myNonLexemes = new MultiKeyDistinctValueDictionary<string, IMorpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
             foreach (IMorpheme morpheme in morphemes)
             {
                 if (morpheme.IsLexeme)
@@ -117,10 +140,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         private IEnumerable<IReadOnlyList<IMorpheme>> FindAllMorphemeSequences(
             string word,
+            int morphDistance,
             List<IMorpheme> localSequence)
         {
             // Find if the word is a lexeme.
-            IEnumerable<IMorpheme> lexemes = FindLexemes(word);
+            IEnumerable<IMorpheme> lexemes = FindLexemes(word, morphDistance);
             foreach (IMorpheme lexeme in lexemes)
             {
                 localSequence.Add(lexeme);
@@ -129,7 +153,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             }
 
             // Find if the word is a lexeme with suffixes.
-            IEnumerable<IReadOnlyList<IMorpheme>> wordSuffixes = FindLexemeAndItsSuffixes(word, new List<IMorpheme>());
+            IEnumerable<IReadOnlyList<IMorpheme>> wordSuffixes = FindLexemeAndItsSuffixes(word, morphDistance, new List<IMorpheme>());
             foreach (IReadOnlyList<IMorpheme> sequence in wordSuffixes)
             {
                 yield return localSequence.Concat(sequence.Reverse()).ToList();
@@ -150,7 +174,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                         localSequence.Add(prefix);
 
                         // Try if there are sub-prefixes.
-                        IEnumerable<IReadOnlyList<IMorpheme>> sequences = FindAllMorphemeSequences(newWord, localSequence);
+                        IEnumerable<IReadOnlyList<IMorpheme>> sequences = FindAllMorphemeSequences(newWord, morphDistance, localSequence);
                         foreach (IReadOnlyList<IMorpheme> sequence in sequences)
                         {
                             yield return sequence.ToList();
@@ -165,13 +189,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         private IEnumerable<IReadOnlyList<IMorpheme>> FindLexemeAndItsSuffixes(
             string word,
+            int morphDistance,
             List<IMorpheme> localSequence)
         {
             // If there is some suffix.
             if (localSequence.Count > 0)
             {
                 // If the word is a lexeme.
-                IEnumerable<IMorpheme> lexemes = FindLexemes(word);
+                IEnumerable<IMorpheme> lexemes = FindLexemes(word, morphDistance);
                 foreach (IMorpheme lexeme in lexemes)
                 {
                     localSequence.Add(lexeme);
@@ -194,7 +219,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                     {
                         localSequence.Add(sufix);
 
-                        IEnumerable<IReadOnlyList<IMorpheme>> sequences = FindLexemeAndItsSuffixes(newWord, localSequence);
+                        IEnumerable<IReadOnlyList<IMorpheme>> sequences = FindLexemeAndItsSuffixes(newWord, morphDistance, localSequence);
                         foreach (IReadOnlyList<IMorpheme> sequence in sequences)
                         {
                             yield return sequence;

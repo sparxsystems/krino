@@ -35,8 +35,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
         public ITransformation<IMorpheme> Transference { get; set; } = Transferences.Transference.NothingToDo;
 
-        public ITransformation<IMorpheme> RevertTransference { get; set; } = Transferences.Transference.NothingToDo;
-
         public int ValencyPosition => PatternAttributesArrangement.PatternAttributes.ValencyPosition.GetValencyPosition(PatternAttributes);
     }
 }

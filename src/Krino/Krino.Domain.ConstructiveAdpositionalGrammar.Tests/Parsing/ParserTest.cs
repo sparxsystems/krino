@@ -53,7 +53,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             ConstructiveDictionary dictionary = new ConstructiveDictionary(lexemes, patterns);
 
             Parser parser = new Parser(dictionary);
-            IAdTree adTree = parser.Deserialize("I read");
+            IAdTree adTree = parser.Deserialize("I read", 0);
 
             Assert.AreEqual("I", adTree.Left.Morpheme.Morph);
             Assert.AreEqual("read", adTree.Right.Morpheme.Morph);

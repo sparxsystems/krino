@@ -37,11 +37,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         ITransformation<IMorpheme> Transference { get; }
 
         /// <summary>
-        /// Transformation to revert the transference.
-        /// </summary>
-        ITransformation<IMorpheme> RevertTransference { get; }
-
-        /// <summary>
         /// Returns the valency position.
         /// </summary>
         int ValencyPosition { get; }

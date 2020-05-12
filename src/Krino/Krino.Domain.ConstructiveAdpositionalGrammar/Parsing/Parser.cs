@@ -14,7 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myConstructiveDictionary = constructiveDictionary;
         }
 
-        public IAdTree Deserialize(string text)
+        public IAdTree Deserialize(string text, int maxMorphDistance)
         {
             IAdTree result = null;
 
@@ -25,7 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 string[] words = text.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string word in words)
                 {
-                    builder.AddWord(word);
+                    builder.AddWord(word, maxMorphDistance);
                 }
 
                 result = builder.ActiveAdTrees.FirstOrDefault();

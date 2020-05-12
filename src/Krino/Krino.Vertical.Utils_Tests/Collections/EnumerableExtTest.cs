@@ -9,6 +9,22 @@ namespace Krino.Vertical.Utils_Tests.Collections
     public class EnumerableExtTest
     {
         [Test]
+        public void FindSimilar()
+        {
+            List<string> source = new List<string>()
+            {
+                "abcd",
+                "bcde",
+                "wxyz"
+            };
+
+            List<string> result = source.FindSimilar("bcd", 1).ToList();
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("abcd", result[0]);
+            Assert.AreEqual("bcde", result[1]);
+        }
+
+        [Test]
         public void TakeUntil()
         {
             List<int> l = new List<int>() { 1, 2, 3, 4, 5 };

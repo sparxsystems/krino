@@ -14,13 +14,13 @@ namespace Krino.Vertical.Utils.Strings
         /// The number of edits needed to turn one string into another.
         /// With Levenshtein distance, we measure similarity and match approximate strings with fuzzy logic.
         /// </remarks>
-        /// <param name="s"></param>
-        /// <param name="t"></param>
+        /// <param name="src"></param>
+        /// <param name="dest"></param>
         /// <returns></returns>
-        public static int Distance(this string s, string t)
+        public static int Distance(this string src, string dest)
         {
-            int n = s.Length;
-            int m = t.Length;
+            int n = src.Length;
+            int m = dest.Length;
 
             if (n == 0)
             {
@@ -59,7 +59,7 @@ namespace Krino.Vertical.Utils.Strings
                     // Step 5
                     // The diagonal jump can cost either one, if the two characters in the row and column
                     // do not match else 0, if they match. Each cell always minimizes the cost locally.
-                    int cost = (t[j - 1] == s[i - 1]) ? 0 : 1;
+                    int cost = (dest[j - 1] == src[i - 1]) ? 0 : 1;
 
                     // Step 6
                     // This way the number in the lower right corner is the Levenshtein distance between both words.
