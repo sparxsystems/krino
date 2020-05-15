@@ -16,14 +16,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <param name="morph"></param>
         /// <param name="maxDistance">The level of similarity. If 0 then the exact morph is searched.</param>
         /// <returns></returns>
-        IEnumerable<IMorpheme> FindLexemes(string morph, int maxDistance);
+        IEnumerable<Morpheme> FindLexemes(string morph, int maxDistance);
 
         /// <summary>
         /// Finds all non-lexemes matching the morph.
         /// </summary>
         /// <param name="morph"></param>
         /// <returns></returns>
-        IEnumerable<IMorpheme> FindNonLexemes(string morph);
+        IEnumerable<Morpheme> FindNonLexemes(string morph);
 
         /// <summary>
         /// Finds all possible combinations of morphemes for the given word.
@@ -31,19 +31,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <param name="word"></param>
         /// <param name="maxMorphDistance">The level of similarity. If 0 then the exact morph is searched.</param>
         /// <returns></returns>
-        IEnumerable<IReadOnlyList<IMorpheme>> FindMorphemeSequences(string word, int maxMorphDistance);
+        IEnumerable<IReadOnlyList<Morpheme>> FindMorphemeSequences(string word, int maxMorphDistance);
 
         /// <summary>
         /// Finds patterns matching the lexeme.
         /// </summary>
         /// <param name="lexeme"></param>
         /// <returns></returns>
-        IEnumerable<IPattern> FindMatchingPatterns(IMorpheme lexeme);
+        IEnumerable<IPattern> FindMatchingPatterns(Morpheme lexeme);
 
         /// <summary>
         /// All non-lexemes.
         /// </summary>
-        IEnumerable<IMorpheme> NonLexemes { get; }
+        IEnumerable<Morpheme> NonLexemes { get; }
 
 
         /// <summary>

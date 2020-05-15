@@ -5,9 +5,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     /// <summary>
     /// Comparer to check if two morphemes are equal.
     /// </summary>
-    public class MorphemeEqualityComparer : IEqualityComparer<IMorpheme>
+    public class MorphemeEqualityComparer : IEqualityComparer<Morpheme>
     {
-        public bool Equals(IMorpheme x, IMorpheme y)
+        public bool Equals(Morpheme x, Morpheme y)
         {
             if (x.Morph == y.Morph &&
                 x.GrammarCharacter == y.GrammarCharacter &&
@@ -19,7 +19,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
             return false;
         }
 
-        public int GetHashCode(IMorpheme obj)
+        public int GetHashCode(Morpheme obj)
         {
             int hash = 486187739;
 

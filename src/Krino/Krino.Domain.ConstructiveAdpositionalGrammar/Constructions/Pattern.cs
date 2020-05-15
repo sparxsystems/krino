@@ -33,7 +33,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
         public PatternRule RightRule { get; set; } = PatternRule.Anything;
 
-        public ITransformation<IMorpheme> Transference { get; set; } = Transferences.Transference.NothingToDo;
+        public ITransformation<Morpheme> Transference { get; set; } = Transferences.Transference.NothingToDo;
 
         public int ValencyPosition => PatternAttributesArrangement.PatternAttributes.ValencyPosition.GetValencyPosition(PatternAttributes);
     }

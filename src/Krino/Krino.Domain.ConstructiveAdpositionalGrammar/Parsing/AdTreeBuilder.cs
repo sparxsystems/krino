@@ -51,15 +51,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             List<IAdTree> adTreesToAdd = new List<IAdTree>();
 
-            IEnumerable<IReadOnlyList<IMorpheme>> morphemeSequences = myConstructiveDictionary.FindMorphemeSequences(value, maxMorphDistance);
+            IEnumerable<IReadOnlyList<Morpheme>> morphemeSequences = myConstructiveDictionary.FindMorphemeSequences(value, maxMorphDistance);
 
             // Go via sequences.
-            foreach (IReadOnlyList<IMorpheme> sequence in morphemeSequences)
+            foreach (IReadOnlyList<Morpheme> sequence in morphemeSequences)
             {
                 bool isCancelled = false;
-                IMorpheme lexeme = null;
+                Morpheme lexeme = null;
                 AdTreeBuilder localAdTreeBuilder = new AdTreeBuilder(myConstructiveDictionary);
-                foreach (IMorpheme morpheme in sequence)
+                foreach (Morpheme morpheme in sequence)
                 {
                     if (morpheme.IsLexeme)
                     {
@@ -105,13 +105,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-        public bool AddMorpheme(IMorpheme lexeme)
+        public bool AddMorpheme(Morpheme lexeme)
         {
-            bool result = AddHomonyms(new IMorpheme[] { lexeme });
+            bool result = AddHomonyms(new Morpheme[] { lexeme });
             return result;
         }
 
-        public bool AddHomonyms(IEnumerable<IMorpheme> homonymMorphemes)
+        public bool AddHomonyms(IEnumerable<Morpheme> homonymMorphemes)
         {
             IEnumerable<IAdTree> homonymAdTrees = GetAdTrees(homonymMorphemes);
             bool isAdded = AddHomonyms(homonymAdTrees);
@@ -156,9 +156,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        private IEnumerable<IAdTree> GetAdTrees(IEnumerable<IMorpheme> morphemes)
+        private IEnumerable<IAdTree> GetAdTrees(IEnumerable<Morpheme> morphemes)
         {
-            foreach (IMorpheme morpheme in morphemes)
+            foreach (Morpheme morpheme in morphemes)
             {
                 IEnumerable<IPattern> matchingPatterns = myConstructiveDictionary.FindMatchingPatterns(morpheme);
 

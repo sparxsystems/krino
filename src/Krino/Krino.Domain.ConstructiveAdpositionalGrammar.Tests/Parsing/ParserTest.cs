@@ -18,7 +18,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void Deseriaize()
         {
-            List<IMorpheme> lexemes = new List<IMorpheme>()
+            List<Morpheme> lexemes = new List<Morpheme>()
             {
                 new Morpheme("I") { Attributes = Attributes.O.Pronoun.Subjective },
                 new Morpheme("read") { Attributes = Attributes.I.Verb.Bivalent },

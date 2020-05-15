@@ -1,7 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -25,7 +24,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public AdTree() { }
 
-        public AdTree(IMorpheme morpheme, IPattern pattern)
+        public AdTree(Morpheme morpheme, IPattern pattern)
         {
             Morpheme = morpheme;
             Pattern = pattern;
@@ -33,7 +32,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public IPattern Pattern { get; set; }
 
-        public IMorpheme Morpheme { get; set; } = new Morpheme(null);
+        public Morpheme Morpheme { get; set; } = new Morpheme(null);
 
         public GrammarCharacter GrammarCharacter => Morpheme.GrammarCharacter;
 

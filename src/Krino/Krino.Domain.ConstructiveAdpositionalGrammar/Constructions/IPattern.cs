@@ -33,7 +33,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         /// <summary>
         /// Transformation of the governor morpheme.
         /// </summary>
-        ITransformation<IMorpheme> Transference { get; }
+        ITransformation<Morpheme> Transference { get; }
 
         /// <summary>
         /// Returns the valency position.

@@ -48,7 +48,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
 
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
@@ -67,7 +67,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void He_read_s()
         {
-            List<IMorpheme> morphemes = new List<IMorpheme>()
+            List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("he") { Attributes = Attributes.O.Pronoun },
                 new Morpheme("read") { Attributes = Attributes.I.Verb },
@@ -130,7 +130,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void He_is_writer()
         {
-            List<IMorpheme> morphemes = new List<IMorpheme>()
+            List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("he") { Attributes = Attributes.O.Pronoun },
                 new Morpheme("is") { Attributes = Attributes.I.Verb.Bivalent },
@@ -229,7 +229,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
 
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
@@ -293,7 +293,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
 
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
@@ -370,7 +370,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<IMorpheme>(), patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
 
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 

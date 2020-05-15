@@ -4,7 +4,7 @@ using System.Numerics;
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
     [DebuggerDisplay("{GrammarCharacter}: {Morph}")]
-    public class Morpheme : IMorpheme
+    public class Morpheme
     {
         public Morpheme (string morph)
         {

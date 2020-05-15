@@ -18,7 +18,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void Constructor()
         {
-            List<IMorpheme> morphemes = new List<IMorpheme>()
+            List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("read") { Attributes = Attributes.I.Verb },
                 new Morpheme("s") { Attributes = Attributes.I | Attributes.NonLexeme.Affix.Suffix },
@@ -66,7 +66,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void FindLexemes_Similar()
         {
-            List<IMorpheme> morphemes = new List<IMorpheme>()
+            List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("write") { Attributes = Attributes.I.Verb },
                 new Morpheme("book") { Attributes = Attributes.O.Noun },
@@ -74,7 +74,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
 
-            List<IMorpheme> result = dictionary.FindLexemes("writ", 1).ToList();
+            List<Morpheme> result = dictionary.FindLexemes("writ", 1).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("write", result[0].Morph);
 
@@ -89,7 +89,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void FindMorphemeSequences()
         {
-            List<IMorpheme> morphemes = new List<IMorpheme>()
+            List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("ex") { Attributes = Attributes.NonLexeme.Affix.Prefix },
                 new Morpheme("extra") { Attributes = Attributes.NonLexeme.Affix.Prefix },
@@ -103,7 +103,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
 
             // prefix 're'
-            List<IReadOnlyList<IMorpheme>> result = dictionary.FindMorphemeSequences("rewrite", 0).ToList();
+            List<IReadOnlyList<Morpheme>> result = dictionary.FindMorphemeSequences("rewrite", 0).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(2, result[0].Count);
             Assert.AreEqual("re", result[0][0].Morph);
@@ -135,7 +135,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void FindMorphemeSequences_SuffixChangesLexeme()
         {
-            List<IMorpheme> morphemes = new List<IMorpheme>()
+            List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("write") { Attributes = Attributes.I.Verb },
                 new Morpheme("er") { Attributes = Attributes.O | Attributes.NonLexeme.Affix.Suffix },
@@ -143,7 +143,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
 
-            List<IReadOnlyList<IMorpheme>> morphemeSequences = dictionary.FindMorphemeSequences("writer", 1).ToList();
+            List<IReadOnlyList<Morpheme>> morphemeSequences = dictionary.FindMorphemeSequences("writer", 1).ToList();
             Assert.AreEqual(2, morphemeSequences.Count);
 
             // 'writer' is very similar to write so it will just return 'write'.

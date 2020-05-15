@@ -12,7 +12,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferenc
         /// <summary>
         /// Empty transference.
         /// </summary>
-        public static ITransformation<IMorpheme> NothingToDo => Trans.NothingToDo<IMorpheme>();
+        public static ITransformation<Morpheme> NothingToDo => Trans.NothingToDo<Morpheme>();
 
         /// <summary>
         /// Derivation transference of attributes including grammar character. The morph is not changed.

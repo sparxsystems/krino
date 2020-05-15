@@ -18,7 +18,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// Morpheme.
         /// </summary>
-        IMorpheme Morpheme { get; set; }
+        Morpheme Morpheme { get; set; }
 
         /// <summary>
         /// The grammar character of this tree element.

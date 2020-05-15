@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferenc
     /// <summary>
     /// Transfers the morph and the grammar character.
     /// </summary>
-    public class DerivationMorphemeTransference : ITransformation<IMorpheme>
+    public class DerivationMorphemeTransference : ITransformation<Morpheme>
     {
         private ITransformation<string> myMorphTransformation;
         private ITransformation<BigInteger> myAttributeTransformation;
@@ -20,7 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferenc
         }
 
 
-        public IMorpheme Transform(IMorpheme value)
+        public Morpheme Transform(Morpheme value)
         {
             string transformedMorph = myMorphTransformation.Transform(value.Morph);
             BigInteger transformedAttributes = myAttributeTransformation.Transform(value.Attributes);
@@ -28,7 +28,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferenc
             return result;
         }
 
-        public bool Equals(ITransformation<IMorpheme> other) =>
+        public bool Equals(ITransformation<Morpheme> other) =>
             other is DerivationMorphemeTransference otherTransformation &&
             myMorphTransformation.Equals(otherTransformation.myMorphTransformation);
     }
