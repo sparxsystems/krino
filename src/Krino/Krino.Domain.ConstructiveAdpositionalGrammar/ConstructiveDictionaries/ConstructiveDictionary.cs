@@ -117,11 +117,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 {
                     foreach (GrammarCharacter leftGrammarCharacter in grammarCharacters)
                     {
-                        if (pattern.LeftRule.IsMatch(leftGrammarCharacter))
+                        if (pattern.LeftRule.MorphemeRule.GrammarCharacter == leftGrammarCharacter)
                         {
                             foreach (GrammarCharacter rightGrammarCharacter in grammarCharacters)
                             {
-                                if (pattern.RightRule.IsMatch(rightGrammarCharacter))
+                                if (pattern.RightRule.MorphemeRule.GrammarCharacter == rightGrammarCharacter)
                                 {
                                     PatternGraph.AddEdge(leftGrammarCharacter.ToString(), rightGrammarCharacter.ToString(), pattern);
 

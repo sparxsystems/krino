@@ -4,6 +4,7 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Graphs;
+using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -218,35 +219,41 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             if (adTree.AdPosition == null)
             {
                 // Try to attach the adtree directly via new element's left.
-                if (newAdTreeElement.CanAttachToLeft(adTree))
+                if (newAdTreeElement.Left == null)
                 {
-                    IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-                    IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-                    newAdTreeElementCopy.Left = adTreeCopy;
+                    if (newAdTreeElement.CanAttachToLeft(adTree))
+                    {
+                        IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
+                        IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
+                        newAdTreeElementCopy.Left = adTreeCopy;
 
-                    IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                    results.Add(workInProgress);
-                }
-                // Try to attach the adtree indirectly via new element's left.
-                else
-                {
-                    TryToAttachIndirectly(EAttachPosition.BottomLeft, newAdTreeElement, adTree, results);
+                        IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
+                        results.Add(workInProgress);
+                    }
+                    // Try to attach the adtree indirectly via new element's left.
+                    else
+                    {
+                        TryToAttachIndirectly(EAttachPosition.BottomLeft, newAdTreeElement, adTree, results);
+                    }
                 }
 
                 // Try to attach the adtree directly via new element's right.
-                if (newAdTreeElement.CanAttachToRight(adTree))
+                if (newAdTreeElement.Right == null)
                 {
-                    IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
-                    IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
-                    newAdTreeElementCopy.Right = adTreeCopy;
+                    if (newAdTreeElement.CanAttachToRight(adTree))
+                    {
+                        IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newAdTreeElement);
+                        IAdTree adTreeCopy = GetCopyOnSamePath(adTree);
+                        newAdTreeElementCopy.Right = adTreeCopy;
 
-                    IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
-                    results.Add(workInProgress);
-                }
-                // Try to attach the adtree indirectly via new element's right.
-                else
-                {
-                    TryToAttachIndirectly(EAttachPosition.BottomRight, newAdTreeElement, adTree, results);
+                        IAdTree workInProgress = GetWorkInProgressAdTree(newAdTreeElementCopy);
+                        results.Add(workInProgress);
+                    }
+                    // Try to attach the adtree indirectly via new element's right.
+                    else
+                    {
+                        TryToAttachIndirectly(EAttachPosition.BottomRight, newAdTreeElement, adTree, results);
+                    }
                 }
 
                 // Also try to connect the adtree and the new element indirectly via adtree adposition.
@@ -257,172 +264,149 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         private void TryToAttachIndirectly(EAttachPosition initialAttachPosition, IAdTree start, IAdTree end, List<IAdTree> results)
         {
-            IEnumerable<GrammarCharacter> startGrammarCharacters = Enumerable.Empty<GrammarCharacter>();
-            IEnumerable<GrammarCharacter> endGrammarCharacters = Enumerable.Empty<GrammarCharacter>();
+            GrammarCharacter startGrammarCharacter = GrammarCharacter.Epsilon;
+            GrammarCharacter endGrammarCharacter = GrammarCharacter.Epsilon;
 
             // If start adTree connects the bridge via its left.
             if (initialAttachPosition == EAttachPosition.BottomLeft)
             {
-                startGrammarCharacters = start.Pattern.LeftRule.GetMatchingGrammarCharacters().Where(x => x != GrammarCharacter.Epsilon);
-                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
-                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
-                    .Where(x => x != GrammarCharacter.Epsilon)
-                    .Distinct();
+                startGrammarCharacter = start.Pattern.LeftRule.MorphemeRule.GrammarCharacter;
+                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If start adTree connects the bridge via its right.
             else if (initialAttachPosition == EAttachPosition.BottomRight)
             {
-                startGrammarCharacters = start.Pattern.RightRule.GetMatchingGrammarCharacters().Where(x => x != GrammarCharacter.Epsilon);
-                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
-                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
-                    .Where(x => x != GrammarCharacter.Epsilon)
-                    .Distinct();
+                startGrammarCharacter = start.Pattern.RightRule.MorphemeRule.GrammarCharacter;
+                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If the bridge connects the start adtree via its left.
             else if (initialAttachPosition == EAttachPosition.TopLeft)
             {
-                startGrammarCharacters = new GrammarCharacter[] { start.GrammarCharacter, start.InheritedGrammarCharacter }
-                    .Concat(start.Pattern.RightRule.GetMatchingGrammarCharacters())
-                    .Where(x => x != GrammarCharacter.Epsilon)
-                    .Distinct();
-                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
-                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
-                    .Where(x => x != GrammarCharacter.Epsilon)
-                    .Distinct();
+                startGrammarCharacter = ChooseGrammarCharacter(start.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If the bridge connects the start adtree via its right.
             else if (initialAttachPosition == EAttachPosition.TopRight)
             {
-                startGrammarCharacters = new GrammarCharacter[] { start.GrammarCharacter, start.InheritedGrammarCharacter }
-                    .Concat(start.Pattern.RightRule.GetMatchingGrammarCharacters())
-                    .Where(x => x != GrammarCharacter.Epsilon)
-                    .Distinct();
-                endGrammarCharacters = new GrammarCharacter[] { end.GrammarCharacter, end.InheritedGrammarCharacter }
-                    .Concat(end.Pattern.RightRule.GetMatchingGrammarCharacters())
-                    .Where(x => x != GrammarCharacter.Epsilon)
-                    .Distinct();
+                startGrammarCharacter = ChooseGrammarCharacter(start.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
 
-            foreach (GrammarCharacter startGrammarCharacter in startGrammarCharacters)
+            // Get possibile ways how to connect new element.
+            IEnumerable<IReadOnlyList<DirectedEdge<IPattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
+                .FindAllPaths(startGrammarCharacter.ToString(), endGrammarCharacter.ToString());
+
+            // Go via all possible ways.
+            foreach (IReadOnlyList<DirectedEdge<IPattern>> path in connectionPaths)
             {
-                foreach (GrammarCharacter endGrammarCharacter in endGrammarCharacters)
+                // If all elements is possible to create without morphs.
+                if (path.All(x => x.Value.MorphemeRule.MorphRule.Equals(Rule.Nothing<string>()) ||
+                                  x.Value.MorphemeRule.MorphRule.Evaluate("")))
                 {
-                    // Get possibile ways how to connect new element.
-                    IEnumerable<IReadOnlyList<DirectedEdge<IPattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
-                        .FindAllPaths(startGrammarCharacter.ToString(), endGrammarCharacter.ToString());
+                    IAdTree startCopy = GetCopyOnSamePath(start);
+                    IAdTree endCopy = GetCopyOnSamePath(end);
 
-                    // Go via all possible ways.
-                    foreach (IReadOnlyList<DirectedEdge<IPattern>> path in connectionPaths)
+                    IAdTree previousBridge = null;
+
+                    // Go via the path.
+                    for (int i = 0; i < path.Count; ++i)
                     {
-                        // The path is usable only if all its parts have epsilon grammar character.
-                        if (path.All(x => x.Value.MorphemeRule.IsMatch(GrammarCharacter.Epsilon)))
+                        DirectedEdge<IPattern> edge = path[i];
+
+                        IAdTree bridge = new AdTree(new Morpheme("") { Attributes = edge.Value.MorphemeRule.GrammarCharacter.GetAttributes() }, edge.Value);
+
+                        // If it is the first item on the path.
+                        if (i == 0)
                         {
-                            IAdTree startCopy = GetCopyOnSamePath(start);
-                            IAdTree endCopy = GetCopyOnSamePath(end);
-
-                            IAdTree previousBridge = null;
-
-                            // Go via the path.
-                            for (int i = 0; i < path.Count; ++i)
+                            if (initialAttachPosition == EAttachPosition.BottomLeft)
                             {
-                                DirectedEdge<IPattern> edge = path[i];
-
-                                IAdTree bridge = new AdTree(new Morpheme(""), edge.Value);
-
-                                // If it is the first item on the path.
-                                if (i == 0)
+                                if (startCopy.Left == null && startCopy.CanAttachToLeft(bridge))
                                 {
-                                    if (initialAttachPosition == EAttachPosition.BottomLeft)
-                                    {
-                                        if (startCopy.Left == null && startCopy.CanAttachToLeft(bridge))
-                                        {
-                                            startCopy.Left = bridge;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    else if (initialAttachPosition == EAttachPosition.BottomRight)
-                                    {
-                                        if (startCopy.Right == null && startCopy.CanAttachToRight(bridge))
-                                        {
-                                            startCopy.Right = bridge;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    else if (initialAttachPosition == EAttachPosition.TopLeft)
-                                    {
-                                        if (bridge.Left == null && bridge.CanAttachToLeft(startCopy))
-                                        {
-                                            bridge.Left = startCopy;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
-                                    else if (initialAttachPosition == EAttachPosition.TopRight)
-                                    {
-                                        if (bridge.Right == null && bridge.CanAttachToRight(startCopy))
-                                        {
-                                            bridge.Right = startCopy;
-                                        }
-                                        else
-                                        {
-                                            break;
-                                        }
-                                    }
+                                    startCopy.Left = bridge;
                                 }
                                 else
                                 {
-                                    if (previousBridge.Left == null && previousBridge.CanAttachToLeft(bridge))
-                                    {
-                                        previousBridge.Left = bridge;
-                                    }
-                                    else if (previousBridge.Right == null && previousBridge.CanAttachToRight(bridge))
-                                    {
-                                        previousBridge.Right = bridge;
-                                    }
-                                    else
-                                    {
-                                        // Note: this should never happen but do not throw exception.
-                                        //       It is not worth to interrupt krino.
-                                        break;
-                                    }
+                                    break;
                                 }
-
-                                // If it is the last item in the path.
-                                if (i == path.Count - 1)
+                            }
+                            else if (initialAttachPosition == EAttachPosition.BottomRight)
+                            {
+                                if (startCopy.Right == null && startCopy.CanAttachToRight(bridge))
                                 {
-                                    if (bridge.Left == null && bridge.CanAttachToLeft(end))
-                                    {
-                                        bridge.Left = endCopy;
-
-                                        IAdTree workInProgress = GetWorkInProgressAdTree(endCopy);
-                                        results.Add(workInProgress);
-                                    }
-                                    else if (bridge.Right == null && bridge.CanAttachToRight(end))
-                                    {
-                                        bridge.Right = endCopy;
-
-                                        IAdTree workInProgress = GetWorkInProgressAdTree(endCopy);
-                                        results.Add(workInProgress);
-                                    }
-                                    else
-                                    {
-                                        // Note: this should never happen but do not throw exception.
-                                        //       It is not worth to interrupt krino.
-                                        break;
-                                    }
+                                    startCopy.Right = bridge;
                                 }
-
-                                previousBridge = bridge;
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else if (initialAttachPosition == EAttachPosition.TopLeft)
+                            {
+                                if (bridge.Left == null && bridge.CanAttachToLeft(startCopy))
+                                {
+                                    bridge.Left = startCopy;
+                                }
+                                else
+                                {
+                                    break;
+                                }
+                            }
+                            else if (initialAttachPosition == EAttachPosition.TopRight)
+                            {
+                                if (bridge.Right == null && bridge.CanAttachToRight(startCopy))
+                                {
+                                    bridge.Right = startCopy;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
                         }
+                        else
+                        {
+                            if (previousBridge.Left == null && previousBridge.CanAttachToLeft(bridge))
+                            {
+                                previousBridge.Left = bridge;
+                            }
+                            else if (previousBridge.Right == null && previousBridge.CanAttachToRight(bridge))
+                            {
+                                previousBridge.Right = bridge;
+                            }
+                            else
+                            {
+                                // Note: this should never happen but do not throw exception.
+                                //       It is not worth to interrupt krino.
+                                break;
+                            }
+                        }
+
+                        // If it is the last item in the path.
+                        if (i == path.Count - 1)
+                        {
+                            if (bridge.Left == null && bridge.CanAttachToLeft(end))
+                            {
+                                bridge.Left = endCopy;
+
+                                IAdTree workInProgress = GetWorkInProgressAdTree(endCopy);
+                                results.Add(workInProgress);
+                            }
+                            else if (bridge.Right == null && bridge.CanAttachToRight(end))
+                            {
+                                bridge.Right = endCopy;
+
+                                IAdTree workInProgress = GetWorkInProgressAdTree(endCopy);
+                                results.Add(workInProgress);
+                            }
+                            else
+                            {
+                                // Note: this should never happen but do not throw exception.
+                                //       It is not worth to interrupt krino.
+                                break;
+                            }
+                        }
+
+                        previousBridge = bridge;
                     }
                 }
             }
@@ -457,6 +441,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             throw new InvalidOperationException("Failed to properly copy the adtree.");
         }
 
-        
+        private GrammarCharacter ChooseGrammarCharacter(params GrammarCharacter[] grammarCharacters)
+        {
+            GrammarCharacter result = grammarCharacters.FirstOrDefault(x => x != GrammarCharacter.Epsilon);
+            return result;
+        }
     }
 }

@@ -85,14 +85,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("I")
                 {
-                    MorphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("-s")
                 {
-                    MorphemeRule = new MorphemeRule(SuffixRule.Is("s"), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, SuffixRule.Is("s"), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -110,7 +110,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
                 },
             };
 
@@ -128,7 +128,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void He_is_writ_er()
+        public void He_is_writer()
         {
             List<IMorpheme> morphemes = new List<IMorpheme>()
             {
@@ -142,21 +142,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Pattern("O")
                 {
-                    MorphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.O), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme).Not())),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("I")
                 {
-                    MorphemeRule = new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.I), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("-er")
                 {
-                    MorphemeRule = new MorphemeRule(SuffixRule.Is("er"), Rule.Is(GrammarCharacter.O), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, SuffixRule.Is("er"), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -166,7 +166,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme).Not()))),
                 },
 
                 new Pattern("O2-I")
@@ -174,16 +174,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme).Not()))),
                 },
 
                 // Transference pattern.
                 // Note: suffix er transfers 'I' to 'O'.
                 new Pattern("I>O")
                 {
-                    MorphemeRule = MorphemeRule.Epsilon,
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, Rule.Nothing<string>(), MaskRule.Is(Attributes.O)),
                     RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(new MorphemeRule(Rule.Anything<string>(), Rule.Is(GrammarCharacter.O), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
                 },
             };
 
