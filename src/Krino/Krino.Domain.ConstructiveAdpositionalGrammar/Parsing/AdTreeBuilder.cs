@@ -160,10 +160,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             foreach (Morpheme morpheme in morphemes)
             {
-                IEnumerable<IPattern> matchingPatterns = myConstructiveDictionary.FindMatchingPatterns(morpheme);
+                IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindMatchingPatterns(morpheme);
 
                 // Go via patterns matching the incoming morpheme.
-                foreach (IPattern pattern in matchingPatterns)
+                foreach (Pattern pattern in matchingPatterns)
                 {
                     // Create the adtree element from the incoming morpheme and its pattern.
                     IAdTree newAdTree = new AdTree(morpheme, pattern);
@@ -293,11 +293,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
 
             // Get possibile ways how to connect new element.
-            IEnumerable<IReadOnlyList<DirectedEdge<IPattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
+            IEnumerable<IReadOnlyList<DirectedEdge<Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
                 .FindAllPaths(startGrammarCharacter.ToString(), endGrammarCharacter.ToString());
 
             // Go via all possible ways.
-            foreach (IReadOnlyList<DirectedEdge<IPattern>> path in connectionPaths)
+            foreach (IReadOnlyList<DirectedEdge<Pattern>> path in connectionPaths)
             {
                 // If all elements is possible to create without morphs.
                 if (path.All(x => x.Value.MorphemeRule.MorphRule.Equals(Rule.Nothing<string>()) ||
@@ -311,7 +311,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     // Go via the path.
                     for (int i = 0; i < path.Count; ++i)
                     {
-                        DirectedEdge<IPattern> edge = path[i];
+                        DirectedEdge<Pattern> edge = path[i];
 
                         IAdTree bridge = new AdTree(new Morpheme("") { Attributes = edge.Value.MorphemeRule.GrammarCharacter.GetAttributes() }, edge.Value);
 

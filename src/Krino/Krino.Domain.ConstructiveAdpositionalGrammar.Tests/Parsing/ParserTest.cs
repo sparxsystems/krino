@@ -24,7 +24,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme("read") { Attributes = Attributes.I.Verb.Bivalent },
             };
 
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern()
                 {

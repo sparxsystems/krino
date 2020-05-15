@@ -23,7 +23,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void I_read()
         {
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern()
                 {
@@ -74,7 +74,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme("s") { Attributes = Attributes.I | Attributes.NonLexeme.Affix.Suffix },
             };
 
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("O")
                 {
@@ -138,7 +138,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme("er") { Attributes = Attributes.O | Attributes.NonLexeme.Affix.Suffix },
             };
 
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("O")
                 {
@@ -205,7 +205,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void The_good_book()
         {
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern()
                 {
@@ -251,7 +251,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void I_read_the_book()
         {
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("O")
                 {
@@ -322,7 +322,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void I_read_the_book_in_the_room()
         {
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("O")
                 {

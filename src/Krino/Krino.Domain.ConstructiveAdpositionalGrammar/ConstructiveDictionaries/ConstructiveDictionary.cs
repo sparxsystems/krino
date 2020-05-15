@@ -15,13 +15,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     /// </summary>
     public class ConstructiveDictionary : IConstructiveDictionary
     {
-        private List<IPattern> myLexemePatterns;
+        private List<Pattern> myLexemePatterns;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myLexemes;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myNonLexemes;
 
-        public ConstructiveDictionary(IEnumerable<Morpheme> morphemes, IEnumerable<IPattern> patterns)
+        public ConstructiveDictionary(IEnumerable<Morpheme> morphemes, IEnumerable<Pattern> patterns)
         {
-            Patterns = patterns ?? Enumerable.Empty<IPattern>();
+            Patterns = patterns ?? Enumerable.Empty<Pattern>();
 
             myLexemePatterns = Patterns.Where(x => !x.MorphemeRule.Equals(MorphemeRule.Epsilon)).ToList();
 
@@ -70,17 +70,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             return result;
         }
 
-        public IEnumerable<IPattern> FindMatchingPatterns(Morpheme lexeme)
+        public IEnumerable<Pattern> FindMatchingPatterns(Morpheme lexeme)
         {
-            IEnumerable<IPattern> result = myLexemePatterns.Where(x => x.MorphemeRule.IsMatch(lexeme.Morph, lexeme.Attributes));
+            IEnumerable<Pattern> result = myLexemePatterns.Where(x => x.MorphemeRule.IsMatch(lexeme.Morph, lexeme.Attributes));
             return result;
         }
 
         public IEnumerable<Morpheme> NonLexemes { get; }
 
-        public IEnumerable<IPattern> Patterns { get; private set; }
+        public IEnumerable<Pattern> Patterns { get; private set; }
 
-        public IDirectedGraph<GrammarCharacter, IPattern> PatternGraph { get; private set; }
+        public IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; private set; }
 
         private void InitializeMorphemes(IEnumerable<Morpheme> morphemes)
         {
@@ -104,13 +104,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             GrammarCharacter[] grammarCharacters = Enum.GetValues(typeof(GrammarCharacter)).Cast<GrammarCharacter>().ToArray();
 
-            PatternGraph = new DirectedGraph<GrammarCharacter, IPattern>();
+            PatternGraph = new DirectedGraph<GrammarCharacter, Pattern>();
             foreach (GrammarCharacter grammarCharacter in grammarCharacters)
             {
                 PatternGraph.AddVertex(grammarCharacter.ToString(), grammarCharacter);
             }
 
-            foreach (IPattern pattern in Patterns)
+            foreach (Pattern pattern in Patterns)
             {
                 // If it is an adposition related rule.
                 if (!pattern.LeftRule.Equals(PatternRule.Nothing) && !pattern.RightRule.Equals(PatternRule.Nothing))

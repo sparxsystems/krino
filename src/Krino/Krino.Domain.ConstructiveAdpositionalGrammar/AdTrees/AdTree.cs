@@ -24,13 +24,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public AdTree() { }
 
-        public AdTree(Morpheme morpheme, IPattern pattern)
+        public AdTree(Morpheme morpheme, Pattern pattern)
         {
             Morpheme = morpheme;
             Pattern = pattern;
         }
 
-        public IPattern Pattern { get; set; }
+        public Pattern Pattern { get; set; }
 
         public Morpheme Morpheme { get; set; } = new Morpheme(null);
 

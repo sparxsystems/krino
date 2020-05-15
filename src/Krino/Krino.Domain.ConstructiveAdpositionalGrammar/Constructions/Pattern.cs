@@ -7,7 +7,7 @@ using System.Numerics;
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
     [DebuggerDisplay("{LeftRule} <- -> {RightRule}", Name = "{myName}")]
-    public class Pattern : IPattern
+    public class Pattern
     {
         public static Pattern O => new Pattern("O") { MorphemeRule = MorphemeRule.O, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
         public static Pattern I => new Pattern("I") { MorphemeRule = MorphemeRule.I, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };

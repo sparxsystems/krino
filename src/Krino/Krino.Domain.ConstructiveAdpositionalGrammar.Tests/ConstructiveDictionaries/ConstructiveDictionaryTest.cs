@@ -24,7 +24,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Morpheme("s") { Attributes = Attributes.I | Attributes.NonLexeme.Affix.Suffix },
             };
 
-            List<IPattern> patterns = new List<IPattern>()
+            List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("I")
                 {
@@ -54,7 +54,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             // Note: the grammar characters are vertices.
             //       the path consists of edges.
             //       The edge is represented by the pattern which can connect two grammar characters.
-            List<IReadOnlyList<DirectedEdge<IPattern>>> paths = dictionary.PatternGraph.FindAllPaths("I", "I").ToList();
+            List<IReadOnlyList<DirectedEdge<Pattern>>> paths = dictionary.PatternGraph.FindAllPaths("I", "I").ToList();
             
             Assert.AreEqual(1, paths.Count);
             Assert.AreEqual(1, paths[0].Count);

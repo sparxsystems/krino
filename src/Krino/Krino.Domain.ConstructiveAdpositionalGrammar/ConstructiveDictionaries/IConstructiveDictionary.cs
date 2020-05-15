@@ -38,7 +38,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// </summary>
         /// <param name="lexeme"></param>
         /// <returns></returns>
-        IEnumerable<IPattern> FindMatchingPatterns(Morpheme lexeme);
+        IEnumerable<Pattern> FindMatchingPatterns(Morpheme lexeme);
 
         /// <summary>
         /// All non-lexemes.
@@ -49,7 +49,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <summary>
         /// All patterns.
         /// </summary>
-        IEnumerable<IPattern> Patterns { get; }
+        IEnumerable<Pattern> Patterns { get; }
 
         /// <summary>
         /// Pattern graph.
@@ -58,6 +58,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// How GrammarCharacters are interconnected via patterns.
         /// GrammarCharacters are nodes and patterns are edges of the graph.
         /// </remarks>
-        IDirectedGraph<GrammarCharacter, IPattern> PatternGraph { get; }
+        IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; }
     }
 }
