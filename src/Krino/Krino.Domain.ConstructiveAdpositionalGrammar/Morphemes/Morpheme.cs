@@ -20,6 +20,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public GrammarCharacter GrammarCharacter => GrammarCharacterExt.GetGrammarCharacter(Attributes);
 
-        public bool IsLexeme => !AttributesArrangement.Attributes.NonLexeme.IsIn(Attributes);
+        public bool IsLexeme => AttributesArrangement.Attributes.IsLexeme(Attributes);
     }
 }

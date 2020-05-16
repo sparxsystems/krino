@@ -7,9 +7,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules.Strin
     /// </summary>
     public class SuffixRule : IRule<string>
     {
-        public static SuffixRule Is(string postfix) => new SuffixRule(postfix);
-
-
         private string myPostfix;
 
         public SuffixRule(string postfix)

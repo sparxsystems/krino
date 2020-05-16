@@ -300,7 +300,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             foreach (IReadOnlyList<DirectedEdge<Pattern>> path in connectionPaths)
             {
                 // If all elements is possible to create without morphs.
-                if (path.All(x => x.Value.MorphemeRule.MorphRule.Equals(Rule.Nothing<string>()) ||
+                if (path.All(x => x.Value.MorphemeRule.MorphRule.Equals(RuleMaker.Nothing<string>()) ||
                                   x.Value.MorphemeRule.MorphRule.Evaluate("")))
                 {
                     IAdTree startCopy = GetCopyOnSamePath(start);

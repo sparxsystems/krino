@@ -20,32 +20,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("read") { Attributes = Attributes.I.Verb },
-                new Morpheme("s") { Attributes = Attributes.I | Attributes.NonLexeme.Affix.Suffix },
+                new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb },
+                new Morpheme("s") { Attributes = Attributes.I.NonLexeme.VerbSuffix },
             };
 
             List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("I")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    MorphemeRule = MorphemeRule.I_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("-s")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, SuffixRule.Is("s"), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Suffix("s"), MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 // Transference pattern.
-                new Pattern("I-s")
+                new Pattern("I>I")
                 {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
+                    MorphemeRule = MorphemeRule.I,
+                    RightRule = PatternRule.I_Lexeme,
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)), MaskRule.Anything),
                 },
             };
 
@@ -68,8 +68,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("write") { Attributes = Attributes.I.Verb },
-                new Morpheme("book") { Attributes = Attributes.O.Noun },
+                new Morpheme("write") { Attributes = Attributes.I.Lexeme.Verb },
+                new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun },
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
@@ -91,13 +91,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("ex") { Attributes = Attributes.NonLexeme.Affix.Prefix },
-                new Morpheme("extra") { Attributes = Attributes.NonLexeme.Affix.Prefix },
-                new Morpheme("re") { Attributes = Attributes.NonLexeme.Affix.Prefix },
-                new Morpheme("er") { Attributes = Attributes.NonLexeme.Affix.Suffix },
-                new Morpheme("less") { Attributes = Attributes.NonLexeme.Affix.Suffix },
-                new Morpheme("write") { Attributes = Attributes.I },
-                new Morpheme("read") { Attributes = Attributes.I },
+                new Morpheme("ex") { Attributes = Attributes.O.NonLexeme.NounPrefix },
+                new Morpheme("extra") { Attributes = Attributes.O.NonLexeme.NounPrefix },
+                new Morpheme("re") { Attributes = Attributes.O.NonLexeme.NounPrefix },
+                new Morpheme("er") { Attributes = Attributes.O.NonLexeme.NounSuffix },
+                new Morpheme("less") { Attributes = Attributes.A.NonLexeme.AdjectiveSuffix },
+                new Morpheme("write") { Attributes = Attributes.I.Lexeme },
+                new Morpheme("read") { Attributes = Attributes.I.Lexeme },
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
@@ -137,8 +137,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("write") { Attributes = Attributes.I.Verb },
-                new Morpheme("er") { Attributes = Attributes.O | Attributes.NonLexeme.Affix.Suffix },
+                new Morpheme("write") { Attributes = Attributes.I.Lexeme.Verb },
+                new Morpheme("er") { Attributes = Attributes.O.NonLexeme.NounSuffix },
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);

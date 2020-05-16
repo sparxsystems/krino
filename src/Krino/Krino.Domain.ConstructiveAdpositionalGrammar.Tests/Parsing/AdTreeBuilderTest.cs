@@ -27,14 +27,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Pattern()
                 {
-                    MorphemeRule = MorphemeRule.O,
+                    MorphemeRule = MorphemeRule.O_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern()
                 {
-                    MorphemeRule = MorphemeRule.I,
+                    MorphemeRule = MorphemeRule.I_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -43,8 +43,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    RightRule = PatternRule.I_Lexeme,
+                    LeftRule = new PatternRule(MorphemeRule.O_Lexeme)
                 },
             };
 
@@ -52,10 +52,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
-            Morpheme morpheme = new Morpheme("I") { Attributes = Attributes.O.Pronoun };
+            Morpheme morpheme = new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("read") { Attributes = Attributes.I.Verb };
+            morpheme = new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
@@ -69,30 +69,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("he") { Attributes = Attributes.O.Pronoun },
-                new Morpheme("read") { Attributes = Attributes.I.Verb },
-                new Morpheme("s") { Attributes = Attributes.I | Attributes.NonLexeme.Affix.Suffix },
+                new Morpheme("he") { Attributes = Attributes.O.Lexeme.Pronoun },
+                new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb },
+                new Morpheme("s") { Attributes = Attributes.I.NonLexeme.VerbSuffix },
             };
 
             List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("O")
                 {
-                    MorphemeRule = MorphemeRule.O,
+                    MorphemeRule = MorphemeRule.O_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("I")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    MorphemeRule = MorphemeRule.I_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("-s")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, SuffixRule.Is("s"), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Suffix("s"), MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -101,16 +101,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Lexeme)
                 },
 
                 // Transference pattern.
                 new Pattern("I-s")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
+                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix))),
                 },
             };
 
@@ -132,31 +132,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("he") { Attributes = Attributes.O.Pronoun },
-                new Morpheme("is") { Attributes = Attributes.I.Verb.Bivalent },
-                new Morpheme("write") { Attributes = Attributes.I.Verb },
-                new Morpheme("er") { Attributes = Attributes.O | Attributes.NonLexeme.Affix.Suffix },
+                new Morpheme("he") { Attributes = Attributes.O.Lexeme.Pronoun },
+                new Morpheme("is") { Attributes = Attributes.I.Lexeme.Verb.Bivalent },
+                new Morpheme("write") { Attributes = Attributes.I.Lexeme.Verb },
+                new Morpheme("er") { Attributes = Attributes.O.NonLexeme.NounSuffix },
             };
 
             List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("O")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    MorphemeRule = MorphemeRule.O_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("I")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme).Not())),
+                    MorphemeRule = MorphemeRule.I_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern("-er")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, SuffixRule.Is("er"), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix))),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Suffix("er"), MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -166,7 +166,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme).Not()))),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
 
                 new Pattern("O2-I")
@@ -174,16 +174,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme).Not()))),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
 
                 // Transference pattern.
                 // Note: suffix er transfers 'I' to 'O'.
                 new Pattern("I>O")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, Rule.Nothing<string>(), MaskRule.Is(Attributes.O)),
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), MaskRule.Is(Attributes.O).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)))),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, RuleMaker.Nothing<string>(), MaskRule.Is(Attributes.O)),
+                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))),
                 },
             };
 
@@ -233,13 +233,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
-            Morpheme morpheme = new Morpheme("the") { Attributes = Attributes.A.Determiner.DefiniteArticle };
+            Morpheme morpheme = new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("good") { Attributes = Attributes.A.Adjective.Attributive };
+            morpheme = new Morpheme("good") { Attributes = Attributes.A.Lexeme.Adjective.Attributive };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("book") { Attributes = Attributes.O.Noun };
+            morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
@@ -298,16 +298,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
 
-            Morpheme morpheme = new Morpheme("I") { Attributes = Attributes.O.Pronoun };
+            Morpheme morpheme = new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("read") { Attributes = Attributes.I.Verb.Bivalent };
+            morpheme = new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb.Bivalent };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("the") { Attributes = Attributes.A.Determiner.DefiniteArticle };
+            morpheme = new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("book") { Attributes = Attributes.O.Noun };
+            morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
 
@@ -375,25 +375,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
 
-            Morpheme morpheme = new Morpheme("I") { Attributes = Attributes.O.Pronoun };
+            Morpheme morpheme = new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("read") { Attributes = Attributes.I.Verb.Bivalent };
+            morpheme = new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb.Bivalent };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("the") { Attributes = Attributes.A.Determiner.DefiniteArticle };
+            morpheme = new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("book") { Attributes = Attributes.O.Noun };
+            morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("in") { Attributes = Attributes.E.Preposition };
+            morpheme = new Morpheme("in") { Attributes = Attributes.E.Lexeme.Preposition };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("the") { Attributes = Attributes.A.Determiner.DefiniteArticle };
+            morpheme = new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("room") { Attributes = Attributes.O.Noun };
+            morpheme = new Morpheme("room") { Attributes = Attributes.O.Lexeme.Noun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);

@@ -10,14 +10,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
     public class MorphemeRuleTest
     {
         [Test]
-        public void Anything()
-        {
-            Assert.IsTrue(MorphemeRule.Anything.IsMatch("", 0));
-            Assert.IsTrue(MorphemeRule.Anything.IsMatch(null, 0));
-            Assert.IsTrue(MorphemeRule.Anything.IsMatch("bla", ulong.MaxValue));
-        }
-
-        [Test]
         public void Nothing()
         {
             Assert.IsFalse(MorphemeRule.Nothing.IsMatch("", 0));
@@ -29,16 +21,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         [Test]
         public void IsMatch()
         {
-            MorphemeRule morphemeRule = new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).Or(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
-            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I | Attributes.NonLexeme.Affix.Suffix));
-            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I));
-            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.NonLexeme.Affix.Suffix));
+            // Or
+            MorphemeRule morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.I.Lexeme.Interjection).Or(MaskRule.Is(Attributes.I.Lexeme.Verb)));
+            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I.Lexeme.Verb));
+            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I.Lexeme.Interjection));
+            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I.Lexeme.Verb | Attributes.I.Lexeme.Interjection));
             Assert.IsFalse(morphemeRule.IsMatch("", Attributes.O));
 
-            morphemeRule = new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), MaskRule.Is(Attributes.I).And(MaskRule.Is(Attributes.NonLexeme.Affix.Suffix)));
-            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I | Attributes.NonLexeme.Affix.Suffix));
-            Assert.IsFalse(morphemeRule.IsMatch("", Attributes.I));
-            Assert.IsFalse(morphemeRule.IsMatch("", Attributes.NonLexeme.Affix.Suffix));
+            // And
+            morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.I.Lexeme.Interjection).And(MaskRule.Is(Attributes.I.Lexeme.Verb)));
+            Assert.IsFalse(morphemeRule.IsMatch("", Attributes.I.Lexeme.Verb));
+            Assert.IsFalse(morphemeRule.IsMatch("", Attributes.I.Lexeme.Interjection));
+            Assert.IsTrue(morphemeRule.IsMatch("", Attributes.I.Lexeme.Verb | Attributes.I.Lexeme.Interjection));
             Assert.IsFalse(morphemeRule.IsMatch("", Attributes.O));
         }
     }

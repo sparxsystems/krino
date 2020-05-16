@@ -11,6 +11,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{myMask}")]
     public class MaskRule : IRule<BigInteger>
     {
+        public static IRule<BigInteger> Anything => RuleMaker.Anything<BigInteger>();
+
+        public static IRule<BigInteger> Nothing => RuleMaker.Nothing<BigInteger>();
+
         public static MaskRule Is(BigInteger mask) => new MaskRule(mask);
 
         private BigInteger myMask;
@@ -24,5 +28,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
 
         public bool Equals(IRule<BigInteger> other) => other is MaskRule maskRule && myMask == maskRule.myMask;
+
+        public static IRule<BigInteger> operator &(MaskRule mask1, IRule<BigInteger> rule2) => mask1.And(rule2);
+
+        public static IRule<BigInteger> operator |(MaskRule mask1, IRule<BigInteger> rule2) => mask1.Or(rule2);
+
+        public static IRule<BigInteger> operator !(MaskRule mask) => mask.Not(); 
     }
 }

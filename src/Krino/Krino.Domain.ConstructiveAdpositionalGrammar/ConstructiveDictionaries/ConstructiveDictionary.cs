@@ -23,7 +23,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             Patterns = patterns ?? Enumerable.Empty<Pattern>();
 
-            myLexemePatterns = Patterns.Where(x => !x.MorphemeRule.Equals(MorphemeRule.Epsilon)).ToList();
+            myLexemePatterns = Patterns.Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon).ToList();
 
             InitializeMorphemes(morphemes);
             InitializePatternGraph();
@@ -164,7 +164,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             {
                 string nonLexeme = word.Substring(0, i);
                 IEnumerable<Morpheme> prefixHomonyms = FindNonLexemes(nonLexeme)
-                    .Where(x => Attributes.NonLexeme.Affix.Prefix.IsIn(x.Attributes));
+                    .Where(x => Attributes.IsPrefix(x.Attributes));
                 if (prefixHomonyms.Any())
                 {
                     string newWord = word.Substring(i);
@@ -209,13 +209,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             for (int i = word.Length - 1; i > 0; --i)
             {
                 string nonLexeme = word.Substring(i);
-                IEnumerable<Morpheme> sufixes = FindNonLexemes(nonLexeme)
-                    .Where(x => Attributes.NonLexeme.Affix.Suffix.IsIn(x.Attributes));
-                if (sufixes.Any())
+                IEnumerable<Morpheme> suffixes = FindNonLexemes(nonLexeme)
+                    .Where(x => Attributes.IsSuffix(x.Attributes));
+                if (suffixes.Any())
                 {
                     string newWord = word.Substring(0, i);
 
-                    foreach (Morpheme sufix in sufixes)
+                    foreach (Morpheme sufix in suffixes)
                     {
                         localSequence.Add(sufix);
 

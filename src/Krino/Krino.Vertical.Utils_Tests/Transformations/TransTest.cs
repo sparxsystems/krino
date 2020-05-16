@@ -17,7 +17,7 @@ namespace Krino.Vertical.Utils_Tests.Transformations
         [Test]
         public void If_Then()
         {
-            ITransformation<int> t = Trans.If(Rule.Is(10), Trans.ReplaceWith(9));
+            ITransformation<int> t = Trans.If(RuleMaker.Is(10), Trans.ReplaceWith(9));
             Assert.AreEqual(9, t.Transform(10));
             Assert.AreEqual(5, t.Transform(5));
         }
@@ -25,7 +25,7 @@ namespace Krino.Vertical.Utils_Tests.Transformations
         [Test]
         public void If_Then_Else()
         {
-            ITransformation<int> t = Trans.If(Rule.Is(10), Trans.ReplaceWith(9)).Else(Trans.ReplaceWith(3));
+            ITransformation<int> t = Trans.If(RuleMaker.Is(10), Trans.ReplaceWith(9)).Else(Trans.ReplaceWith(3));
             Assert.AreEqual(9, t.Transform(10));
             Assert.AreEqual(3, t.Transform(5));
         }
@@ -34,8 +34,8 @@ namespace Krino.Vertical.Utils_Tests.Transformations
         public void If_Then_ElseIf_Else()
         {
             ITransformation<int> t =
-                Trans.If(Rule.Is(10), Trans.ReplaceWith(1))
-                     .Else(Trans.If(Rule.Is(9), Trans.ReplaceWith(2))
+                Trans.If(RuleMaker.Is(10), Trans.ReplaceWith(1))
+                     .Else(Trans.If(RuleMaker.Is(9), Trans.ReplaceWith(2))
                            .Else(Trans.ReplaceWith(3))
                            );
 

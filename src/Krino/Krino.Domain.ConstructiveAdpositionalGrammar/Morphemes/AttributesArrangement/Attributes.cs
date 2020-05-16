@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement
 {
@@ -45,9 +46,49 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
         /// </summary>
         public static EnumValue Epsilon { get; } = new EnumValue(Instance);
 
+
         /// <summary>
-        /// Indicates it is a non-lexeme morpheme.
+        /// Returns true if the attribute indicates it is a lexeme.
         /// </summary>
-        public static NonLexemeAttributes NonLexeme { get; } = new NonLexemeAttributes(Instance);
+        /// <param name="attributes"></param>
+        /// <returns></returns>
+        public static bool IsLexeme(BigInteger attributes)
+        {
+            if (O.Lexeme.IsIn(attributes) ||
+                I.Lexeme.IsIn(attributes) ||
+                A.Lexeme.IsIn(attributes) ||
+                E.Lexeme.IsIn(attributes))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsPrefix(BigInteger attributes)
+        {
+            if (O.NonLexeme.NounPrefix.IsIn(attributes) ||
+                I.NonLexeme.VerbPrefix.IsIn(attributes) ||
+                A.NonLexeme.AdjextivePrefix.IsIn(attributes) ||
+                E.NonLexeme.AdverbPrefix.IsIn(attributes))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool IsSuffix(BigInteger attributes)
+        {
+            if (O.NonLexeme.NounSuffix.IsIn(attributes) ||
+                I.NonLexeme.VerbSuffix.IsIn(attributes) ||
+                A.NonLexeme.AdjectiveSuffix.IsIn(attributes) ||
+                E.NonLexeme.AdverbSuffix.IsIn(attributes))
+            {
+                return true;
+            }
+
+            return false;
+        }
     }
 }

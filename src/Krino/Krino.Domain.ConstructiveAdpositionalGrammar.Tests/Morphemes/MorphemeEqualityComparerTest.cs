@@ -14,16 +14,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes
             MorphemeEqualityComparer comparer = new MorphemeEqualityComparer();
             
             Assert.IsTrue(comparer.Equals(
-                new Morpheme("room") { Attributes = Attributes.O.Noun }, 
-                new Morpheme("room") { Attributes = Attributes.O.Noun }));
+                new Morpheme("room") { Attributes = Attributes.O.Lexeme.Noun }, 
+                new Morpheme("room") { Attributes = Attributes.O.Lexeme.Noun }));
 
             Assert.IsFalse(comparer.Equals(
-                new Morpheme("bla") { Attributes = Attributes.O.Noun },
-                new Morpheme("room") { Attributes = Attributes.O.Noun }));
+                new Morpheme("bla") { Attributes = Attributes.O.Lexeme.Noun },
+                new Morpheme("room") { Attributes = Attributes.O.Lexeme.Noun }));
 
             Assert.IsFalse(comparer.Equals(
-                new Morpheme("room") { Attributes = Attributes.O.Noun },
-                new Morpheme("room") { Attributes = Attributes.O.Noun.Countable }));
+                new Morpheme("room") { Attributes = Attributes.O.Lexeme.Noun },
+                new Morpheme("room") { Attributes = Attributes.O.Lexeme.Noun.Countable }));
         }
     }
 }

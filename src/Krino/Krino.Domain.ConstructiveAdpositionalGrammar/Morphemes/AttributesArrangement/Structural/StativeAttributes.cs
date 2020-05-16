@@ -3,24 +3,24 @@
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural
 {
     /// <summary>
-    /// Stative attributes.
+    /// Attributes for statives.
     /// </summary>
     public class StativeAttributes : EnumGroupBase
     {
         public StativeAttributes(EnumGroupBase parent) : base(parent)
         {
-            Noun = new NounAttributes(this);
-            Pronoun = new PronounAttributes(this);
+            Lexeme = new StativeLexemeAttributes(this);
+            NonLexeme = new StativeNonLexemeAttributes(this);
         }
 
         /// <summary>
-        /// The stative is a noun.
+        /// Lexeme.
         /// </summary>
-        public NounAttributes Noun { get; }
+        public StativeLexemeAttributes Lexeme { get; }
 
         /// <summary>
-        /// The stative is a pronoun.
+        /// Non-lexeme.
         /// </summary>
-        public PronounAttributes Pronoun { get; }
+        public StativeNonLexemeAttributes NonLexeme { get; }
     }
 }

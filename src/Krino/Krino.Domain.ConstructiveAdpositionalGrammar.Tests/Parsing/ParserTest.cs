@@ -20,8 +20,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Morpheme> lexemes = new List<Morpheme>()
             {
-                new Morpheme("I") { Attributes = Attributes.O.Pronoun.Subjective },
-                new Morpheme("read") { Attributes = Attributes.I.Verb.Bivalent },
+                new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun.Subjective },
+                new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb.Bivalent },
             };
 
             List<Pattern> patterns = new List<Pattern>()

@@ -373,11 +373,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     }
                     else
                     {
-                        if (Attributes.A.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.A.Determiner.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.I.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.E.Preposition.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.A.Numeral.IsIn(Left.Morpheme.Attributes)
+                        if (Attributes.A.Lexeme.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.A.Lexeme.Determiner.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.I.Lexeme.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.E.Lexeme.Preposition.IsIn(Left.Morpheme.Attributes) ||
+                            Attributes.A.Lexeme.Numeral.IsIn(Left.Morpheme.Attributes)
                             )
                         {
                             isLeftBeforeRight = true;

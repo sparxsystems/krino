@@ -9,28 +9,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
     {
         public CircumstantialAttributes(EnumGroupBase parent) : base(parent)
         {
-            Preposition = new EnumValue(this);
-            Postposition = new EnumValue(this);
-            Adverb = new AdverbAttributes(this);
+            Lexeme = new CircumstantialLexemeAttributes(this);
+            NonLexeme = new CircumstantialNonLexemeAttributes(this);
         }
 
         /// <summary>
-        /// Circumstantial is a preposition.
+        /// Lexeme.
         /// </summary>
-        /// <remarks>
-        /// Circumstantial can be an adposition with the preposition morpheme.
-        /// E.g. I read the book in the room.
-        /// </remarks>
-        public EnumValue Preposition { get; }
+        public CircumstantialLexemeAttributes Lexeme { get; }
 
         /// <summary>
-        /// Circumstantial is a postposition.
+        /// Non-lexeme.
         /// </summary>
-        public EnumValue Postposition { get; }
-
-        /// <summary>
-        /// Circumstantial is an adverb.
-        /// </summary>
-        public AdverbAttributes Adverb { get; }
+        public CircumstantialNonLexemeAttributes NonLexeme { get; }
     }
 }

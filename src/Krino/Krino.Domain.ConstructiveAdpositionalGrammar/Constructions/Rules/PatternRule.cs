@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
@@ -12,19 +12,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{MorphemeRule} && {PatternAttributesRule}")]
     public class PatternRule : IEquatable<PatternRule>
     {
-        public static PatternRule Anything = new PatternRule(MorphemeRule.Anything, Rule.Anything<BigInteger>());
-        public static PatternRule Nothing = new PatternRule(MorphemeRule.Nothing, Rule.Nothing<BigInteger>());
-        public static PatternRule EpsilonValency1 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.First));
-        public static PatternRule EpsilonValency2 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Second));
-        public static PatternRule EpsilonValency3 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Third));
-        public static PatternRule EpsilonValency4 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Fourth));
-        public static PatternRule EpsilonValency5 = new PatternRule(MorphemeRule.Epsilon, MaskRule.Is(PatternAttributes.ValencyPosition.Fifth));
+        /// <summary>
+        /// It does not accept any pattern.
+        /// </summary>
+        public static PatternRule Nothing => new PatternRule(MorphemeRule.Nothing, MaskRule.Nothing);
+
+        public static PatternRule I => new PatternRule(MorphemeRule.I_Lexeme, MaskRule.Is(Attributes.I));
+
+        public static PatternRule I_Lexeme => new PatternRule(MorphemeRule.I_Lexeme, MaskRule.Anything);
+
+        public static PatternRule I_NonLexeme => new PatternRule(MorphemeRule.I_NonLexeme, MaskRule.Anything);
+
+
+
 
         public MorphemeRule MorphemeRule { get; private set; }
         public IRule<BigInteger> PatternAttributesRule { get; private set; }
 
-        public PatternRule(MorphemeRule morphemeRule) : this(morphemeRule, Rule.Anything<BigInteger>())
+        public PatternRule(MorphemeRule morphemeRule)
+            : this(morphemeRule, MaskRule.Anything)
         {
+
         }
 
         public PatternRule(MorphemeRule morphemeRule, IRule<BigInteger> patternAttributesRule)

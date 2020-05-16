@@ -9,18 +9,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
     {
         public VerbantAttributes(EnumGroupBase parent) : base(parent)
         {
-            Verb = new VerbAttributes(this);
-            Interjection = new EnumValue(this);
+            Lexeme = new VerbantLexemeAttributes(this);
+            NonLexeme = new VerbantNonLexemeAttributes(this);
         }
 
-        /// <summary>
-        /// Verbant is a verb.
-        /// </summary>
-        public VerbAttributes Verb { get; }
+        public VerbantLexemeAttributes Lexeme { get; }
 
-        /// <summary>
-        /// Verbant is an interjection.
-        /// </summary>
-        public EnumValue Interjection { get; }
+        public VerbantNonLexemeAttributes NonLexeme { get; }
     }
 }

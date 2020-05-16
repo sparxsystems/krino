@@ -13,20 +13,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule} && {AttributesRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
-        public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.Epsilon, Rule.Anything<string>(), Rule.Anything<BigInteger>());
-        public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.Epsilon, Rule.Nothing<string>(), Rule.Nothing<BigInteger>());
-        public static MorphemeRule O => new MorphemeRule(GrammarCharacter.O, Rule.Anything<string>(), new MaskRule(Attributes.O));
-        public static MorphemeRule I => new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), new MaskRule(Attributes.I));
-        public static MorphemeRule I1 => new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Modal));
-        public static MorphemeRule I2 => new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Bivalent));
-        public static MorphemeRule I3 => new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Trivalent));
-        public static MorphemeRule I4 => new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Quadrivalent));
-        public static MorphemeRule I5 => new MorphemeRule(GrammarCharacter.I, Rule.Anything<string>(), new MaskRule(Attributes.I.Verb.Pentavalent));
-        public static MorphemeRule A => new MorphemeRule(GrammarCharacter.A, Rule.Anything<string>(), new MaskRule(Attributes.A));
-        public static MorphemeRule E_Preposition => new MorphemeRule(GrammarCharacter.E, Rule.Anything<string>(), new MaskRule(Attributes.E.Preposition));
-        public static MorphemeRule E_Adverb => new MorphemeRule(GrammarCharacter.E, Rule.Anything<string>(), new MaskRule(Attributes.E.Adverb));
-        public static MorphemeRule U => new MorphemeRule(GrammarCharacter.U, Rule.Anything<string>(), new MaskRule(Attributes.U));
-        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.Epsilon, Rule.Nothing<string>(), new MaskRule(Attributes.Epsilon));
+        public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.Nothing, MaskRule.Nothing);
+
+        public static MorphemeRule Any(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Anything, MaskRule.Anything);
+
+        public static MorphemeRule Is(GrammarCharacter grammarCharacter, string morph, BigInteger attributes) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Is(morph), MaskRule.Is(attributes));
+
+        public static MorphemeRule O => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Anything, MaskRule.Is(Attributes.O));
+
+        public static MorphemeRule O_Lexeme => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Anything, MaskRule.Is(Attributes.O.Lexeme));
+
+        public static MorphemeRule O_NonLexeme => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Anything, MaskRule.Is(Attributes.O.NonLexeme));
+
+        public static MorphemeRule O_Not_NonLexeme => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Anything, MaskRule.Is(Attributes.O) & !MaskRule.Is(Attributes.O.NonLexeme));
+
+        public static MorphemeRule I => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I));
+
+        public static MorphemeRule I_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.Lexeme));
+
+        public static MorphemeRule I_NonLexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.NonLexeme));
+
+        public static MorphemeRule I1 => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.Lexeme.Verb.Modal));
+        public static MorphemeRule I2 => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.Lexeme.Verb.Bivalent));
+        public static MorphemeRule I3 => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.Lexeme.Verb.Trivalent));
+        public static MorphemeRule I4 => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.Lexeme.Verb.Quadrivalent));
+        public static MorphemeRule I5 => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.Lexeme.Verb.Pentavalent));
+        public static MorphemeRule A => new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Anything, MaskRule.Is(Attributes.A));
+        public static MorphemeRule E_Preposition => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.Anything, MaskRule.Is(Attributes.E.Lexeme.Preposition));
+        public static MorphemeRule E_Adverb => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.Anything, MaskRule.Is(Attributes.E.Lexeme.Adverb));
+        public static MorphemeRule U => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Anything, MaskRule.Is(Attributes.U));
+        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.Epsilon, RuleMaker.Nothing<string>(), MaskRule.Is(Attributes.Epsilon));
 
 
         public IRule<string> MorphRule { get; private set; }

@@ -9,24 +9,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
     {
         public AdjunctiveAttributes(EnumGroupBase parent) : base(parent)
         {
-            Adjective = new AdjectiveAttributes(this);
-            Determiner = new DeterminerAttributes(this);
-            Numeral = new NumeralAttributes(this);
+            Lexeme = new AdjunctiveLexemeAttributes(this);
+            NonLexeme = new AdjunctiveNonLexemeAttributes(this);
         }
 
-        /// <summary>
-        /// Adjunctive is an adjenctive.
-        /// </summary>
-        public AdjectiveAttributes Adjective { get; }
+        public AdjunctiveLexemeAttributes Lexeme { get; }
 
-        /// <summary>
-        /// Adjunctive is a determiner.
-        /// </summary>
-        public DeterminerAttributes Determiner { get; }
-
-        /// <summary>
-        /// Adjunctive is a numeral.
-        /// </summary>
-        public NumeralAttributes Numeral { get; }
+        public AdjunctiveNonLexemeAttributes NonLexeme { get; }
     }
 }
