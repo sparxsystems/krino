@@ -16,6 +16,14 @@ namespace Krino.Vertical.Utils.Rules
         public static IRule<T> Is<T>(T value) => new IsRule<T>(value);
 
         /// <summary>
+        /// Creates the rule accepting everything except the provided value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public static IRule<T> IsNot<T>(T value) => new IsRule<T>(value).Not();
+
+        /// <summary>
         /// Creates the rule which accept all values i.e. always returns true.
         /// </summary>
         /// <typeparam name="T"></typeparam>

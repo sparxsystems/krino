@@ -165,7 +165,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
                     LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
 
@@ -173,7 +173,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
                     LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
 
@@ -195,11 +195,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.IsTrue(builder.AddWord("is", 1));
             Assert.IsTrue(builder.AddWord("writer", 1));
 
-            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
-            Assert.AreEqual("er", builder.ActiveAdTrees[0].Left.Left.Morpheme.Morph);
+            // Note: there are two active adtrees because when searching morpheme sequences
+            //       it consoder also the possibility 'writer' is typo which is corrected
+            //       to 'write' - that is the first possibility.
+            //       The other one is with the recognized suffix 'write', 'er'.
+            Assert.AreEqual(2, builder.ActiveAdTrees.Count);
+            
+            Assert.IsNull(builder.ActiveAdTrees[0].Left.Left);
             Assert.AreEqual("write", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
             Assert.AreEqual("he", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
             Assert.AreEqual("is", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+
+            Assert.AreEqual("er", builder.ActiveAdTrees[1].Left.Left.Morpheme.Morph);
+            Assert.AreEqual("write", builder.ActiveAdTrees[1].Left.Right.Morpheme.Morph);
+            Assert.AreEqual("he", builder.ActiveAdTrees[1].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("is", builder.ActiveAdTrees[1].Right.Right.Morpheme.Morph);
         }
 
         [Test]
@@ -326,47 +336,48 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Pattern("O")
                 {
-                    MorphemeRule = MorphemeRule.O,
+                    MorphemeRule = MorphemeRule.O_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
                 new Pattern("I")
                 {
-                    MorphemeRule = MorphemeRule.I,
+                    MorphemeRule = MorphemeRule.I_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
                 new Pattern("A")
                 {
-                    MorphemeRule = MorphemeRule.A,
+                    MorphemeRule = MorphemeRule.A_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
-                new Pattern("1st Valency")
+                new Pattern("O1-I")
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
-                new Pattern("2nd Valency")
+
+                new Pattern("O2-I")
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.Second,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
                 new Pattern("A-O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.O),
-                    LeftRule = new PatternRule(MorphemeRule.A)
+                    RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
                 },
                 new Pattern("E")
                 {
                     MorphemeRule = MorphemeRule.E_Preposition,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
                 },
             };
 

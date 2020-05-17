@@ -6,7 +6,7 @@ namespace Krino.Vertical.Utils.Rules
     /// Accepts all values i.e. always returns TRUE.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DebuggerDisplay("true")]
+    [DebuggerDisplay("any")]
     public class AnythingRule<T> : IRule<T>
     {
         public bool Evaluate(T value) => true;

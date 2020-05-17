@@ -9,7 +9,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     /// <summary>
     /// Rule to eveluate if something (e.g. adtree element) matches the pattern.
     /// </summary>
-    [DebuggerDisplay("{MorphemeRule} && {PatternAttributesRule}")]
+    [DebuggerDisplay("{MorphemeRule}")]
     public class PatternRule : IEquatable<PatternRule>
     {
         /// <summary>

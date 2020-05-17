@@ -7,7 +7,7 @@ using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
-    [DebuggerDisplay("{LeftRule} <- -> {RightRule}", Name = "{myName}")]
+    [DebuggerDisplay("{LeftRule} <- {Name} -> {RightRule}")]
     public class Pattern
     {
         public static Pattern O => new Pattern("O") { MorphemeRule = MorphemeRule.O_Lexeme, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
@@ -18,11 +18,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
         // Optional information for the debugging purposes.
         // It is used in the DebuggerDisplayAttribute.
-        private string myName;
+        public string Name { get; private set; }
 
         public Pattern(string name = null)
         {
-            myName = name;
+            Name = name;
         }
 
         public BigInteger PatternAttributes { get; set; }
