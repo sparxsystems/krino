@@ -16,7 +16,7 @@ namespace Krino.GretaTest
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
             Parser parser = new Parser(dictionary);
-            IAdTree adTree = parser.Deserialize("I have some good news and some bad news", 1);
+            IAdTree adTree = parser.Deserialize("I have some good news and some bad news.", 1);
         }
     }
 }
