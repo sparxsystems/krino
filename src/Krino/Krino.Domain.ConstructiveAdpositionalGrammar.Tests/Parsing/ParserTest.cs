@@ -20,7 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Morpheme> lexemes = new List<Morpheme>()
             {
-                new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun.Subjective },
+                new Morpheme("i") { Attributes = Attributes.O.Lexeme.Pronoun.Subjective },
                 new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb.Bivalent },
             };
 
@@ -28,14 +28,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Pattern()
                 {
-                    MorphemeRule = MorphemeRule.O,
+                    MorphemeRule = MorphemeRule.O_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
 
                 new Pattern()
                 {
-                    MorphemeRule = MorphemeRule.I,
+                    MorphemeRule = MorphemeRule.I_Lexeme,
                     RightRule = PatternRule.Nothing,
                     LeftRule = PatternRule.Nothing,
                 },
@@ -44,8 +44,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I),
-                    LeftRule = new PatternRule(MorphemeRule.O)
+                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Lexeme)
                 },
             };
 
@@ -55,7 +55,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Parser parser = new Parser(dictionary);
             IAdTree adTree = parser.Deserialize("I read", 0);
 
-            Assert.AreEqual("I", adTree.Left.Morpheme.Morph);
+            Assert.AreEqual("i", adTree.Left.Morpheme.Morph);
             Assert.AreEqual("read", adTree.Right.Morpheme.Morph);
         }
     }
