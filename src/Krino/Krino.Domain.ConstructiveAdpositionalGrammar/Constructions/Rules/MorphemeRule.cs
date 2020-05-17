@@ -13,9 +13,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
+        public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.Anything, MaskRule.Anything);
+
         public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.Nothing, MaskRule.Nothing);
 
         public static MorphemeRule Any(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Anything, MaskRule.Anything);
+
+        public static MorphemeRule Something(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Something, MaskRule.Is(grammarCharacter.GetAttributes()));
 
         public static MorphemeRule Is(GrammarCharacter grammarCharacter, string morph, BigInteger attributes) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Is(morph), MaskRule.Is(attributes));
 

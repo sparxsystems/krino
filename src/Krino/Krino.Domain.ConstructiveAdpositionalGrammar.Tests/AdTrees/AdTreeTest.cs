@@ -319,7 +319,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                     Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun } },
                     Left = new AdTree()
                     {
-                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = Attributes.U.Conjunction } },
+                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = Attributes.U.Lexeme.Conjunction } },
                         Left = new AdTree() { Morpheme = new Morpheme("bla") { Attributes = Attributes.E.Lexeme.Adverb } }
                     }
                 }
@@ -378,7 +378,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                     Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun } },
                     Left = new AdTree()
                     {
-                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = Attributes.U.Conjunction } },
+                        Right = new AdTree() { Morpheme = new Morpheme("and") { Attributes = Attributes.U.Lexeme.Conjunction } },
                         Left = new AdTree() { Morpheme = new Morpheme("bla") { Attributes = Attributes.E.Lexeme.Adverb } }
                     }
                 }

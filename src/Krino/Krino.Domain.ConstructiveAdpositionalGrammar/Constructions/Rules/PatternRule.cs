@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
@@ -16,6 +17,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         /// It does not accept any pattern.
         /// </summary>
         public static PatternRule Nothing => new PatternRule(MorphemeRule.Nothing, MaskRule.Nothing);
+
+        public static PatternRule Something(GrammarCharacter grammarCharacter) => new PatternRule(MorphemeRule.Something(grammarCharacter), MaskRule.Anything);
 
         public static PatternRule I => new PatternRule(MorphemeRule.I_Lexeme, MaskRule.Is(Attributes.I));
 

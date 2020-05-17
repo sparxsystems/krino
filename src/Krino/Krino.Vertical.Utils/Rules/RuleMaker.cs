@@ -24,6 +24,20 @@ namespace Krino.Vertical.Utils.Rules
         public static IRule<T> IsNot<T>(T value) => new IsRule<T>(value).Not();
 
         /// <summary>
+        /// Creates the rule accepting the null value.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IRule<T> IsNull<T>() where T : class  => new IsNullRule<T>();
+
+        /// <summary>
+        /// Creates the rule accepting the value which is not null.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <returns></returns>
+        public static IRule<T> IsNotNull<T>() where T : class => new IsNullRule<T>().Not();
+
+        /// <summary>
         /// Creates the rule which accept all values i.e. always returns true.
         /// </summary>
         /// <typeparam name="T"></typeparam>

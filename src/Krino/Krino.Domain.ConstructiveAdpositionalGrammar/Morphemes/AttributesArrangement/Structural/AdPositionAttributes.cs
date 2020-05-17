@@ -9,12 +9,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
     {
         public AdPositionAttributes(EnumGroupBase parent) : base(parent)
         {
-            Conjunction = new ConjunctionAttributes(this);
+            Lexeme = new AdPositionLexemeAttributes(this);
+            NonLexeme = new AdPositionNonLexemeAttributes(this);
         }
 
         /// <summary>
-        /// AdPosition is a conjunction.
+        /// Lexeme.
         /// </summary>
-        public ConjunctionAttributes Conjunction { get; }
+        public AdPositionLexemeAttributes Lexeme { get; }
+
+        /// <summary>
+        /// Non-lexeme.
+        /// </summary>
+        public AdPositionNonLexemeAttributes NonLexeme { get; }
     }
 }

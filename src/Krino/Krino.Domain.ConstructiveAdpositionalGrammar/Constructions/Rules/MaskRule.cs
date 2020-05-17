@@ -15,6 +15,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static IRule<BigInteger> Nothing => RuleMaker.Nothing<BigInteger>();
 
+        public static IRule<BigInteger> Something => Anything.And(RuleMaker.IsNot<BigInteger>(0));
+
         public static MaskRule Is(BigInteger mask) => new MaskRule(mask);
 
         private BigInteger myMask;

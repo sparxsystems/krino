@@ -1,11 +1,9 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules.Strings;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Graphs;
-using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;

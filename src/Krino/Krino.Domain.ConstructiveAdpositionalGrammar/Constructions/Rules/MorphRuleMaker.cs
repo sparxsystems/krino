@@ -19,6 +19,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static IRule<string> Anything => RuleMaker.Anything<string>();
 
         /// <summary>
+        /// All morphs which are not null and empty are accepted.
+        /// </summary>
+        public static IRule<string> Something => RuleMaker.IsNotNull<string>().And(RuleMaker.Is("").Not());
+
+        /// <summary>
         /// Only empty string morph is accepted.
         /// </summary>
         public static IRule<string> EmptyString => RuleMaker.Is("");

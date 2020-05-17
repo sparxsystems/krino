@@ -22,7 +22,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 AdTreeBuilder builder = new AdTreeBuilder(myConstructiveDictionary);
 
-                string[] words = text.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+                string[] words = text.ToLowerInvariant().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string word in words)
                 {
                     builder.AddWord(word, maxMorphDistance);
