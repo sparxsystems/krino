@@ -53,6 +53,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static MorphemeRule E_Preposition => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.NotEmptyString, MaskRule.Is(Attributes.E.Lexeme.Preposition));
         public static MorphemeRule E_Adverb => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.NotEmptyString, MaskRule.Is(Attributes.E.Lexeme.Adverb));
         public static MorphemeRule U => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Anything, MaskRule.Is(Attributes.U));
+        public static MorphemeRule U_Lexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.NotEmptyString, MaskRule.Is(Attributes.U.Lexeme));
+        public static MorphemeRule U_Not_NonLexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.NotEmptyString, MaskRule.Is(Attributes.U) & !MaskRule.Is(Attributes.U.NonLexeme));
         public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.Epsilon));
 
 

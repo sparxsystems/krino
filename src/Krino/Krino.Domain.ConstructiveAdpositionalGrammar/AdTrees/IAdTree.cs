@@ -33,6 +33,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </remarks>
         GrammarCharacter InheritedGrammarCharacter { get; }
 
+
         /// <summary>
         /// Reference to the AdPosition (direct parent). Null if it is the root.
         /// </summary>

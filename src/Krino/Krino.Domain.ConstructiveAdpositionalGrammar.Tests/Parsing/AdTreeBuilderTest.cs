@@ -416,5 +416,91 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Left.Morpheme.Morph);
             Assert.AreEqual("room", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
         }
+
+
+        [Test]
+        public void It_is_good_and_bad_book()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+                new Pattern("I")
+                {
+                    MorphemeRule = MorphemeRule.I_Lexeme,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+                new Pattern("A")
+                {
+                    MorphemeRule = MorphemeRule.A_Lexeme,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+                new Pattern("O1-I")
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.First,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
+                },
+                new Pattern("O2-I")
+                {
+                    PatternAttributes = PatternAttributes.ValencyPosition.Second,
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
+                },
+                new Pattern("A-O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
+                },
+                new Pattern("A-and-A")
+                {
+                    MorphemeRule = MorphemeRule.U_Lexeme,
+                    RightRule = new PatternRule(MorphemeRule.A_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
+                },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+
+            Morpheme morpheme = new Morpheme("it") { Attributes = Attributes.O.Lexeme.Pronoun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("is") { Attributes = Attributes.I.Lexeme.Verb.Bivalent };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("good") { Attributes = Attributes.A.Lexeme.Adjective.Attributive };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            // Note: 'and' will be inserted in between.
+            morpheme = new Morpheme("and") { Attributes = Attributes.U.Lexeme.Conjunction };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("bad") { Attributes = Attributes.A.Lexeme.Adjective.Attributive };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual("it", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("is", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+            Assert.AreEqual("good", builder.ActiveAdTrees[0].Left.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("and", builder.ActiveAdTrees[0].Left.Left.Morpheme.Morph);
+            Assert.AreEqual("bad", builder.ActiveAdTrees[0].Left.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("book", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
+        }
     }
 }
