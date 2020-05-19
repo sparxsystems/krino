@@ -6,12 +6,38 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 {
     [TestFixture]
     public class AdTreeExtTest
     {
+        [Test]
+        public void GetSequenceToRoot()
+        {
+            AdTree adTree = new AdTree()
+            {
+                Right = new AdTree()
+                {
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun } }
+                },
+                Left = new AdTree()
+                {
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner } }
+                }
+            };
+
+            List<IAdTree> sequence = adTree.Right.Left.GetSequenceToRoot().ToList();
+            Assert.AreEqual(3, sequence.Count);
+            Assert.IsTrue(adTree.Right.Left == sequence[0]);
+            Assert.IsTrue(adTree.Right == sequence[1]);
+            Assert.IsTrue(adTree == sequence[2]);
+        }
+
         [Test]
         public void GetPath()
         {
@@ -191,6 +217,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // But the element is the verbant (I)
             adTreeElement = new AdTree(new Morpheme("hello") { Attributes = Attributes.I.Lexeme }, new Pattern());
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
+        }
+
+
+        [Test]
+        public void GetFirstAdPositionOnLeft()
+        {
+            AdTree adTree = new AdTree()
+            {
+                Right = new AdTree()
+                {
+                    Right = new AdTree() { Morpheme = new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb } },
+                    Left = new AdTree() { Morpheme = new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun } }
+                },
+                Left = new AdTree()
+                {
+                    Right = new AdTree() { Morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun } },
+                    Left = new AdTree() { Morpheme = new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner } }
+                }
+            };
+
+            IAdTree result = adTree.Left.Right.GetFirstAdPositionOnLeft();
+            Assert.IsTrue(adTree.Left == result);
+
+            // It is already on left.
+            result = adTree.Right.Left.GetFirstAdPositionOnLeft();
+            Assert.IsTrue(adTree.Right.Left == result);
+
+            // Root.
+            result = adTree.GetFirstAdPositionOnLeft();
+            Assert.IsNull(result);
         }
     }
 }

@@ -1,5 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,13 +11,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     public static class AdTreeExt
     {
         /// <summary>
+        /// Returns sequence from the specified adtree to the root.
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static IEnumerable<IAdTree> GetSequenceToRoot(this IAdTree adTree) => new IAdTree[] { adTree }.Concat(adTree.AdPositions);
+
+        /// <summary>
         /// Returns the path to the adTree element. Empty array if it is the root.
         /// </summary>
         /// <param name="adTree"></param>
         /// <returns></returns>
         public static byte[] GetPath(this IAdTree adTree)
         {
-            IEnumerable<IAdTree> adTreesOnPath = new IAdTree[] { adTree }.Concat(adTree.AdPositions).Where(x => x.AdPosition != null);
+            IEnumerable<IAdTree> adTreesOnPath = adTree.GetSequenceToRoot().Where(x => x.AdPosition != null);
             byte[] result = adTreesOnPath.Select(x => x.IsOnLeft ? (byte)1 : (byte)2).Reverse().ToArray();
             return result;
         }
@@ -120,5 +126,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return false;
         }
 
+
+        /// <summary>
+        /// Gets the first adtree element which is attached on the left or null if it does not exist.
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static IAdTree GetFirstAdPositionOnLeft(this IAdTree adTree) => adTree.GetSequenceToRoot().FirstOrDefault(x => x.IsOnLeft);
     }
 }

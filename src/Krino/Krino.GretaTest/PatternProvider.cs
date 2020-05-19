@@ -39,6 +39,13 @@ namespace Krino.GretaTest
                 RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
                 LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
             },
+            new Pattern("O2-I")
+            {
+                PatternAttributes = PatternAttributes.ValencyPosition.Second,
+                MorphemeRule = MorphemeRule.Epsilon,
+                RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
+                LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+            },
 
             new Pattern("A-O")
             {
@@ -49,14 +56,14 @@ namespace Krino.GretaTest
 
             new Pattern("O-and-O")
             {
-                MorphemeRule = MorphemeRule.Is(GrammarCharacter.U, "and", Attributes.U.Lexeme.Conjunction),
+                MorphemeRule = MorphemeRule.Is(GrammarCharacter.U, "and", Attributes.U.Lexeme),
                 RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
             },
 
             new Pattern(".")
             {
-                MorphemeRule = MorphemeRule.Is(GrammarCharacter.U, ".", Attributes.U.NonLexeme.PunctuationMark.Period),
+                MorphemeRule = MorphemeRule.Is(GrammarCharacter.U, ".", Attributes.U.NonLexeme),
                 RightRule = new PatternRule(MorphemeRule.Something(GrammarCharacter.I)),
                 LeftRule = new PatternRule(MorphemeRule.Anything),
             },

@@ -14,7 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// <summary>
     /// Implements the AdTree as defined in the document Constructive Adposition Grammar.
     /// </summary>
-    [DebuggerDisplay("{Left?.Morpheme?.Morph} <- {Morpheme?.Morph} -> {Right?.Morpheme?.Morph}")]
+    [DebuggerDisplay("{Left?.Morpheme?.GrammarCharacter.ToString()}:{Left?.Morpheme?.Morph} <- {Morpheme?.GrammarCharacter.ToString()}:{Morpheme?.Morph} -> {Right?.Morpheme?.GrammarCharacter.ToString()}:{Right?.Morpheme?.Morph}")]
     public class AdTree : IAdTree
     {
         private IAdTree myAdPosition;

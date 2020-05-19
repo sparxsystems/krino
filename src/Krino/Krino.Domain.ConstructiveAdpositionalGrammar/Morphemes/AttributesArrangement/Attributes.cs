@@ -57,7 +57,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
             if (O.Lexeme.IsIn(attributes) ||
                 I.Lexeme.IsIn(attributes) ||
                 A.Lexeme.IsIn(attributes) ||
-                E.Lexeme.IsIn(attributes))
+                E.Lexeme.IsIn(attributes) ||
+                U.Lexeme.IsIn(attributes))
             {
                 return true;
             }
