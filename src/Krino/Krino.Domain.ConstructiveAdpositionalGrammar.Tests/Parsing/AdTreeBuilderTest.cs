@@ -181,9 +181,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Note: suffix er transfers 'I' to 'O'.
                 new Pattern("I>O")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, RuleMaker.Nothing<string>(), MaskRule.Is(Attributes.O)),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.O)),
                     RightRule = new PatternRule(MorphemeRule.I_Lexeme),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))),
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.NotEmptyString, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))),
                 },
             };
 
@@ -251,6 +251,62 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
+            Assert.AreEqual("good", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("book", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+        }
+
+        [Test]
+        public void Green_race_car()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("A")
+                {
+                    MorphemeRule = MorphemeRule.A_Lexeme,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    RightRule = PatternRule.Nothing,
+                    LeftRule = PatternRule.Nothing,
+                },
+
+                new Pattern("A-O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
+                },
+
+                new Pattern("O>A")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Nothing)),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                },
+            };
+
+            List<Morpheme> morphemes = new List<Morpheme>()
+            {
+                // Lexemes.
+                new Morpheme("green"){ Attributes = Attributes.A.Lexeme.Adjective },
+                new Morpheme("race") { Attributes = Attributes.O.Lexeme.Noun },
+                new Morpheme("car") { Attributes = Attributes.O.Lexeme.Noun },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+            Assert.IsTrue(builder.AddWord("green"));
+            Assert.IsTrue(builder.AddWord("race"));
+            Assert.IsTrue(builder.AddWord("car"));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
@@ -375,7 +431,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
                 new Pattern("E")
                 {
-                    MorphemeRule = MorphemeRule.E_Preposition,
+                    MorphemeRule = MorphemeRule.E_Not_NonLexeme,
                     RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
                     LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
                 },

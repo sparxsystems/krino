@@ -13,8 +13,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         public static Pattern O => new Pattern("O") { MorphemeRule = MorphemeRule.O_Lexeme, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
         public static Pattern I => new Pattern("I") { MorphemeRule = MorphemeRule.I_Lexeme, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
         public static Pattern A => new Pattern("A") { MorphemeRule = MorphemeRule.A, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
-        public static Pattern E_Preposition => new Pattern("E Preposition") { MorphemeRule = MorphemeRule.E_Preposition, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
-        public static Pattern E_adverb => new Pattern("E Adverb") { MorphemeRule = MorphemeRule.E_Adverb, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
+
 
         // Optional information for the debugging purposes.
         // It is used in the DebuggerDisplayAttribute.

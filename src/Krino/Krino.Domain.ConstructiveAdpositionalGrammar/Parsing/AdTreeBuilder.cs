@@ -298,14 +298,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
         }
 
-        private void TryToInsertAdPosition(EAppendPosition appendPosition, IAdTree current, IAdTree adPositionToInsert, List<IAdTree> results)
+        private void TryToInsertAdPosition(EAppendPosition position, IAdTree current, IAdTree adPositionToInsert, List<IAdTree> results)
         {
             IEnumerable<IAdTree> adTreesToRoot = current.GetSequenceToRoot();
 
             foreach (IAdTree pathItem in adTreesToRoot)
             {
                 // If adpositon shall attach it to left.
-                if (appendPosition == EAppendPosition.BottomLeft)
+                if (position == EAppendPosition.BottomLeft)
                 {
                     if (adPositionToInsert.Left == null && adPositionToInsert.CanAttachToLeft(pathItem))
                     {
@@ -331,7 +331,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     }
                 }
                 // If adpositon shall attach it to right.
-                else if (appendPosition == EAppendPosition.BottomRight)
+                else if (position == EAppendPosition.BottomRight)
                 {
                     if (adPositionToInsert.Right == null && adPositionToInsert.CanAttachToRight(pathItem))
                     {
@@ -356,6 +356,52 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                         break;
                     }
+                }
+            }
+        }
+
+        private void TryToInsert(EAppendPosition position, IAdTree current, IAdTree toInsert, List<IAdTree> results)
+        {
+            // If adpositon shall attach it to left.
+            if (position == EAppendPosition.BottomLeft)
+            {
+                if (toInsert.Left == null && toInsert.CanAttachToLeft(current))
+                {
+                    IAdTree adPositionToInsertCopy = GetCopyOnSamePath(toInsert);
+                    IAdTree currentCopy = GetCopyOnSamePath(current);
+
+                    if (currentCopy.IsOnLeft)
+                    {
+                        currentCopy.AdPosition.Left = adPositionToInsertCopy;
+                    }
+                    else if (currentCopy.IsOnRight)
+                    {
+                        currentCopy.AdPosition.Right = adPositionToInsertCopy;
+                    }
+
+                    adPositionToInsertCopy.Left = currentCopy;
+                    results.Add(currentCopy);
+                }
+            }
+            // If adpositon shall attach it to right.
+            else if (position == EAppendPosition.BottomRight)
+            {
+                if (toInsert.Right == null && toInsert.CanAttachToRight(current))
+                {
+                    IAdTree adPositionToInsertCopy = GetCopyOnSamePath(toInsert);
+                    IAdTree currentCopy = GetCopyOnSamePath(current);
+
+                    if (currentCopy.IsOnLeft)
+                    {
+                        currentCopy.AdPosition.Left = adPositionToInsertCopy;
+                    }
+                    else if (currentCopy.IsOnRight)
+                    {
+                        currentCopy.AdPosition.Right = adPositionToInsertCopy;
+                    }
+
+                    adPositionToInsertCopy.Right = currentCopy;
+                    results.Add(currentCopy);
                 }
             }
         }

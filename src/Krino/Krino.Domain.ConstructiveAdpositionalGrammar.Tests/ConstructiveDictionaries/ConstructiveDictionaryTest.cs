@@ -14,7 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
     public class ConstructiveDictionaryTest
     {
         [Test]
-        public void Constructor()
+        public void Constructor_PatternGraph()
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
@@ -59,6 +59,51 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             Assert.AreEqual(GrammarCharacter.I.ToString(), paths[0][0].From);
             Assert.AreEqual(GrammarCharacter.I.ToString(), paths[0][0].To);
+        }
+
+        [Test]
+        public void Constructor_PatternGraph2()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("A-O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
+                },
+
+                // Transferens pattern.
+                new Pattern("O>A")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Nothing)),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
+
+            List<IReadOnlyList<DirectedEdge<Pattern>>> paths = dictionary.PatternGraph.FindAllPaths("O", "O").ToList();
+
+            Assert.AreEqual(2, paths.Count);
+            Assert.AreEqual(2, paths[0].Count);
+
+            // There and back via A-O pattern.
+            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[0][0].From);
+            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[0][0].To);
+            Assert.AreEqual("A-O", paths[0][0].Value.Name);
+            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[0][1].From);
+            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[0][1].To);
+            Assert.AreEqual("A-O", paths[0][1].Value.Name);
+
+            // There via O>A and back via A-O.
+            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[1][0].From);
+            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[1][0].To);
+            Assert.AreEqual("O>A", paths[1][0].Value.Name);
+            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[1][1].From);
+            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[1][1].To);
+            Assert.AreEqual("A-O", paths[1][1].Value.Name);
         }
 
         [Test]
@@ -153,5 +198,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             Assert.AreEqual("write", morphemeSequences[1][0].Morph);
             Assert.AreEqual("er", morphemeSequences[1][1].Morph);
         }
+
     }
 }

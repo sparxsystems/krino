@@ -67,5 +67,36 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             Assert.AreEqual("A", result[0][0].From);
             Assert.AreEqual("A", result[0][0].To);
         }
+
+        [Test]
+        public void FindAllPaths_ToItself_Indirectly()
+        {
+            DirectedGraph<string, string> graph = new DirectedGraph<string, string>();
+            graph.AddVertex("1", "A");
+            graph.AddVertex("2", "O");
+            graph.AddEdge("A", "O", "Pattern1");
+            graph.AddEdge("O", "A", "Pattern1");
+            graph.AddEdge("O", "A", "Pattern2");
+
+            // Get all paths from O to O.
+            List<IReadOnlyList<DirectedEdge<string>>> result = graph.FindAllPaths("O", "O").ToList();
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual(2, result[0].Count);
+
+            Assert.AreEqual("O", result[0][0].From);
+            Assert.AreEqual("A", result[0][0].To);
+            Assert.AreEqual("Pattern1", result[0][0].Value);
+            Assert.AreEqual("A", result[0][1].From);
+            Assert.AreEqual("O", result[0][1].To);
+            Assert.AreEqual("Pattern1", result[0][1].Value);
+
+            Assert.AreEqual("O", result[1][0].From);
+            Assert.AreEqual("A", result[1][0].To);
+            Assert.AreEqual("Pattern2", result[1][0].Value);
+            Assert.AreEqual("A", result[1][1].From);
+            Assert.AreEqual("O", result[1][1].To);
+            Assert.AreEqual("Pattern1", result[1][1].Value);
+        }
     }
 }

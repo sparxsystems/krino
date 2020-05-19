@@ -32,6 +32,13 @@ namespace Krino.GretaTest
                 LeftRule = PatternRule.Nothing,
             },
 
+            new Pattern("E")
+                {
+                    MorphemeRule = MorphemeRule.E_Not_NonLexeme,
+                    RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
+                },
+
             new Pattern("O1-I")
             {
                 PatternAttributes = PatternAttributes.ValencyPosition.First,
@@ -60,6 +67,15 @@ namespace Krino.GretaTest
                 RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
             },
+
+
+            new Pattern("O>A")
+            {
+                MorphemeRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.A.Lexeme)),
+                RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                LeftRule = PatternRule.Nothing,
+            },
+
 
             new Pattern(".")
             {

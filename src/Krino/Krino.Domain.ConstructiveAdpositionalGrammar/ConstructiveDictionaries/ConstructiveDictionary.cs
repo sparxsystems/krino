@@ -113,25 +113,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             foreach (Pattern pattern in Patterns)
             {
                 // If it is an adposition related rule.
-                if (!pattern.LeftRule.Equals(PatternRule.Nothing) && !pattern.RightRule.Equals(PatternRule.Nothing))
+                if (pattern.LeftRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                    pattern.RightRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
                 {
-                    foreach (GrammarCharacter leftGrammarCharacter in grammarCharacters)
+                    if (!pattern.LeftRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing))
                     {
-                        if (pattern.LeftRule.MorphemeRule.GrammarCharacter == leftGrammarCharacter)
-                        {
-                            foreach (GrammarCharacter rightGrammarCharacter in grammarCharacters)
-                            {
-                                if (pattern.RightRule.MorphemeRule.GrammarCharacter == rightGrammarCharacter)
-                                {
-                                    PatternGraph.AddEdge(leftGrammarCharacter.ToString(), rightGrammarCharacter.ToString(), pattern);
+                        PatternGraph.AddEdge(pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
+                    }
 
-                                    if (leftGrammarCharacter != rightGrammarCharacter)
-                                    {
-                                        PatternGraph.AddEdge(rightGrammarCharacter.ToString(), leftGrammarCharacter.ToString(), pattern);
-                                    }
-                                }
-                            }
-                        }
+                    if (!pattern.RightRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
+                        pattern.LeftRule.MorphemeRule.GrammarCharacter != pattern.RightRule.MorphemeRule.GrammarCharacter)
+                    {
+                        PatternGraph.AddEdge(pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
                     }
                 }
             }
