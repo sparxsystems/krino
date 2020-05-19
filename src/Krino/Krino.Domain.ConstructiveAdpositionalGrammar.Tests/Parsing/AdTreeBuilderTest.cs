@@ -431,7 +431,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 },
                 new Pattern("E")
                 {
-                    MorphemeRule = MorphemeRule.E_Not_NonLexeme,
+                    MorphemeRule = MorphemeRule.E_Lexeme,
                     RightRule = new PatternRule(MorphemeRule.I_Not_NonLexeme),
                     LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme)
                 },
