@@ -4,7 +4,6 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttribut
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -243,6 +242,74 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // Root.
             result = adTree.GetFirstAdPositionOnLeft();
             Assert.IsNull(result);
+        }
+
+        [Test]
+        public void Attach()
+        {
+            AdTree adTree = new AdTree(new Morpheme(""), new Pattern());
+            AdTree toAppend = new AdTree(new Morpheme("hello"), new Pattern());
+            adTree.Attach(toAppend, AttachPosition.ChildOnLeft);
+            Assert.AreEqual("hello", adTree.Left.Morpheme.Morph);
+            Assert.IsNull(adTree.Right);
+
+
+            adTree = new AdTree(new Morpheme(""), new Pattern());
+            toAppend = new AdTree(new Morpheme("hello"), new Pattern());
+            adTree.Attach(toAppend, AttachPosition.ChildOnRight);
+            Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
+            Assert.IsTrue(adTree.Left == null);
+        }
+
+        [Test]
+        public void Insert()
+        {
+            AdTree adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            {
+                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+            };
+            AdTree toInsert = new AdTree(new Morpheme("hello"), new Pattern());
+            adTree.Right.Insert(toInsert, toInsert, AttachPosition.ChildOnLeft);
+
+            Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
+            Assert.AreEqual("A11", adTree.Right.Left.Morpheme.Morph);
+
+
+            adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            {
+                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+            };
+            toInsert = new AdTree(new Morpheme("hello"), new Pattern());
+            adTree.Right.Insert(toInsert, toInsert, AttachPosition.ChildOnRight);
+            
+            Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
+            Assert.AreEqual("A11", adTree.Right.Right.Morpheme.Morph);
+
+
+            // Inserting to the root.
+            adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            {
+                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+            };
+            toInsert = new AdTree(new Morpheme("hello"), new Pattern());
+            adTree.Insert(toInsert, toInsert, AttachPosition.ChildOnRight);
+
+            IAdTree root = adTree.Root;
+            Assert.AreEqual("hello", root.Morpheme.Morph);
+            Assert.AreEqual("A1", root.Right.Morpheme.Morph);
+        }
+
+        [Test]
+        public void Detach()
+        {
+            AdTree adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            {
+                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+            };
+
+            adTree.Right.Detach();
+
+            Assert.IsTrue(adTree.Right == null);
         }
     }
 }

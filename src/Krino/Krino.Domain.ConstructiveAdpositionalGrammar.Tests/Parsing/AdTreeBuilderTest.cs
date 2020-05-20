@@ -183,7 +183,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.O)),
                     RightRule = new PatternRule(MorphemeRule.I_Lexeme),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.NotEmptyString, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))),
+                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))),
                 },
             };
 
@@ -287,7 +287,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("O>A")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Nothing)),
+                    RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme))),
                     LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
             };
@@ -309,9 +309,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.IsTrue(builder.AddWord("car"));
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
-            Assert.AreEqual("the", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
-            Assert.AreEqual("good", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
-            Assert.AreEqual("book", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+            Assert.AreEqual("green", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
+            Assert.AreEqual("race", builder.ActiveAdTrees[0].Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("car", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
         }
 
         [Test]

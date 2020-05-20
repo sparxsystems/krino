@@ -6,19 +6,19 @@ namespace Krino.Vertical.Utils.Rules
     /// Logical operator AND.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DebuggerDisplay("({mySubRule1} && {mySubRule2})")]
+    [DebuggerDisplay("({Rule1} && {Rule2})")]
     public class AndRule<T> : IRule<T>
     {
-        private IRule<T> mySubRule1;
-        private IRule<T> mySubRule2;
-
         public AndRule(IRule<T> subRule1, IRule<T> subRule2)
         {
-            mySubRule1 = subRule1;
-            mySubRule2 = subRule2;
+            Rule1 = subRule1;
+            Rule2 = subRule2;
         }
 
-        public bool Evaluate(T value) => mySubRule1.Evaluate(value) && mySubRule2.Evaluate(value);
+        public IRule<T> Rule1 { get; private set; }
+        public IRule<T> Rule2 { get; private set; }
+
+        public bool Evaluate(T value) => Rule1.Evaluate(value) && Rule2.Evaluate(value);
 
         public bool Equals(IRule<T> other)
         {
@@ -26,7 +26,7 @@ namespace Krino.Vertical.Utils.Rules
 
             if (other is AndRule<T> andRule)
             {
-                result = mySubRule1.Equals(andRule.mySubRule1) && mySubRule2.Equals(andRule.mySubRule2);
+                result = Rule1.Equals(andRule.Rule1) && Rule2.Equals(andRule.Rule2);
             }
 
             return result;

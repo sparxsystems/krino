@@ -8,7 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     /// <summary>
     /// Evaluates true if the value contains the required bit mask.
     /// </summary>
-    [DebuggerDisplay("{myMask}")]
+    [DebuggerDisplay("{Mask}")]
     public class MaskRule : IRule<BigInteger>
     {
         public static IRule<BigInteger> Anything => RuleMaker.Anything<BigInteger>();
@@ -19,17 +19,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static MaskRule Is(BigInteger mask) => new MaskRule(mask);
 
-        private BigInteger myMask;
-
         public MaskRule(BigInteger mask)
         {
-            myMask = mask;
+            Mask = mask;
         }
 
-        public bool Evaluate(BigInteger value) => EnumBase.IsIn(myMask, value);
+        public BigInteger Mask { get; private set; }
+
+        public bool Evaluate(BigInteger value) => EnumBase.IsIn(Mask, value);
 
 
-        public bool Equals(IRule<BigInteger> other) => other is MaskRule maskRule && myMask == maskRule.myMask;
+        public bool Equals(IRule<BigInteger> other) => other is MaskRule maskRule && Mask == maskRule.Mask;
 
         public static IRule<BigInteger> operator &(MaskRule mask1, IRule<BigInteger> rule2) => mask1.And(rule2);
 

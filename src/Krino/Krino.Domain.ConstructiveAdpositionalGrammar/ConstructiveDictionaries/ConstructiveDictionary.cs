@@ -23,7 +23,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             Patterns = patterns ?? Enumerable.Empty<Pattern>();
 
-            myLexemePatterns = Patterns.Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon).ToList();
+            myLexemePatterns = Patterns
+                .Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                .ToList();
 
             InitializeMorphemes(morphemes);
             InitializePatternGraph();
@@ -112,19 +114,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
             foreach (Pattern pattern in Patterns)
             {
-                // If it is an adposition related rule.
                 if (pattern.LeftRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
                     pattern.RightRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
                 {
+                    bool alreadyExist = false;
+
+                    // The rule can bring us to the grammar character on the left if
+                    // the rule on the left can accept something.
                     if (!pattern.LeftRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing))
                     {
-                        PatternGraph.AddEdge(pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
+                        PatternGraph.AddEdge(pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
+                        alreadyExist = true;
                     }
 
+                    // The rule can bring us to the grammar character on the right if
+                    // the rule on the right can accept something.
+                    // And in case left-right grammar characters are identical create the edge
+                    // only in case it does not exist yet.
                     if (!pattern.RightRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
-                        pattern.LeftRule.MorphemeRule.GrammarCharacter != pattern.RightRule.MorphemeRule.GrammarCharacter)
+                        (pattern.LeftRule.MorphemeRule.GrammarCharacter != pattern.RightRule.MorphemeRule.GrammarCharacter ||
+                         pattern.LeftRule.MorphemeRule.GrammarCharacter == pattern.RightRule.MorphemeRule.GrammarCharacter &&
+                         !alreadyExist)
+                       )
                     {
-                        PatternGraph.AddEdge(pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
+                        PatternGraph.AddEdge(pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
                     }
                 }
             }

@@ -97,13 +97,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             Assert.AreEqual(GrammarCharacter.O.ToString(), paths[0][1].To);
             Assert.AreEqual("A-O", paths[0][1].Value.Name);
 
-            // There via O>A and back via A-O.
+            // There via A-O and back via O>A.
             Assert.AreEqual(GrammarCharacter.O.ToString(), paths[1][0].From);
             Assert.AreEqual(GrammarCharacter.A.ToString(), paths[1][0].To);
-            Assert.AreEqual("O>A", paths[1][0].Value.Name);
+            Assert.AreEqual("A-O", paths[1][0].Value.Name);
             Assert.AreEqual(GrammarCharacter.A.ToString(), paths[1][1].From);
             Assert.AreEqual(GrammarCharacter.O.ToString(), paths[1][1].To);
-            Assert.AreEqual("A-O", paths[1][1].Value.Name);
+            Assert.AreEqual("O>A", paths[1][1].Value.Name);
         }
 
         [Test]
