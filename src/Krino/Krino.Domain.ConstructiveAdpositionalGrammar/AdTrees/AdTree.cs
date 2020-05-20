@@ -22,19 +22,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         private IAdTree myLeftChild;
 
 
-        public AdTree() { }
-
         public AdTree(Morpheme morpheme, Pattern pattern)
         {
-            Morpheme = morpheme;
-            Pattern = pattern;
+            Morpheme = morpheme ?? throw new ArgumentNullException(nameof(morpheme));
+            Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
         }
 
-        public Pattern Pattern { get; set; }
+        public Pattern Pattern { get; }
 
-        public Morpheme Morpheme { get; set; } = new Morpheme(null);
+        public Morpheme Morpheme { get; }
 
-        public GrammarCharacter GrammarCharacter => Morpheme.GrammarCharacter;
 
         public GrammarCharacter InheritedGrammarCharacter
         {
@@ -43,10 +40,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 GrammarCharacter result = GrammarCharacter.Epsilon;
 
                 // Find the first element on the right branch which has defined own grammar character.
-                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon);
+                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.Epsilon);
                 if (rightChild != null)
                 {
-                    result = rightChild.GrammarCharacter;
+                    result = rightChild.Morpheme.GrammarCharacter;
                 }
 
                 return result;
@@ -172,14 +169,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     // If this element is the root or is located on the right.
                     if (AdPosition == null || IsOnRight)
                     {
-                        result = RightChildren.FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon);
+                        result = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.Epsilon);
                     }
                     // This element is not the root and is located on the left.
                     else
                     {
                         // Go via all adpositions and find the first governor.
                         result = AdPositions.SelectMany(x => x.RightChildren)
-                            .FirstOrDefault(x => x.GrammarCharacter != GrammarCharacter.Epsilon && x.GrammarCharacter != GrammarCharacter.U);
+                            .FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.Epsilon && x.Morpheme.GrammarCharacter != GrammarCharacter.U);
                     }
                 }
                 else
@@ -195,7 +192,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public bool IsGovernor => IsOnRight && GrammarCharacter != GrammarCharacter.Epsilon && GrammarCharacter != GrammarCharacter.U;
+        public bool IsGovernor => IsOnRight && Morpheme.GrammarCharacter != GrammarCharacter.Epsilon && Morpheme.GrammarCharacter != GrammarCharacter.U;
 
         public IEnumerable<IAdTree> DependentAdPositions
         {
@@ -206,7 +203,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // Only governors have dependents.
                 if (IsGovernor)
                 {
-                    IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.GrammarCharacter == GrammarCharacter.Epsilon);
+                    IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
                     result = governingAdPositions.Where(x => x.Left != null && x.Left.IsDependent);
                 }
                 else
@@ -219,7 +216,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         }
 
         // Note: dependent may have the epsilon grammar character.
-        public bool IsDependent => IsOnLeft && GrammarCharacter != GrammarCharacter.U;
+        public bool IsDependent => IsOnLeft && Morpheme.GrammarCharacter != GrammarCharacter.U;
 
         public IAdTree ValencyAdPosition
         {
@@ -261,16 +258,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             .Where(x => x.Pattern.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
 
 
-        public IEnumerable<IAdTree> Verbants
-        {
-            get
-            {
-                IEnumerable<IAdTree> result = this.Where(x => x.Morpheme.GrammarCharacter == GrammarCharacter.I);
-                return result;
-            }
-        }
-
-
         public async Task<IEnumerable<IAdTree>> GetPhraseElementsAsync()
         {
             // Collapse the call-stack and schedule the continuation to the queue.
@@ -307,7 +294,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             // <original, copy>
             Stack<Tuple<IAdTree, IAdTree>> stack = new Stack<Tuple<IAdTree, IAdTree>>();
-            IAdTree rootCopy = new AdTree() { Morpheme = Morpheme, Pattern = Pattern };
+            IAdTree rootCopy = new AdTree(Morpheme, Pattern);
             stack.Push(Tuple.Create<IAdTree, IAdTree>(this, rootCopy));
 
             while (stack.Count > 0)
@@ -316,14 +303,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                 if (aThis.Item1.Left != null)
                 {
-                    IAdTree leftCopy = new AdTree() { Morpheme = aThis.Item1.Left.Morpheme, Pattern = aThis.Item1.Left.Pattern };
+                    IAdTree leftCopy = new AdTree(aThis.Item1.Left.Morpheme, aThis.Item1.Left.Pattern);
                     aThis.Item2.Left = leftCopy;
                     stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
                 }
 
                 if (aThis.Item1.Right != null)
                 {
-                    IAdTree rightCopy = new AdTree() { Morpheme = aThis.Item1.Right.Morpheme, Pattern = aThis.Item1.Right.Pattern };
+                    IAdTree rightCopy = new AdTree(aThis.Item1.Right.Morpheme, aThis.Item1.Right.Pattern);
                     aThis.Item2.Right = rightCopy;
                     stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
                 }
@@ -364,7 +351,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             if (Left != null)
             {
                 // If this is a structural adposition.
-                if (GrammarCharacter == GrammarCharacter.Epsilon)
+                if (Morpheme.GrammarCharacter == GrammarCharacter.Epsilon)
                 {
                     // If this adposition specifies the first valency.
                     if (Pattern != null && Pattern.ValencyPosition == 1)

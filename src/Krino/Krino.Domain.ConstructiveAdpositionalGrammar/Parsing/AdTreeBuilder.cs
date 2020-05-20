@@ -415,25 +415,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             if (startElementAppendPosition == EAppendPosition.BottomLeft)
             {
                 startGrammarCharacter = start.Pattern.LeftRule.MorphemeRule.GrammarCharacter;
-                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If start adTree connects the bridge via its right.
             else if (startElementAppendPosition == EAppendPosition.BottomRight)
             {
                 startGrammarCharacter = start.Pattern.RightRule.MorphemeRule.GrammarCharacter;
-                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If the bridge connects the start adtree via its left.
             else if (startElementAppendPosition == EAppendPosition.TopLeft)
             {
-                startGrammarCharacter = ChooseGrammarCharacter(start.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If the bridge connects the start adtree via its right.
             else if (startElementAppendPosition == EAppendPosition.TopRight)
             {
-                startGrammarCharacter = ChooseGrammarCharacter(start.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                endGrammarCharacter = ChooseGrammarCharacter(end.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
 
             // Get possibile ways how to connect new element.

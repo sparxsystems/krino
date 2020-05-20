@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.Transformations;
 using System.Diagnostics;
 using System.Numerics;
@@ -10,19 +9,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
     [DebuggerDisplay("{LeftRule} <- {Name} -> {RightRule}")]
     public class Pattern
     {
-        public static Pattern O => new Pattern("O") { MorphemeRule = MorphemeRule.O_Lexeme, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
-        public static Pattern I => new Pattern("I") { MorphemeRule = MorphemeRule.I_Lexeme, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
-        public static Pattern A => new Pattern("A") { MorphemeRule = MorphemeRule.A, LeftRule = PatternRule.Nothing, RightRule = PatternRule.Nothing };
-
-
-        // Optional information for the debugging purposes.
-        // It is used in the DebuggerDisplayAttribute.
-        public string Name { get; private set; }
-
         public Pattern(string name = null)
         {
             Name = name;
         }
+
+        // Optional information for the debugging purposes.
+        public string Name { get; private set; }
 
         public BigInteger PatternAttributes { get; set; }
 

@@ -18,12 +18,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <summary>
         /// Morpheme.
         /// </summary>
-        Morpheme Morpheme { get; set; }
-
-        /// <summary>
-        /// The grammar character of this tree element.
-        /// </summary>
-        GrammarCharacter GrammarCharacter { get; }
+        Morpheme Morpheme { get; }
 
         /// <summary>
         /// Grammar character inherited from the governor. If this is the governor then it returns its grammar character.
@@ -129,11 +124,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         IEnumerable<IAdTree> ValencyAdPositions { get; }
 
-
-        /// <summary>
-        /// Returns the phrase ordered sequence of verbants.
-        /// </summary>
-        IEnumerable<IAdTree> Verbants { get; }
 
         /// <summary>
         /// Returns the phrase sequence of elements.
