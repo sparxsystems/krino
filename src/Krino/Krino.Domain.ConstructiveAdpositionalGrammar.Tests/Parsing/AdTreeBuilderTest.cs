@@ -43,7 +43,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     PatternAttributes = PatternAttributes.ValencyPosition.First,
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = PatternRule.I_Lexeme,
+                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
                     LeftRule = new PatternRule(MorphemeRule.O_Lexeme)
                 },
             };
@@ -181,7 +181,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Note: suffix er transfers 'I' to 'O'.
                 new Pattern("I>O")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.O)),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.O)),
                     RightRule = new PatternRule(MorphemeRule.I_Lexeme),
                     LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))),
                 },
@@ -287,7 +287,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("O>A")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme))),
+                    RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme))),
                     LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
                 },
             };
@@ -307,6 +307,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.IsTrue(builder.AddWord("green"));
             Assert.IsTrue(builder.AddWord("race"));
             Assert.IsTrue(builder.AddWord("car"));
+
+            builder.Collapse();
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.AreEqual("green", builder.ActiveAdTrees[0].Left.Morpheme.Morph);

@@ -58,8 +58,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static MorphemeRule U => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Anything, MaskRule.Is(Attributes.U));
         public static MorphemeRule U_Lexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Something, MaskRule.Is(Attributes.U.Lexeme));
         public static MorphemeRule U_Not_NonLexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Anything, MaskRule.Is(Attributes.U) & !MaskRule.Is(Attributes.U.NonLexeme));
-        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.Epsilon));
-
+        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.Epsilon));
 
         public IRule<string> MorphRule { get; private set; }
         public GrammarCharacter GrammarCharacter { get; private set; }
@@ -73,17 +72,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         }
 
         /// <summary>
-        /// Checks if the morph and morphemeAttributes match the morpheme rule.
+        /// Checks if the morpheme matches the rule.
         /// </summary>
-        /// <param name="morph"></param>
-        /// <param name="morphemeAttributes"></param>
+        /// <param name="morpheme"></param>
         /// <returns></returns>
-        public bool IsMatch(string morph, BigInteger morphemeAttributes)
+        public bool Evaluate(Morpheme morpheme)
         {
-            bool result = MorphRule.Evaluate(morph) && AttributesRule.Evaluate(morphemeAttributes);
+            bool result = MorphRule.Evaluate(morpheme.Morph) && AttributesRule.Evaluate(morpheme.Attributes);
             return result;
         }
-
 
         public bool Equals(MorphemeRule other)
         {
@@ -101,5 +98,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
             return hash;
         }
+
     }
 }

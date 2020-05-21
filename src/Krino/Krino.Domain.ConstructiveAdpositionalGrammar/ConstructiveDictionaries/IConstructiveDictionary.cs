@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Graphs;
 using System.Collections.Generic;
@@ -39,6 +40,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <param name="lexeme"></param>
         /// <returns></returns>
         IEnumerable<Pattern> FindMatchingPatterns(Morpheme lexeme);
+
+        /// <summary>
+        /// Finds transference patterns for the adtree.
+        /// </summary>
+        /// <remarks>
+        /// The transference pattern changes the grammar character of the original adtree.
+        /// E.g. it changes stative to adjunctive (A>O).
+        /// </remarks>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        IEnumerable<Pattern> FindTransferencePatterns(IAdTree adTree);
 
         /// <summary>
         /// All non-lexemes.

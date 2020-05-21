@@ -32,7 +32,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public Morpheme Morpheme { get; }
 
-
         public GrammarCharacter InheritedGrammarCharacter
         {
             get
@@ -289,35 +288,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         }
 
         public string Phrase => string.Join(" ", GetPhraseElementsAsync().Result.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
-
-        public IAdTree MakeShallowCopy()
-        {
-            // <original, copy>
-            Stack<Tuple<IAdTree, IAdTree>> stack = new Stack<Tuple<IAdTree, IAdTree>>();
-            IAdTree rootCopy = new AdTree(Morpheme, Pattern);
-            stack.Push(Tuple.Create<IAdTree, IAdTree>(this, rootCopy));
-
-            while (stack.Count > 0)
-            {
-                Tuple<IAdTree, IAdTree> aThis = stack.Pop();
-
-                if (aThis.Item1.Left != null)
-                {
-                    IAdTree leftCopy = new AdTree(aThis.Item1.Left.Morpheme, aThis.Item1.Left.Pattern);
-                    aThis.Item2.Left = leftCopy;
-                    stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
-                }
-
-                if (aThis.Item1.Right != null)
-                {
-                    IAdTree rightCopy = new AdTree(aThis.Item1.Right.Morpheme, aThis.Item1.Right.Pattern);
-                    aThis.Item2.Right = rightCopy;
-                    stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
-                }
-            }
-
-            return rootCopy;
-        }
 
         public IEnumerator<IAdTree> GetEnumerator()
         {

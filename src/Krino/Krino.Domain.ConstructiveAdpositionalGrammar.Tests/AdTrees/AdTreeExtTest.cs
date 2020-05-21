@@ -54,10 +54,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 }
             };
 
-            byte[] path = adTree.Right.Left.GetPath();
+            AttachPosition[] path = adTree.Right.Left.GetPath();
             Assert.AreEqual(2, path.Length);
-            Assert.AreEqual(2, path[0]);
-            Assert.AreEqual(1, path[1]);
+            Assert.AreEqual(AttachPosition.ChildOnRight, path[0]);
+            Assert.AreEqual(AttachPosition.ChildOnLeft, path[1]);
 
             // Root
             path = adTree.GetPath();
@@ -81,11 +81,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 }
             };
 
-            adTree.TryGetAdTree(new byte[] { 2, 1 }, out IAdTree result);
+            adTree.TryGetAdTree(new AttachPosition[] { AttachPosition.ChildOnRight, AttachPosition.ChildOnLeft }, out IAdTree result);
             Assert.AreEqual("I", result.Morpheme.Morph);
 
             // Root
-            adTree.TryGetAdTree(new byte[] { }, out IAdTree root);
+            adTree.TryGetAdTree(new AttachPosition[] { }, out IAdTree root);
             Assert.IsTrue(adTree == root);
         }
 
@@ -310,6 +310,141 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             adTree.Right.Detach();
 
             Assert.IsTrue(adTree.Right == null);
+        }
+
+        [Test]
+        public void GetNonconformities()
+        {
+            AdTree adTree = new AdTree(
+                new Morpheme(""),
+                new Pattern("A-O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                    LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
+                })
+            {
+                Left = new AdTree(
+                    new Morpheme("green") { Attributes = Attributes.A.Lexeme },
+                    new Pattern("A")
+                    {
+                        MorphemeRule = MorphemeRule.A_Lexeme,
+                        RightRule = PatternRule.Nothing,
+                        LeftRule = PatternRule.Nothing,
+                    }),
+                Right = new AdTree(
+                    new Morpheme(""),
+                    new Pattern("A-O")
+                    {
+                        MorphemeRule = MorphemeRule.Epsilon,
+                        RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                        LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
+                    })
+                {
+                    Left = new AdTree(
+                        new Morpheme(""),
+                        new Pattern("O>A")
+                        {
+                            MorphemeRule = MorphemeRule.Epsilon,
+                            RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme))),
+                            LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                        })
+                    {
+                        Left = new AdTree(
+                            new Morpheme("race") { Attributes = Attributes.O.Lexeme },
+                            new Pattern("O")
+                            {
+                                MorphemeRule = MorphemeRule.O_Lexeme,
+                                RightRule = PatternRule.Nothing,
+                                LeftRule = PatternRule.Nothing,
+                            }),
+                        Right = new AdTree(
+                            new Morpheme("") { Attributes = Attributes.A },
+                            new Pattern("A")
+                            {
+                                MorphemeRule = MorphemeRule.A,
+                                RightRule = PatternRule.Nothing,
+                                LeftRule = PatternRule.Nothing,
+                            }),
+
+                    },
+
+                    Right = new AdTree(
+                        new Morpheme("car") { Attributes = Attributes.O.Lexeme },
+                        new Pattern("O")
+                        {
+                            MorphemeRule = MorphemeRule.O_Lexeme,
+                            RightRule = PatternRule.Nothing,
+                            LeftRule = PatternRule.Nothing,
+                        }),
+                },
+            };
+
+            List<IAdTree> nonconformities = adTree.GetNonconformities().ToList();
+
+            Assert.AreEqual(0, nonconformities.Count);
+        }
+
+        [Test]
+        public void GetNonconformities_MorphemeRule()
+        {
+            AdTree adTree = new AdTree(
+                    new Morpheme("green") { Attributes = Attributes.A.Lexeme },
+                    new Pattern("A")
+                    {
+                        MorphemeRule = MorphemeRule.A_Lexeme,
+                        RightRule = PatternRule.Nothing,
+                        LeftRule = PatternRule.Nothing,
+                    });
+
+            List<IAdTree> nonconformities = adTree.GetNonconformities().ToList();
+            Assert.AreEqual(0, nonconformities.Count);
+
+
+            // Empty string does not match the rule.
+            adTree = new AdTree(
+                    new Morpheme("") { Attributes = Attributes.A.Lexeme },
+                    new Pattern("A")
+                    {
+                        MorphemeRule = MorphemeRule.A_Lexeme,
+                        RightRule = PatternRule.Nothing,
+                        LeftRule = PatternRule.Nothing,
+                    });
+
+            nonconformities = adTree.GetNonconformities().ToList();
+            Assert.AreEqual(1, nonconformities.Count);
+
+
+            // Morpheme attributes does not match the rule.
+            adTree = new AdTree(
+                    new Morpheme("bla") { Attributes = Attributes.A.NonLexeme },
+                    new Pattern("A")
+                    {
+                        MorphemeRule = MorphemeRule.A_Lexeme,
+                        RightRule = PatternRule.Nothing,
+                        LeftRule = PatternRule.Nothing,
+                    });
+
+            nonconformities = adTree.GetNonconformities().ToList();
+            Assert.AreEqual(1, nonconformities.Count);
+
+
+            // Attached right children violates the rule.
+            adTree = new AdTree(
+                    new Morpheme("green") { Attributes = Attributes.A.Lexeme },
+                    new Pattern("A")
+                    {
+                        MorphemeRule = MorphemeRule.A_Lexeme,
+                        RightRule = PatternRule.Nothing,
+                        LeftRule = PatternRule.Nothing,
+                    })
+            {
+                // Note: the rule is nothing so having this attached violates the rule.
+                Right = new AdTree(new Morpheme(""), new Pattern())
+            };
+
+            nonconformities = adTree.GetNonconformities().ToList();
+            Assert.AreEqual(1, nonconformities.Count);
         }
     }
 }

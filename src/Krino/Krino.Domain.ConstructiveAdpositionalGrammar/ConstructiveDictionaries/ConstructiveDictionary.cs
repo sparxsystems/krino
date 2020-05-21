@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
@@ -74,7 +75,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IEnumerable<Pattern> FindMatchingPatterns(Morpheme lexeme)
         {
-            IEnumerable<Pattern> result = myLexemePatterns.Where(x => x.MorphemeRule.IsMatch(lexeme.Morph, lexeme.Attributes));
+            IEnumerable<Pattern> result = myLexemePatterns.Where(x => x.MorphemeRule.Evaluate(lexeme));
+            return result;
+        }
+
+        public IEnumerable<Pattern> FindTransferencePatterns(IAdTree adTree)
+        {
+            IEnumerable<Pattern> result = Patterns
+                .Where(x => IsTransferencePattern(x) && 
+                            x.LeftRule.IsMatch(adTree.Morpheme, adTree.Pattern.PatternAttributes));
+
             return result;
         }
 
@@ -114,13 +124,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
             foreach (Pattern pattern in Patterns)
             {
-                if (pattern.LeftRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                if (!IsTransferencePattern(pattern) &&
+                    pattern.LeftRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
                     pattern.RightRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
                 {
                     bool alreadyExist = false;
 
                     // The rule can bring us to the grammar character on the left if
-                    // the rule on the left can accept something.
+                    // the rule on the left accepts something.
                     if (!pattern.LeftRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing))
                     {
                         PatternGraph.AddEdge(pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
@@ -235,6 +246,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                     }
                 }
             }
+        }
+
+        private bool IsTransferencePattern(Pattern pattern)
+        {
+            // Left.
+            if (pattern.LeftRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
+            {
+                // Right - inheriting site.
+                if (pattern.RightRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                    (pattern.RightRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString) ||
+                     pattern.RightRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing)))
+                {
+                    // Up.
+                    if (pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
         }
     }
 }

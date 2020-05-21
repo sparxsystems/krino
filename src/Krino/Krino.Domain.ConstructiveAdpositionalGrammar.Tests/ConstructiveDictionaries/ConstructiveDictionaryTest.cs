@@ -42,7 +42,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Pattern("I>I")
                 {
                     MorphemeRule = MorphemeRule.I,
-                    RightRule = PatternRule.I_Lexeme,
+                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
                     LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)), MaskRule.Anything),
                 },
             };
@@ -73,7 +73,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                     LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
                 },
 
-                // Transferens pattern.
                 new Pattern("O>A")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,

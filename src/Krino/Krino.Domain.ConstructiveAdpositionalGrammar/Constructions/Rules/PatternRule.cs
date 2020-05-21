@@ -1,5 +1,4 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
@@ -13,20 +12,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{MorphemeRule}")]
     public class PatternRule : IEquatable<PatternRule>
     {
-        /// <summary>
-        /// It does not accept any pattern.
-        /// </summary>
         public static PatternRule Nothing => new PatternRule(MorphemeRule.Nothing, MaskRule.Nothing);
-
-        public static PatternRule Something(GrammarCharacter grammarCharacter) => new PatternRule(MorphemeRule.Something(grammarCharacter), MaskRule.Anything);
-
-        public static PatternRule I => new PatternRule(MorphemeRule.I_Lexeme, MaskRule.Is(Attributes.I));
-
-        public static PatternRule I_Lexeme => new PatternRule(MorphemeRule.I_Lexeme, MaskRule.Anything);
-
-        public static PatternRule I_NonLexeme => new PatternRule(MorphemeRule.I_NonLexeme, MaskRule.Anything);
-
-
 
 
         public MorphemeRule MorphemeRule { get; private set; }
@@ -45,15 +31,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         }
 
         /// <summary>
-        /// Returns true if it matches the pattern rule.
+        /// Checks if the adtree matches the rule.
         /// </summary>
-        /// <param name="morph"></param>
-        /// <param name="morphemeAttributes"></param>
+        /// <param name="morpheme"></param>
         /// <param name="patternAttributes"></param>
         /// <returns></returns>
-        public bool IsMatch(string morph, BigInteger morphemeAttributes, BigInteger patternAttributes)
+        public bool IsMatch(Morpheme morpheme, BigInteger patternAttributes)
         {
-            bool isMatch = MorphemeRule.IsMatch(morph, morphemeAttributes) && PatternAttributesRule.Evaluate(patternAttributes);
+            // Note: do not use IAdtree as the input parameter because it would be the cyclicl dependency.
+
+            bool isMatch = MorphemeRule.Evaluate(morpheme) && PatternAttributesRule.Evaluate(patternAttributes);
             return isMatch;
         }
 

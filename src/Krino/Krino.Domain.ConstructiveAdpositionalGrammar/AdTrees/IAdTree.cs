@@ -28,7 +28,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </remarks>
         GrammarCharacter InheritedGrammarCharacter { get; }
 
-
         /// <summary>
         /// Reference to the AdPosition (direct parent). Null if it is the root.
         /// </summary>
@@ -137,11 +136,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Returns the phrase text represented by this adtree.
         /// </summary>
         string Phrase { get; }
-
-        /// <summary>
-        /// Returns the shallow copy of the adtree (Morpheme and Pattern are not duplicated).
-        /// </summary>
-        /// <returns></returns>
-        IAdTree MakeShallowCopy();
     }
 }

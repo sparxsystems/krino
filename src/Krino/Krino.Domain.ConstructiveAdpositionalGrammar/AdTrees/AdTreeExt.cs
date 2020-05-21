@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,14 +19,59 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         public static IEnumerable<IAdTree> GetSequenceToRoot(this IAdTree adTree) => new IAdTree[] { adTree }.Concat(adTree.AdPositions);
 
         /// <summary>
+        /// Returns the shallow copy (Morpheme and Pattern are not duplicated) of the adtree. The returned copy is on the same path.
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static IAdTree MakeShallowCopy(this IAdTree adTree)
+        {
+            // Store the current position in the tree.
+            AttachPosition[] path = adTree.GetPath();
+
+            IAdTree root = adTree.Root;
+
+            // <original, copy>
+            Stack<Tuple<IAdTree, IAdTree>> stack = new Stack<Tuple<IAdTree, IAdTree>>();
+            IAdTree rootCopy = new AdTree(root.Morpheme, root.Pattern);
+            stack.Push(Tuple.Create(root, rootCopy));
+
+            while (stack.Count > 0)
+            {
+                Tuple<IAdTree, IAdTree> aThis = stack.Pop();
+
+                if (aThis.Item1.Left != null)
+                {
+                    IAdTree leftCopy = new AdTree(aThis.Item1.Left.Morpheme, aThis.Item1.Left.Pattern);
+                    aThis.Item2.Left = leftCopy;
+                    stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
+                }
+
+                if (aThis.Item1.Right != null)
+                {
+                    IAdTree rightCopy = new AdTree(aThis.Item1.Right.Morpheme, aThis.Item1.Right.Pattern);
+                    aThis.Item2.Right = rightCopy;
+                    stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
+                }
+            }
+
+            // Return the tree element in the copy which is on the same path as the input parameter.
+            if (rootCopy.TryGetAdTree(path, out IAdTree result))
+            {
+                return result;
+            }
+
+            throw new InvalidOperationException("Failed to properly copy the adtree.");
+        }
+
+        /// <summary>
         /// Returns the path to the adTree element. Empty array if it is the root.
         /// </summary>
         /// <param name="adTree"></param>
         /// <returns></returns>
-        public static byte[] GetPath(this IAdTree adTree)
+        public static AttachPosition[] GetPath(this IAdTree adTree)
         {
             IEnumerable<IAdTree> adTreesOnPath = adTree.GetSequenceToRoot().Where(x => x.AdPosition != null);
-            byte[] result = adTreesOnPath.Select(x => x.IsOnLeft ? (byte)1 : (byte)2).Reverse().ToArray();
+            AttachPosition[] result = adTreesOnPath.Select(x => x.IsOnLeft ? AttachPosition.ChildOnLeft : AttachPosition.ChildOnRight).Reverse().ToArray();
             return result;
         }
 
@@ -37,12 +81,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <param name="rootAdTree"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool TryGetAdTree(this IAdTree rootAdTree, byte[] path, out IAdTree result)
+        public static bool TryGetAdTree(this IAdTree rootAdTree, AttachPosition[] path, out IAdTree result)
         {
             result = rootAdTree;
-            foreach (byte value in path)
+            foreach (AttachPosition value in path)
             {
-                if (value == 1)
+                if (value == AttachPosition.ChildOnLeft)
                 {
                     if (result.Left == null)
                     {
@@ -51,7 +95,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     result = result.Left;
                 }
-                else if (value == 2)
+                else if (value == AttachPosition.ChildOnRight)
                 {
                     if (result.Right == null)
                     {
@@ -94,7 +138,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 }
 
                 // If the right rule of the adtree matches the element.
-                if (adTree.Pattern.RightRule.IsMatch(adTreeElementToRight.Morpheme.Morph, adTreeElementToRight.Morpheme.Attributes, adTreeElementToRight.Pattern.PatternAttributes) ||
+                if (adTree.Pattern.RightRule.IsMatch(adTreeElementToRight.Morpheme, adTreeElementToRight.Pattern.PatternAttributes) ||
                     // or if the right rule of the adtree matches the right rule of the element - inheritance.
                     adTreeElementToRight.Pattern.RightRule.IsSubruleOf(adTree.Pattern.RightRule))
                 {
@@ -117,7 +161,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             if (!adTree.Pattern.LeftRule.Equals(PatternRule.Nothing))
             {
                 // If the left rule of the adtree matches the element.
-                if (adTree.Pattern.LeftRule.IsMatch(adTreeElement.Morpheme.Morph, adTreeElement.Morpheme.Attributes, adTreeElement.Pattern.PatternAttributes) ||
+                if (adTree.Pattern.LeftRule.IsMatch(adTreeElement.Morpheme, adTreeElement.Pattern.PatternAttributes) ||
                     // or if the LEFT rule of the adtree matches the RIGHT rule of the element - inheritance works always via the right child.
                     adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.LeftRule))
                 {
@@ -182,6 +226,68 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        /// <summary>
+        /// Returns all adtrees which do not match the pattern.
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static IEnumerable<IAdTree> GetNonconformities(this IAdTree adTree)
+        {
+            foreach (IAdTree item in adTree)
+            {
+                if (!item.Evaluate())
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Evaluates if the adtree matches its pattern.
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static bool Evaluate(this IAdTree adTree)
+        {
+            if (!adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
+            {
+                if (!adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) ||
+                    (adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
+                     !string.IsNullOrEmpty(adTree.Morpheme.Morph)))
+                {
+                    return false;
+                }
+            }
+
+            // Left
+            if (adTree.Left != null)
+            {
+                if (!adTree.CanAttachToLeft(adTree.Left))
+                {
+                    return false;
+                }
+            }
+            else if (!adTree.Pattern.LeftRule.Equals(PatternRule.Nothing))
+            {
+                return false;
+            }
+
+
+            // Right
+            if (adTree.Right != null)
+            {
+                if (!adTree.CanAttachToRight(adTree.Right))
+                {
+                    return false;
+                }
+            }
+            else if (!adTree.Pattern.RightRule.Equals(PatternRule.Nothing))
+            {
+                return false;
+            }
+
+            return true;
+        }
 
         /// <summary>
         /// Removes the adtree from the adtree structure.

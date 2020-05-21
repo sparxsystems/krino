@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.Transformations;
 using System.Diagnostics;
 using System.Numerics;

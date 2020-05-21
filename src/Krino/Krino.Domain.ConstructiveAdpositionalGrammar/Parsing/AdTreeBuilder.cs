@@ -4,7 +4,6 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Graphs;
-using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +22,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
         public IReadOnlyList<IAdTree> ActiveAdTrees => myActiveAdTrees.Select(x => x.Root).ToList();
+
+        /// <summary>
+        /// Keeps only one the most meaningful adtree.
+        /// </summary>
+        public void Collapse()
+        {
+            List<IAdTree> adTrees = new List<IAdTree>();
+
+            List<Tuple<int, IAdTree>> ordered = myActiveAdTrees.Select(x => Tuple.Create(x.Root.GetNonconformities().Count(), x))
+                .OrderBy(x => x.Item1)
+                .ToList();
+
+            if (ordered.Count > 1)
+            {
+
+            }
+
+            Tuple<int, IAdTree> result = ordered.FirstOrDefault();
+            if (result != null)
+            {
+                adTrees.Add(result.Item2);
+            }
+
+            myActiveAdTrees = adTrees;
+        }
 
         /// <summary>
         /// Appends a word.
@@ -132,7 +156,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     foreach (IAdTree newAdTree in homonymAdTrees)
                     {
-                        TryToAppendAdTree(activeAdTree, newAdTree, newListOfAdTrees);
+                        TryToAppend(activeAdTree, newAdTree, newListOfAdTrees);
+
+                        // Try to incorporate possible grammar character transferences.
+                        IEnumerable<IAdTree> transferences = GetTransferences(newAdTree);
+                        foreach (IAdTree transference in transferences)
+                        {
+                            TryToAppend(activeAdTree, transference, newListOfAdTrees);
+                        }
                     }
                 }
 
@@ -168,13 +199,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     // Create the adtree element from the incoming morpheme and its pattern.
                     IAdTree newAdTree = new AdTree(morpheme, pattern);
-
                     yield return newAdTree;
                 }
             }
         }
 
-        private void TryToAppendAdTree(IAdTree current, IAdTree newElement, List<IAdTree> results)
+        private IEnumerable<IAdTree> GetTransferences(IAdTree adTree)
+        {
+            // Try to incorporate possible grammar character transferences.
+            IEnumerable<Pattern> transferencePatterns = myConstructiveDictionary.FindTransferencePatterns(adTree);
+            foreach (Pattern transferencePattern in transferencePatterns)
+            {
+                IAdTree adTreeCopy = adTree.MakeShallowCopy();
+                IAdTree transferenceAdTree = new AdTree(new Morpheme(""), transferencePattern);
+                transferenceAdTree.Left = adTreeCopy;
+                transferenceAdTree.Right = new AdTree(
+                    new Morpheme("") { Attributes = transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter.GetAttributes() },
+                    new Pattern(transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter.ToString())
+                    {
+                        MorphemeRule = new MorphemeRule(transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter, MorphRuleMaker.EmptyString, MaskRule.Is(transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter.GetAttributes())),
+                        LeftRule = PatternRule.Nothing,
+                        RightRule = PatternRule.Nothing,
+                    });
+                yield return transferenceAdTree;
+            }
+        }
+
+        private void TryToAppend(IAdTree current, IAdTree newElement, List<IAdTree> results)
         {
             if (newElement.Morpheme.GrammarCharacter == GrammarCharacter.U)
             {
@@ -192,37 +243,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
             else
             {
-                if (current.Pattern.LeftRule.Equals(PatternRule.Nothing) &&
-                    current.Pattern.RightRule.Equals(PatternRule.Nothing) &&
-                    newElement.Pattern.LeftRule.Equals(PatternRule.Nothing) &&
-                    newElement.Pattern.RightRule.Equals(PatternRule.Nothing))
-                {
-                    // If the new element could be attached instead of the current element.
-                    if (current.IsOnRight && current.AdPosition.CanAttachToRight(newElement))
-                    {
-                        IAdTree currentCopy = GetCopyOnSamePath(current);
-                        IAdTree insertionPlace = currentCopy.AdPosition;
-
-                        // Detach the current adtree from the structure.
-                        currentCopy.Detach();
-
-                        List<IAdTree> insertionResults = new List<IAdTree>();
-                        TryToAppendIndirectly(AttachPosition.ChildOnRight, newElement, currentCopy, insertionResults);
-
-                        foreach (IAdTree insertion in insertionResults)
-                        {
-                            IAdTree insertionRoot = insertion.Root;
-
-                            if (insertionPlace.CanAttachToRight(insertionRoot))
-                            {
-                                IAdTree insertionPlaceCopy = GetCopyOnSamePath(insertionPlace);
-                                insertionPlaceCopy.Right = insertionRoot;
-                                results.Add(insertionPlaceCopy.Right);
-                            }
-                        }
-                    }
-                }
-
                 IAdTree placeToAppend = GetPlaceToAppend(current);
 
                 // If the new element can be attached to left.
@@ -231,8 +251,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     // Try to attach the new element directly.
                     if (placeToAppend.CanAttachToLeft(newElement))
                     {
-                        IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newElement);
-                        IAdTree adTreeCopy = GetCopyOnSamePath(placeToAppend);
+                        IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
+                        IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
                         adTreeCopy.Left = newAdTreeElementCopy;
                         results.Add(newAdTreeElementCopy);
                     }
@@ -249,8 +269,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     // Try to attach the new element directly.
                     if (placeToAppend.CanAttachToRight(newElement))
                     {
-                        IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newElement);
-                        IAdTree adTreeCopy = GetCopyOnSamePath(placeToAppend);
+                        IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
+                        IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
                         adTreeCopy.Right = newAdTreeElementCopy;
                         results.Add(newAdTreeElementCopy);
                     }
@@ -270,8 +290,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     {
                         if (newElement.CanAttachToLeft(placeToAppend))
                         {
-                            IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newElement);
-                            IAdTree adTreeCopy = GetCopyOnSamePath(placeToAppend);
+                            IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
+                            IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
                             newAdTreeElementCopy.Left = adTreeCopy;
                             results.Add(adTreeCopy);
                         }
@@ -287,8 +307,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     {
                         if (newElement.CanAttachToRight(placeToAppend))
                         {
-                            IAdTree newAdTreeElementCopy = GetCopyOnSamePath(newElement);
-                            IAdTree adTreeCopy = GetCopyOnSamePath(placeToAppend);
+                            IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
+                            IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
                             newAdTreeElementCopy.Right = adTreeCopy;
                             results.Add(adTreeCopy);
                         }
@@ -317,8 +337,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     if (adPositionToInsert.Left == null && adPositionToInsert.CanAttachToLeft(pathItem))
                     {
-                        IAdTree adPositionToInsertCopy = GetCopyOnSamePath(adPositionToInsert);
-                        IAdTree adTreeCopy = GetCopyOnSamePath(pathItem);
+                        IAdTree adPositionToInsertCopy = adPositionToInsert.MakeShallowCopy();
+                        IAdTree adTreeCopy = pathItem.MakeShallowCopy();
 
                         if (pathItem.IsOnLeft)
                         {
@@ -343,8 +363,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     if (adPositionToInsert.Right == null && adPositionToInsert.CanAttachToRight(pathItem))
                     {
-                        IAdTree adPositionToInsertCopy = GetCopyOnSamePath(adPositionToInsert);
-                        IAdTree adTreeCopy = GetCopyOnSamePath(pathItem);
+                        IAdTree adPositionToInsertCopy = adPositionToInsert.MakeShallowCopy();
+                        IAdTree adTreeCopy = pathItem.MakeShallowCopy();
 
                         if (pathItem.IsOnLeft)
                         {
@@ -406,11 +426,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             foreach (IReadOnlyList<DirectedEdge<Pattern>> path in connectionPaths)
             {
                 // If all elements is possible to create without morphs.
-                if (path.All(x => x.Value.MorphemeRule.MorphRule.Equals(RuleMaker.Nothing<string>()) ||
-                                  x.Value.MorphemeRule.MorphRule.Evaluate("")))
+                if (path.All(x => x.Value.MorphemeRule.MorphRule.Evaluate("")))
                 {
-                    IAdTree startCopy = GetCopyOnSamePath(start);
-                    IAdTree endCopy = GetCopyOnSamePath(end);
+                    IAdTree startCopy = start.MakeShallowCopy();
+                    IAdTree endCopy = end.MakeShallowCopy();
 
                     IAdTree previousBridge = null;
 
@@ -527,19 +546,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
 
             return current.Root;
-        }
-
-        private IAdTree GetCopyOnSamePath(IAdTree adTreeToCopy)
-        {
-            byte[] path = adTreeToCopy.GetPath();
-            IAdTree root = adTreeToCopy.Root;
-            IAdTree copy = root.MakeShallowCopy();
-            if (copy.TryGetAdTree(path, out IAdTree result))
-            {
-                return result;
-            }
-
-            throw new InvalidOperationException("Failed to properly copy the adtree.");
         }
 
         private GrammarCharacter ChooseGrammarCharacter(params GrammarCharacter[] grammarCharacters)

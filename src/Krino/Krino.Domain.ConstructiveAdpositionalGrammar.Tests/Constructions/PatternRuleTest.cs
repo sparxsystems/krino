@@ -14,13 +14,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         {
             // Pattern rule which matches any stative morpheme and requires the mask where the 2nd bit is set and the fourth bit is not set.
             PatternRule rule = new PatternRule(MorphemeRule.Any(GrammarCharacter.O), MaskRule.Is(2ul).And(RuleMaker.Is((BigInteger)4).Not()));
-            Assert.IsTrue(rule.IsMatch("", 0, 3));
-            Assert.IsTrue(rule.IsMatch(null, 0, 3));
-            Assert.IsTrue(rule.IsMatch("hello", 0, 3));
-            Assert.IsTrue(rule.IsMatch("hello", 100, 3));
-            Assert.IsFalse(rule.IsMatch("", 0, 5));
-            Assert.IsFalse(rule.IsMatch(null, 0, 5));
-            Assert.IsFalse(rule.IsMatch("hello", 100, 5));
+            Assert.IsTrue(rule.IsMatch(new Morpheme(""), 3));
+            Assert.IsTrue(rule.IsMatch(new Morpheme(null), 3));
+            Assert.IsTrue(rule.IsMatch(new Morpheme("hello"), 3));
+            Assert.IsTrue(rule.IsMatch(new Morpheme("hello") { Attributes = 100 }, 3));
+            Assert.IsFalse(rule.IsMatch(new Morpheme(""), 5));
+            Assert.IsFalse(rule.IsMatch(new Morpheme(null), 5));
+            Assert.IsFalse(rule.IsMatch(new Morpheme("hello") { Attributes = 100 }, 5));
         }
     }
 }
