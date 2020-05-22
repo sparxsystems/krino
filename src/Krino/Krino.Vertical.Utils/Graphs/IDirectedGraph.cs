@@ -3,6 +3,11 @@ using System.Collections.Generic;
 
 namespace Krino.Vertical.Utils.Graphs
 {
+    /// <summary>
+    /// Declares the directed graph.
+    /// </summary>
+    /// <typeparam name="V"></typeparam>
+    /// <typeparam name="E"></typeparam>
     public interface IDirectedGraph<V, E> : IReadOnlyCollection<Vertex<V>>
     {
         /// <summary>

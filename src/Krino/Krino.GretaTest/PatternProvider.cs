@@ -39,6 +39,7 @@ namespace Krino.GretaTest
                     LeftRule = MorphemeRule.O_Not_NonLexeme
                 },
 
+
             new Pattern("O1-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
@@ -74,11 +75,18 @@ namespace Krino.GretaTest
                 LeftRule = MorphemeRule.O_Not_NonLexeme,
             },
 
+            new Pattern("I>I")
+            {
+                MorphemeRule = MorphemeRule.Epsilon,
+                RightRule = MorphemeRule.I_Not_NonLexeme,
+                LeftRule = MorphemeRule.I_Lexeme.SetOrder(1).SetAttributes(Attributes.I.Lexeme.Verb.Modal),
+            },
+
 
             new Pattern(".")
             {
                 MorphemeRule = MorphemeRule.Is(GrammarCharacter.U, ".", Attributes.U.NonLexeme),
-                RightRule = MorphemeRule.Something(GrammarCharacter.I),
+                RightRule = MorphemeRule.Something(GrammarCharacter.I).SetOrder(1),
                 LeftRule = MorphemeRule.Anything,
             },
         };

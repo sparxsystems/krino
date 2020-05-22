@@ -21,7 +21,10 @@ namespace Krino.GretaTest
             new Morpheme("news") { Attributes = Attributes.O.Lexeme.Noun },
             new Morpheme("regarding") { Attributes = Attributes.E.Lexeme.Preposition },
             new Morpheme("some") { Attributes = Attributes.A.Lexeme.Determiner },
+            new Morpheme("start") { Attributes = Attributes.I.Lexeme.Verb.Bivalent },
             new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle },
+            new Morpheme("will") { Attributes = Attributes.I.Lexeme.Verb.Modal },
+            new Morpheme("with") { Attributes = Attributes.E.Lexeme.Preposition },
 
             // Non-lexemes.
             new Morpheme(".") { Attributes = Attributes.U.NonLexeme.PunctuationMark.Period },

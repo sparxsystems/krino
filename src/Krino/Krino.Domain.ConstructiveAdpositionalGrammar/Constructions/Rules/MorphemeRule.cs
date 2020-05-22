@@ -19,8 +19,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static MorphemeRule Any(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Anything, MaskRule.Anything);
 
-        public static MorphemeRule Something(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Something, MaskRule.Is(grammarCharacter.GetAttributes()));
-
         public static MorphemeRule Is(GrammarCharacter grammarCharacter, string morph, BigInteger attributes) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Is(morph), MaskRule.Is(attributes));
 
         public static MorphemeRule O => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Anything, MaskRule.Is(Attributes.O));
@@ -59,6 +57,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static MorphemeRule U_Not_NonLexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Anything, MaskRule.Is(Attributes.U) & !MaskRule.Is(Attributes.U.NonLexeme));
         public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.Epsilon));
 
+
+        public static MorphemeRule Something(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Something, MaskRule.Is(grammarCharacter.GetAttributes()));
+
+
         public IRule<string> MorphRule { get; private set; }
         public GrammarCharacter GrammarCharacter { get; private set; }
         public IRule<BigInteger> AttributesRule { get; private set; }
@@ -76,6 +78,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public MorphemeRule SetOrder(int order)
         {
             Order = order;
+            return this;
+        }
+
+        public MorphemeRule SetAttributes(BigInteger attributes)
+        {
+            AttributesRule = MaskRule.Is(attributes);
             return this;
         }
 
@@ -109,7 +117,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
             int hash = 486187739;
 
             hash = (hash * 16777619) ^ MorphRule.GetHashCode();
+            hash = (hash * 16777619) ^ GrammarCharacter.GetHashCode();
             hash = (hash * 16777619) ^ AttributesRule.GetHashCode();
+            hash = (hash * 16777619) ^ ValencyPosition.GetHashCode();
+            hash = (hash * 16777619) ^ Order.GetHashCode();
 
             return hash;
         }
