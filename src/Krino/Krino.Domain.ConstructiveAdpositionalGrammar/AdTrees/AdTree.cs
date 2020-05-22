@@ -264,7 +264,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
             IEnumerable<IAdTree> result = Enumerable.Empty<IAdTree>();
 
-            bool isLeftBeforeRight = IsLeftBeforeRight();
+            bool isLeftBeforeRight = Pattern.LeftRule.Order < Pattern.RightRule.Order;
 
             IAdTree first =  isLeftBeforeRight ? Left : Right;
             IAdTree second = this;
@@ -312,40 +312,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 }
             }
         }
-
-        private bool IsLeftBeforeRight()
-        {
-            bool isLeftBeforeRight = false;
-
-            // If this is an adposition wich specifies the left child.
-            if (Left != null)
-            {
-                // If this is a structural adposition.
-                if (Morpheme.GrammarCharacter == GrammarCharacter.Epsilon)
-                {
-                    // If this adposition specifies the first valency.
-                    if (Pattern != null && Pattern.MorphemeRule.ValencyPosition == 1)
-                    {
-                        isLeftBeforeRight = true;
-                    }
-                    else
-                    {
-                        if (Attributes.A.Lexeme.Adjective.Attributive.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.A.Lexeme.Determiner.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.I.Lexeme.Verb.Modal.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.E.Lexeme.Preposition.IsIn(Left.Morpheme.Attributes) ||
-                            Attributes.A.Lexeme.Numeral.IsIn(Left.Morpheme.Attributes)
-                            )
-                        {
-                            isLeftBeforeRight = true;
-                        }
-                    }
-                }
-            }
-
-            return isLeftBeforeRight;
-        }
-        
 
         IEnumerator IEnumerable.GetEnumerator()
         {

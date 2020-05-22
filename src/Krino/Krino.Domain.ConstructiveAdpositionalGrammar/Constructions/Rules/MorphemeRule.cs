@@ -65,11 +65,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public int ValencyPosition { get; private set; }
 
-        public int Order { get; private set; }
+        public int Order { get; private set; } = int.MaxValue;
 
         public MorphemeRule SetValencyPosition(int valencyPosition)
         {
             ValencyPosition = valencyPosition;
+            return this;
+        }
+
+        public MorphemeRule SetOrder(int order)
+        {
+            Order = order;
             return this;
         }
 

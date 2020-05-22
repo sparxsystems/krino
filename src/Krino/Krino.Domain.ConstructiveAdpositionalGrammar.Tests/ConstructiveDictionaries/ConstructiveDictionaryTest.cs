@@ -62,50 +62,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         }
 
         [Test]
-        public void Constructor_PatternGraph2()
-        {
-            List<Pattern> patterns = new List<Pattern>()
-            {
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Not_NonLexeme,
-                    LeftRule = MorphemeRule.A_Not_NonLexeme
-                },
-
-                new Pattern("O>A")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Nothing),
-                    LeftRule = MorphemeRule.O_Not_NonLexeme,
-                },
-            };
-
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
-
-            List<IReadOnlyList<DirectedEdge<Pattern>>> paths = dictionary.PatternGraph.FindAllPaths("O", "O").ToList();
-
-            Assert.AreEqual(2, paths.Count);
-            Assert.AreEqual(2, paths[0].Count);
-
-            // There and back via A-O pattern.
-            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[0][0].From);
-            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[0][0].To);
-            Assert.AreEqual("A-O", paths[0][0].Value.Name);
-            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[0][1].From);
-            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[0][1].To);
-            Assert.AreEqual("A-O", paths[0][1].Value.Name);
-
-            // There via A-O and back via O>A.
-            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[1][0].From);
-            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[1][0].To);
-            Assert.AreEqual("A-O", paths[1][0].Value.Name);
-            Assert.AreEqual(GrammarCharacter.A.ToString(), paths[1][1].From);
-            Assert.AreEqual(GrammarCharacter.O.ToString(), paths[1][1].To);
-            Assert.AreEqual("O>A", paths[1][1].Value.Name);
-        }
-
-        [Test]
         public void FindLexemes_Similar()
         {
             List<Morpheme> morphemes = new List<Morpheme>()

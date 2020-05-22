@@ -34,11 +34,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 .OrderBy(x => x.Item1)
                 .ToList();
 
-            if (ordered.Count > 1)
-            {
-
-            }
-
             Tuple<int, IAdTree> result = ordered.FirstOrDefault();
             if (result != null)
             {

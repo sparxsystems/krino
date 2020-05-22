@@ -5,7 +5,6 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Krino.GretaTest
 {
@@ -37,7 +36,7 @@ namespace Krino.GretaTest
             Assert.AreEqual("news", adTree.Right.Left.Left.Right.Right.Morpheme.Morph);
             Assert.AreEqual("regarding", adTree.Morpheme.Morph);
             Assert.AreEqual("the", adTree.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("climate", adTree.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("climate", adTree.Left.Right.Left.Left.Morpheme.Morph);
             Assert.AreEqual("emergency", adTree.Left.Right.Right.Morpheme.Morph);
         }
     }

@@ -28,6 +28,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     builder.AddWord(word, maxMorphDistance);
                 }
 
+                builder.Collapse();
+
                 result = builder.ActiveAdTrees.FirstOrDefault();
             }
 

@@ -56,7 +56,7 @@ namespace Krino.GretaTest
             {
                 MorphemeRule = MorphemeRule.Epsilon,
                 RightRule = MorphemeRule.O_Not_NonLexeme,
-                LeftRule = MorphemeRule.A_Not_NonLexeme
+                LeftRule = MorphemeRule.A_Not_NonLexeme.SetOrder(1),
             },
 
             new Pattern("O-and-O")

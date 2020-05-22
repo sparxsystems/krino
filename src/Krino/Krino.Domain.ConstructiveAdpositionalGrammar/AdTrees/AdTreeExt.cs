@@ -124,6 +124,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             // If the rule allows to attach something to the right.
             if (!adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
             {
+                // If the right child shall be attached after the left child
+                // and the left child is not attached yet.
+                if (adTree.Pattern.RightRule.Order > adTree.Pattern.LeftRule.Order &&
+                    !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) &&
+                    adTree.Left == null)
+                {
+                    return false;
+                }
+
                 // If the valency position is specified then check correctness with regard to presence of previous valencies.
                 if (adTree.Pattern.MorphemeRule.ValencyPosition > 0)
                 {
@@ -160,6 +169,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             // If the rule allows to attach something to the left.
             if (!adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
             {
+                // If the left child shall be attached after the right child
+                // and the right child is not attached yet.
+                if (adTree.Pattern.LeftRule.Order > adTree.Pattern.RightRule.Order &&
+                    !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) &&
+                    adTree.Right == null)
+                {
+                    return false;
+                }
+
                 // If the left rule of the adtree matches the element.
                 if (adTree.Pattern.LeftRule.Evaluate(adTreeElement.Morpheme) ||
                     // or if the LEFT rule of the adtree matches the RIGHT rule of the element - inheritance works always via the right child.

@@ -277,7 +277,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = MorphemeRule.O_Not_NonLexeme,
-                    LeftRule = MorphemeRule.A_Not_NonLexeme
+                    LeftRule = MorphemeRule.A_Not_NonLexeme.SetOrder(1),
                 },
 
                 new Pattern("O>A")
