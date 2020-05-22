@@ -228,7 +228,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 {
                     // then if this element saturates a valency position return it otherwise
                     // just iterate up and find the first adposition which saturates an adposition.
-                    result = Pattern.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
+                    result = Pattern.MorphemeRule.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
                 }
                 else if (IsOnRight)
                 {
@@ -242,7 +242,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // This is the root.
                 else
                 {
-                    if (Pattern.ValencyPosition > 0)
+                    if (Pattern.MorphemeRule.ValencyPosition > 0)
                     {
                         result = this;
                     }
@@ -254,7 +254,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public IEnumerable<IAdTree> ValencyAdPositions => IsGovernor ? AdPosition
             .TakeWhile(x => x.IsOnRight)
-            .Where(x => x.Pattern.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
+            .Where(x => x.Pattern.MorphemeRule.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
 
 
         public async Task<IEnumerable<IAdTree>> GetPhraseElementsAsync()
@@ -324,7 +324,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 if (Morpheme.GrammarCharacter == GrammarCharacter.Epsilon)
                 {
                     // If this adposition specifies the first valency.
-                    if (Pattern != null && Pattern.ValencyPosition == 1)
+                    if (Pattern != null && Pattern.MorphemeRule.ValencyPosition == 1)
                     {
                         isLeftBeforeRight = true;
                     }

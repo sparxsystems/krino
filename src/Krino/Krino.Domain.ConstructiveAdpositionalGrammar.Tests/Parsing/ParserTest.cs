@@ -29,23 +29,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = PatternRule.Nothing,
-                    LeftRule = PatternRule.Nothing,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
                 },
 
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = PatternRule.Nothing,
-                    LeftRule = PatternRule.Nothing,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
                 },
 
                 new Pattern()
                 {
-                    PatternAttributes = PatternAttributes.ValencyPosition.First,
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
-                    LeftRule = new PatternRule(MorphemeRule.O_Lexeme)
+                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.O_Lexeme
                 },
             };
 

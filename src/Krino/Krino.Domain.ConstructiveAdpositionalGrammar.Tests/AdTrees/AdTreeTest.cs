@@ -421,9 +421,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void ValencyAdPosition()
         {
-            AdTree adTree = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second })
+            AdTree adTree = new AdTree(new Morpheme(""),
+                new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2) })
             {
-                Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First })
+                Right = new AdTree(new Morpheme(""),
+                    new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1) })
                 {
                     Right = new AdTree(new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb.Bivalent }, new Pattern() { MorphemeRule = MorphemeRule.I }),
                     Left = new AdTree(new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun }, new Pattern() { MorphemeRule = MorphemeRule.O })
@@ -464,9 +466,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read the book.
             AdTree adTree = new AdTree(new Morpheme("."), new Pattern())
             {
-                Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second })
+                Right = new AdTree(new Morpheme(""),
+                    new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2) })
                 {
-                    Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First })
+                    Right = new AdTree(new Morpheme(""),
+                        new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1) })
                     {
                         Right = new AdTree(new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb.Bivalent | Attributes.I.Lexeme.Verb.Unergative }, new Pattern()),
                         Left = new AdTree(new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun.Subjective }, new Pattern())
@@ -492,7 +496,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree(new Morpheme("in") { Attributes = Attributes.E.Lexeme.Preposition }, new Pattern())
                 {
-                    Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First, })
+                    Right = new AdTree(new Morpheme(""),
+                        new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1) })
                     {
                         Right = new AdTree(new Morpheme(""), new Pattern())
                         {
@@ -558,51 +563,51 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
 
-        [Test]
-        public void Phrase_Correlative()
-        {
-            // The phrase: the book which the man bought for the girl
-            AdTree adTree = new AdTree(
-                new Morpheme("which") { Attributes = Attributes.O.Lexeme.Pronoun },
-                new Pattern() { PatternAttributes = PatternAttributes.CorrelativeAdposition })
-            {
-                Right = new AdTree(new Morpheme(""), new Pattern())
-                {
-                    Right = new AdTree(new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun }, new Pattern()),
-                    Left = new AdTree(new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle }, new Pattern())
-                },
+        //[Test]
+        //public void Phrase_Correlative()
+        //{
+        //    // The phrase: the book which the man bought for the girl
+        //    AdTree adTree = new AdTree(
+        //        new Morpheme("which") { Attributes = Attributes.O.Lexeme.Pronoun },
+        //        new Pattern() { PatternAttributes = PatternAttributes.CorrelativeAdposition })
+        //    {
+        //        Right = new AdTree(new Morpheme(""), new Pattern())
+        //        {
+        //            Right = new AdTree(new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun }, new Pattern()),
+        //            Left = new AdTree(new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle }, new Pattern())
+        //        },
 
-                Left = new AdTree(new Morpheme("for") { Attributes = Attributes.E.Lexeme.Preposition }, new Pattern())
-                {
-                    Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second })
-                    {
-                        Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First })
-                        {
-                            Right = new AdTree(new Morpheme("bought") { Attributes = Attributes.I.Lexeme.Verb.Bivalent }, new Pattern()),
-                            Left = new AdTree(new Morpheme(""), new Pattern())
-                            {
-                                Right = new AdTree(new Morpheme("man") { Attributes = Attributes.O.Lexeme.Noun }, new Pattern()),
-                                Left = new AdTree(new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle }, new Pattern()),
-                            }
-                        },
-                        Left = new AdTree(
-                            new Morpheme("") { Attributes = Attributes.O.Lexeme.Noun },
-                            new Pattern() { PatternAttributes = PatternAttributes.CorrelativeSubstitute })
-                        {
-                        }
-                    },
-                    Left = new AdTree(new Morpheme(""), new Pattern())
-                    {
-                        Right = new AdTree(new Morpheme("girl") { Attributes = Attributes.O.Lexeme.Noun }, new Pattern()),
-                        Left = new AdTree(new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle }, new Pattern()),
-                    }
-                }
+        //        Left = new AdTree(new Morpheme("for") { Attributes = Attributes.E.Lexeme.Preposition }, new Pattern())
+        //        {
+        //            Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.Second })
+        //            {
+        //                Right = new AdTree(new Morpheme(""), new Pattern() { PatternAttributes = PatternAttributes.ValencyPosition.First })
+        //                {
+        //                    Right = new AdTree(new Morpheme("bought") { Attributes = Attributes.I.Lexeme.Verb.Bivalent }, new Pattern()),
+        //                    Left = new AdTree(new Morpheme(""), new Pattern())
+        //                    {
+        //                        Right = new AdTree(new Morpheme("man") { Attributes = Attributes.O.Lexeme.Noun }, new Pattern()),
+        //                        Left = new AdTree(new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle }, new Pattern()),
+        //                    }
+        //                },
+        //                Left = new AdTree(
+        //                    new Morpheme("") { Attributes = Attributes.O.Lexeme.Noun },
+        //                    new Pattern() { PatternAttributes = PatternAttributes.CorrelativeSubstitute })
+        //                {
+        //                }
+        //            },
+        //            Left = new AdTree(new Morpheme(""), new Pattern())
+        //            {
+        //                Right = new AdTree(new Morpheme("girl") { Attributes = Attributes.O.Lexeme.Noun }, new Pattern()),
+        //                Left = new AdTree(new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner.DefiniteArticle }, new Pattern()),
+        //            }
+        //        }
 
-            };
+        //    };
 
-            string phrase = adTree.Phrase;
-            Assert.AreEqual("the book which the man bought for the girl", phrase);
-        }
+        //    string phrase = adTree.Phrase;
+        //    Assert.AreEqual("the book which the man bought for the girl", phrase);
+        //}
 
 
         [Test]

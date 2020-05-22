@@ -27,23 +27,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Pattern("I")
                 {
                     MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = PatternRule.Nothing,
-                    LeftRule = PatternRule.Nothing,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
                 },
 
                 new Pattern("-s")
                 {
                     MorphemeRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Suffix("s"), MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
-                    RightRule = PatternRule.Nothing,
-                    LeftRule = PatternRule.Nothing,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
                 },
 
                 // Transference pattern.
                 new Pattern("I>I")
                 {
                     MorphemeRule = MorphemeRule.I,
-                    RightRule = new PatternRule(MorphemeRule.I_Lexeme),
-                    LeftRule = new PatternRule(new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)), MaskRule.Anything),
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
                 },
             };
 
@@ -69,15 +69,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Pattern("A-O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
-                    LeftRule = new PatternRule(MorphemeRule.A_Not_NonLexeme)
+                    RightRule = MorphemeRule.O_Not_NonLexeme,
+                    LeftRule = MorphemeRule.A_Not_NonLexeme
                 },
 
                 new Pattern("O>A")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new PatternRule(new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Nothing)),
-                    LeftRule = new PatternRule(MorphemeRule.O_Not_NonLexeme),
+                    RightRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Nothing),
+                    LeftRule = MorphemeRule.O_Not_NonLexeme,
                 },
             };
 

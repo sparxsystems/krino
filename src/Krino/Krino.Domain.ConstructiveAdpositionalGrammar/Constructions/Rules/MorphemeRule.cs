@@ -8,7 +8,7 @@ using System.Numerics;
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 {
     /// <summary>
-    /// Rule to eveluate if something (e.g. morpheme inside an adtree element) matches the morpheme.
+    /// Rule evaluating morphemes.
     /// </summary>
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
@@ -50,7 +50,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static MorphemeRule A_Not_NonLexeme => new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Anything, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme));
 
-        //public static MorphemeRule E_Preposition => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.NotEmptyString, MaskRule.Is(Attributes.E.Lexeme.Preposition));
         public static MorphemeRule E_Lexeme => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.Something, MaskRule.Is(Attributes.E.Lexeme));
         public static MorphemeRule E_Not_NonLexeme => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.Anything, MaskRule.Is(Attributes.E) & !MaskRule.Is(Attributes.E.NonLexeme));
 
@@ -63,6 +62,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public IRule<string> MorphRule { get; private set; }
         public GrammarCharacter GrammarCharacter { get; private set; }
         public IRule<BigInteger> AttributesRule { get; private set; }
+
+        public int ValencyPosition { get; private set; }
+
+        public int Order { get; private set; }
+
+        public MorphemeRule SetValencyPosition(int valencyPosition)
+        {
+            ValencyPosition = valencyPosition;
+            return this;
+        }
 
         public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)
         {

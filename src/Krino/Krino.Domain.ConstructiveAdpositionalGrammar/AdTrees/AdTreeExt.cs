@@ -122,23 +122,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeElementToRight)
         {
             // If the rule allows to attach something to the right.
-            if (!adTree.Pattern.RightRule.Equals(PatternRule.Nothing))
+            if (!adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
             {
                 // If the valency position is specified then check correctness with regard to presence of previous valencies.
-                if (adTree.Pattern.ValencyPosition > 0)
+                if (adTree.Pattern.MorphemeRule.ValencyPosition > 0)
                 {
                     IAdTree closestValencyAdPosition = new IAdTree[] { adTreeElementToRight }.Concat(adTreeElementToRight.RightChildren)
-                        .FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
+                        .FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
 
-                    if (closestValencyAdPosition == null && adTree.Pattern.ValencyPosition > 1 ||
-                        closestValencyAdPosition != null && adTree.Pattern.ValencyPosition != closestValencyAdPosition.Pattern.ValencyPosition + 1)
+                    if (closestValencyAdPosition == null && adTree.Pattern.MorphemeRule.ValencyPosition > 1 ||
+                        closestValencyAdPosition != null && adTree.Pattern.MorphemeRule.ValencyPosition != closestValencyAdPosition.Pattern.MorphemeRule.ValencyPosition + 1)
                     {
                         return false;
                     }
                 }
 
                 // If the right rule of the adtree matches the element.
-                if (adTree.Pattern.RightRule.IsMatch(adTreeElementToRight.Morpheme, adTreeElementToRight.Pattern.PatternAttributes) ||
+                if (adTree.Pattern.RightRule.Evaluate(adTreeElementToRight.Morpheme) ||
                     // or if the right rule of the adtree matches the right rule of the element - inheritance.
                     adTreeElementToRight.Pattern.RightRule.IsSubruleOf(adTree.Pattern.RightRule))
                 {
@@ -158,10 +158,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         public static bool CanAttachToLeft(this IAdTree adTree, IAdTree adTreeElement)
         {
             // If the rule allows to attach something to the left.
-            if (!adTree.Pattern.LeftRule.Equals(PatternRule.Nothing))
+            if (!adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
             {
                 // If the left rule of the adtree matches the element.
-                if (adTree.Pattern.LeftRule.IsMatch(adTreeElement.Morpheme, adTreeElement.Pattern.PatternAttributes) ||
+                if (adTree.Pattern.LeftRule.Evaluate(adTreeElement.Morpheme) ||
                     // or if the LEFT rule of the adtree matches the RIGHT rule of the element - inheritance works always via the right child.
                     adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.LeftRule))
                 {
@@ -267,7 +267,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     return false;
                 }
             }
-            else if (!adTree.Pattern.LeftRule.Equals(PatternRule.Nothing))
+            else if (!adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
             {
                 return false;
             }
@@ -281,7 +281,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     return false;
                 }
             }
-            else if (!adTree.Pattern.RightRule.Equals(PatternRule.Nothing))
+            else if (!adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
             {
                 return false;
             }
@@ -308,21 +308,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-
-        private static bool IsSubruleOf(this PatternRule patternRule, PatternRule other)
+        private static bool IsSubruleOf(this MorphemeRule morphemeRule, MorphemeRule other)
         {
-            if (other.MorphemeRule.GrammarCharacter == GrammarCharacter.Epsilon ||
-                other.MorphemeRule.GrammarCharacter == patternRule.MorphemeRule.GrammarCharacter)
+            if (other.GrammarCharacter == GrammarCharacter.Epsilon ||
+                other.GrammarCharacter == morphemeRule.GrammarCharacter)
             {
-                if (other.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Anything) ||
-                    other.MorphemeRule.MorphRule.Equals(patternRule.MorphemeRule.MorphRule))
+                if (other.MorphRule.Equals(MorphRuleMaker.Anything) ||
+                    other.MorphRule.Equals(morphemeRule.MorphRule))
                 {
-                    if (other.MorphemeRule.AttributesRule.Equals(MaskRule.Anything) ||
-                        other.MorphemeRule.AttributesRule.Equals(patternRule.MorphemeRule.AttributesRule))
+                    if (other.AttributesRule.Equals(MaskRule.Anything) ||
+                        other.AttributesRule.Equals(morphemeRule.AttributesRule))
                     {
-                        if (other.PatternAttributesRule.Equals(MaskRule.Anything) ||
-                            other.PatternAttributesRule.Equals(patternRule.PatternAttributesRule))
-
                         return true;
                     }
                 }

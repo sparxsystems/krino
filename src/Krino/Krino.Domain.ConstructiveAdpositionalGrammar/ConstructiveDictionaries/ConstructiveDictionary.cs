@@ -82,8 +82,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         public IEnumerable<Pattern> FindTransferencePatterns(IAdTree adTree)
         {
             IEnumerable<Pattern> result = Patterns
-                .Where(x => IsTransferencePattern(x) && 
-                            x.LeftRule.IsMatch(adTree.Morpheme, adTree.Pattern.PatternAttributes));
+                .Where(x => IsTransferencePattern(x) && x.LeftRule.Evaluate(adTree.Morpheme));
 
             return result;
         }
@@ -125,16 +124,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             foreach (Pattern pattern in Patterns)
             {
                 if (!IsTransferencePattern(pattern) &&
-                    pattern.LeftRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
-                    pattern.RightRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                    pattern.LeftRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                    pattern.RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
                 {
                     bool alreadyExist = false;
 
                     // The rule can bring us to the grammar character on the left if
                     // the rule on the left accepts something.
-                    if (!pattern.LeftRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing))
+                    if (!pattern.LeftRule.MorphRule.Equals(MorphRuleMaker.Nothing))
                     {
-                        PatternGraph.AddEdge(pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
+                        PatternGraph.AddEdge(pattern.RightRule.GrammarCharacter.ToString(), pattern.LeftRule.GrammarCharacter.ToString(), pattern);
                         alreadyExist = true;
                     }
 
@@ -142,13 +141,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                     // the rule on the right can accept something.
                     // And in case left-right grammar characters are identical create the edge
                     // only in case it does not exist yet.
-                    if (!pattern.RightRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
-                        (pattern.LeftRule.MorphemeRule.GrammarCharacter != pattern.RightRule.MorphemeRule.GrammarCharacter ||
-                         pattern.LeftRule.MorphemeRule.GrammarCharacter == pattern.RightRule.MorphemeRule.GrammarCharacter &&
+                    if (!pattern.RightRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
+                        (pattern.LeftRule.GrammarCharacter != pattern.RightRule.GrammarCharacter ||
+                         pattern.LeftRule.GrammarCharacter == pattern.RightRule.GrammarCharacter &&
                          !alreadyExist)
                        )
                     {
-                        PatternGraph.AddEdge(pattern.LeftRule.MorphemeRule.GrammarCharacter.ToString(), pattern.RightRule.MorphemeRule.GrammarCharacter.ToString(), pattern);
+                        PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter.ToString(), pattern.RightRule.GrammarCharacter.ToString(), pattern);
                     }
                 }
             }
@@ -251,12 +250,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         private bool IsTransferencePattern(Pattern pattern)
         {
             // Left.
-            if (pattern.LeftRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
+            if (pattern.LeftRule.GrammarCharacter != GrammarCharacter.Epsilon)
             {
                 // Right - inheriting site.
-                if (pattern.RightRule.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
-                    (pattern.RightRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString) ||
-                     pattern.RightRule.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing)))
+                if (pattern.RightRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                    (pattern.RightRule.MorphRule.Equals(MorphRuleMaker.EmptyString) ||
+                     pattern.RightRule.MorphRule.Equals(MorphRuleMaker.Nothing)))
                 {
                     // Up.
                     if (pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString))

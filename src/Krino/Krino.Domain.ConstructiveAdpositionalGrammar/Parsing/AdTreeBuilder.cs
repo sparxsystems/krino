@@ -214,12 +214,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 IAdTree transferenceAdTree = new AdTree(new Morpheme(""), transferencePattern);
                 transferenceAdTree.Left = adTreeCopy;
                 transferenceAdTree.Right = new AdTree(
-                    new Morpheme("") { Attributes = transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter.GetAttributes() },
-                    new Pattern(transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter.ToString())
+                    new Morpheme("") { Attributes = transferenceAdTree.Pattern.RightRule.GrammarCharacter.GetAttributes() },
+                    new Pattern(transferenceAdTree.Pattern.RightRule.GrammarCharacter.ToString())
                     {
-                        MorphemeRule = new MorphemeRule(transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter, MorphRuleMaker.EmptyString, MaskRule.Is(transferenceAdTree.Pattern.RightRule.MorphemeRule.GrammarCharacter.GetAttributes())),
-                        LeftRule = PatternRule.Nothing,
-                        RightRule = PatternRule.Nothing,
+                        MorphemeRule = new MorphemeRule(transferenceAdTree.Pattern.RightRule.GrammarCharacter, MorphRuleMaker.EmptyString, MaskRule.Is(transferenceAdTree.Pattern.RightRule.GrammarCharacter.GetAttributes())),
+                        LeftRule = MorphemeRule.Nothing,
+                        RightRule = MorphemeRule.Nothing,
                     });
                 yield return transferenceAdTree;
             }
@@ -246,7 +246,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 IAdTree placeToAppend = GetPlaceToAppend(current);
 
                 // If the new element can be attached to left.
-                if (placeToAppend.Left == null && !placeToAppend.Pattern.LeftRule.Equals(PatternRule.Nothing))
+                if (placeToAppend.Left == null && !placeToAppend.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
                 {
                     // Try to attach the new element directly.
                     if (placeToAppend.CanAttachToLeft(newElement))
@@ -264,7 +264,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 }
 
                 // If the new element can be attached to right.
-                if (placeToAppend.Right == null && !placeToAppend.Pattern.RightRule.Equals(PatternRule.Nothing))
+                if (placeToAppend.Right == null && !placeToAppend.Pattern.RightRule.Equals(MorphemeRule.Nothing))
                 {
                     // Try to attach the new element directly.
                     if (placeToAppend.CanAttachToRight(newElement))
@@ -396,26 +396,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             // If start adTree connects the bridge via its left.
             if (startElementAppendPosition == AttachPosition.ParrentForLeft)
             {
-                startGrammarCharacter = start.Pattern.LeftRule.MorphemeRule.GrammarCharacter;
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                startGrammarCharacter = start.Pattern.LeftRule.GrammarCharacter;
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If start adTree connects the bridge via its right.
             else if (startElementAppendPosition == AttachPosition.ParrentForRight)
             {
-                startGrammarCharacter = start.Pattern.RightRule.MorphemeRule.GrammarCharacter;
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                startGrammarCharacter = start.Pattern.RightRule.GrammarCharacter;
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If the bridge connects the start adtree via its left.
             else if (startElementAppendPosition == AttachPosition.ChildOnLeft)
             {
-                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
             // If the bridge connects the start adtree via its right.
             else if (startElementAppendPosition == AttachPosition.ChildOnRight)
             {
-                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.MorphemeRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.MorphemeRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
 
             // Get possibile ways how to connect new element.
@@ -538,8 +538,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             IEnumerable<IAdTree> adTrees = new IAdTree[] { current }.Concat(current.AdPositions);
             foreach (IAdTree adTree in adTrees)
             {
-                if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(PatternRule.Nothing) ||
-                    adTree.Right == null && !adTree.Pattern.RightRule.Equals(PatternRule.Nothing))
+                if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) ||
+                    adTree.Right == null && !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
                 {
                     return adTree;
                 }
