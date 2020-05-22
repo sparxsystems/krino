@@ -52,7 +52,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             // Note: the grammar characters are vertices.
             //       the path consists of edges.
             //       The edge is represented by the pattern which can connect two grammar characters.
-            List<IReadOnlyList<DirectedEdge<Pattern>>> paths = dictionary.PatternGraph.FindAllPaths("I", "I").ToList();
+            List<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> paths = dictionary.PatternGraph.FindAllPaths(GrammarCharacter.I, GrammarCharacter.I).ToList();
             
             Assert.AreEqual(1, paths.Count);
             Assert.AreEqual(1, paths[0].Count);

@@ -2,24 +2,31 @@
 
 namespace Krino.Vertical.Utils.Graphs
 {
-    public class DirectedEdgeEqualityComparer<V> : IEqualityComparer<DirectedEdge<V>>
+    /// <summary>
+    /// Defines the equality comparer for the directed edge of the graph.
+    /// </summary>
+    /// <typeparam name="V"></typeparam>
+    /// <typeparam name="E"></typeparam>
+    public class DirectedEdgeEqualityComparer<V, E> : IEqualityComparer<DirectedEdge<V, E>>
     {
-        private IEqualityComparer<V> myEdgeValueComparer;
+        private IEqualityComparer<V> myVertexComparer;
+        private IEqualityComparer<E> myEdgeComparer;
 
-        public DirectedEdgeEqualityComparer(IEqualityComparer<V> edgeValueEqualityComparer = null)
+        public DirectedEdgeEqualityComparer(IEqualityComparer<V> vertexEqualityComparer, IEqualityComparer<E> edgeEqualityComparer = null)
         {
-            myEdgeValueComparer = edgeValueEqualityComparer ?? EqualityComparer<V>.Default;
+            myVertexComparer = vertexEqualityComparer ?? EqualityComparer<V>.Default;
+            myEdgeComparer = edgeEqualityComparer ?? EqualityComparer<E>.Default;
         }
 
-        public bool Equals(DirectedEdge<V> x, DirectedEdge<V> y)
+        public bool Equals(DirectedEdge<V, E> x, DirectedEdge<V, E> y)
         {
-            bool result = x.From == y.From &&
-                          x.To == y.To &&
-                          myEdgeValueComparer.Equals(x.Value, y.Value);
+            bool result = myVertexComparer.Equals(x.From, y.From) &&
+                          myVertexComparer.Equals(x.To, y.To) &&
+                          myEdgeComparer.Equals(x.Value, y.Value);
             return result;
         }
 
-        public int GetHashCode(DirectedEdge<V> obj)
+        public int GetHashCode(DirectedEdge<V, E> obj)
         {
             int hash = 486187739;
 

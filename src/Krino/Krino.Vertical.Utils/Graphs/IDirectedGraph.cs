@@ -8,7 +8,7 @@ namespace Krino.Vertical.Utils.Graphs
     /// </summary>
     /// <typeparam name="V"></typeparam>
     /// <typeparam name="E"></typeparam>
-    public interface IDirectedGraph<V, E> : IReadOnlyCollection<Vertex<V>>
+    public interface IDirectedGraph<V, E> : IReadOnlyCollection<V>
     {
         /// <summary>
         /// Adds the vertex into the graph.
@@ -17,49 +17,22 @@ namespace Krino.Vertical.Utils.Graphs
         /// If a vertex with the same id already exists it throws ArgumentException.
         /// </remarks>
         /// <param name="vertex"></param>
-        void AddVertex(Vertex<V> vertex);
+        void AddVertex(V vertex);
 
         /// <summary>
-        /// Adds the vertex into the graph.
+        /// Removes the specified vertex.
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="vertexValue"></param>
-        void AddVertex(string id, V vertexValue);
-
-        /// <summary>
-        /// Removes the vertex with the specified id.
-        /// </summary>
-        /// <remarks>
-        /// Because edges can be added to the graph independently from vertices (E.g. first you can add edges and then vertices)
-        /// this will remove only the specified vertex and NOT related edges.
-        /// </remarks>
-        /// <param name="id"></param>
+        /// <param name="vertex"></param>
         /// <returns>true if the vertex was removed.</returns>
-        bool RemoveVertex(string id);
+        bool RemoveVertex(V vertex);
+
 
         /// <summary>
-        /// Returns the vertex with the specified id. It returns null if the vertex does not exist.
+        /// Returns true if the vertex exists in the graph.
         /// </summary>
-        /// <param name="id"></param>
+        /// <param name="vertex"></param>
         /// <returns></returns>
-        Vertex<V> TryGetVertex(string id);
-
-        /// <summary>
-        /// Gets or sets-add the vertex with the specified id.
-        /// </summary>
-        /// <remarks>
-        /// It throws KeyNotFoundException if 'get' is called and the vertex is not found.
-        /// </remarks>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        Vertex<V> this[string id] { get; set; }
-
-        /// <summary>
-        /// Returns true if the vertex with the specified id exists.
-        /// </summary>
-        /// <param name="id"></param>
-        /// <returns></returns>
-        bool ContainsVertex(string id);
+        bool ContainsVertex(V vertex);
 
 
 
@@ -69,59 +42,68 @@ namespace Krino.Vertical.Utils.Graphs
         /// <remarks>
         /// There can be multiple same edges in the graph.
         /// </remarks>
-        /// <param name="fromId"></param>
-        /// <param name="toId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
         /// <param name="edgeValue"></param>
-        void AddEdge(string fromId, string toId, E edgeValue);
+        void AddEdge(V from, V to, E edgeValue);
+
+        /// <summary>
+        /// Adds an edge into the graph.
+        /// </summary>
+        /// <remarks>
+        /// There can be multiple same edges in the graph.
+        /// </remarks>
+        /// <param name="edge"></param>
+        void AddEdge(DirectedEdge<V, E> edge);
 
         /// <summary>
         /// Removes specified edges.
         /// </summary>
         /// <param name="edgesToRemove"></param>
-        bool RemoveEdges(IEnumerable<DirectedEdge<E>> edgesToRemove);
+        bool RemoveEdges(IEnumerable<DirectedEdge<V, E>> edgesToRemove);
 
         /// <summary>
-        /// Removes edges going fromId and matching the predicate.
+        /// Removes edges going from 'from' and matching the predicate.
         /// </summary>
-        /// <param name="fromId"></param>
+        /// <param name="from"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        bool RemoveEdgesGoingFrom(string fromId, Predicate<DirectedEdge<E>> predicate = null);
+        bool RemoveEdgesGoingFrom(V from, Predicate<DirectedEdge<V, E>> predicate = null);
 
         /// <summary>
-        /// Removes edges going to toId and matching the predicate.
+        /// Removes edges going to 'to' and matching the predicate.
         /// </summary>
-        /// <param name="toId"></param>
+        /// <param name="to"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        bool RemoveEdgesGoingTo(string toId, Predicate<DirectedEdge<E>> predicate = null);
+        bool RemoveEdgesGoingTo(V to, Predicate<DirectedEdge<V, E>> predicate = null);
 
         /// <summary>
         /// Returns all edges.
         /// </summary>
         /// <returns></returns>
-        IEnumerable<DirectedEdge<E>> Edges { get; }
+        IEnumerable<DirectedEdge<V, E>> Edges { get; }
 
         /// <summary>
-        /// Returns all edges going from fromId.
+        /// Returns all edges going from 'from'.
         /// </summary>
-        /// <param name="fromId"></param>
+        /// <param name="from"></param>
         /// <returns></returns>
-        IEnumerable<DirectedEdge<E>> GetEdgesGoingFrom(string fromId);
+        IEnumerable<DirectedEdge<V, E>> GetEdgesGoingFrom(V from);
 
         /// <summary>
         /// Returns all edges going to toId.
         /// </summary>
-        /// <param name="toId"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        IEnumerable<DirectedEdge<E>> GetEdgesGoingTo(string toId);
+        IEnumerable<DirectedEdge<V, E>> GetEdgesGoingTo(V to);
 
         /// <summary>
-        /// Returns all edges going from fromId to toId.
+        /// Returns all edges going from 'from' to toId.
         /// </summary>
-        /// <param name="fromId"></param>
-        /// <param name="toId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        IEnumerable<DirectedEdge<E>> GetEdges(string fromId, string toId);
+        IEnumerable<DirectedEdge<V, E>> GetEdges(V from, V to);
     }
 }

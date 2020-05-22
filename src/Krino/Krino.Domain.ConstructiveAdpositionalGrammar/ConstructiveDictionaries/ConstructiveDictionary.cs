@@ -118,7 +118,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             PatternGraph = new DirectedGraph<GrammarCharacter, Pattern>();
             foreach (GrammarCharacter grammarCharacter in grammarCharacters)
             {
-                PatternGraph.AddVertex(grammarCharacter.ToString(), grammarCharacter);
+                PatternGraph.AddVertex(grammarCharacter);
             }
 
             foreach (Pattern pattern in Patterns)
@@ -133,7 +133,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                     // the rule on the left accepts something.
                     if (!pattern.LeftRule.MorphRule.Equals(MorphRuleMaker.Nothing))
                     {
-                        PatternGraph.AddEdge(pattern.RightRule.GrammarCharacter.ToString(), pattern.LeftRule.GrammarCharacter.ToString(), pattern);
+                        PatternGraph.AddEdge(pattern.RightRule.GrammarCharacter, pattern.LeftRule.GrammarCharacter, pattern);
                         alreadyExist = true;
                     }
 
@@ -147,7 +147,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                          !alreadyExist)
                        )
                     {
-                        PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter.ToString(), pattern.RightRule.GrammarCharacter.ToString(), pattern);
+                        PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter, pattern.RightRule.GrammarCharacter, pattern);
                     }
                 }
             }

@@ -14,31 +14,35 @@ namespace Krino.Vertical.Utils.Graphs
         /// <typeparam name="V"></typeparam>
         /// <typeparam name="E"></typeparam>
         /// <param name="graph"></param>
-        /// <param name="fromId"></param>
-        /// <param name="toId"></param>
+        /// <param name="from"></param>
+        /// <param name="to"></param>
         /// <returns></returns>
-        public static IEnumerable<IReadOnlyList<DirectedEdge<E>>> FindAllPaths<V, E>(this IDirectedGraph<V, E> graph, string fromId, string toId)
+        public static IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> FindAllPaths<V, E>(this IDirectedGraph<V, E> graph, V from, V to,
+            IEqualityComparer<V> vertexComparer = null)
         {
-            HashSet<string> visited = new HashSet<string>();
-            List<DirectedEdge<E>> localPath = new List<DirectedEdge<E>>();
+            vertexComparer = vertexComparer ?? EqualityComparer<V>.Default;
 
-            IEnumerable<IReadOnlyList<DirectedEdge<E>>> result = graph.FindAllPathsInternal(fromId, toId, localPath, visited);
+            HashSet<V> visited = new HashSet<V>(vertexComparer);
+            List<DirectedEdge<V, E>> localPath = new List<DirectedEdge<V, E>>();
+
+            IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> result = graph.FindAllPathsInternal(from, to, localPath, visited, vertexComparer);
             return result;
         }
 
 
-        private static IEnumerable<IReadOnlyList<DirectedEdge<E>>> FindAllPathsInternal<V, E>(this IDirectedGraph<V, E> graph, string currentVertexId, string toId,
-            List<DirectedEdge<E>> localPath,
-            HashSet<string> visited)
+        private static IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> FindAllPathsInternal<V, E>(this IDirectedGraph<V, E> graph, V currentVertex, V to,
+            List<DirectedEdge<V, E>> localPath,
+            HashSet<V> visited,
+            IEqualityComparer<V> vertexComparer)
         {
-            visited.Add(currentVertexId);
+            visited.Add(currentVertex);
 
-            IEnumerable<DirectedEdge<E>> edgesGoingFrom = graph.GetEdgesGoingFrom(currentVertexId);
-            foreach (DirectedEdge<E> edge in edgesGoingFrom)
+            IEnumerable<DirectedEdge<V, E>> edgesGoingFrom = graph.GetEdgesGoingFrom(currentVertex);
+            foreach (DirectedEdge<V, E> edge in edgesGoingFrom)
             {
-                if (edge.To == toId || !visited.Contains(edge.To))
+                if (vertexComparer.Equals(edge.To, to) || !visited.Contains(edge.To))
                 {
-                    if (edge.To == toId)
+                    if (vertexComparer.Equals(edge.To, to))
                     {
                         localPath.Add(edge);
                         
@@ -46,24 +50,22 @@ namespace Krino.Vertical.Utils.Graphs
                         
                         localPath.RemoveAt(localPath.Count - 1);
                     }
-                    else if (edge.From != edge.To)
+                    else if (!vertexComparer.Equals(edge.From, edge.To))
                     {
                         localPath.Add(edge);
 
-                        IEnumerable<IReadOnlyList<DirectedEdge<E>>> foundPaths = graph.FindAllPathsInternal(edge.To, toId, localPath, visited);
-                        foreach (IReadOnlyList<DirectedEdge<E>> path in foundPaths)
+                        IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> foundPaths = graph.FindAllPathsInternal(edge.To, to, localPath, visited, vertexComparer);
+                        foreach (IReadOnlyList<DirectedEdge<V, E>> path in foundPaths)
                         {
                             yield return path;
                         }
                         
                         localPath.RemoveAt(localPath.Count - 1);
                     }
-
-                    
                 }
             }
 
-            visited.Remove(currentVertexId);
+            visited.Remove(currentVertex);
         }
     }
 }

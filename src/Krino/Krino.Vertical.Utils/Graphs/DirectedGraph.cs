@@ -8,125 +8,97 @@ namespace Krino.Vertical.Utils.Graphs
 {
     public class DirectedGraph<V, E> : IDirectedGraph<V, E>
     {
-        private Dictionary<string, Vertex<V>> myVertices = new Dictionary<string, Vertex<V>>();
-        private DoubleKeyMultiDictionary<string, string, DirectedEdge<E>> myEdges = new DoubleKeyMultiDictionary<string, string, DirectedEdge<E>>();
-        private DirectedEdgeEqualityComparer<E> myEdgeComparer;
+        private HashSet<V> myVertices = new HashSet<V>();
+        private DoubleKeyMultiDictionary<V, V, DirectedEdge<V, E>> myEdges = new DoubleKeyMultiDictionary<V, V, DirectedEdge<V, E>>();
+        private DirectedEdgeEqualityComparer<V, E> myEdgeComparer;
+        private IEqualityComparer<V> myVertexComparer;
 
 
-        public DirectedGraph(IEqualityComparer<E> edgeValueEqualityComparer = null)
+        public DirectedGraph(IEqualityComparer<V> vertexEqualityComparer = null, IEqualityComparer<E> edgeEqualityComparer = null)
         {
-            myEdgeComparer = new DirectedEdgeEqualityComparer<E>(edgeValueEqualityComparer);
+            myVertexComparer = vertexEqualityComparer ?? EqualityComparer<V>.Default;
+            myEdgeComparer = new DirectedEdgeEqualityComparer<V, E>(myVertexComparer, edgeEqualityComparer ?? EqualityComparer<E>.Default);
         }
 
-        public IEnumerable<DirectedEdge<E>> Edges => myEdges.Select(x => x.Item3);
+        public IEnumerable<DirectedEdge<V, E>> Edges => myEdges.Select(x => x.Item3);
 
         public int Count => myVertices.Count;
 
 
-        public void AddVertex(Vertex<V> vertex)
+        public void AddVertex(V vertex) => myVertices.Add(vertex);
+
+
+        public bool RemoveVertex(V vertex) => myVertices.Remove(vertex);
+
+
+        public bool ContainsVertex(V vertex) => myVertices.Contains(vertex);
+
+
+        public void AddEdge(V from, V to, E edgeValue) => AddEdge(new DirectedEdge<V, E>(from, to) { Value = edgeValue });
+
+        public void AddEdge(DirectedEdge<V, E> edge) => myEdges.Add(edge.From, edge.To, edge);
+
+        public bool RemoveEdges(IEnumerable<DirectedEdge<V, E>> edgesToRemove)
         {
-            myVertices.Add(vertex.Id, vertex);
-        }
-
-        public void AddVertex(string id, V vertexValue)
-        {
-            Vertex<V> vertex = new Vertex<V>(id) { Value = vertexValue };
-            AddVertex(vertex);
-        }
-
-        public bool RemoveVertex(string id)
-        {
-            bool result = myVertices.Remove(id);
-            return result;
-        }
-
-        public Vertex<V> TryGetVertex(string id)
-        {
-            myVertices.TryGetValue(id, out Vertex<V> result);
-            return result;
-        }
-
-        public Vertex<V> this[string id]
-        {
-            get => myVertices[id];
-            set => myVertices[id] = value;
-        }
-
-        public bool ContainsVertex(string id)
-        {
-            bool result = myVertices.ContainsKey(id);
-            return result;
-        }
-
-
-
-        public void AddEdge(string fromId, string toId, E edgeValue)
-        {
-            DirectedEdge<E> edge = new DirectedEdge<E>(fromId, toId) { Value = edgeValue };
-            myEdges.Add(fromId, toId, edge);
-        }
-
-        public bool RemoveEdges(IEnumerable<DirectedEdge<E>> edgesToRemove)
-        {
-            HashSet<DirectedEdge<E>> edgesToRemoveSet = edgesToRemove.ToHashSet(myEdgeComparer);
-            IEnumerable<Tuple<string, string>> fromTos = edgesToRemove.Select(x => Tuple.Create(x.From, x.To));
+            HashSet<DirectedEdge<V, E>> edgesToRemoveSet = edgesToRemove.ToHashSet(myEdgeComparer);
+            IEnumerable<Tuple<V, V>> fromTos = edgesToRemove.Select(x => Tuple.Create(x.From, x.To));
             bool result = myEdges.Remove(fromTos, (fromId, toId, edge) => edgesToRemoveSet.Contains(edge));
             return result;
         }
 
-        public bool RemoveEdgesGoingFrom(string fromId, Predicate<DirectedEdge<E>> predicate = null)
+        public bool RemoveEdgesGoingFrom(V from, Predicate<DirectedEdge<V, E>> predicate = null)
         {
             bool result;
 
             if (predicate == null)
             {
-                result = myEdges.RemoveForKey1(fromId);
+                result = myEdges.RemoveForKey1(from);
             }
             else
             {
-                result = myEdges.RemoveForKey1(fromId, (fromId, toId, edge) => predicate(edge));
+                result = myEdges.RemoveForKey1(from, (xFrom, xTo, xEdge) => predicate(xEdge));
             }
 
             return result;
         }
 
-        public bool RemoveEdgesGoingTo(string toId, Predicate<DirectedEdge<E>> predicate = null)
+        public bool RemoveEdgesGoingTo(V to, Predicate<DirectedEdge<V, E>> predicate = null)
         {
             bool result;
             if (predicate == null)
             {
-                result = myEdges.RemoveForKey2(toId);
+                result = myEdges.RemoveForKey2(to);
             }
             else
             {
-                result = myEdges.RemoveForKey2(toId, (fromId, toId, edge) => predicate(edge));
+                result = myEdges.RemoveForKey2(to, (xFrom, xTo, xEdge) => predicate(xEdge));
             }
 
             return result;
         }
 
 
-        public IEnumerable<DirectedEdge<E>> GetEdgesGoingFrom(string fromId)
+        public IEnumerable<DirectedEdge<V, E>> GetEdgesGoingFrom(V from)
         {
-            IEnumerable<DirectedEdge<E>> result = myEdges.GetValuesForKey1(fromId).Select(x => x.Value);
+            IEnumerable<DirectedEdge<V, E>> result = myEdges.GetValuesForKey1(from).Select(x => x.Value);
             return result;
         }
 
-        public IEnumerable<DirectedEdge<E>> GetEdgesGoingTo(string toId)
+        public IEnumerable<DirectedEdge<V, E>> GetEdgesGoingTo(V to)
         {
-            IEnumerable<DirectedEdge<E>> result = myEdges.GetValuesForKey2(toId).Select(x => x.Value);
+            IEnumerable<DirectedEdge<V, E>> result = myEdges.GetValuesForKey2(to).Select(x => x.Value);
             return result;
         }
 
-        public IEnumerable<DirectedEdge<E>> GetEdges(string fromId, string toId)
+        public IEnumerable<DirectedEdge<V, E>> GetEdges(V from, V to)
         {
-            IEnumerable<DirectedEdge<E>> result = GetEdgesGoingFrom(fromId).Where(x => x.To == toId);
+            IEnumerable<DirectedEdge<V, E>> result = GetEdgesGoingFrom(from).Where(x => myVertexComparer.Equals(x.To, to));
             return result;
         }
 
-        public IEnumerator<Vertex<V>> GetEnumerator()
+        public IEnumerator<V> GetEnumerator()
         {
-            foreach (Vertex<V> vertex in myVertices.Values)
+            foreach (V vertex in myVertices)
             {
                 yield return vertex;
             }

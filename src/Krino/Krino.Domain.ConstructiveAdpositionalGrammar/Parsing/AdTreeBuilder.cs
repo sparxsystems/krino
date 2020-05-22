@@ -414,11 +414,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
 
             // Get possibile ways how to connect new element.
-            IEnumerable<IReadOnlyList<DirectedEdge<Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
-                .FindAllPaths(startGrammarCharacter.ToString(), endGrammarCharacter.ToString());
+            IEnumerable<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
+                .FindAllPaths(startGrammarCharacter, endGrammarCharacter);
 
             // Go via all possible ways.
-            foreach (IReadOnlyList<DirectedEdge<Pattern>> path in connectionPaths)
+            foreach (IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>> path in connectionPaths)
             {
                 // If all elements is possible to create without morphs.
                 if (path.All(x => x.Value.MorphemeRule.MorphRule.Evaluate("")))
@@ -431,7 +431,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     // Go via the path.
                     for (int i = 0; i < path.Count; ++i)
                     {
-                        DirectedEdge<Pattern> edge = path[i];
+                        DirectedEdge<GrammarCharacter, Pattern> edge = path[i];
 
                         IAdTree bridge = new AdTree(new Morpheme("") { Attributes = edge.Value.MorphemeRule.GrammarCharacter.GetAttributes() }, edge.Value);
 

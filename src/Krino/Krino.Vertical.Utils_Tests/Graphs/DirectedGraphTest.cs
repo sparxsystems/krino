@@ -13,81 +13,48 @@ namespace Krino.Vertical.Utils_Tests.Graphs
         public void AddVertex()
         {
             DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
-            graph.AddVertex(new Vertex<string>("id2") { Value = "B" });
+            graph.AddVertex("A");
+            graph.AddVertex("B");
 
             Assert.AreEqual(2, graph.Count);
-            Assert.AreEqual("id1", graph["id1"].Id);
-            Assert.AreEqual("A", graph["id1"].Value);
-            Assert.AreEqual("id2", graph["id2"].Id);
-            Assert.AreEqual("B", graph["id2"].Value);
+            Assert.IsTrue(graph.Contains("A"));
+            Assert.IsTrue(graph.Contains("B"));
         }
 
         [Test]
         public void AddVertex_AlreadyExists()
         {
             DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
+            graph.AddVertex("A");
+            graph.AddVertex("A");
 
-            Assert.Throws<ArgumentException>(() => graph.AddVertex(new Vertex<string>("id1") { Value = "B" }));
+            Assert.AreEqual(1, graph.Count);
+            Assert.IsTrue(graph.Contains("A"));
         }
 
         [Test]
         public void RemoveVertex()
         {
             DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
-            graph.AddVertex(new Vertex<string>("id2") { Value = "B" });
+            graph.AddVertex("A");
+            graph.AddVertex("B");
 
-            Assert.IsTrue(graph.RemoveVertex("id1"));
-
+            Assert.IsTrue(graph.RemoveVertex("B"));
             Assert.AreEqual(1, graph.Count);
-            Assert.AreEqual("id2", graph["id2"].Id);
-            Assert.AreEqual("B", graph["id2"].Value);
+            Assert.IsTrue(graph.Contains("A"));
+
 
             Assert.IsFalse(graph.RemoveVertex("bla"));
-        }
-
-        [Test]
-        public void TryGetVertex()
-        {
-            DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
-            graph.AddVertex(new Vertex<string>("id2") { Value = "B" });
-
-            Vertex<string> vertex = graph.TryGetVertex("id2");
-
-            Assert.IsNotNull(vertex);
-            Assert.AreEqual("id2", vertex.Id);
-            Assert.AreEqual("B", vertex.Value);
-
-            Assert.IsNull(graph.TryGetVertex("bla"));
-        }
-
-        [Test]
-        public void GetVertex_Operator()
-        {
-            DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
-            graph.AddVertex(new Vertex<string>("id2") { Value = "B" });
-
-            Vertex<string> vertex = graph["id2"];
-
-            Assert.IsNotNull(vertex);
-            Assert.AreEqual("id2", vertex.Id);
-            Assert.AreEqual("B", vertex.Value);
-
-            Assert.Throws<KeyNotFoundException>(() => vertex = graph["bla"]);
         }
 
         [Test]
         public void ContainsVertex()
         {
             DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
-            graph.AddVertex(new Vertex<string>("id2") { Value = "B" });
+            graph.AddVertex("A");
+            graph.AddVertex("B");
 
-            Assert.IsTrue(graph.ContainsVertex("id2"));
+            Assert.IsTrue(graph.ContainsVertex("A"));
             Assert.IsFalse(graph.ContainsVertex("bla"));
         }
 
@@ -95,8 +62,8 @@ namespace Krino.Vertical.Utils_Tests.Graphs
         public void Count()
         {
             DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
-            graph.AddVertex(new Vertex<string>("id2") { Value = "B" });
+            graph.AddVertex("A");
+            graph.AddVertex("B");
 
             Assert.AreEqual(2, graph.Count);
         }
@@ -105,11 +72,11 @@ namespace Krino.Vertical.Utils_Tests.Graphs
         public void Vertex_Enumerator()
         {
             DirectedGraph<string, int> graph = new DirectedGraph<string, int>();
-            graph.AddVertex(new Vertex<string>("id1") { Value = "A" });
-            graph.AddVertex(new Vertex<string>("id2") { Value = "B" });
+            graph.AddVertex("A");
+            graph.AddVertex("B");
 
-            Assert.IsTrue(graph.Any(x => x.Id == "id1" && x.Value == "A"));
-            Assert.IsTrue(graph.Any(x => x.Id == "id2" && x.Value == "B"));
+            Assert.IsTrue(graph.Any(x => x == "A"));
+            Assert.IsTrue(graph.Any(x => x == "B"));
         }
 
 
@@ -131,10 +98,10 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddEdge("id1", "id3", 20);
             graph.AddEdge("id1", "id4", 30);
 
-            DirectedEdge<int>[] toRemove = new DirectedEdge<int>[]
+            DirectedEdge<string, int>[] toRemove = new DirectedEdge<string, int>[]
             {
-                new DirectedEdge<int>("id1", "id2") { Value = 10 },
-                new DirectedEdge<int>("id1", "id3") { Value = 20 },
+                new DirectedEdge<string, int>("id1", "id2") { Value = 10 },
+                new DirectedEdge<string, int>("id1", "id3") { Value = 20 },
             };
 
             Assert.IsTrue(graph.RemoveEdges(toRemove));
@@ -187,7 +154,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddEdge("id1", "id3", 20);
             graph.AddEdge("id2", "id4", 30);
 
-            IEnumerable<DirectedEdge<int>> edges = graph.GetEdgesGoingFrom("id1"); 
+            IEnumerable<DirectedEdge<string, int>> edges = graph.GetEdgesGoingFrom("id1"); 
 
             Assert.AreEqual(3, edges.Count());
             Assert.AreEqual(2, edges.Where(x => x.From == "id1" && x.To == "id2" && x.Value == 10).Count());
@@ -205,7 +172,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddEdge("id3", "id2", 20);
             graph.AddEdge("id2", "id4", 30);
 
-            IEnumerable<DirectedEdge<int>> edges = graph.GetEdgesGoingTo("id2");
+            IEnumerable<DirectedEdge<string, int>> edges = graph.GetEdgesGoingTo("id2");
 
             Assert.AreEqual(3, edges.Count());
             Assert.AreEqual(2, edges.Where(x => x.From == "id1" && x.To == "id2" && x.Value == 10).Count());
@@ -223,7 +190,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddEdge("id3", "id2", 20);
             graph.AddEdge("id2", "id4", 30);
 
-            IEnumerable<DirectedEdge<int>> edges = graph.GetEdges("id1", "id2");
+            IEnumerable<DirectedEdge<string, int>> edges = graph.GetEdges("id1", "id2");
 
             Assert.AreEqual(2, edges.Count());
             Assert.AreEqual(2, edges.Where(x => x.From == "id1" && x.To == "id2" && x.Value == 10).Count());

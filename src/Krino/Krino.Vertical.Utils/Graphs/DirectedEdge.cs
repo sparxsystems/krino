@@ -3,19 +3,20 @@
     /// <summary>
     /// Directed edge.
     /// </summary>
-    /// <typeparam name="T"></typeparam>
-    public class DirectedEdge<T>
+    /// <typeparam name="V">type of the vertex</typeparam>
+    /// <typeparam name="E">type of the edge</typeparam>
+    public class DirectedEdge<V, E>
     {
-        public DirectedEdge(string from, string to)
+        public DirectedEdge(V from, V to)
         {
             From = from;
             To = to;
         }
 
-        public string From { get; private set; }
+        public V From { get; private set; }
 
-        public string To { get; private set; }
+        public V To { get; private set; }
 
-        public T Value { get; set; }
+        public E Value { get; set; }
     }
 }
