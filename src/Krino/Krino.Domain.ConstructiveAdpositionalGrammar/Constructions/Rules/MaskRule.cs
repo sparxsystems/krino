@@ -8,7 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     /// <summary>
     /// Evaluates true if the value contains the required bit mask.
     /// </summary>
-    [DebuggerDisplay("{Mask}")]
+    [DebuggerDisplay("{ReferenceValue}")]
     public class MaskRule : RuleBase<BigInteger>, IReferenceValueRule<BigInteger>
     {
         public static IRule<BigInteger> Anything => RuleMaker.Anything<BigInteger>();
