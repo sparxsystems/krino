@@ -87,6 +87,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
             return this;
         }
 
+        public BigInteger GetAttributes()
+        {
+            BigInteger result;
+            if (AttributesRule is IReferenceValueRule<BigInteger> valueRule)
+            {
+                result = valueRule.ReferenceValue;
+            }
+            else
+            {
+                result = GrammarCharacter.GetAttributes();
+            }
+
+            return result;
+        }
+
         public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)
         {
             GrammarCharacter = grammarCharacter;

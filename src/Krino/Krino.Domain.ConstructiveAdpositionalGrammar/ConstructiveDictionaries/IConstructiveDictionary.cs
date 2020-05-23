@@ -42,15 +42,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         IEnumerable<Pattern> FindMatchingPatterns(Morpheme lexeme);
 
         /// <summary>
-        /// Finds transference patterns for the adtree.
+        /// Finds primitive transference patterns for the morpheme.
         /// </summary>
         /// <remarks>
-        /// The transference pattern changes the grammar character of the original adtree.
+        /// Primitive transference patterns are those which have the morpheme rule differnet from epsilon
         /// E.g. it changes stative to adjunctive (A>O).
         /// </remarks>
-        /// <param name="adTree"></param>
+        /// <param name="morpheme"></param>
         /// <returns></returns>
-        IEnumerable<Pattern> FindTransferencePatterns(IAdTree adTree);
+        IEnumerable<Pattern> FindPrimitiveTransferencePatterns(Morpheme morpheme);
 
         /// <summary>
         /// All non-lexemes.

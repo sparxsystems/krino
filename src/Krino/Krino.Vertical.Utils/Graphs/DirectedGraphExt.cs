@@ -9,6 +9,21 @@ namespace Krino.Vertical.Utils.Graphs
     public static class DirectedGraphExt
     {
         /// <summary>
+        /// Adds sequence of vertices to the graph.
+        /// </summary>
+        /// <typeparam name="V"></typeparam>
+        /// <typeparam name="E"></typeparam>
+        /// <param name="graph"></param>
+        /// <param name="vertices"></param>
+        public static void AddVertices<V, E>(this IDirectedGraph<V, E> graph, IEnumerable<V> vertices)
+        {
+            foreach (V vertex in vertices)
+            {
+                graph.AddVertex(vertex);
+            }
+        }
+
+        /// <summary>
         /// Finds all possible paths between two vertices using the DFS algorithm.
         /// </summary>
         /// <typeparam name="V"></typeparam>

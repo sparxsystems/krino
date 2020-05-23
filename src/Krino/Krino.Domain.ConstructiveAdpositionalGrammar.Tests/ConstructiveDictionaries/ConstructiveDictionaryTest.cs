@@ -7,6 +7,8 @@ using Krino.Vertical.Utils.Graphs;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
+using System.Security.Cryptography.X509Certificates;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDictionaries
 {
@@ -14,14 +16,77 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
     public class ConstructiveDictionaryTest
     {
         [Test]
-        public void Constructor_PatternGraph()
+        public void PatternGraph_Basic()
         {
-            List<Morpheme> morphemes = new List<Morpheme>()
+            List<Pattern> patterns = new List<Pattern>()
             {
-                new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb },
-                new Morpheme("s") { Attributes = Attributes.I.NonLexeme.VerbSuffix },
+                new Pattern("A")
+                {
+                    MorphemeRule = MorphemeRule.A_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("A-O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.O,
+                    LeftRule = MorphemeRule.A
+                },
             };
 
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
+
+            Assert.AreEqual(6, dictionary.PatternGraph.Count);
+            Assert.AreEqual(2, dictionary.PatternGraph.Edges.Count());
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.O && x.Value.Name == "A-O"));
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.A && x.Value.Name == "A-O"));
+        }
+
+        [Test]
+        public void PatternGraph_Order()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("A")
+                {
+                    MorphemeRule = MorphemeRule.A_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("A-O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.O,
+                    // The left rure must be set first.
+                    LeftRule = MorphemeRule.A.SetOrder(1)
+                },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
+
+            Assert.AreEqual(1, dictionary.PatternGraph.Edges.Count());
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.O && x.Value.Name == "A-O"));
+        }
+
+        [Test]
+        public void PatternGraph_AdPosition()
+        {
             List<Pattern> patterns = new List<Pattern>()
             {
                 new Pattern("I")
@@ -31,35 +96,58 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                     LeftRule = MorphemeRule.Nothing,
                 },
 
-                new Pattern("-s")
+                new Pattern("O")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Suffix("s"), MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
+                    MorphemeRule = MorphemeRule.O_Lexeme,
                     RightRule = MorphemeRule.Nothing,
                     LeftRule = MorphemeRule.Nothing,
                 },
 
-                // Transference pattern.
-                new Pattern("I>I")
+                new Pattern("E")
                 {
-                    MorphemeRule = MorphemeRule.I,
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Anything, MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
+                    MorphemeRule = MorphemeRule.E_Lexeme,
+                    RightRule = MorphemeRule.I_Not_NonLexeme,
+                    LeftRule = MorphemeRule.O_Not_NonLexeme
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
-            
-            // Note: the grammar characters are vertices.
-            //       the path consists of edges.
-            //       The edge is represented by the pattern which can connect two grammar characters.
-            List<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> paths = dictionary.PatternGraph.FindAllPaths(GrammarCharacter.I, GrammarCharacter.I).ToList();
-            
-            Assert.AreEqual(1, paths.Count);
-            Assert.AreEqual(1, paths[0].Count);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
 
-            Assert.AreEqual(GrammarCharacter.I.ToString(), paths[0][0].From);
-            Assert.AreEqual(GrammarCharacter.I.ToString(), paths[0][0].To);
+            Assert.AreEqual(6, dictionary.PatternGraph.Edges.Count());
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.I && x.Value.Name == "E"));
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.I && x.To == GrammarCharacter.O && x.Value.Name == "E"));
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.E && x.To == GrammarCharacter.I && x.Value.Name == "E"));
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.I && x.To == GrammarCharacter.E && x.Value.Name == "E"));
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.E && x.To == GrammarCharacter.O && x.Value.Name == "E"));
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.E && x.Value.Name == "E"));
         }
+
+        [Test]
+        public void PatternGraph_Itself()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("A")
+                {
+                    MorphemeRule = MorphemeRule.A_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("A-A")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.A,
+                    LeftRule = MorphemeRule.A
+                },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
+
+            Assert.AreEqual(1, dictionary.PatternGraph.Edges.Count());
+            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.A && x.Value.Name == "A-A"));
+        }
+
 
         [Test]
         public void FindLexemes_Similar()

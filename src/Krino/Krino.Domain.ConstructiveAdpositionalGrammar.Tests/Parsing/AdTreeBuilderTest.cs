@@ -179,7 +179,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.O)),
                     RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
+                    LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))
+                        .SetOrder(1),
                 },
             };
 
@@ -191,21 +192,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.IsTrue(builder.AddWord("is", 1));
             Assert.IsTrue(builder.AddWord("writer", 1));
 
-            // Note: there are two active adtrees because when searching morpheme sequences
-            //       it consoder also the possibility 'writer' is typo which is corrected
-            //       to 'write' - that is the first possibility.
-            //       The other one is with the recognized suffix 'write', 'er'.
-            Assert.AreEqual(2, builder.ActiveAdTrees.Count);
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             
-            Assert.IsNull(builder.ActiveAdTrees[0].Left.Left);
+            Assert.AreEqual("er", builder.ActiveAdTrees[0].Left.Left.Morpheme.Morph);
             Assert.AreEqual("write", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
             Assert.AreEqual("he", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
             Assert.AreEqual("is", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
-
-            Assert.AreEqual("er", builder.ActiveAdTrees[1].Left.Left.Morpheme.Morph);
-            Assert.AreEqual("write", builder.ActiveAdTrees[1].Left.Right.Morpheme.Morph);
-            Assert.AreEqual("he", builder.ActiveAdTrees[1].Right.Left.Morpheme.Morph);
-            Assert.AreEqual("is", builder.ActiveAdTrees[1].Right.Right.Morpheme.Morph);
         }
 
         [Test]
@@ -282,9 +274,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("O>A")
                 {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme)),
-                    LeftRule = MorphemeRule.O_Not_NonLexeme,
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.A.Lexeme)),
+                    RightRule = MorphemeRule.O_Lexeme,
+                    LeftRule = MorphemeRule.Nothing,
                 },
             };
 
@@ -304,7 +296,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.IsTrue(builder.AddWord("race"));
             Assert.IsTrue(builder.AddWord("car"));
 
-            builder.Collapse();
+            //builder.Collapse();
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.AreEqual("green", builder.ActiveAdTrees[0].Left.Morpheme.Morph);

@@ -202,20 +202,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         private IEnumerable<IAdTree> GetTransferences(IAdTree adTree)
         {
             // Try to incorporate possible grammar character transferences.
-            IEnumerable<Pattern> transferencePatterns = myConstructiveDictionary.FindTransferencePatterns(adTree);
+            IEnumerable<Pattern> transferencePatterns = myConstructiveDictionary.FindPrimitiveTransferencePatterns(adTree.Morpheme);
             foreach (Pattern transferencePattern in transferencePatterns)
             {
                 IAdTree adTreeCopy = adTree.MakeShallowCopy();
-                IAdTree transferenceAdTree = new AdTree(new Morpheme(""), transferencePattern);
-                transferenceAdTree.Left = adTreeCopy;
-                transferenceAdTree.Right = new AdTree(
-                    new Morpheme("") { Attributes = transferenceAdTree.Pattern.RightRule.GrammarCharacter.GetAttributes() },
-                    new Pattern(transferenceAdTree.Pattern.RightRule.GrammarCharacter.ToString())
-                    {
-                        MorphemeRule = new MorphemeRule(transferenceAdTree.Pattern.RightRule.GrammarCharacter, MorphRuleMaker.EmptyString, MaskRule.Is(transferenceAdTree.Pattern.RightRule.GrammarCharacter.GetAttributes())),
-                        LeftRule = MorphemeRule.Nothing,
-                        RightRule = MorphemeRule.Nothing,
-                    });
+                IAdTree transferenceAdTree = new AdTree(new Morpheme("") { Attributes = transferencePattern.MorphemeRule.GetAttributes() }, transferencePattern);
+                transferenceAdTree.Right = adTreeCopy;
                 yield return transferenceAdTree;
             }
         }
