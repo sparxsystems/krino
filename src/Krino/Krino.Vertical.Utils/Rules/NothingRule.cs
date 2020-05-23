@@ -7,10 +7,10 @@ namespace Krino.Vertical.Utils.Rules
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [DebuggerDisplay("nothing")]
-    public class NothingRule<T> : IRule<T>
+    public class NothingRule<T> : RuleBase<T>, IRule<T>
     {
-        public bool Evaluate(T value) => false;
+        public override bool Evaluate(T value) => false;
 
-        public bool Equals(IRule<T> other) => other is NothingRule<T>;
+        public override bool Equals(IRule<T> other) => other is NothingRule<T>;
     }
 }

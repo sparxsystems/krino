@@ -1,15 +1,24 @@
-﻿namespace Krino.Vertical.Utils.Rules
+﻿using System.Diagnostics;
+
+namespace Krino.Vertical.Utils.Rules
 {
     /// <summary>
     /// Evaluates if the value is null.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    public class IsNullRule<T> : IRule<T>
+    [DebuggerDisplay("null")]
+    public class IsNullRule<T> : RuleBase<T>, IReferenceValueRule<T>
         where T : class
     {
-        public bool Evaluate(T value) => value == null;
+        public T ReferenceValue => null;
 
+        /// <summary>
+        /// Returns true if the value is null.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public override bool Evaluate(T value) => value == null;
 
-        public bool Equals(IRule<T> other) => other is IsNullRule<T>;
+        public override bool Equals(IRule<T> other) => other is IsNullRule<T>;
     }
 }

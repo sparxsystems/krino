@@ -52,6 +52,17 @@ namespace Krino.Vertical.Utils_Tests.Rules
         }
 
         [Test]
+        public void ImplicitRuleOperators()
+        {
+            IRule<string> rule = !RuleMaker.IsNull<string>() & !RuleMaker.Is("") & RuleMaker.Is("hi") | RuleMaker.Is("hello");
+            Assert.IsTrue(rule.Evaluate("hi"));
+            Assert.IsTrue(rule.Evaluate("hello"));
+            Assert.IsFalse(rule.Evaluate("bla"));
+            Assert.IsFalse(rule.Evaluate(null));
+            Assert.IsFalse(rule.Evaluate(""));
+        }
+
+        [Test]
         public void Equals()
         {
             IRule<int> rule1 = RuleMaker.Is(10).Or(20).Or(30);

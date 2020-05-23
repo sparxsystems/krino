@@ -6,18 +6,18 @@ namespace Krino.Vertical.Utils.Rules
     /// Logical operator negation.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DebuggerDisplay("!{NegatedRule}")]
-    public class NotRule<T> : IRule<T>
+    [DebuggerDisplay("!{Subrule}")]
+    public class NotRule<T> : RuleBase<T>, IUnaryOperatorRule<T>
     {
         public NotRule(IRule<T> subRule)
         {
-            NegatedRule = subRule;
+            Subrule = subRule;
         }
 
-        public IRule<T> NegatedRule { get; private set; }
+        public IRule<T> Subrule { get; private set; }
 
-        public bool Evaluate(T value) => !NegatedRule.Evaluate(value);
+        public override bool Evaluate(T value) => !Subrule.Evaluate(value);
 
-        public bool Equals(IRule<T> other) => other is NotRule<T> notRule && NegatedRule.Equals(notRule.NegatedRule);
+        public override bool Equals(IRule<T> other) => other is NotRule<T> notRule && Subrule.Equals(notRule.Subrule);
     }
 }

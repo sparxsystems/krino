@@ -7,23 +7,31 @@ namespace Krino.Vertical.Utils.Rules
     /// Simple rule evaluation.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DebuggerDisplay("{RequiredValue}")]
-    public class IsRule<T> : IRule<T>
+    [DebuggerDisplay("{ReferenceValue}")]
+    public class IsRule<T> : RuleBase<T>, IReferenceValueRule<T>
     {
         private IEqualityComparer<T> myComparer;
 
         public IsRule(T requiredValue)
         {
             myComparer = EqualityComparer<T>.Default;
-            RequiredValue = requiredValue;
+            ReferenceValue = requiredValue;
         }
 
-        public T RequiredValue { get; private set; }
+        /// <summary>
+        /// The value which is accepted by the rule.
+        /// </summary>
+        public T ReferenceValue { get; private set; }
 
-        public bool Evaluate(T value) => RequiredValue.Equals(value);
+        /// <summary>
+        /// Returns true if the value is equal to the reference value.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public override bool Evaluate(T value) => ReferenceValue.Equals(value);
 
 
-        public bool Equals(IRule<T> other) => other is IsRule<T> isRule && myComparer.Equals(RequiredValue, isRule.RequiredValue);
+        public override bool Equals(IRule<T> other) => other is IsRule<T> isRule && myComparer.Equals(ReferenceValue, isRule.ReferenceValue);
 
 
         /// <summary>
