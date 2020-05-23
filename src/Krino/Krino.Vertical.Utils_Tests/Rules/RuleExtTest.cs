@@ -42,7 +42,7 @@ namespace Krino.Vertical.Utils_Tests.Rules
         public void IsSubruleOf()
         {
             IRule<int> rule1 = RuleMaker.Is(1) | RuleMaker.Is(2);
-            IRule<int> rule2 = RuleMaker.Is(1) | RuleMaker.Is(2) | !RuleMaker.Is(3);
+            IRule<int> rule2 = RuleMaker.Is(1) | RuleMaker.Is(2) | RuleMaker.Is(3);
 
             Assert.IsTrue(rule1.IsSubruleOf(rule2));
             Assert.IsFalse(rule2.IsSubruleOf(rule1));

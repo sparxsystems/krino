@@ -85,44 +85,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         }
 
         [Test]
-        public void PatternGraph_AdPosition()
-        {
-            List<Pattern> patterns = new List<Pattern>()
-            {
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("E")
-                {
-                    MorphemeRule = MorphemeRule.E_Lexeme,
-                    RightRule = MorphemeRule.I_Not_NonLexeme,
-                    LeftRule = MorphemeRule.O_Not_NonLexeme
-                },
-            };
-
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
-
-            Assert.AreEqual(6, dictionary.PatternGraph.Edges.Count());
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.I && x.Value.Name == "E"));
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.I && x.To == GrammarCharacter.O && x.Value.Name == "E"));
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.E && x.To == GrammarCharacter.I && x.Value.Name == "E"));
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.I && x.To == GrammarCharacter.E && x.Value.Name == "E"));
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.E && x.To == GrammarCharacter.O && x.Value.Name == "E"));
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.E && x.Value.Name == "E"));
-        }
-
-        [Test]
         public void PatternGraph_Itself()
         {
             List<Pattern> patterns = new List<Pattern>()
