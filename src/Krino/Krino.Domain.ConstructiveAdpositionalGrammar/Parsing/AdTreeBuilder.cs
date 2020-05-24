@@ -4,9 +4,11 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Graphs;
+using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
@@ -205,10 +207,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             IEnumerable<Pattern> transferencePatterns = myConstructiveDictionary.FindPrimitiveTransferencePatterns(adTree.Morpheme);
             foreach (Pattern transferencePattern in transferencePatterns)
             {
-                IAdTree adTreeCopy = adTree.MakeShallowCopy();
-                IAdTree transferenceAdTree = new AdTree(new Morpheme("") { Attributes = transferencePattern.MorphemeRule.GetAttributes() }, transferencePattern);
-                transferenceAdTree.Right = adTreeCopy;
-                yield return transferenceAdTree;
+                if (transferencePattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
+                {
+                    IAdTree adTreeCopy = adTree.MakeShallowCopy();
+                    IAdTree transferenceAdTree = new AdTree(new Morpheme("") { Attributes = isRule.ReferenceValue }, transferencePattern);
+                    transferenceAdTree.Right = adTreeCopy;
+                    yield return transferenceAdTree;
+                }
             }
         }
 

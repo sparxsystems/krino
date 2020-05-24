@@ -50,39 +50,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.A && x.Value.Name == "A-O"));
         }
 
-        [Test]
-        public void PatternGraph_Order()
-        {
-            List<Pattern> patterns = new List<Pattern>()
-            {
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O,
-                    // The left rure must be set first.
-                    LeftRule = MorphemeRule.A.SetOrder(1)
-                },
-            };
-
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
-
-            Assert.AreEqual(1, dictionary.PatternGraph.Edges.Count());
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.O && x.Value.Name == "A-O"));
-        }
 
         [Test]
         public void PatternGraph_Itself()

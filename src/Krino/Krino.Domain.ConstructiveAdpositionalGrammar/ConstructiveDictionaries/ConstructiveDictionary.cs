@@ -5,9 +5,11 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Graphs;
+using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 {
@@ -142,8 +144,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         private bool IsEdge(MorphemeRule from, MorphemeRule to)
         {
             if (from.GrammarCharacter != GrammarCharacter.Epsilon &&
-                to.GrammarCharacter != GrammarCharacter.Epsilon &&
-                from.Order <= to.Order)
+                to.GrammarCharacter != GrammarCharacter.Epsilon)
             {
                 return true;
             }
@@ -248,7 +249,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         private bool IsPrimitiveTransferencePattern(Pattern pattern)
         {
             // AdPosition
-            if (pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon)
+            if (pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                (pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) ||
+                 pattern.MorphemeRule.MorphRule.Evaluate("")))
             {
                 // Left.
                 if (pattern.LeftRule.Equals(MorphemeRule.Nothing))

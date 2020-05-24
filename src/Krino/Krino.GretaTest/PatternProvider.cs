@@ -70,16 +70,16 @@ namespace Krino.GretaTest
 
             new Pattern("O>A")
             {
-                MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme)),
-                LeftRule = MorphemeRule.O_Not_NonLexeme,
+                MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
+                RightRule = MorphemeRule.O_Lexeme,
+                LeftRule = MorphemeRule.Nothing,
             },
 
             new Pattern("I>I")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
                 RightRule = MorphemeRule.I_Not_NonLexeme,
-                LeftRule = MorphemeRule.I_Lexeme.SetOrder(1).SetAttributes(Attributes.I.Lexeme.Verb.Modal),
+                LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal).SetOrder(1),
             },
 
 

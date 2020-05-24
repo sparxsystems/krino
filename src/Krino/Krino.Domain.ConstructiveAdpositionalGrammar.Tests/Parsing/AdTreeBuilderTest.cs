@@ -274,7 +274,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("O>A")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Nothing, MaskRule.Is(Attributes.A.Lexeme)),
+                    MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
                     RightRule = MorphemeRule.O_Lexeme,
                     LeftRule = MorphemeRule.Nothing,
                 },
@@ -298,10 +298,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             //builder.Collapse();
 
-            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual(2, builder.ActiveAdTrees.Count);
             Assert.AreEqual("green", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
-            Assert.AreEqual("race", builder.ActiveAdTrees[0].Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("race", builder.ActiveAdTrees[0].Right.Left.Right.Morpheme.Morph);
             Assert.AreEqual("car", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+
+            Assert.AreEqual("green", builder.ActiveAdTrees[1].Left.Morpheme.Morph);
+            Assert.AreEqual("race", builder.ActiveAdTrees[1].Right.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("car", builder.ActiveAdTrees[1].Right.Right.Left.Right.Morpheme.Morph);
         }
 
         [Test]
