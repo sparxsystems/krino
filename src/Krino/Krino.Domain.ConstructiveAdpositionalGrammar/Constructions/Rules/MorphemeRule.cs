@@ -23,8 +23,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static MorphemeRule Any(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Anything, MaskRule.Anything);
 
-        public static MorphemeRule Is(GrammarCharacter grammarCharacter, string morph, BigInteger attributes) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Is(morph), MaskRule.Is(attributes));
-
         public static MorphemeRule O => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Anything, MaskRule.Is(Attributes.O));
 
         public static MorphemeRule O_Lexeme => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.Lexeme));

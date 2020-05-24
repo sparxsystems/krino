@@ -1,4 +1,5 @@
-﻿using System.Diagnostics;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+using System.Diagnostics;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
@@ -6,6 +7,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     [DebuggerDisplay("{GrammarCharacter}: {Morph}")]
     public class Morpheme
     {
+        public static Morpheme Epsilon => new Morpheme("") { Attributes = AttributesArrangement.Attributes.Epsilon };
+
+
         public Morpheme (string morph)
         {
             Morph = morph;

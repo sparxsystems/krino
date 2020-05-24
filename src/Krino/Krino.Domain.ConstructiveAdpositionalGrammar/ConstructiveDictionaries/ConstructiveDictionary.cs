@@ -82,9 +82,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         public IEnumerable<Pattern> FindPrimitiveTransferencePatterns(Morpheme morpheme)
         {
             IEnumerable<Pattern> result = Patterns
-                .Where(x => IsPrimitiveTransferencePattern(x) && x.RightRule.Evaluate(morpheme));
+                .Where(x => x.IsPrimitiveTransference() && x.RightRule.Evaluate(morpheme));
 
             return result;
+        }
+
+        public IEnumerable<Pattern> FindModifierPatterns(Morpheme morpheme)
+        {
+            foreach (Pattern pattern in Patterns)
+            {
+                if (pattern.IsModifier())
+                {
+                    if (pattern.LeftRule.Order < pattern.RightRule.Order)
+                    {
+                        if (pattern.LeftRule.Evaluate(morpheme))
+                        {
+                            yield return pattern;
+                        }
+                    }
+                    else if (pattern.LeftRule.Order > pattern.RightRule.Order)
+                    {
+                        if (pattern.RightRule.Evaluate(morpheme))
+                        {
+                            yield return pattern;
+                        }
+                    }
+                }
+            }
         }
 
         public IEnumerable<Morpheme> NonLexemes { get; }
@@ -244,28 +268,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                     }
                 }
             }
-        }
-
-        private bool IsPrimitiveTransferencePattern(Pattern pattern)
-        {
-            // AdPosition
-            if (pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
-                pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                (pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) ||
-                 pattern.MorphemeRule.MorphRule.Evaluate("")))
-            {
-                // Left.
-                if (pattern.LeftRule.Equals(MorphemeRule.Nothing))
-                {
-                    // Right - inheriting site.
-                    if (pattern.RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
-                    {
-                        return true;
-                    }
-                }
-            }
-
-            return false;
         }
     }
 }

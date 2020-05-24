@@ -1,7 +1,9 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.Transformations;
 using System.Diagnostics;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 {
@@ -25,5 +27,51 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         public MorphemeRule LeftRule { get; set; } = MorphemeRule.Nothing;
 
         public MorphemeRule RightRule { get; set; } = MorphemeRule.Nothing;
+
+        public bool IsPrimitiveTransference()
+        {
+            // AdPosition
+            if (MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                (MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) ||
+                 MorphemeRule.MorphRule.Evaluate("")))
+            {
+                // Left.
+                if (LeftRule.Equals(MorphemeRule.Nothing))
+                {
+                    // Right - inheriting site.
+                    if (RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        public bool IsModifier()
+        {
+            // AdPosition
+            if (MorphemeRule.GrammarCharacter == GrammarCharacter.Epsilon &&
+                (MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) ||
+                 MorphemeRule.MorphRule.Evaluate("")))
+            {
+                // Left.
+                if (LeftRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                {
+                    // Right.
+                    if (RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                    {
+                        if (RightRule.Order != LeftRule.Order)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
     }
 }

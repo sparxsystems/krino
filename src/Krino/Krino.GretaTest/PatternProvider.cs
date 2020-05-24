@@ -62,12 +62,12 @@ namespace Krino.GretaTest
 
             new Pattern("O-and-O")
             {
-                MorphemeRule = MorphemeRule.Is(GrammarCharacter.U, "and", Attributes.U.Lexeme),
+                MorphemeRule = MorphemeRule.Is("and", Attributes.U.Lexeme),
                 RightRule = MorphemeRule.O_Not_NonLexeme,
                 LeftRule = MorphemeRule.O_Not_NonLexeme
             },
 
-
+            // Primitive transference.
             new Pattern("O>A")
             {
                 MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
@@ -85,7 +85,7 @@ namespace Krino.GretaTest
 
             new Pattern(".")
             {
-                MorphemeRule = MorphemeRule.Is(GrammarCharacter.U, ".", Attributes.U.NonLexeme),
+                MorphemeRule = MorphemeRule.Is(".", Attributes.U.NonLexeme),
                 RightRule = MorphemeRule.Something(GrammarCharacter.I).SetOrder(1),
                 LeftRule = MorphemeRule.Anything,
             },

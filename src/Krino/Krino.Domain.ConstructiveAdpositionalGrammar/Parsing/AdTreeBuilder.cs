@@ -149,17 +149,35 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 List<IAdTree> newListOfAdTrees = new List<IAdTree>();
 
+                // Go via active adtrees.
                 foreach (IAdTree activeAdTree in myActiveAdTrees)
                 {
+                    // Go via all homonyms.
                     foreach (IAdTree newAdTree in homonymAdTrees)
                     {
+                        // Try to append the homonym.
                         TryToAppend(activeAdTree, newAdTree, newListOfAdTrees);
 
-                        // Try to incorporate possible grammar character transferences.
+                        // Get possible modifiers.
+                        IEnumerable<IAdTree> modifiers = GetModifiers(newAdTree);
+                        foreach (IAdTree modifier in modifiers)
+                        {
+                            TryToAppend(activeAdTree, modifier, newListOfAdTrees);
+                        }
+
+
+                        // Get possible primitive grammar character transferences.
                         IEnumerable<IAdTree> transferences = GetTransferences(newAdTree);
                         foreach (IAdTree transference in transferences)
                         {
                             TryToAppend(activeAdTree, transference, newListOfAdTrees);
+
+                            // Get possible modifiers for the transference.
+                            IEnumerable<IAdTree> transferenceModifiers = GetModifiers(activeAdTree);
+                            foreach (IAdTree modifier in transferenceModifiers)
+                            {
+                                TryToAppend(activeAdTree, modifier, newListOfAdTrees);
+                            }
                         }
                     }
                 }
@@ -201,16 +219,38 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
         }
 
+        private IEnumerable<IAdTree> GetModifiers(IAdTree adTree)
+        {
+            // Try to incorporate possible grammar character transferences.
+            IEnumerable<Pattern> patterns = myConstructiveDictionary.FindModifierPatterns(adTree.Morpheme);
+            foreach (Pattern pattern in patterns)
+            {
+                IAdTree adTreeCopy = adTree.MakeShallowCopy();
+                IAdTree modifierAdTree = new AdTree(Morpheme.Epsilon, pattern);
+
+                if (pattern.LeftRule.Order < pattern.RightRule.Order)
+                {
+                    modifierAdTree.Left = adTreeCopy;
+                }
+                else if (pattern.LeftRule.Order > pattern.RightRule.Order)
+                {
+                    modifierAdTree.Right = adTreeCopy;
+                }
+
+                yield return modifierAdTree;
+            }
+        }
+
         private IEnumerable<IAdTree> GetTransferences(IAdTree adTree)
         {
             // Try to incorporate possible grammar character transferences.
-            IEnumerable<Pattern> transferencePatterns = myConstructiveDictionary.FindPrimitiveTransferencePatterns(adTree.Morpheme);
-            foreach (Pattern transferencePattern in transferencePatterns)
+            IEnumerable<Pattern> patterns = myConstructiveDictionary.FindPrimitiveTransferencePatterns(adTree.Morpheme);
+            foreach (Pattern pattern in patterns)
             {
-                if (transferencePattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
+                if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
                 {
                     IAdTree adTreeCopy = adTree.MakeShallowCopy();
-                    IAdTree transferenceAdTree = new AdTree(new Morpheme("") { Attributes = isRule.ReferenceValue }, transferencePattern);
+                    IAdTree transferenceAdTree = new AdTree(new Morpheme("") { Attributes = isRule.ReferenceValue }, pattern);
                     transferenceAdTree.Right = adTreeCopy;
                     yield return transferenceAdTree;
                 }
@@ -530,6 +570,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             IEnumerable<IAdTree> adTrees = new IAdTree[] { current }.Concat(current.AdPositions);
             foreach (IAdTree adTree in adTrees)
             {
+                // If left or right position can be filled.
                 if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) ||
                     adTree.Right == null && !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
                 {

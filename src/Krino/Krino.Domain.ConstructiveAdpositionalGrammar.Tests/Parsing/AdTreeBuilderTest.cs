@@ -269,7 +269,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = MorphemeRule.O_Not_NonLexeme,
-                    LeftRule = MorphemeRule.A_Not_NonLexeme.SetOrder(1),
+                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
                 },
 
                 new Pattern("O>A")
@@ -306,6 +306,65 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("green", builder.ActiveAdTrees[1].Left.Morpheme.Morph);
             Assert.AreEqual("race", builder.ActiveAdTrees[1].Right.Left.Right.Morpheme.Morph);
             Assert.AreEqual("car", builder.ActiveAdTrees[1].Right.Right.Left.Right.Morpheme.Morph);
+        }
+
+        [Test]
+        public void I_will_read()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("I")
+                {
+                    MorphemeRule = MorphemeRule.I_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("O-I")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.O_Lexeme,
+                },
+
+                new Pattern("I-I")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal)
+                    .SetOrder(1),
+                },
+            };
+
+            List<Morpheme> morphemes = new List<Morpheme>()
+            {
+                // Lexemes.
+                new Morpheme("I"){ Attributes = Attributes.O.Lexeme.Pronoun },
+                new Morpheme("will") { Attributes = Attributes.I.Lexeme.Verb.Modal },
+                new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+            Assert.IsTrue(builder.AddWord("I"));
+            Assert.IsTrue(builder.AddWord("will"));
+            Assert.IsTrue(builder.AddWord("read"));
+
+            builder.Collapse();
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual("I", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
+            Assert.AreEqual("will", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
         }
 
         [Test]
