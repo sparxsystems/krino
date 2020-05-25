@@ -26,20 +26,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         public IReadOnlyList<IAdTree> ActiveAdTrees => myActiveAdTrees.Select(x => x.Root).ToList();
 
         /// <summary>
-        /// Keeps only one the most meaningful adtree.
+        /// Keeps only adtrees without nonconformities.
         /// </summary>
-        public void Collapse()
+        public void Purify()
         {
             List<IAdTree> adTrees = new List<IAdTree>();
 
-            List<Tuple<int, IAdTree>> ordered = myActiveAdTrees.Select(x => Tuple.Create(x.Root.GetNonconformities().Count(), x))
-                .OrderBy(x => x.Item1)
-                .ToList();
-
-            Tuple<int, IAdTree> result = ordered.FirstOrDefault();
-            if (result != null)
+            foreach (IAdTree adTree in myActiveAdTrees)
             {
-                adTrees.Add(result.Item2);
+                int nonConformities = adTree.Root.GetNonconformities().Count();
+                if (nonConformities == 0)
+                {
+                    adTrees.Add(adTree);
+                }
             }
 
             myActiveAdTrees = adTrees;
@@ -144,6 +143,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             bool isAdded = false;
 
+            // Consider primitive transferences for each homonym e.g. O>A.
+            IEnumerable<IAdTree> homonymsAndPrimitiveTransferences = homonymAdTrees.SelectMany(x => new IAdTree[] { x }.Concat(GetPrimitiveTransferences(x)))
+                .Distinct();
+
             // Update active adtrees.
             if (myActiveAdTrees.Count != 0)
             {
@@ -152,31 +155,58 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 // Go via active adtrees.
                 foreach (IAdTree activeAdTree in myActiveAdTrees)
                 {
-                    // Go via all homonyms.
-                    foreach (IAdTree newAdTree in homonymAdTrees)
+                    // Go via all homonyms and primitive transferences.
+                    foreach (IAdTree newAdTree in homonymsAndPrimitiveTransferences)
                     {
-                        // Try to append the homonym.
+                        int countBefore = newListOfAdTrees.Count;
+
+                        // Try to append.
                         TryToAppend(activeAdTree, newAdTree, newListOfAdTrees);
 
-                        // Get possible modifiers.
-                        IEnumerable<IAdTree> modifiers = GetModifiers(newAdTree);
-                        foreach (IAdTree modifier in modifiers)
+                        if (newListOfAdTrees.Count > countBefore)
                         {
-                            TryToAppend(activeAdTree, modifier, newListOfAdTrees);
-                        }
+                            // Try to get possible modifiers.
+                            IEnumerable<IAdTree> modifiers = GetModifiers(newAdTree);
 
-
-                        // Get possible primitive grammar character transferences.
-                        IEnumerable<IAdTree> transferences = GetTransferences(newAdTree);
-                        foreach (IAdTree transference in transferences)
-                        {
-                            TryToAppend(activeAdTree, transference, newListOfAdTrees);
-
-                            // Get possible modifiers for the transference.
-                            IEnumerable<IAdTree> transferenceModifiers = GetModifiers(activeAdTree);
-                            foreach (IAdTree modifier in transferenceModifiers)
+                            if (modifiers.Any())
                             {
-                                TryToAppend(activeAdTree, modifier, newListOfAdTrees);
+                                // Try to append modifiers too.
+                                // Note: use the 'for' loop to be able to modify the iterated list.
+                                for (int i = newListOfAdTrees.Count - 1; i >= countBefore; --i)
+                                {
+                                    IAdTree adTree = newListOfAdTrees[i];
+
+                                    if (adTree.AdPosition != null)
+                                    {
+                                        foreach (IAdTree modifier in modifiers)
+                                        {
+                                            if (adTree.IsOnLeft)
+                                            {
+                                                if (adTree.AdPosition.CanAttachToLeft(modifier))
+                                                {
+                                                    IAdTree adPositionCopy = adTree.AdPosition.MakeShallowCopy();
+                                                    adPositionCopy.Left.Detach();
+
+                                                    IAdTree modifierCopy = modifier.MakeShallowCopy();
+                                                    adPositionCopy.Left = modifierCopy;
+                                                    newListOfAdTrees.Add(modifierCopy);
+                                                }
+                                            }
+                                            else
+                                            {
+                                                if (adTree.AdPosition.CanAttachToRight(modifier))
+                                                {
+                                                    IAdTree adPositionCopy = adTree.AdPosition.MakeShallowCopy();
+                                                    adPositionCopy.Right.Detach();
+
+                                                    IAdTree modifierCopy = modifier.MakeShallowCopy();
+                                                    adPositionCopy.Right = modifierCopy;
+                                                    newListOfAdTrees.Add(modifierCopy);
+                                                }
+                                            }
+                                        }
+                                    }
+                                }
                             }
                         }
                     }
@@ -191,7 +221,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             // Create new adtrees.
             else
             {
-                myActiveAdTrees.AddRange(homonymAdTrees);
+                // Start active adtrees.
+                myActiveAdTrees.AddRange(homonymsAndPrimitiveTransferences);
 
                 if (myActiveAdTrees.Count > 0)
                 {
@@ -207,7 +238,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             foreach (Morpheme morpheme in morphemes)
             {
-                IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindMatchingPatterns(morpheme);
+                IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindPatterns(morpheme);
 
                 // Go via patterns matching the incoming morpheme.
                 foreach (Pattern pattern in matchingPatterns)
@@ -241,9 +272,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
         }
 
-        private IEnumerable<IAdTree> GetTransferences(IAdTree adTree)
+        private IEnumerable<IAdTree> GetPrimitiveTransferences(IAdTree adTree)
         {
-            // Try to incorporate possible grammar character transferences.
             IEnumerable<Pattern> patterns = myConstructiveDictionary.FindPrimitiveTransferencePatterns(adTree.Morpheme);
             foreach (Pattern pattern in patterns)
             {
@@ -288,9 +318,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         adTreeCopy.Left = newAdTreeElementCopy;
                         results.Add(newAdTreeElementCopy);
                     }
-                    // Try to attach the new element indirectly.
                     else
                     {
+                        // Try to attach the new element indirectly.
                         TryToAppendIndirectly(AttachPosition.ParrentForLeft, placeToAppend, newElement, results);
                     }
                 }
@@ -306,9 +336,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         adTreeCopy.Right = newAdTreeElementCopy;
                         results.Add(newAdTreeElementCopy);
                     }
-                    // Try to attach the new element indirectly.
                     else
                     {
+                        // Try to attach the new element indirectly.
                         TryToAppendIndirectly(AttachPosition.ParrentForRight, placeToAppend, newElement, results);
                     }
                 }
@@ -318,7 +348,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 if (placeToAppend.AdPosition == null)
                 {
                     // The new element tries to attach the adtree to its left.
-                    if (newElement.Left == null)
+                    if (newElement.Left == null && !newElement.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
                     {
                         if (newElement.CanAttachToLeft(placeToAppend))
                         {
@@ -335,7 +365,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     }
 
                     // The new element tries to attach the adtree to its right.
-                    if (newElement.Right == null)
+                    if (newElement.Right == null && !newElement.Pattern.RightRule.Equals(MorphemeRule.Nothing))
                     {
                         if (newElement.CanAttachToRight(placeToAppend))
                         {

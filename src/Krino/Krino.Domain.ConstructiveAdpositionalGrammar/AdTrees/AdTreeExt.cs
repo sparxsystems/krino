@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -117,9 +118,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Returns true if the adTreeElement can be attached to the right branch of the adTree.
         /// </summary>
         /// <param name="adTree"></param>
-        /// <param name="adTreeElementToRight"></param>
+        /// <param name="adTreeElement"></param>
         /// <returns></returns>
-        public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeElementToRight)
+        public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeElement)
         {
             // If the rule allows to attach something to the right.
             if (!adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
@@ -136,7 +137,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // If the valency position is specified then check correctness with regard to presence of previous valencies.
                 if (adTree.Pattern.MorphemeRule.ValencyPosition > 0)
                 {
-                    IAdTree closestValencyAdPosition = new IAdTree[] { adTreeElementToRight }.Concat(adTreeElementToRight.RightChildren)
+                    IAdTree closestValencyAdPosition = new IAdTree[] { adTreeElement }.Concat(adTreeElement.RightChildren)
                         .FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
 
                     if (closestValencyAdPosition == null && adTree.Pattern.MorphemeRule.ValencyPosition > 1 ||
@@ -147,9 +148,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 }
 
                 // If the right rule of the adtree matches the element.
-                if (adTree.Pattern.RightRule.Evaluate(adTreeElementToRight.Morpheme) ||
+                if (adTree.Pattern.RightRule.Evaluate(adTreeElement.Morpheme) ||
                     // or if the right rule of the adtree matches the right rule of the element - inheritance.
-                    adTreeElementToRight.Pattern.RightRule.IsSubruleOf(adTree.Pattern.RightRule))
+                    (adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon ||
+                     adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.U) &&
+                    adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.RightRule))
                 {
                     return true;
                 }
@@ -181,6 +184,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // If the left rule of the adtree matches the element.
                 if (adTree.Pattern.LeftRule.Evaluate(adTreeElement.Morpheme) ||
                     // or if the LEFT rule of the adtree matches the RIGHT rule of the element - inheritance works always via the right child.
+                    (adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon ||
+                     adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.U) &&
                     adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.LeftRule))
                 {
                     return true;
@@ -332,10 +337,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 other.GrammarCharacter == morphemeRule.GrammarCharacter)
             {
                 if (other.MorphRule.Equals(MorphRuleMaker.Anything) ||
-                    other.MorphRule.Equals(morphemeRule.MorphRule))
+                    morphemeRule.MorphRule.IsSubruleOf(other.MorphRule))
                 {
                     if (other.AttributesRule.Equals(MaskRule.Anything) ||
-                        other.AttributesRule.Equals(morphemeRule.AttributesRule))
+                        morphemeRule.AttributesRule.IsSubruleOf(other.AttributesRule))
                     {
                         return true;
                     }

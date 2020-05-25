@@ -71,7 +71,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             return result;
         }
 
-        public IEnumerable<Pattern> FindMatchingPatterns(Morpheme morpheme)
+        public IEnumerable<Pattern> FindPatterns(Morpheme morpheme)
         {
             IEnumerable<Pattern> result = Patterns
                 .Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&

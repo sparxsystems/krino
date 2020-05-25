@@ -1,5 +1,4 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
@@ -35,36 +34,36 @@ namespace Krino.GretaTest
             new Pattern("E")
                 {
                     MorphemeRule = MorphemeRule.E_Not_NonLexeme,
-                    RightRule = MorphemeRule.I_Not_NonLexeme,
-                    LeftRule = MorphemeRule.O_Not_NonLexeme
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.O_Lexeme
                 },
 
 
             new Pattern("O1-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                RightRule = MorphemeRule.I_Not_NonLexeme,
-                LeftRule = MorphemeRule.O_Not_NonLexeme,
+                RightRule = MorphemeRule.I_Lexeme,
+                LeftRule = MorphemeRule.O_Lexeme,
             },
             new Pattern("O2-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                RightRule = MorphemeRule.I_Not_NonLexeme,
-                LeftRule = MorphemeRule.O_Not_NonLexeme,
+                RightRule = MorphemeRule.I_Lexeme,
+                LeftRule = MorphemeRule.O_Lexeme,
             },
 
             new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O_Not_NonLexeme,
-                LeftRule = MorphemeRule.A_Not_NonLexeme.SetOrder(1),
+                RightRule = MorphemeRule.O_Lexeme,
+                LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
             },
 
             new Pattern("O-and-O")
             {
                 MorphemeRule = MorphemeRule.Is("and", Attributes.U.Lexeme),
-                RightRule = MorphemeRule.O_Not_NonLexeme,
-                LeftRule = MorphemeRule.O_Not_NonLexeme
+                RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
+                LeftRule = MorphemeRule.O_Lexeme
             },
 
             // Primitive transference.
@@ -78,7 +77,7 @@ namespace Krino.GretaTest
             new Pattern("I>I")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.I_Not_NonLexeme,
+                RightRule = MorphemeRule.I_Lexeme,
                 LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal).SetOrder(1),
             },
 

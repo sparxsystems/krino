@@ -2,6 +2,7 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.Transformations;
+using System;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -11,7 +12,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
     /// Defines the pattern which contains rules how adtrees can be connected to each other.
     /// </summary>
     [DebuggerDisplay("{LeftRule} <- {Name} -> {RightRule}")]
-    public class Pattern
+    public class Pattern : IEquatable<Pattern>
     {
         public Pattern(string name = null)
         {
@@ -72,6 +73,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             }
 
             return false;
+        }
+
+        public bool Equals(Pattern other) => MorphemeRule.Equals(other.MorphemeRule) && LeftRule.Equals(other.LeftRule) && RightRule.Equals(other.RightRule);
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ MorphemeRule.GetHashCode();
+            hash = (hash * 16777619) ^ LeftRule.GetHashCode();
+            hash = (hash * 16777619) ^ RightRule.GetHashCode();
+
+            return hash;
         }
     }
 }

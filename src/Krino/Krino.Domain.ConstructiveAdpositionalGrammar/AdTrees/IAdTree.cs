@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -8,7 +9,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// <summary>
     /// Declares the AdTree as defined in the document Constructive Adposition Grammar.
     /// </summary>
-    public interface IAdTree : IEnumerable<IAdTree>
+    public interface IAdTree : IEquatable<IAdTree>, IEnumerable<IAdTree>
     {
         /// <summary>
         /// Pattern followed by the adtree element.

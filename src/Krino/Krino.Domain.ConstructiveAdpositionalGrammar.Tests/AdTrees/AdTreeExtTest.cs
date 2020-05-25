@@ -104,6 +104,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             adTree = new AdTree(
                 new Morpheme("") { Attributes = Attributes.U },
+                new Pattern() { RightRule = MorphemeRule.O_Lexeme, }
+            );
+            // The adtree morpheme is epsilon but the right rule matches.
+            adTreeElement = new AdTree(new Morpheme("") { Attributes = Attributes.Epsilon },
+                new Pattern()
+                {
+                    RightRule = MorphemeRule.O_Lexeme
+                });
+            Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
+
+
+            adTree = new AdTree(
+                new Morpheme("") { Attributes = Attributes.U },
+                new Pattern() { RightRule = MorphemeRule.O_Lexeme, }
+            );
+            // The adtree morpheme is A and although the right rule matches the adtree cannot be attached.
+            adTreeElement = new AdTree(new Morpheme("") { Attributes = Attributes.A.Lexeme },
+                new Pattern()
+                {
+                    RightRule = MorphemeRule.O_Lexeme
+                });
+            Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
+
+
+            adTree = new AdTree(
+                new Morpheme("") { Attributes = Attributes.U },
                 // Stative (O) can connect to the right child.
                 new Pattern() { RightRule = MorphemeRule.O_Lexeme, }
             );
@@ -200,6 +226,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             );
             IAdTree adTreeElement = new AdTree(new Morpheme("hello") { Attributes = Attributes.O.Lexeme }, new Pattern());
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
+
+            adTree = new AdTree(
+                new Morpheme("") { Attributes = Attributes.U },
+                new Pattern() { LeftRule = MorphemeRule.O_Lexeme, }
+            );
+            // The adtree morpheme is epsilon but the right rule matches.
+            adTreeElement = new AdTree(new Morpheme("") { Attributes = Attributes.Epsilon },
+                new Pattern()
+                {
+                    RightRule = MorphemeRule.O_Lexeme
+                });
+            Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
+
+
+            adTree = new AdTree(
+                new Morpheme("") { Attributes = Attributes.U },
+                new Pattern() { LeftRule = MorphemeRule.O_Lexeme, }
+            );
+            // The adtree morpheme is A and although the right rule matches the adtree cannot be attached.
+            adTreeElement = new AdTree(new Morpheme("") { Attributes = Attributes.A.Lexeme },
+                new Pattern()
+                {
+                    RightRule = MorphemeRule.O_Lexeme
+                });
+            Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
+
 
 
             adTree = new AdTree(

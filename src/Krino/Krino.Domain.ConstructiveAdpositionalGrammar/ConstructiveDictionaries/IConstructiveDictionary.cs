@@ -39,7 +39,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// </summary>
         /// <param name="lexeme"></param>
         /// <returns></returns>
-        IEnumerable<Pattern> FindMatchingPatterns(Morpheme lexeme);
+        IEnumerable<Pattern> FindPatterns(Morpheme lexeme);
 
         /// <summary>
         /// Finds primitive transference patterns for the morpheme.

@@ -59,7 +59,7 @@ namespace Krino.GretaTest
             Assert.AreEqual("i", adTree.Right.Left.Morpheme.Morph);
             Assert.AreEqual("will", adTree.Right.Right.Left.Morpheme.Morph);
             Assert.AreEqual("start", adTree.Right.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("width", adTree.Morpheme.Morph);
+            Assert.AreEqual("with", adTree.Morpheme.Morph);
             Assert.AreEqual("the", adTree.Left.Left.Morpheme.Morph);
             Assert.AreEqual("good", adTree.Left.Right.Left.Morpheme.Morph);
             Assert.AreEqual("news", adTree.Left.Right.Right.Morpheme.Morph);

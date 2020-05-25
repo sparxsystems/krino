@@ -289,6 +289,55 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public string Phrase => string.Join(" ", GetPhraseElementsAsync().Result.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
 
+
+        public bool Equals(IAdTree other)
+        {
+            // Note: to avoid the recursion use the enumeration.
+
+            using (IEnumerator<IAdTree> thisEnumerator = GetEnumerator())
+            {
+                using (IEnumerator<IAdTree> otherEnumerator = other.GetEnumerator())
+                {
+                    bool thisFlag = false;
+                    bool otherFlag = false;
+
+                    Func<bool> moveNext = () =>
+                    {
+                        thisFlag = thisEnumerator.MoveNext();
+                        otherFlag = otherEnumerator.MoveNext();
+                        return thisFlag && otherFlag;
+                    };
+
+                    while (moveNext())
+                    {
+                        if (!thisEnumerator.Current.Morpheme.Equals(otherEnumerator.Current.Morpheme) ||
+                            !thisEnumerator.Current.Pattern.Equals(otherEnumerator.Current.Pattern))
+                        {
+                            return false;
+                        }
+                    }
+
+                    if (thisFlag != otherFlag)
+                    {
+                        return false;
+                    }
+
+                    return true;
+                }
+            }
+        }
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ Morpheme.GetHashCode();
+            hash = (hash * 16777619) ^ Pattern.GetHashCode();
+
+            return hash;
+        }
+
+
         public IEnumerator<IAdTree> GetEnumerator()
         {
             // Note: using the stack has a better performance than a recursive call.
@@ -317,5 +366,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             return GetEnumerator();
         }
+
+        
     }
 }

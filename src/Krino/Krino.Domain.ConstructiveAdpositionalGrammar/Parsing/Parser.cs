@@ -28,7 +28,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     builder.AddWord(word, maxMorphDistance);
                 }
 
-                builder.Collapse();
+                builder.Purify();
 
                 result = builder.ActiveAdTrees.FirstOrDefault();
             }
