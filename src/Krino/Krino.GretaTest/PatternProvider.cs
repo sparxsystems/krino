@@ -33,37 +33,37 @@ namespace Krino.GretaTest
 
             new Pattern("E")
                 {
-                    MorphemeRule = MorphemeRule.E_Not_NonLexeme,
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
+                    MorphemeRule = MorphemeRule.E_Lexeme,
+                    RightRule = MorphemeRule.I.SetOrder(1),
+                    LeftRule = MorphemeRule.O
                 },
 
 
             new Pattern("O1-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                RightRule = MorphemeRule.I_Lexeme,
-                LeftRule = MorphemeRule.O_Lexeme,
+                RightRule = MorphemeRule.I,
+                LeftRule = MorphemeRule.O,
             },
             new Pattern("O2-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                RightRule = MorphemeRule.I_Lexeme,
-                LeftRule = MorphemeRule.O_Lexeme,
+                RightRule = MorphemeRule.I.SetOrder(1),
+                LeftRule = MorphemeRule.O,
             },
 
             new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O_Lexeme,
-                LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
+                RightRule = MorphemeRule.O,
+                LeftRule = MorphemeRule.A.SetOrder(1),
             },
 
             new Pattern("O-and-O")
             {
                 MorphemeRule = MorphemeRule.Is("and", Attributes.U.Lexeme),
-                RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
-                LeftRule = MorphemeRule.O_Lexeme
+                RightRule = MorphemeRule.O.SetOrder(1),
+                LeftRule = MorphemeRule.O
             },
 
             // Primitive transference.
