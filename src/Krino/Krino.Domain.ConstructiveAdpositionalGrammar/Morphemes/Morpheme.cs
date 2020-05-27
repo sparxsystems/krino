@@ -10,7 +10,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     {
         public static Morpheme Epsilon => new Morpheme("") { Attributes = AttributesArrangement.Attributes.Epsilon };
 
-
         public Morpheme (string morph)
         {
             Morph = morph;

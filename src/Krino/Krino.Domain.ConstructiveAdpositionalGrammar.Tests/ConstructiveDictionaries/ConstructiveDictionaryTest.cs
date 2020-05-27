@@ -50,7 +50,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.A && x.Value.Name == "A-O"));
         }
 
-
         [Test]
         public void PatternGraph_Itself()
         {
@@ -118,21 +117,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
 
             // prefix 're'
-            List<IReadOnlyList<Morpheme>> result = dictionary.FindMorphemeSequences("rewrite", 0).ToList();
+            List<IReadOnlyList<Morpheme>> result = dictionary.DecomposeWord("rewrite", 0).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(2, result[0].Count);
             Assert.AreEqual("re", result[0][0].Morph);
             Assert.AreEqual("write", result[0][1].Morph);
 
             // suffix 'er'
-            result = dictionary.FindMorphemeSequences("reader", 0).ToList();
+            result = dictionary.DecomposeWord("reader", 0).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(2, result[0].Count);
             Assert.AreEqual("read", result[0][0].Morph);
             Assert.AreEqual("er", result[0][1].Morph);
 
             // multiple prefixes and sufixes
-            result = dictionary.FindMorphemeSequences("extrarereaderless", 0).ToList();
+            result = dictionary.DecomposeWord("extrarereaderless", 0).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(5, result[0].Count);
             Assert.AreEqual("extra", result[0][0].Morph);
@@ -143,7 +142,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
 
             // 're' is the prefix but 'bla' is not a known lexeme.
-            result = dictionary.FindMorphemeSequences("rebla", 0).ToList();
+            result = dictionary.DecomposeWord("rebla", 0).ToList();
             Assert.AreEqual(0, result.Count);
         }
 
@@ -158,7 +157,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
 
-            List<IReadOnlyList<Morpheme>> morphemeSequences = dictionary.FindMorphemeSequences("writer", 1).ToList();
+            List<IReadOnlyList<Morpheme>> morphemeSequences = dictionary.DecomposeWord("writer", 1).ToList();
             Assert.AreEqual(2, morphemeSequences.Count);
 
             // 'writer' is very similar to write so it will just return 'write'.

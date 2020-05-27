@@ -15,6 +15,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
             Comma = new EnumValue(this);
             Semicolon = new EnumValue(this);
             Colon = new EnumValue(this);
+            Dash = new EnumValue(this);
+            Hyphen = new EnumValue(this);
         }
 
         /// <summary>
@@ -46,5 +48,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
         /// :
         /// </summary>
         public EnumValue Colon { get; }
+
+        /// <summary>
+        /// -
+        /// </summary>
+        /// <remarks>
+        /// To indicate a range, connections or differentiations, such as 1880-1945 or Princeton-New York trains.
+        /// </remarks>
+        public EnumValue Dash { get; }
+
+        /// <summary>
+        /// -
+        /// </summary>
+        /// <remarks>
+        /// A hyphen is used to join two or more words together into a compound term and is not separated by spaces. For example, part-time, back-to-back, well-known.
+        /// </remarks>
+        public EnumValue Hyphen { get; }
     }
 }

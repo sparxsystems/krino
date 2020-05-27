@@ -1,7 +1,11 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
@@ -22,7 +26,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 AdTreeBuilder builder = new AdTreeBuilder(myConstructiveDictionary);
 
-                string[] words = text.ToLowerInvariant().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+                string normalizedText = Normalize(text);
+
+                string[] words = normalizedText.ToLowerInvariant().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
                 foreach (string word in words)
                 {
                     builder.AddWord(word, maxMorphDistance);
@@ -39,6 +45,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         public string Serialize(IAdTree adTree)
         {
             string result = adTree.Phrase;
+            return result;
+        }
+
+        private string Normalize(string s)
+        {
+            string result = s;
+
+            foreach (Morpheme morpheme in myConstructiveDictionary.NonLexemes)
+            {
+                if (!string.IsNullOrEmpty(morpheme.Morph) &&
+                    Attributes.U.NonLexeme.PunctuationMark.IsIn(morpheme.Attributes))
+                {
+                    result = result.Replace(morpheme.Morph, string.Join("", " ", morpheme.Morph, " "));
+                }
+            }
+
             return result;
         }
     }

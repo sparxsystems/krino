@@ -295,6 +295,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
+        public void Replace()
+        {
+            AdTree adTree = new AdTree(new Morpheme(""), new Pattern())
+            {
+                Right = new AdTree(new Morpheme(""), new Pattern())
+                {
+                    Right = new AdTree(new Morpheme("read"), new Pattern()),
+                    Left = new AdTree(new Morpheme("I"), new Pattern())
+                },
+                Left = new AdTree(new Morpheme(""), new Pattern())
+                {
+                    Right = new AdTree(new Morpheme("book"), new Pattern()),
+                    Left = new AdTree(new Morpheme("the"), new Pattern())
+                }
+            };
+
+            AdTree replace = new AdTree(new Morpheme("hello"), new Pattern());
+
+            adTree.Right.Replace(replace);
+
+            Assert.IsTrue(adTree.Right == replace);
+            Assert.IsTrue(adTree.Right.Right == replace.Right);
+            Assert.IsTrue(adTree.Right.Left == replace.Left);
+        }
+
+        [Test]
         public void Attach()
         {
             AdTree adTree = new AdTree(new Morpheme(""), new Pattern());

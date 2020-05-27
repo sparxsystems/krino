@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using System.Collections.Generic;
 
@@ -43,7 +42,7 @@ namespace Krino.GretaTest
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
                 RightRule = MorphemeRule.I,
-                LeftRule = MorphemeRule.O,
+                LeftRule = MorphemeRule.O.SetOrder(1),
             },
             new Pattern("O2-I")
             {
@@ -59,9 +58,9 @@ namespace Krino.GretaTest
                 LeftRule = MorphemeRule.A.SetOrder(1),
             },
 
-            new Pattern("O-and-O")
+            new Pattern("O-U-O")
             {
-                MorphemeRule = MorphemeRule.Is("and", Attributes.U.Lexeme),
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.Lexeme.Conjunction),
                 RightRule = MorphemeRule.O.SetOrder(1),
                 LeftRule = MorphemeRule.O
             },
@@ -84,8 +83,8 @@ namespace Krino.GretaTest
 
             new Pattern(".")
             {
-                MorphemeRule = MorphemeRule.Is(".", Attributes.U.NonLexeme),
-                RightRule = MorphemeRule.Something(GrammarCharacter.I).SetOrder(1),
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark),
+                RightRule = MorphemeRule.I.SetOrder(1),
                 LeftRule = MorphemeRule.Anything,
             },
         };

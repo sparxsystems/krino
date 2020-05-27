@@ -30,6 +30,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             InitializePatternGraph();
         }
 
+
+        public IEnumerable<Morpheme> NonLexemes => myNonLexemes.Select(x => x.Value);
+
+        public IEnumerable<Pattern> Patterns { get; private set; }
+
+        public IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; private set; }
+
+
         public IEnumerable<Morpheme> FindLexemes(string morph, int maxDistance)
         {
             IEnumerable<Morpheme> result = Enumerable.Empty<Morpheme>();
@@ -65,7 +73,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             return result ?? Enumerable.Empty<Morpheme>();
         }
 
-        public IEnumerable<IReadOnlyList<Morpheme>> FindMorphemeSequences(string word, int maxMorphDistance)
+        public IEnumerable<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance)
         {
             IEnumerable<IReadOnlyList<Morpheme>> result = FindAllMorphemeSequences(word, maxMorphDistance, new List<Morpheme>());
             return result;
@@ -91,7 +99,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             foreach (Pattern pattern in Patterns)
             {
-                if (pattern.IsModifier())
+                if (pattern.IsModifier() || pattern.IsAdPositionModifier())
                 {
                     if (pattern.LeftRule.Order < pattern.RightRule.Order)
                     {
@@ -110,12 +118,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 }
             }
         }
-
-        public IEnumerable<Morpheme> NonLexemes { get; }
-
-        public IEnumerable<Pattern> Patterns { get; private set; }
-
-        public IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; private set; }
 
         private void InitializeMorphemes(IEnumerable<Morpheme> morphemes)
         {

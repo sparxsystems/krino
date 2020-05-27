@@ -17,7 +17,7 @@ namespace Krino.GretaTest
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
             Parser parser = new Parser(dictionary);
-            IAdTree adTree = parser.Deserialize("I have some good news and some bad news regarding the climate emergency", 1);
+            IAdTree adTree = parser.Deserialize("I have some good news and some bad news regarding the climate emergency.", 1);
 
             string s = parser.Serialize(adTree);
 
@@ -63,6 +63,22 @@ namespace Krino.GretaTest
             Assert.AreEqual("the", adTree.Left.Left.Morpheme.Morph);
             Assert.AreEqual("good", adTree.Left.Right.Left.Morpheme.Morph);
             Assert.AreEqual("news", adTree.Left.Right.Right.Morpheme.Morph);
+        }
+
+        // The world, as a small number of people have been saying lately, will not end in 11 years.
+        [Test]
+        public void Sentence_2_1()
+        {
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            Parser parser = new Parser(dictionary);
+            IAdTree adTree = parser.Deserialize("I will start with the good news", 1);
+
+            string s = parser.Serialize(adTree);
+
+            List<string> phraseElements = adTree.GetPhraseElementsAsync().Result
+                .Where(x => !string.IsNullOrEmpty(x.Morpheme.Morph))
+                .Select(x => string.Join("->", string.Join("-", new IAdTree[] { x }.Concat(x.AdPositions).Select(y => y.IsOnLeft ? "L" : y.IsOnRight ? "R" : "").Reverse()), x.Morpheme.Morph))
+                .ToList();
         }
     }
 }

@@ -32,7 +32,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <param name="word"></param>
         /// <param name="maxMorphDistance">The level of similarity. If 0 then the exact morph is searched.</param>
         /// <returns></returns>
-        IEnumerable<IReadOnlyList<Morpheme>> FindMorphemeSequences(string word, int maxMorphDistance);
+        IEnumerable<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance);
 
         /// <summary>
         /// Finds patterns matching the lexeme.

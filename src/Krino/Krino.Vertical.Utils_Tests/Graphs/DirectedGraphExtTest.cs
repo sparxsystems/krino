@@ -1,9 +1,7 @@
 ﻿using Krino.Vertical.Utils.Graphs;
 using NUnit.Framework;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Krino.Vertical.Utils_Tests.Graphs
 {
@@ -18,38 +16,35 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddVertex(1);
             graph.AddVertex(2);
             graph.AddVertex(3);
+            graph.AddEdge(0, 1, "01");
+            graph.AddEdge(1, 2, "12");
             graph.AddEdge(0, 2, "02");
             graph.AddEdge(0, 3, "03");
-            graph.AddEdge(0, 1, "01");
-            graph.AddEdge(2, 0, "20");
-            graph.AddEdge(2, 0, "*20"); // there are two edges grom from the same to the same vertwx.
-            graph.AddEdge(2, 1, "21");
-            graph.AddEdge(1, 3, "13");
 
-            List<string> allPaths = graph.FindAllPaths(2, 3).Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
-            Assert.AreEqual(5, allPaths.Count);
-            Assert.IsTrue(allPaths.Contains("20-03"));
-            Assert.IsTrue(allPaths.Contains("*20-03"));
-            Assert.IsTrue(allPaths.Contains("20-01-13"));
-            Assert.IsTrue(allPaths.Contains("*20-01-13"));
-            Assert.IsTrue(allPaths.Contains("21-13"));
-
-            allPaths = graph.FindAllPaths(2, 2).Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
+            List<string> allPaths = graph.FindAllEdges(0, 2).Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
             Assert.AreEqual(2, allPaths.Count);
-            Assert.IsTrue(allPaths.Contains("20-02"));
-            Assert.IsTrue(allPaths.Contains("*20-02"));
+            Assert.AreEqual("01-12", allPaths[0]);
+            Assert.AreEqual("02", allPaths[1]);
+        }
 
-            // There is no path from 3 to 2.
-            allPaths = graph.FindAllPaths(3, 2).Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
-            Assert.AreEqual(0, allPaths.Count);
+        [Test]
+        public void FindAllPaths_ViaItself_MiddleStep()
+        {
+            DirectedGraph<string, string> graph = new DirectedGraph<string, string>();
+            graph.AddVertex("A");
+            graph.AddVertex("O");
+            graph.AddVertex("I");
+            graph.AddEdge("I", "O", "IO");
+            graph.AddEdge("O", "O", "OO"); // to itself
+            graph.AddEdge("O", "A", "OA");
 
-            // Vertex to itself.
-            graph.AddEdge(2, 2, "22");
-            allPaths = graph.FindAllPaths(2, 2).Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
-            Assert.AreEqual(3, allPaths.Count);
-            Assert.IsTrue(allPaths.Contains("20-02"));
-            Assert.IsTrue(allPaths.Contains("*20-02"));
-            Assert.IsTrue(allPaths.Contains("22"));
+            // Get all paths from I to A.
+            List<IReadOnlyList<DirectedEdge<string, string>>> result = graph.FindAllEdges("I", "A").ToList();
+            List<string> allPaths = graph.FindAllEdges("I", "A").Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("IO-OO-OA", allPaths[0]);
+            Assert.AreEqual("IO-OA", allPaths[1]);
         }
 
         [Test]
@@ -60,7 +55,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddEdge(0, 0, ""); // goes to itself
 
             // Get all paths from A to A.
-            List<IReadOnlyList<DirectedEdge<int, string>>> result = graph.FindAllPaths(0, 0).ToList();
+            List<IReadOnlyList<DirectedEdge<int, string>>> result = graph.FindAllEdges(0, 0).ToList();
 
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(1, result[0].Count);
@@ -79,7 +74,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             graph.AddEdge("O", "A", "Pattern2");
 
             // Get all paths from O to O.
-            List<IReadOnlyList<DirectedEdge<string, string>>> result = graph.FindAllPaths("O", "O").ToList();
+            List<IReadOnlyList<DirectedEdge<string, string>>> result = graph.FindAllEdges("O", "O").ToList();
 
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual(2, result[0].Count);

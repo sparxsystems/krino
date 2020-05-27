@@ -56,5 +56,38 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             };
             Assert.IsFalse(pattern.IsModifier());
         }
+
+        [Test]
+        public void IsAdPositionModifier()
+        {
+            Pattern pattern = new Pattern("A-U-A")
+            {
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U),
+                RightRule = MorphemeRule.A.SetOrder(1),
+                LeftRule = MorphemeRule.A,
+            };
+            Assert.IsTrue(pattern.IsAdPositionModifier());
+
+
+            pattern = new Pattern("A-U-A")
+            {
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U),
+
+                // Same order means it is not adposition modifier.
+                RightRule = MorphemeRule.A,
+                LeftRule = MorphemeRule.A,
+            };
+            Assert.IsFalse(pattern.IsAdPositionModifier());
+
+
+
+            pattern = new Pattern("A-O")
+            {
+                MorphemeRule = MorphemeRule.Epsilon,
+                RightRule = MorphemeRule.O,
+                LeftRule = MorphemeRule.A.SetOrder(1),
+            };
+            Assert.IsFalse(pattern.IsAdPositionModifier());
+        }
     }
 }

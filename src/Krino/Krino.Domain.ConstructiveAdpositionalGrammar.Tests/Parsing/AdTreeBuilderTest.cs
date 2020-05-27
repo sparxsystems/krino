@@ -25,25 +25,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern()
+                new Pattern("O")
                 {
                     MorphemeRule = MorphemeRule.O_Lexeme,
                     RightRule = MorphemeRule.Nothing,
                     LeftRule = MorphemeRule.Nothing,
                 },
 
-                new Pattern()
+                new Pattern("I")
                 {
                     MorphemeRule = MorphemeRule.I_Lexeme,
                     RightRule = MorphemeRule.Nothing,
                     LeftRule = MorphemeRule.Nothing,
                 },
 
-                new Pattern()
+                new Pattern("O1-I")
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
+                    RightRule = MorphemeRule.I,
+                    LeftRule = MorphemeRule.O
+                },
+
+                new Pattern(".")
+                {
+                    MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark.Period),
+                    RightRule = MorphemeRule.I.SetOrder(1),
+                    LeftRule = MorphemeRule.Anything,
                 },
             };
 
@@ -57,10 +64,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             morpheme = new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb };
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
+            morpheme = new Morpheme(".") { Attributes = Attributes.U.NonLexeme.PunctuationMark.Period };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
-            Assert.IsTrue(builder.ActiveAdTrees[0].Left.Morpheme.Morph == "I" && builder.ActiveAdTrees[0].Left.Morpheme.GrammarCharacter == GrammarCharacter.O);
-            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Morpheme.Morph == "read" && builder.ActiveAdTrees[0].Right.Morpheme.GrammarCharacter == GrammarCharacter.I);
-            Assert.IsTrue(builder.ActiveAdTrees[0].Morpheme.Morph == "" && builder.ActiveAdTrees[0].Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph == "I" && builder.ActiveAdTrees[0].Right.Left.Morpheme.GrammarCharacter == GrammarCharacter.O);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph == "read" && builder.ActiveAdTrees[0].Right.Right.Morpheme.GrammarCharacter == GrammarCharacter.I);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Morpheme.Morph == "" && builder.ActiveAdTrees[0].Right.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Morpheme.Morph == "." && builder.ActiveAdTrees[0].Morpheme.GrammarCharacter == GrammarCharacter.U);
         }
 
         [Test]
@@ -99,16 +110,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("O-I")
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
+                    RightRule = MorphemeRule.I,
+                    LeftRule = MorphemeRule.O.SetOrder(1)
                 },
 
                 // Transference pattern.
                 new Pattern("I-s")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
+                    RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
+                    LeftRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
                 },
             };
 
@@ -117,8 +128,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             AdTreeBuilder builder = new AdTreeBuilder(dictionary);
 
             Assert.IsTrue(builder.AddWord("he", 0));
-
             Assert.IsTrue(builder.AddWord("reads", 0));
+
+            builder.Purify();
+
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.AreEqual("he", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
             Assert.AreEqual("s", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
@@ -162,15 +175,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("O1-I")
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Not_NonLexeme,
-                    LeftRule = MorphemeRule.O_Not_NonLexeme,
+                    RightRule = MorphemeRule.I,
+                    LeftRule = MorphemeRule.O,
                 },
 
                 new Pattern("O2-I")
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                    RightRule = MorphemeRule.I_Not_NonLexeme,
-                    LeftRule = MorphemeRule.O_Not_NonLexeme,
+                    RightRule = MorphemeRule.I.SetOrder(1),
+                    LeftRule = MorphemeRule.O,
                 },
 
                 // Transference pattern.
@@ -178,9 +191,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("I>O")
                 {
                     MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.O)),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix))
-                        .SetOrder(1),
+                    RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
+                    LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
                 },
             };
 
@@ -191,6 +203,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.IsTrue(builder.AddWord("he", 1));
             Assert.IsTrue(builder.AddWord("is", 1));
             Assert.IsTrue(builder.AddWord("writer", 1));
+
+            builder.Purify();
 
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             
@@ -563,7 +577,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     RightRule = MorphemeRule.O,
                     LeftRule = MorphemeRule.A.SetOrder(1)
                 },
-                new Pattern("A-and-A")
+                new Pattern("A-U-A")
                 {
                     MorphemeRule = MorphemeRule.U_Lexeme,
                     RightRule = MorphemeRule.A.SetOrder(1),

@@ -75,6 +75,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             return false;
         }
 
+        public bool IsAdPositionModifier()
+        {
+            // AdPosition
+            if (MorphemeRule.GrammarCharacter == GrammarCharacter.U &&
+                !MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
+                !MorphemeRule.MorphRule.Evaluate(""))
+            {
+                // Left.
+                if (LeftRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                {
+                    // Right.
+                    if (RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                    {
+                        if (RightRule.Order != LeftRule.Order)
+                        {
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            return false;
+        }
+
         public bool Equals(Pattern other) => MorphemeRule.Equals(other.MorphemeRule) && LeftRule.Equals(other.LeftRule) && RightRule.Equals(other.RightRule);
 
         public override int GetHashCode()

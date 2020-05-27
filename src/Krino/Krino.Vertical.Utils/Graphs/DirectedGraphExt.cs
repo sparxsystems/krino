@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 
 namespace Krino.Vertical.Utils.Graphs
@@ -24,63 +25,70 @@ namespace Krino.Vertical.Utils.Graphs
         }
 
         /// <summary>
-        /// Finds all possible paths between two vertices using the DFS algorithm.
+        /// Finds all possible edge sequeces between two vertices.
         /// </summary>
         /// <typeparam name="V"></typeparam>
         /// <typeparam name="E"></typeparam>
         /// <param name="graph"></param>
         /// <param name="from"></param>
         /// <param name="to"></param>
+        /// <param name="predicate"></param>
+        /// <param name="vertexComparer"></param>
+        /// <param name="edgeValueComparer"></param>
         /// <returns></returns>
-        public static IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> FindAllPaths<V, E>(this IDirectedGraph<V, E> graph, V from, V to,
-            IEqualityComparer<V> vertexComparer = null)
+        public static IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> FindAllEdges<V, E>(this IDirectedGraph<V, E> graph, V from, V to,
+            Predicate<List<DirectedEdge<V, E>>> predicate = null,
+            IEqualityComparer<V> vertexComparer = null,
+            IEqualityComparer<E> edgeValueComparer = null)
         {
             vertexComparer = vertexComparer ?? EqualityComparer<V>.Default;
+            edgeValueComparer = edgeValueComparer ?? EqualityComparer<E>.Default;
 
-            HashSet<V> visited = new HashSet<V>(vertexComparer);
+            HashSet<DirectedEdge<V, E>> visited = new HashSet<DirectedEdge<V, E>>(new DirectedEdgeEqualityComparer<V, E>(vertexComparer, edgeValueComparer));
             List<DirectedEdge<V, E>> localPath = new List<DirectedEdge<V, E>>();
 
-            IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> result = graph.FindAllPathsInternal(from, to, localPath, visited, vertexComparer);
+            IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> result = graph.FindAllEdgesInternal(from, to, localPath, visited, vertexComparer, predicate);
             return result;
         }
 
 
-        private static IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> FindAllPathsInternal<V, E>(this IDirectedGraph<V, E> graph, V currentVertex, V to,
+        private static IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> FindAllEdgesInternal<V, E>(this IDirectedGraph<V, E> graph, V currentVertex, V to,
             List<DirectedEdge<V, E>> localPath,
-            HashSet<V> visited,
-            IEqualityComparer<V> vertexComparer)
+            HashSet<DirectedEdge<V, E>> alreadyUsedEdges,
+            IEqualityComparer<V> vertexComparer,
+            Predicate<List<DirectedEdge<V, E>>> predicate)
         {
-            visited.Add(currentVertex);
-
             IEnumerable<DirectedEdge<V, E>> edgesGoingFrom = graph.GetEdgesGoingFrom(currentVertex);
             foreach (DirectedEdge<V, E> edge in edgesGoingFrom)
             {
-                if (vertexComparer.Equals(edge.To, to) || !visited.Contains(edge.To))
+                if (vertexComparer.Equals(edge.To, to))
                 {
-                    if (vertexComparer.Equals(edge.To, to))
-                    {
-                        localPath.Add(edge);
-                        
-                        yield return localPath.ToList();
-                        
-                        localPath.RemoveAt(localPath.Count - 1);
-                    }
-                    else if (!vertexComparer.Equals(edge.From, edge.To))
-                    {
-                        localPath.Add(edge);
+                    localPath.Add(edge);
 
-                        IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> foundPaths = graph.FindAllPathsInternal(edge.To, to, localPath, visited, vertexComparer);
+                    if (predicate == null || predicate(localPath))
+                    {
+                        yield return localPath.ToList();
+                    }
+
+                    localPath.RemoveAt(localPath.Count - 1);
+                }
+                else if (alreadyUsedEdges.Add(edge))
+                {
+                    localPath.Add(edge);
+
+                    if (predicate == null || predicate(localPath))
+                    {
+                        IEnumerable<IReadOnlyList<DirectedEdge<V, E>>> foundPaths = graph.FindAllEdgesInternal(edge.To, to, localPath, alreadyUsedEdges, vertexComparer, predicate);
                         foreach (IReadOnlyList<DirectedEdge<V, E>> path in foundPaths)
                         {
                             yield return path;
                         }
-                        
-                        localPath.RemoveAt(localPath.Count - 1);
                     }
+
+                    localPath.RemoveAt(localPath.Count - 1);
+                    alreadyUsedEdges.Remove(edge);
                 }
             }
-
-            visited.Remove(currentVertex);
         }
     }
 }

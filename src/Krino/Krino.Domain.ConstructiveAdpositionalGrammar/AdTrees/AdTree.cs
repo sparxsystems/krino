@@ -24,7 +24,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public AdTree(Morpheme morpheme, Pattern pattern)
         {
-            Morpheme = morpheme ?? throw new ArgumentNullException(nameof(morpheme));
+            // Note: morpheme can be null e.g. if an adtree is built and an adposition morpheme is not available yet.
+            Morpheme = morpheme;
             Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
         }
 

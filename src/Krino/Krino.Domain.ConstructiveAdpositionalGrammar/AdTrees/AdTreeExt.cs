@@ -213,17 +213,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <param name="reattachPosition">The position where the adtree shall be reattached after the insertion.</param>
         public static void Insert(this IAdTree adTree, IAdTree toInsert, IAdTree whereReattach, AttachPosition reattachPosition)
         {
-            if (adTree.AdPosition != null)
+            // Insert the toInsert instead of the adTree.
+            if (adTree.IsOnLeft)
             {
-                // Insert the toInsert instead of the adTree.
-                if (adTree.IsOnLeft)
-                {
-                    adTree.AdPosition.Left = toInsert;
-                }
-                else if (adTree.IsOnRight)
-                {
-                    adTree.AdPosition.Right = toInsert;
-                }
+                adTree.AdPosition.Left = toInsert;
+            }
+            else if (adTree.IsOnRight)
+            {
+                adTree.AdPosition.Right = toInsert;
             }
 
             // Attach the adtree to the inserted adtree.
@@ -232,20 +229,57 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
 
         /// <summary>
+        /// Replaces the adtree with the 'replace' adtree.
+        /// </summary>
+        /// <param name="adTree">AdTree which shall be replaced.</param>
+        /// <param name="replace">AdTree which shall be used insted of the original one.</param>
+        public static void Replace(this IAdTree adTree, IAdTree replace)
+        {
+            if (adTree.IsOnLeft)
+            {
+                adTree.AdPosition.Left = replace;
+            }
+            else if (adTree.IsOnRight)
+            {
+                adTree.AdPosition.Right = replace;
+            }
+
+            replace.Left = adTree.Left;
+            replace.Right = adTree.Right;
+        }
+
+
+        /// <summary>
         /// Appends the adtree to the adtree.
         /// </summary>
-        /// <param name="adTree">The adtree into whihc it shall be appended.</param>
-        /// <param name="toAppend">The adtree which shall be appended.</param>
+        /// <param name="adTree">The adtree into which it shall be attached.</param>
+        /// <param name="toAttach">The adtree which shall be appended.</param>
         /// <param name="appendPosition">The position how it shall be appended.</param>
-        public static void Attach(this IAdTree adTree, IAdTree toAppend, AttachPosition appendPosition)
+        public static void Attach(this IAdTree adTree, IAdTree toAttach, AttachPosition appendPosition)
         {
             if (appendPosition == AttachPosition.ChildOnLeft)
             {
-                adTree.Left = toAppend;
+                adTree.Left = toAttach;
             }
             else if (appendPosition == AttachPosition.ChildOnRight)
             {
-                adTree.Right = toAppend;
+                adTree.Right = toAttach;
+            }
+        }
+
+        /// <summary>
+        /// Removes the adtree from the adtree structure.
+        /// </summary>
+        /// <param name="adTree">The adtree which shall be removed.</param>
+        public static void Detach(this IAdTree adTree)
+        {
+            if (adTree.IsOnLeft)
+            {
+                adTree.AdPosition.Left = null;
+            }
+            else if (adTree.IsOnRight)
+            {
+                adTree.AdPosition.Right = null;
             }
         }
 
@@ -312,24 +346,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return true;
         }
 
-        /// <summary>
-        /// Removes the adtree from the adtree structure.
-        /// </summary>
-        /// <param name="adTree">The adtree which shall be removed.</param>
-        public static void Detach(this IAdTree adTree)
-        {
-            if (adTree.AdPosition != null)
-            {
-                if (adTree.IsOnLeft)
-                {
-                    adTree.AdPosition.Left = null;
-                }
-                else if (adTree.IsOnRight)
-                {
-                    adTree.AdPosition.Right = null;
-                }
-            }
-        }
+        
 
         private static bool IsSubruleOf(this MorphemeRule morphemeRule, MorphemeRule other)
         {
