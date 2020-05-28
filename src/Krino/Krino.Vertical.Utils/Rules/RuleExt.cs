@@ -26,6 +26,16 @@ namespace Krino.Vertical.Utils.Rules
                 return true;
             }
 
+            if (parentRule is NothingRule<T>)
+            {
+                return false;
+            }
+
+            if (parentRule is AnythingRule<T> && rule is NothingRule<T>)
+            {
+                return false;
+            }
+
             IEnumerable<T> requiredValues = rule.GetReferenceValues();
             if (requiredValues.Any())
             {
@@ -38,14 +48,6 @@ namespace Krino.Vertical.Utils.Rules
                         return false;
                     }
                 }
-            }
-            else if (parentRule is AnythingRule<T> && rule is NothingRule<T>)
-            {
-                return false;
-            }
-            else if (parentRule is NothingRule<T>)
-            {
-                return false;
             }
 
             return true;

@@ -67,6 +67,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public GrammarCharacter GrammarCharacter { get; private set; }
         public IRule<BigInteger> AttributesRule { get; private set; }
 
+        public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRuleMaker.Epsilon_U;
+
         public int ValencyPosition { get; private set; }
 
         public int Order { get; private set; } = int.MaxValue;
@@ -89,19 +91,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
             return this;
         }
 
-        public BigInteger GetAttributes()
+        public MorphemeRule SetInheritance(IRule<GrammarCharacter> inheritanceRule)
         {
-            BigInteger result;
-            if (AttributesRule is IReferenceValueRule<BigInteger> valueRule)
-            {
-                result = valueRule.ReferenceValue;
-            }
-            else
-            {
-                result = GrammarCharacter.GetAttributes();
-            }
-
-            return result;
+            InheritanceRule = inheritanceRule;
+            return this;
         }
 
         public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)

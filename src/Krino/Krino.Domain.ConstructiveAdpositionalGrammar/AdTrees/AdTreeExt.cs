@@ -147,14 +147,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     }
                 }
 
-                // If the right rule of the adtree matches the element.
-                if (adTree.Pattern.RightRule.Evaluate(adTreeElement.Morpheme) ||
-                    // or if the right rule of the adtree matches the right rule of the element - inheritance.
-                    (adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon ||
-                     adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.U) &&
-                    adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.RightRule))
+                if (adTreeElement.Pattern.MorphemeRule.IsSubruleOf(adTree.Pattern.RightRule) ||
+                    adTree.Pattern.RightRule.Evaluate(adTreeElement.Morpheme))
                 {
                     return true;
+                }
+
+                if (!adTreeElement.Pattern.RightRule.Equals(MorphemeRule.Nothing) &&
+                    adTree.Pattern.RightRule.InheritanceRule.Evaluate(adTreeElement.Pattern.MorphemeRule.GrammarCharacter))
+                {
+                    if (adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.RightRule) ||
+                        adTreeElement.Right != null && adTree.Pattern.RightRule.Evaluate(adTreeElement.Right.Morpheme))
+                    {
+                        return true;
+                    }
                 }
             }
 
@@ -172,8 +178,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             // If the rule allows to attach something to the left.
             if (!adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
             {
-                // If the left child shall be attached after the right child
-                // and the right child is not attached yet.
+                // If the right child shall be attached first and is not.
                 if (adTree.Pattern.LeftRule.Order > adTree.Pattern.RightRule.Order &&
                     !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) &&
                     adTree.Right == null)
@@ -181,14 +186,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     return false;
                 }
 
-                // If the left rule of the adtree matches the element.
-                if (adTree.Pattern.LeftRule.Evaluate(adTreeElement.Morpheme) ||
-                    // or if the LEFT rule of the adtree matches the RIGHT rule of the element - inheritance works always via the right child.
-                    (adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon ||
-                     adTreeElement.Morpheme.GrammarCharacter == GrammarCharacter.U) &&
-                    adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.LeftRule))
+                if (adTreeElement.Pattern.MorphemeRule.IsSubruleOf(adTree.Pattern.LeftRule) ||
+                    adTree.Pattern.LeftRule.Evaluate(adTreeElement.Morpheme))
                 {
                     return true;
+                }
+
+                if (!adTreeElement.Pattern.RightRule.Equals(MorphemeRule.Nothing) &&
+                    adTree.Pattern.LeftRule.InheritanceRule.Evaluate(adTreeElement.Pattern.MorphemeRule.GrammarCharacter))
+                {
+                    if (adTreeElement.Pattern.RightRule.IsSubruleOf(adTree.Pattern.LeftRule) ||
+                        adTreeElement.Right != null && adTree.Pattern.LeftRule.Evaluate(adTreeElement.Right.Morpheme))
+                    {
+                        return true;
+                    }
                 }
             }
 

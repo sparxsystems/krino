@@ -349,7 +349,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
                     RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal).SetOrder(1),
+                    LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal)
+                        .SetOrder(1)
+                        .SetInheritance(InheritanceRuleMaker.Nothing),
                 },
             };
 

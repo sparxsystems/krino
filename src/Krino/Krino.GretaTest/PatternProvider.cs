@@ -54,7 +54,7 @@ namespace Krino.GretaTest
             new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O,
+                RightRule = MorphemeRule.O.SetInheritance(InheritanceRuleMaker.Epsilon),
                 LeftRule = MorphemeRule.A.SetOrder(1),
             },
 
