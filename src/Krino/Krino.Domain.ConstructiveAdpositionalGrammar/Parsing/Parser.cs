@@ -3,9 +3,7 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {

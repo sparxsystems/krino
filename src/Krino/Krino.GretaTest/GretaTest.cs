@@ -26,19 +26,20 @@ namespace Krino.GretaTest
                 .Select(x => string.Join("->", string.Join("-", new IAdTree[] { x }.Concat(x.AdPositions).Select(y => y.IsOnLeft ? "L" : y.IsOnRight ? "R" : "").Reverse()), x.Morpheme.Morph))
                 .ToList();
 
-            Assert.AreEqual("i", adTree.Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("have", adTree.Right.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("some", adTree.Right.Left.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("good", adTree.Right.Left.Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("news", adTree.Right.Left.Right.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("and", adTree.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("some", adTree.Right.Left.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("bad", adTree.Right.Left.Left.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("news", adTree.Right.Left.Left.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("regarding", adTree.Morpheme.Morph);
-            Assert.AreEqual("the", adTree.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("climate", adTree.Left.Right.Left.Right.Morpheme.Morph);
-            Assert.AreEqual("emergency", adTree.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("i", adTree.Right.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("have", adTree.Right.Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("some", adTree.Right.Right.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("good", adTree.Right.Right.Left.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("news", adTree.Right.Right.Left.Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("and", adTree.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("some", adTree.Right.Right.Left.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("bad", adTree.Right.Right.Left.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("news", adTree.Right.Right.Left.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("regarding", adTree.Right.Morpheme.Morph);
+            Assert.AreEqual("the", adTree.Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("climate", adTree.Right.Left.Right.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("emergency", adTree.Right.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual(".", adTree.Morpheme.Morph);
         }
 
         // I will start with the good news.
@@ -47,7 +48,7 @@ namespace Krino.GretaTest
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
             Parser parser = new Parser(dictionary);
-            IAdTree adTree = parser.Deserialize("I will start with the good news", 1);
+            IAdTree adTree = parser.Deserialize("I will start with the good news.", 1);
 
             string s = parser.Serialize(adTree);
 
@@ -56,13 +57,14 @@ namespace Krino.GretaTest
                 .Select(x => string.Join("->", string.Join("-", new IAdTree[] { x }.Concat(x.AdPositions).Select(y => y.IsOnLeft ? "L" : y.IsOnRight ? "R" : "").Reverse()), x.Morpheme.Morph))
                 .ToList();
 
-            Assert.AreEqual("i", adTree.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("will", adTree.Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("start", adTree.Right.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("with", adTree.Morpheme.Morph);
-            Assert.AreEqual("the", adTree.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("good", adTree.Left.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("news", adTree.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("i", adTree.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("will", adTree.Right.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("start", adTree.Right.Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("with", adTree.Right.Morpheme.Morph);
+            Assert.AreEqual("the", adTree.Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("good", adTree.Right.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("news", adTree.Right.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual(".", adTree.Morpheme.Morph);
         }
 
         // The world, as a small number of people have been saying lately, will not end in 11 years.
@@ -71,7 +73,7 @@ namespace Krino.GretaTest
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
             Parser parser = new Parser(dictionary);
-            IAdTree adTree = parser.Deserialize("I will start with the good news", 1);
+            IAdTree adTree = parser.Deserialize("The world will not end in 11 years.", 1);
 
             string s = parser.Serialize(adTree);
 

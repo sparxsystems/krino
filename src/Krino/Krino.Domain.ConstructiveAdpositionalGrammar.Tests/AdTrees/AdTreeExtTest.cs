@@ -387,6 +387,46 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
+        public void Evaluate()
+        {
+            AdTree adTree = new AdTree(new Morpheme("book") { Attributes = Attributes.O.Lexeme }, new Pattern("O")
+            {
+                MorphemeRule = MorphemeRule.O_Lexeme,
+                LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.Nothing,
+            });
+            Assert.IsTrue(adTree.Evaluate());
+
+            // note: empty string is not allowed.
+            adTree = new AdTree(new Morpheme("") { Attributes = Attributes.O.Lexeme }, new Pattern("O")
+            {
+                MorphemeRule = MorphemeRule.O_Lexeme,
+                LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.Nothing,
+            });
+            Assert.IsFalse(adTree.Evaluate());
+
+            // note: non-lexeme is not allowed.
+            adTree = new AdTree(new Morpheme("bla") { Attributes = Attributes.O.NonLexeme }, new Pattern("O")
+            {
+                MorphemeRule = MorphemeRule.O_Lexeme,
+                LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.Nothing,
+            });
+            Assert.IsFalse(adTree.Evaluate());
+
+
+            // Left and right rules are anything so it should also accept if they are null.
+            adTree = new AdTree(new Morpheme(".") { Attributes = Attributes.U.NonLexeme }, new Pattern("")
+            {
+                MorphemeRule = MorphemeRule.U_NonLexeme,
+                LeftRule = MorphemeRule.Anything,
+                RightRule = MorphemeRule.Anything,
+            });
+            Assert.IsTrue(adTree.Evaluate());
+        }
+
+        [Test]
         public void GetNonconformities()
         {
             AdTree adTree = new AdTree(

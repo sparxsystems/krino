@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using System.Collections.Generic;
 
@@ -31,12 +32,25 @@ namespace Krino.GretaTest
             },
 
             new Pattern("E")
-                {
-                    MorphemeRule = MorphemeRule.E_Lexeme,
-                    RightRule = MorphemeRule.I.SetOrder(1),
-                    LeftRule = MorphemeRule.O
-                },
+            {
+                MorphemeRule = MorphemeRule.E_Lexeme,
+                RightRule = MorphemeRule.Nothing,
+                LeftRule = MorphemeRule.Nothing,
+            },
 
+            new Pattern("O-E-I")
+            {
+                MorphemeRule = MorphemeRule.E_Lexeme,
+                RightRule = MorphemeRule.I.SetOrder(1),
+                LeftRule = MorphemeRule.O
+            },
+
+            new Pattern("O-suffix")
+            {
+                MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
+                RightRule = MorphemeRule.Nothing,
+                LeftRule = MorphemeRule.Nothing,
+            },
 
             new Pattern("O1-I")
             {
@@ -58,6 +72,13 @@ namespace Krino.GretaTest
                 LeftRule = MorphemeRule.A.SetOrder(1),
             },
 
+            new Pattern("E-I")
+            {
+                MorphemeRule = MorphemeRule.Epsilon,
+                RightRule = MorphemeRule.I,
+                LeftRule = MorphemeRule.E_Lexeme.SetOrder(1),
+            },
+
             new Pattern("O-U-O")
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.Lexeme.Conjunction),
@@ -73,6 +94,13 @@ namespace Krino.GretaTest
                 LeftRule = MorphemeRule.Nothing,
             },
 
+            new Pattern("O>O-suffix")
+            {
+                MorphemeRule = MorphemeRule.Epsilon,
+                RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
+                LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
+            },
+
             new Pattern("I>I")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
@@ -84,7 +112,7 @@ namespace Krino.GretaTest
             new Pattern(".")
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark),
-                RightRule = MorphemeRule.I.SetOrder(1),
+                RightRule = MorphemeRule.Anything.SetOrder(1),
                 LeftRule = MorphemeRule.Anything,
             },
         };

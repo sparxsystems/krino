@@ -335,7 +335,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     return false;
                 }
             }
-            else if (!adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
+            else if (!adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) &&
+                     !adTree.Pattern.LeftRule.Equals(MorphemeRule.Anything))
             {
                 return false;
             }
@@ -349,7 +350,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     return false;
                 }
             }
-            else if (!adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
+            else if (!adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) &&
+                     !adTree.Pattern.RightRule.Equals(MorphemeRule.Anything))
             {
                 return false;
             }

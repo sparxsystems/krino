@@ -1,19 +1,12 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules.Strings;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferences;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
-using Krino.Vertical.Utils.Rules;
-using Krino.Vertical.Utils.Transformations;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 {
@@ -102,7 +95,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("-s")
                 {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Suffix("s"), MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
+                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.NonLexeme.VerbSuffix)),
                     RightRule = MorphemeRule.Nothing,
                     LeftRule = MorphemeRule.Nothing,
                 },
