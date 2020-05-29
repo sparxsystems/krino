@@ -57,11 +57,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             List<IAdTree> adTreesToAdd = new List<IAdTree>();
 
-            // The typo tolerance does not have a sense for very short words.
-            int morphDistance = word.Length < 4 ? 0 : maxMorphDistance;
-
             // Decompose the word string to list of morpheme sequences (prefixes, lexeme, suffixes).
-            IEnumerable<IReadOnlyList<Morpheme>> morphemeSequences = myConstructiveDictionary.DecomposeWord(word, morphDistance);
+            IEnumerable<IReadOnlyList<Morpheme>> morphemeSequences = myConstructiveDictionary.DecomposeWord(word, 0);
+
+            if (!morphemeSequences.Any())
+            {
+                // The typo tolerance does not have a sense for very short words.
+                int morphDistance = word.Length < 4 ? 0 : maxMorphDistance;
+
+                // Decompose the word string to list of morpheme sequences (prefixes, lexeme, suffixes).
+                morphemeSequences = myConstructiveDictionary.DecomposeWord(word, morphDistance);
+            }
 
             // Go via sequences of morphemes.
             foreach (IReadOnlyList<Morpheme> sequence in morphemeSequences)
@@ -190,7 +196,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
                 {
                     IAdTree adTreeCopy = adTree.MakeShallowCopy();
-                    IAdTree transferenceAdTree = new AdTree(new Morpheme("") { Attributes = isRule.ReferenceValue }, pattern);
+                    IAdTree transferenceAdTree = new AdTree(new Morpheme(adTree.Morpheme.Morph) { Attributes = isRule.ReferenceValue }, pattern);
                     transferenceAdTree.Right = adTreeCopy;
                     yield return transferenceAdTree;
                 }
@@ -305,8 +311,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
             --stopLevel;
 
-            GrammarCharacter startGrammarCharacter = GrammarCharacter.Epsilon;
-            GrammarCharacter endGrammarCharacter = GrammarCharacter.Epsilon;
+            GrammarCharacter startGrammarCharacter = GrammarCharacter.e;
+            GrammarCharacter endGrammarCharacter = GrammarCharacter.e;
 
             // If start adTree connects the bridge via its left.
             if (startElementAppendPosition == AttachPosition.ParrentForLeft)
@@ -467,11 +473,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         private GrammarCharacter ChooseGrammarCharacter(params GrammarCharacter[] grammarCharacters)
         {
-            GrammarCharacter result = GrammarCharacter.Epsilon;
+            GrammarCharacter result = GrammarCharacter.e;
 
             foreach (GrammarCharacter grammarCharacter in grammarCharacters)
             {
-                if (grammarCharacter != GrammarCharacter.Epsilon)
+                if (grammarCharacter != GrammarCharacter.e)
                 {
                     result = grammarCharacter;
 

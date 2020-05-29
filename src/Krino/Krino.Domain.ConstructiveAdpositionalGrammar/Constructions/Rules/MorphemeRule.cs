@@ -17,9 +17,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static MorphemeRule Is(IRule<string> morphRule, BigInteger attributes) => new MorphemeRule(GrammarCharacterExt.GetGrammarCharacter(attributes), morphRule, MaskRule.Is(attributes));
 
-        public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.Anything, MaskRule.Anything);
+        public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Anything);
 
-        public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.Nothing, MaskRule.Nothing);
+        public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Nothing, MaskRule.Nothing);
 
         public static MorphemeRule Any(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Anything, MaskRule.Anything);
 
@@ -59,7 +59,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public static MorphemeRule U_NonLexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Something, MaskRule.Is(Attributes.U.NonLexeme));
 
         public static MorphemeRule U_Not_NonLexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Anything, MaskRule.Is(Attributes.U) & !MaskRule.Is(Attributes.U.NonLexeme));
-        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.Epsilon, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.Epsilon));
+        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.Epsilon));
 
 
         public static MorphemeRule Something(GrammarCharacter grammarCharacter) => new MorphemeRule(grammarCharacter, MorphRuleMaker.Something, MaskRule.Is(grammarCharacter.GetAttributes()));

@@ -75,14 +75,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IEnumerable<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance)
         {
-            IEnumerable<IReadOnlyList<Morpheme>> result = FindAllMorphemeSequences(word, maxMorphDistance, new List<Morpheme>());
+            IEnumerable<IReadOnlyList<Morpheme>> result = FindAllMorphemeSequences(word, maxMorphDistance, new List<Morpheme>())
+                // Note: as an input parameter there is the list which is filled during the iteration.
+                //       Therefore it must be iterated in once - so it must be converteed to the list.
+                .ToList();
             return result;
         }
 
         public IEnumerable<Pattern> FindPatterns(Morpheme morpheme)
         {
             IEnumerable<Pattern> result = Patterns
-                .Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+                .Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                            !x.IsPrimitiveTransference() &&
                             x.MorphemeRule.Evaluate(morpheme));
             return result;
         }
@@ -169,8 +173,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         private bool IsEdge(MorphemeRule from, MorphemeRule to)
         {
-            if (from.GrammarCharacter != GrammarCharacter.Epsilon &&
-                to.GrammarCharacter != GrammarCharacter.Epsilon)
+            if (from.GrammarCharacter != GrammarCharacter.e &&
+                to.GrammarCharacter != GrammarCharacter.e)
             {
                 return true;
             }

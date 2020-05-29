@@ -6,9 +6,9 @@
     public enum GrammarCharacter
     {
         /// <summary>
-        /// Empty
+        /// Epsilon
         /// </summary>
-        Epsilon,
+        e,
 
         /// <summary>
         /// Verbant

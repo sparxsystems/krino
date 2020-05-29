@@ -52,7 +52,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
                 return GrammarCharacter.U;
             }
 
-            return GrammarCharacter.Epsilon;
+            return GrammarCharacter.e;
         }
 
         /// <summary>

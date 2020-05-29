@@ -63,7 +63,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual(1, builder.ActiveAdTrees.Count);
             Assert.IsTrue(builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph == "I" && builder.ActiveAdTrees[0].Right.Left.Morpheme.GrammarCharacter == GrammarCharacter.O);
             Assert.IsTrue(builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph == "read" && builder.ActiveAdTrees[0].Right.Right.Morpheme.GrammarCharacter == GrammarCharacter.I);
-            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Morpheme.Morph == "" && builder.ActiveAdTrees[0].Right.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
+            Assert.IsTrue(builder.ActiveAdTrees[0].Right.Morpheme.Morph == "" && builder.ActiveAdTrees[0].Right.Morpheme.GrammarCharacter == GrammarCharacter.e);
             Assert.IsTrue(builder.ActiveAdTrees[0].Morpheme.Morph == "." && builder.ActiveAdTrees[0].Morpheme.GrammarCharacter == GrammarCharacter.U);
         }
 
@@ -275,14 +275,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("A-O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O,
-                    LeftRule = MorphemeRule.A.SetOrder(1),
+                    RightRule = MorphemeRule.O_Lexeme,
+                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
                 },
 
                 // Primitive transference.
                 new Pattern("O>A")
                 {
-                    MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
+                    MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.A.Lexeme),
                     RightRule = MorphemeRule.O_Lexeme,
                     LeftRule = MorphemeRule.Nothing,
                 },
@@ -370,6 +370,83 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("I", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
             Assert.AreEqual("will", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
             Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+        }
+
+        [Test]
+        public void I_will_not_read()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("I")
+                {
+                    MorphemeRule = MorphemeRule.I_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("E")
+                {
+                    MorphemeRule = MorphemeRule.E_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("O1-I")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.O_Lexeme,
+                },
+
+                new Pattern("I-I")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal)
+                        .SetOrder(1)
+                        .SetInheritance(InheritanceRuleMaker.Nothing),
+                },
+
+                new Pattern("E-I")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.E_Lexeme.SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
+                },
+            };
+
+            List<Morpheme> morphemes = new List<Morpheme>()
+            {
+                // Lexemes.
+                new Morpheme("I"){ Attributes = Attributes.O.Lexeme.Pronoun },
+                new Morpheme("will") { Attributes = Attributes.I.Lexeme.Verb.Modal },
+                new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb },
+                new Morpheme("not") { Attributes = Attributes.E.Lexeme.Adverb },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+            Assert.IsTrue(builder.AddWord("I"));
+            Assert.IsTrue(builder.AddWord("will"));
+            Assert.IsTrue(builder.AddWord("not"));
+            Assert.IsTrue(builder.AddWord("read"));
+
+            builder.Purify();
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+            Assert.AreEqual("I", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
+            Assert.AreEqual("will", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("not", builder.ActiveAdTrees[0].Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Right.Morpheme.Morph);
         }
 
         [Test]

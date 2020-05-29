@@ -45,7 +45,7 @@ namespace Krino.GretaTest
                 LeftRule = MorphemeRule.O
             },
 
-            new Pattern("O-suffix")
+            new Pattern("O-sfx")
             {
                 MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
                 RightRule = MorphemeRule.Nothing,
@@ -68,15 +68,15 @@ namespace Krino.GretaTest
             new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O.SetInheritance(InheritanceRuleMaker.Epsilon),
-                LeftRule = MorphemeRule.A.SetOrder(1),
+                RightRule = MorphemeRule.O_Lexeme.SetInheritance(InheritanceRuleMaker.Epsilon),
+                LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
             },
 
             new Pattern("E-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.I,
-                LeftRule = MorphemeRule.E_Lexeme.SetOrder(1),
+                RightRule = MorphemeRule.I_Lexeme,
+                LeftRule = MorphemeRule.E_Lexeme.SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
             },
 
             new Pattern("O-U-O")
@@ -89,7 +89,7 @@ namespace Krino.GretaTest
             // Primitive transference.
             new Pattern("O>A")
             {
-                MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.A.Lexeme),
                 RightRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
             },
@@ -105,13 +105,15 @@ namespace Krino.GretaTest
             {
                 MorphemeRule = MorphemeRule.Epsilon,
                 RightRule = MorphemeRule.I_Lexeme,
-                LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal).SetOrder(1),
+                LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal)
+                    .SetOrder(1)
+                    .SetInheritance(InheritanceRuleMaker.Nothing),
             },
 
 
-            new Pattern(".")
+            new Pattern()
             {
-                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark),
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme),
                 RightRule = MorphemeRule.Anything.SetOrder(1),
                 LeftRule = MorphemeRule.Anything,
             },

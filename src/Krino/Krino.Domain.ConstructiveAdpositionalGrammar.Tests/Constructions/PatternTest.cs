@@ -13,7 +13,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         {
             Pattern pattern = new Pattern()
             {
-                MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.A.Lexeme),
                 RightRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
             };
@@ -25,7 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
                 RightRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
             };
-            Assert.IsFalse(pattern.IsPrimitiveTransference());
+            Assert.IsTrue(pattern.IsPrimitiveTransference());
 
             pattern = new Pattern()
             {

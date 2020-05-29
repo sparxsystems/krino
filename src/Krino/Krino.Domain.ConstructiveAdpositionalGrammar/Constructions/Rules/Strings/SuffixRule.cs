@@ -7,15 +7,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules.Strin
     /// </summary>
     public class SuffixRule : IRule<string>
     {
-        private string myPostfix;
+        private string mySuffix;
 
-        public SuffixRule(string postfix)
+        public SuffixRule(string suffix)
         {
-            myPostfix = postfix;
+            mySuffix = suffix;
         }
 
-        public bool Equals(IRule<string> other) => other is SuffixRule postfixRule && myPostfix == postfixRule.myPostfix;
+        public bool Equals(IRule<string> other) => other is SuffixRule postfixRule && mySuffix == postfixRule.mySuffix;
 
-        public bool Evaluate(string value) => value.EndsWith(myPostfix);
+        public bool Evaluate(string value) => value != null && value.EndsWith(mySuffix);
     }
 }

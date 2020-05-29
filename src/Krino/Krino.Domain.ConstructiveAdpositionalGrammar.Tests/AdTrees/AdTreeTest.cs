@@ -33,7 +33,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
 
             Assert.AreEqual(GrammarCharacter.I, adTree.InheritedGrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.Epsilon, adTree.Right.Left.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.e, adTree.Right.Left.InheritedGrammarCharacter);
             Assert.AreEqual(GrammarCharacter.I, adTree.Right.InheritedGrammarCharacter);
 
             Assert.AreEqual(GrammarCharacter.O, adTree.Left.InheritedGrammarCharacter);

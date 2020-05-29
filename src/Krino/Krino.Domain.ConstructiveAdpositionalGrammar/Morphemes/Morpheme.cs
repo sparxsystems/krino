@@ -5,7 +5,7 @@ using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
-    [DebuggerDisplay("{GrammarCharacter}: {Morph}")]
+    [DebuggerDisplay("{GrammarCharacter}={Morph}")]
     public class Morpheme : IEquatable<Morpheme>
     {
         public static Morpheme Epsilon => new Morpheme("") { Attributes = AttributesArrangement.Attributes.Epsilon };

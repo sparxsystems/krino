@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -14,7 +13,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// <summary>
     /// Implements the AdTree as defined in the document Constructive Adposition Grammar.
     /// </summary>
-    [DebuggerDisplay("{Left?.Morpheme?.GrammarCharacter.ToString()}:{Left?.Morpheme?.Morph} <- {Morpheme?.GrammarCharacter.ToString()}:{Morpheme?.Morph} -> {Right?.Morpheme?.GrammarCharacter.ToString()}:{Right?.Morpheme?.Morph}")]
+    [DebuggerDisplay("({Left != null ? string.Join(\"\", Left.Pattern.Name, \"=\", Left.Morpheme.Morph) : \"\"})<-({Pattern.Name}={Morpheme.Morph})->({Right != null ? string.Join(\"\", Right.Pattern.Name, \"=\", Right.Morpheme.Morph) : \"\"})")]
     public class AdTree : IAdTree
     {
         private IAdTree myAdPosition;
@@ -37,10 +36,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             get
             {
-                GrammarCharacter result = GrammarCharacter.Epsilon;
+                GrammarCharacter result = GrammarCharacter.e;
 
                 // Find the first element on the right branch which has defined own grammar character.
-                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.Epsilon);
+                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
                 if (rightChild != null)
                 {
                     result = rightChild.Morpheme.GrammarCharacter;
@@ -169,14 +168,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     // If this element is the root or is located on the right.
                     if (AdPosition == null || IsOnRight)
                     {
-                        result = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.Epsilon);
+                        result = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
                     }
                     // This element is not the root and is located on the left.
                     else
                     {
                         // Go via all adpositions and find the first governor.
                         result = AdPositions.SelectMany(x => x.RightChildren)
-                            .FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.Epsilon && x.Morpheme.GrammarCharacter != GrammarCharacter.U);
+                            .FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e && x.Morpheme.GrammarCharacter != GrammarCharacter.U);
                     }
                 }
                 else
@@ -192,7 +191,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public bool IsGovernor => IsOnRight && Morpheme.GrammarCharacter != GrammarCharacter.Epsilon && Morpheme.GrammarCharacter != GrammarCharacter.U;
+        public bool IsGovernor => IsOnRight && Morpheme.GrammarCharacter != GrammarCharacter.e && Morpheme.GrammarCharacter != GrammarCharacter.U;
 
         public IEnumerable<IAdTree> DependentAdPositions
         {
@@ -203,7 +202,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // Only governors have dependents.
                 if (IsGovernor)
                 {
-                    IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.Morpheme.GrammarCharacter == GrammarCharacter.Epsilon);
+                    IEnumerable<IAdTree> governingAdPositions = AdPositions.TakeUntil(x => x.AdPosition == null || x.IsOnRight && x.Morpheme.GrammarCharacter == GrammarCharacter.e);
                     result = governingAdPositions.Where(x => x.Left != null && x.Left.IsDependent);
                 }
                 else

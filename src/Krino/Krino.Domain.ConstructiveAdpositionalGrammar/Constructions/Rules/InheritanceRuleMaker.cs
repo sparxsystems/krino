@@ -12,7 +12,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static IsRule<GrammarCharacter> U => RuleMaker.Is(GrammarCharacter.U);
 
-        public static IsRule<GrammarCharacter> Epsilon => RuleMaker.Is(GrammarCharacter.Epsilon);
+        public static IsRule<GrammarCharacter> Epsilon => RuleMaker.Is(GrammarCharacter.e);
 
         public static OrRule<GrammarCharacter> Epsilon_U => Epsilon | U;
     }

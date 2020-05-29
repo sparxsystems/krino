@@ -363,7 +363,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         private static bool IsSubruleOf(this MorphemeRule morphemeRule, MorphemeRule other)
         {
-            if (other.GrammarCharacter == GrammarCharacter.Epsilon ||
+            if (other.GrammarCharacter == GrammarCharacter.e ||
                 other.GrammarCharacter == morphemeRule.GrammarCharacter)
             {
                 if (other.MorphRule.Equals(MorphRuleMaker.Anything) ||

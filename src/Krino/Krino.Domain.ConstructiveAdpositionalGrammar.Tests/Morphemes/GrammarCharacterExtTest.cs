@@ -17,7 +17,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes
             Assert.AreEqual(GrammarCharacter.E, GrammarCharacterExt.GetGrammarCharacter(Attributes.E));
             Assert.AreEqual(GrammarCharacter.U, GrammarCharacterExt.GetGrammarCharacter(Attributes.U));
 
-            Assert.AreEqual(GrammarCharacter.Epsilon, GrammarCharacterExt.GetGrammarCharacter(0));
+            Assert.AreEqual(GrammarCharacter.e, GrammarCharacterExt.GetGrammarCharacter(0));
         }
     }
 }

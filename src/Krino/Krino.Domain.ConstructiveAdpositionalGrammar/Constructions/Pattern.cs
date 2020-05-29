@@ -10,16 +10,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
     /// <summary>
     /// Defines the pattern which contains rules how adtrees can be connected to each other.
     /// </summary>
-    [DebuggerDisplay("{LeftRule} <- {Name} -> {RightRule}")]
+    [DebuggerDisplay("{Name}")]
     public class Pattern : IEquatable<Pattern>
     {
+        private string myName;
+
         public Pattern(string name = null)
         {
-            Name = name;
+            myName = name;
         }
 
         // Optional information for the debugging purposes.
-        public string Name { get; private set; }
+        public string Name => myName ?? string.Join("", LeftRule?.GrammarCharacter.ToString(), "-", MorphemeRule.GrammarCharacter, "-", RightRule?.GrammarCharacter);
 
 
         public MorphemeRule MorphemeRule { get; set; } = MorphemeRule.Nothing;
@@ -32,16 +34,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         public bool IsPrimitiveTransference()
         {
             // AdPosition
-            if (MorphemeRule.GrammarCharacter != GrammarCharacter.Epsilon &&
+            if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
                 MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                (MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) ||
-                 MorphemeRule.MorphRule.Evaluate("")))
+                (MorphemeRule.MorphRule.Equals(MorphRuleMaker.Something) ||
+                 !MorphemeRule.MorphRule.Evaluate("") && !MorphemeRule.MorphRule.Evaluate(null)))
             {
                 // Left.
                 if (LeftRule.Equals(MorphemeRule.Nothing))
                 {
                     // Right - inheriting site.
-                    if (RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                    if (RightRule.GrammarCharacter != GrammarCharacter.e)
                     {
                         return true;
                     }
@@ -54,15 +56,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         public bool IsModifier()
         {
             // AdPosition
-            if (MorphemeRule.GrammarCharacter == GrammarCharacter.Epsilon &&
+            if (MorphemeRule.GrammarCharacter == GrammarCharacter.e &&
                 (MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) ||
                  MorphemeRule.MorphRule.Evaluate("")))
             {
                 // Left.
-                if (LeftRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                if (LeftRule.GrammarCharacter != GrammarCharacter.e)
                 {
                     // Right.
-                    if (RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                    if (RightRule.GrammarCharacter != GrammarCharacter.e)
                     {
                         if (RightRule.Order != LeftRule.Order)
                         {
@@ -83,10 +85,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
                 !MorphemeRule.MorphRule.Evaluate(""))
             {
                 // Left.
-                if (LeftRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                if (LeftRule.GrammarCharacter != GrammarCharacter.e)
                 {
                     // Right.
-                    if (RightRule.GrammarCharacter != GrammarCharacter.Epsilon)
+                    if (RightRule.GrammarCharacter != GrammarCharacter.e)
                     {
                         if (RightRule.Order != LeftRule.Order)
                         {
