@@ -196,7 +196,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
                 {
                     IAdTree adTreeCopy = adTree.MakeShallowCopy();
-                    IAdTree transferenceAdTree = new AdTree(new Morpheme(adTree.Morpheme.Morph) { Attributes = isRule.ReferenceValue }, pattern);
+                    IAdTree transferenceAdTree = new AdTree(new Morpheme(adTree.Morpheme.Morph, isRule.ReferenceValue), pattern);
                     transferenceAdTree.Right = adTreeCopy;
                     yield return transferenceAdTree;
                 }
@@ -358,7 +358,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     DirectedEdge<GrammarCharacter, Pattern> edge = path[i];
 
-                    IAdTree bridge = new AdTree(new Morpheme("") { Attributes = edge.Value.MorphemeRule.GrammarCharacter.GetAttributes() }, edge.Value);
+                    IAdTree bridge = new AdTree(new Morpheme("", edge.Value.MorphemeRule.GrammarCharacter.GetAttributes()), edge.Value);
 
                     // If it is the first item on the path.
                     if (i == 0)

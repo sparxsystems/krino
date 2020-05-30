@@ -42,7 +42,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[0], patterns);
 
             Assert.AreEqual(6, dictionary.PatternGraph.Count);
             Assert.AreEqual(2, dictionary.PatternGraph.Edges.Count());
@@ -70,7 +70,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[] { }, patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[0], patterns);
 
             Assert.AreEqual(1, dictionary.PatternGraph.Edges.Count());
             Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.A && x.Value.Name == "A-A"));
@@ -82,8 +82,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("write") { Attributes = Attributes.I.Lexeme.Verb },
-                new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun },
+                new Morpheme("write", Attributes.I.Lexeme.Verb),
+                new Morpheme("book", Attributes.O.Lexeme.Noun),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
@@ -105,13 +105,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("ex") { Attributes = Attributes.O.NonLexeme.NounPrefix },
-                new Morpheme("extra") { Attributes = Attributes.O.NonLexeme.NounPrefix },
-                new Morpheme("re") { Attributes = Attributes.O.NonLexeme.NounPrefix },
-                new Morpheme("er") { Attributes = Attributes.O.NonLexeme.NounSuffix },
-                new Morpheme("less") { Attributes = Attributes.A.NonLexeme.AdjectiveSuffix },
-                new Morpheme("write") { Attributes = Attributes.I.Lexeme },
-                new Morpheme("read") { Attributes = Attributes.I.Lexeme },
+                new Morpheme("ex", Attributes.O.NonLexeme.NounPrefix),
+                new Morpheme("extra", Attributes.O.NonLexeme.NounPrefix),
+                new Morpheme("re", Attributes.O.NonLexeme.NounPrefix),
+                new Morpheme("er", Attributes.O.NonLexeme.NounSuffix),
+                new Morpheme("less", Attributes.A.NonLexeme.AdjectiveSuffix),
+                new Morpheme("write", Attributes.I.Lexeme),
+                new Morpheme("read", Attributes.I.Lexeme),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
@@ -151,8 +151,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("write") { Attributes = Attributes.I.Lexeme.Verb },
-                new Morpheme("er") { Attributes = Attributes.O.NonLexeme.NounSuffix },
+                new Morpheme("write", Attributes.I.Lexeme.Verb),
+                new Morpheme("er", Attributes.O.NonLexeme.NounSuffix),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);

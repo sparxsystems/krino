@@ -10,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes
         [Test]
         public void GrammarCharacter_Property()
         {
-            Morpheme morpheme = new Morpheme("hello") { Attributes = Attributes.A.Lexeme };
+            Morpheme morpheme = new Morpheme("hello", Attributes.A.Lexeme);
             Assert.AreEqual(GrammarCharacter.A, morpheme.GrammarCharacter);
         }
     }

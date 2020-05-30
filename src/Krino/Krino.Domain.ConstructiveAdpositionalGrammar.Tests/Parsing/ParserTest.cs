@@ -1,11 +1,9 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.PatternAttributesArrangement;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement.Structural;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -20,8 +18,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Morpheme> lexemes = new List<Morpheme>()
             {
-                new Morpheme("i") { Attributes = Attributes.O.Lexeme.Pronoun.Subjective },
-                new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb.Bivalent },
+                new Morpheme("i", Attributes.O.Lexeme.Pronoun.Subjective),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
             };
 
             List<Pattern> patterns = new List<Pattern>()

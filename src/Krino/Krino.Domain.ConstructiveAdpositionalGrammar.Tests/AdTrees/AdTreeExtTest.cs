@@ -16,17 +16,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void GetSequenceToRoot()
         {
-            AdTree adTree = new AdTree(new Morpheme(""), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme(""), new Pattern())
+                Right = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("read"), new Pattern()),
-                    Left = new AdTree(new Morpheme("I"), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("I", 0), new Pattern())
                 },
-                Left = new AdTree(new Morpheme(""), new Pattern())
+                Left = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("book"), new Pattern()),
-                    Left = new AdTree(new Morpheme("the"), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("the", 0), new Pattern())
                 }
             };
 
@@ -40,17 +40,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void GetPath()
         {
-            AdTree adTree = new AdTree(new Morpheme(""), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme(""), new Pattern())
+                Right = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("read"), new Pattern()),
-                    Left = new AdTree(new Morpheme("I"), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("I", 0), new Pattern())
                 },
-                Left = new AdTree(new Morpheme(""), new Pattern())
+                Left = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("book"), new Pattern()),
-                    Left = new AdTree(new Morpheme("the"), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("the", 0), new Pattern())
                 }
             };
 
@@ -67,17 +67,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void TryGetAdTree()
         {
-            AdTree adTree = new AdTree(new Morpheme(""), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme(""), new Pattern())
+                Right = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("read"), new Pattern()),
-                    Left = new AdTree(new Morpheme("I"), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("I", 0), new Pattern())
                 },
-                Left = new AdTree(new Morpheme(""), new Pattern())
+                Left = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("book"), new Pattern()),
-                    Left = new AdTree(new Morpheme("the"), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("the", 0), new Pattern())
                 }
             };
 
@@ -92,18 +92,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void CanAttachToRight()
         {
-            IAdTree adTree = new AdTree(new Morpheme(""),
+            IAdTree adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { RightRule = MorphemeRule.O, }
             );
-            IAdTree adTreeElement = new AdTree(new Morpheme(""),
+            IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.O });
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
 
 
-            adTree = new AdTree(new Morpheme(""),
+            adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { RightRule = MorphemeRule.O, }
             );
-            adTreeElement = new AdTree(new Morpheme(""),
+            adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { RightRule = MorphemeRule.A });
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
         }
@@ -111,27 +111,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void CanAttachToRight_Inheritance()
         {
-            IAdTree adTree = new AdTree(new Morpheme(""),
+            IAdTree adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { RightRule = MorphemeRule.O, }
             );
-            IAdTree adTreeElement = new AdTree(new Morpheme(""),
+            IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
 
 
             // Inheritance is not allowed.
-            adTree = new AdTree(new Morpheme(""),
+            adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { RightRule = MorphemeRule.O.SetInheritance(InheritanceRuleMaker.Nothing) }
             );
-            adTreeElement = new AdTree(new Morpheme(""),
+            adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
 
 
-            adTree = new AdTree(new Morpheme(""),
+            adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { RightRule = MorphemeRule.O, }
             );
-            adTreeElement = new AdTree(new Morpheme(""),
+            adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.A });
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
         }
@@ -141,7 +141,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             // The phrase: I read
             AdTree adTree = new AdTree(
-                new Morpheme(""),
+                new Morpheme("", 0),
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
@@ -150,7 +150,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 })
                 {
                     Right = new AdTree(
-                        new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb },
+                        new Morpheme("read", Attributes.I.Lexeme.Verb),
                         new Pattern()
                         {
                             MorphemeRule = MorphemeRule.I2,
@@ -160,7 +160,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                     )
                 {
                     Left = new AdTree(
-                        new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun },
+                        new Morpheme("I", Attributes.O.Lexeme.Pronoun),
                         new Pattern()
                         {
                             MorphemeRule = MorphemeRule.O_Lexeme,
@@ -173,7 +173,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             // Try to connect the second valency position.
             AdTree valency2 = new AdTree(
-                new Morpheme(""),
+                new Morpheme("", 0),
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
@@ -187,7 +187,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             // Try to connect the first valency position.
             AdTree valency1 = new AdTree(
-                new Morpheme(""),
+                new Morpheme("", 0),
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
@@ -201,7 +201,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             // Try to connect the third valency position.
             AdTree valency3 = new AdTree(
-                new Morpheme(""),
+                new Morpheme("", 0),
                 new Pattern()
                 {
                     MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(3),
@@ -218,18 +218,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void CanAttachToLeft()
         {
-            IAdTree adTree = new AdTree(new Morpheme(""),
+            IAdTree adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { LeftRule = MorphemeRule.O, }
             );
-            IAdTree adTreeElement = new AdTree(new Morpheme(""),
+            IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.O });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
 
 
-            adTree = new AdTree(new Morpheme(""),
+            adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { LeftRule = MorphemeRule.O, }
             );
-            adTreeElement = new AdTree(new Morpheme(""),
+            adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { RightRule = MorphemeRule.A });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
         }
@@ -237,27 +237,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void CanAttachToLeft_Inheritance()
         {
-            IAdTree adTree = new AdTree(new Morpheme(""),
+            IAdTree adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { LeftRule = MorphemeRule.O, }
             );
-            IAdTree adTreeElement = new AdTree(new Morpheme(""),
+            IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
 
 
             // Inheritance is not allowed.
-            adTree = new AdTree(new Morpheme(""),
+            adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { LeftRule = MorphemeRule.O.SetInheritance(InheritanceRuleMaker.Nothing) }
             );
-            adTreeElement = new AdTree(new Morpheme(""),
+            adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
 
 
-            adTree = new AdTree(new Morpheme(""),
+            adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { LeftRule = MorphemeRule.O, }
             );
-            adTreeElement = new AdTree(new Morpheme(""),
+            adTreeElement = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.A });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
         }
@@ -266,17 +266,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void GetFirstAdPositionOnLeft()
         {
-            AdTree adTree = new AdTree(new Morpheme(""), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme(""), new Pattern())
+                Right = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("read"), new Pattern()),
-                    Left = new AdTree(new Morpheme("I"), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("I", 0), new Pattern())
                 },
-                Left = new AdTree(new Morpheme(""), new Pattern())
+                Left = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("book"), new Pattern()),
-                    Left = new AdTree(new Morpheme("the"), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("the", 0), new Pattern())
                 }
             };
 
@@ -295,21 +295,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void Replace()
         {
-            AdTree adTree = new AdTree(new Morpheme(""), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme(""), new Pattern())
+                Right = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("read"), new Pattern()),
-                    Left = new AdTree(new Morpheme("I"), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("I", 0), new Pattern())
                 },
-                Left = new AdTree(new Morpheme(""), new Pattern())
+                Left = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("book"), new Pattern()),
-                    Left = new AdTree(new Morpheme("the"), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0), new Pattern()),
+                    Left = new AdTree(new Morpheme("the", 0), new Pattern())
                 }
             };
 
-            AdTree replace = new AdTree(new Morpheme("hello"), new Pattern());
+            AdTree replace = new AdTree(new Morpheme("hello", 0), new Pattern());
 
             adTree.Right.Replace(replace);
 
@@ -321,15 +321,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void Attach()
         {
-            AdTree adTree = new AdTree(new Morpheme(""), new Pattern());
-            AdTree toAppend = new AdTree(new Morpheme("hello"), new Pattern());
+            AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern());
+            AdTree toAppend = new AdTree(new Morpheme("hello", 0), new Pattern());
             adTree.Attach(toAppend, AttachPosition.ChildOnLeft);
             Assert.AreEqual("hello", adTree.Left.Morpheme.Morph);
             Assert.IsNull(adTree.Right);
 
 
-            adTree = new AdTree(new Morpheme(""), new Pattern());
-            toAppend = new AdTree(new Morpheme("hello"), new Pattern());
+            adTree = new AdTree(new Morpheme("", 0), new Pattern());
+            toAppend = new AdTree(new Morpheme("hello", 0), new Pattern());
             adTree.Attach(toAppend, AttachPosition.ChildOnRight);
             Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
             Assert.IsTrue(adTree.Left == null);
@@ -338,22 +338,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void Insert()
         {
-            AdTree adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("A1", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+                Right = new AdTree(new Morpheme("A11", 0), new Pattern()),
             };
-            AdTree toInsert = new AdTree(new Morpheme("hello"), new Pattern());
+            AdTree toInsert = new AdTree(new Morpheme("hello", 0), new Pattern());
             adTree.Right.Insert(toInsert, toInsert, AttachPosition.ChildOnLeft);
 
             Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
             Assert.AreEqual("A11", adTree.Right.Left.Morpheme.Morph);
 
 
-            adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            adTree = new AdTree(new Morpheme("A1", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+                Right = new AdTree(new Morpheme("A11", 0), new Pattern()),
             };
-            toInsert = new AdTree(new Morpheme("hello"), new Pattern());
+            toInsert = new AdTree(new Morpheme("hello", 0), new Pattern());
             adTree.Right.Insert(toInsert, toInsert, AttachPosition.ChildOnRight);
             
             Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
@@ -361,11 +361,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
 
             // Inserting to the root.
-            adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            adTree = new AdTree(new Morpheme("A1", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+                Right = new AdTree(new Morpheme("A11", 0), new Pattern()),
             };
-            toInsert = new AdTree(new Morpheme("hello"), new Pattern());
+            toInsert = new AdTree(new Morpheme("hello", 0), new Pattern());
             adTree.Insert(toInsert, toInsert, AttachPosition.ChildOnRight);
 
             IAdTree root = adTree.Root;
@@ -376,9 +376,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void Detach()
         {
-            AdTree adTree = new AdTree(new Morpheme("A1"), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("A1", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme("A11"), new Pattern()),
+                Right = new AdTree(new Morpheme("A11", 0), new Pattern()),
             };
 
             adTree.Right.Detach();
@@ -389,7 +389,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void Evaluate()
         {
-            AdTree adTree = new AdTree(new Morpheme("book") { Attributes = Attributes.O.Lexeme }, new Pattern("O")
+            AdTree adTree = new AdTree(new Morpheme("book", Attributes.O.Lexeme), new Pattern("O")
             {
                 MorphemeRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
@@ -398,7 +398,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.Evaluate());
 
             // note: empty string is not allowed.
-            adTree = new AdTree(new Morpheme("") { Attributes = Attributes.O.Lexeme }, new Pattern("O")
+            adTree = new AdTree(new Morpheme("", Attributes.O.Lexeme), new Pattern("O")
             {
                 MorphemeRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
@@ -407,7 +407,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsFalse(adTree.Evaluate());
 
             // note: non-lexeme is not allowed.
-            adTree = new AdTree(new Morpheme("bla") { Attributes = Attributes.O.NonLexeme }, new Pattern("O")
+            adTree = new AdTree(new Morpheme("bla", Attributes.O.NonLexeme), new Pattern("O")
             {
                 MorphemeRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
@@ -417,7 +417,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
 
             // Left and right rules are anything so it should also accept if they are null.
-            adTree = new AdTree(new Morpheme(".") { Attributes = Attributes.U.NonLexeme }, new Pattern("")
+            adTree = new AdTree(new Morpheme(".", Attributes.U.NonLexeme), new Pattern("")
             {
                 MorphemeRule = MorphemeRule.U_NonLexeme,
                 LeftRule = MorphemeRule.Anything,
@@ -427,83 +427,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void GetNonconformities()
-        {
-            AdTree adTree = new AdTree(
-                new Morpheme(""),
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Not_NonLexeme,
-                    LeftRule = MorphemeRule.A_Not_NonLexeme
-                })
-            {
-                Left = new AdTree(
-                    new Morpheme("green") { Attributes = Attributes.A.Lexeme },
-                    new Pattern("A")
-                    {
-                        MorphemeRule = MorphemeRule.A_Lexeme,
-                        RightRule = MorphemeRule.Nothing,
-                        LeftRule = MorphemeRule.Nothing,
-                    }),
-                Right = new AdTree(
-                    new Morpheme(""),
-                    new Pattern("A-O")
-                    {
-                        MorphemeRule = MorphemeRule.Epsilon,
-                        RightRule = MorphemeRule.O_Not_NonLexeme,
-                        LeftRule = MorphemeRule.A_Not_NonLexeme
-                    })
-                {
-                    Left = new AdTree(
-                        new Morpheme(""),
-                        new Pattern("O>A")
-                        {
-                            MorphemeRule = MorphemeRule.Epsilon,
-                            RightRule = new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.A) & !MaskRule.Is(Attributes.A.NonLexeme)),
-                            LeftRule = MorphemeRule.O_Not_NonLexeme,
-                        })
-                    {
-                        Left = new AdTree(
-                            new Morpheme("race") { Attributes = Attributes.O.Lexeme },
-                            new Pattern("O")
-                            {
-                                MorphemeRule = MorphemeRule.O_Lexeme,
-                                RightRule = MorphemeRule.Nothing,
-                                LeftRule = MorphemeRule.Nothing,
-                            }),
-                        Right = new AdTree(
-                            new Morpheme("") { Attributes = Attributes.A },
-                            new Pattern("A")
-                            {
-                                MorphemeRule = MorphemeRule.A,
-                                RightRule = MorphemeRule.Nothing,
-                                LeftRule = MorphemeRule.Nothing,
-                            }),
-
-                    },
-
-                    Right = new AdTree(
-                        new Morpheme("car") { Attributes = Attributes.O.Lexeme },
-                        new Pattern("O")
-                        {
-                            MorphemeRule = MorphemeRule.O_Lexeme,
-                            RightRule = MorphemeRule.Nothing,
-                            LeftRule = MorphemeRule.Nothing,
-                        }),
-                },
-            };
-
-            List<IAdTree> nonconformities = adTree.GetNonconformities().ToList();
-
-            Assert.AreEqual(0, nonconformities.Count);
-        }
-
-        [Test]
         public void GetNonconformities_MorphemeRule()
         {
             AdTree adTree = new AdTree(
-                    new Morpheme("green") { Attributes = Attributes.A.Lexeme },
+                    new Morpheme("green", Attributes.A.Lexeme),
                     new Pattern("A")
                     {
                         MorphemeRule = MorphemeRule.A_Lexeme,
@@ -517,7 +444,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             // Empty string does not match the rule.
             adTree = new AdTree(
-                    new Morpheme("") { Attributes = Attributes.A.Lexeme },
+                    new Morpheme("", Attributes.A.Lexeme),
                     new Pattern("A")
                     {
                         MorphemeRule = MorphemeRule.A_Lexeme,
@@ -531,7 +458,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             // Morpheme attributes does not match the rule.
             adTree = new AdTree(
-                    new Morpheme("bla") { Attributes = Attributes.A.NonLexeme },
+                    new Morpheme("bla", Attributes.A.NonLexeme),
                     new Pattern("A")
                     {
                         MorphemeRule = MorphemeRule.A_Lexeme,
@@ -545,7 +472,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             // Attached right children violates the rule.
             adTree = new AdTree(
-                    new Morpheme("green") { Attributes = Attributes.A.Lexeme },
+                    new Morpheme("green", Attributes.A.Lexeme),
                     new Pattern("A")
                     {
                         MorphemeRule = MorphemeRule.A_Lexeme,
@@ -554,7 +481,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                     })
             {
                 // Note: the rule is nothing so having this attached violates the rule.
-                Right = new AdTree(new Morpheme(""), new Pattern())
+                Right = new AdTree(new Morpheme("", 0), new Pattern())
             };
 
             nonconformities = adTree.GetNonconformities().ToList();
@@ -566,17 +493,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void MakeShallowCopy()
         {
             // The phrase: I read the book.
-            IAdTree adTree = new AdTree(new Morpheme(""), new Pattern())
+            IAdTree adTree = new AdTree(new Morpheme("", 0), new Pattern())
             {
-                Right = new AdTree(new Morpheme(""), new Pattern())
+                Right = new AdTree(new Morpheme("", 0), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("read") { Attributes = Attributes.I.Lexeme.Verb }, new Pattern()),
-                    Left = new AdTree(new Morpheme("I") { Attributes = Attributes.O.Lexeme.Pronoun }, new Pattern())
+                    Right = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb), new Pattern()),
+                    Left = new AdTree(new Morpheme("I", Attributes.O.Lexeme.Pronoun), new Pattern())
                 },
-                Left = new AdTree(new Morpheme("") { Attributes = Attributes.U }, new Pattern())
+                Left = new AdTree(new Morpheme("", Attributes.U), new Pattern())
                 {
-                    Right = new AdTree(new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun }, new Pattern()),
-                    Left = new AdTree(new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner }, new Pattern())
+                    Right = new AdTree(new Morpheme("book", Attributes.O.Lexeme.Noun), new Pattern()),
+                    Left = new AdTree(new Morpheme("the", Attributes.A.Lexeme.Determiner), new Pattern())
                 }
             };
 

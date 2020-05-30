@@ -24,7 +24,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Transferenc
         {
             string transformedMorph = myMorphTransformation.Transform(value.Morph);
             BigInteger transformedAttributes = myAttributeTransformation.Transform(value.Attributes);
-            Morpheme result = new Morpheme(transformedMorph) { Attributes = transformedAttributes };
+            Morpheme result = new Morpheme(transformedMorph, transformedAttributes);
             return result;
         }
 

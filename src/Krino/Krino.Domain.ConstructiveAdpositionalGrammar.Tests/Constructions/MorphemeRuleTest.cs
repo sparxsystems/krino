@@ -12,10 +12,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         [Test]
         public void Nothing()
         {
-            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme("")));
-            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme(null)));
-            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme("bla") { Attributes = ulong.MaxValue }));
-            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme("bla") { Attributes = 123 }));
+            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme("", 0)));
+            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme(null, 0)));
+            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme("bla", ulong.MaxValue)));
+            Assert.IsFalse(MorphemeRule.Nothing.Evaluate(new Morpheme("bla", 123)));
         }
 
         [Test]
@@ -23,25 +23,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         {
             // Or
             MorphemeRule morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.I.Lexeme.Interjection).Or(MaskRule.Is(Attributes.I.Lexeme.Verb)));
-            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.I.Lexeme.Verb }));
-            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.I.Lexeme.Interjection }));
-            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.I.Lexeme.Verb | Attributes.I.Lexeme.Interjection }));
-            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.O }));
+            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("", Attributes.I.Lexeme.Verb)));
+            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("", Attributes.I.Lexeme.Interjection)));
+            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("", Attributes.I.Lexeme.Verb | Attributes.I.Lexeme.Interjection)));
+            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("", Attributes.O)));
 
             // And
             morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(Attributes.I.Lexeme.Interjection).And(MaskRule.Is(Attributes.I.Lexeme.Verb)));
-            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.I.Lexeme.Verb }));
-            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.I.Lexeme.Interjection }));
-            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.I.Lexeme.Verb | Attributes.I.Lexeme.Interjection }));
-            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("") { Attributes = Attributes.O }));
+            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("", Attributes.I.Lexeme.Verb)));
+            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("", Attributes.I.Lexeme.Interjection)));
+            Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("", Attributes.I.Lexeme.Verb | Attributes.I.Lexeme.Interjection)));
+            Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("", Attributes.O)));
         }
 
         [Test]
         public void O_Not_NonLexeme()
         {
-            Assert.IsTrue(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("") { Attributes = Attributes.O.Lexeme }));
-            Assert.IsTrue(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("") { Attributes = Attributes.O}));
-            Assert.IsFalse(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("") { Attributes = Attributes.O.NonLexeme }));
+            Assert.IsTrue(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("", Attributes.O.Lexeme)));
+            Assert.IsTrue(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("", Attributes.O)));
+            Assert.IsFalse(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("", Attributes.O.NonLexeme)));
         }
     }
 }

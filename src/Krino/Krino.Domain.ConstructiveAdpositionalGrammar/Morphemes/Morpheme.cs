@@ -1,5 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
-using System;
+﻿using System;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -8,19 +7,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     [DebuggerDisplay("{GrammarCharacter}={Morph}")]
     public class Morpheme : IEquatable<Morpheme>
     {
-        public static Morpheme Epsilon => new Morpheme("") { Attributes = AttributesArrangement.Attributes.Epsilon };
+        public static Morpheme Epsilon => new Morpheme("", AttributesArrangement.Attributes.Epsilon);
 
-        public Morpheme (string morph)
+        public Morpheme (string morph, BigInteger attributes)
         {
             Morph = morph;
-
-            // Initialize attributes to Epsilon.
-            Attributes = AttributesArrangement.Attributes.Epsilon;
+            Attributes = attributes;
         }
 
         public string Morph { get; private set; }
 
-        public BigInteger Attributes { get; set; }
+        public BigInteger Attributes { get; private set; }
 
         public GrammarCharacter GrammarCharacter => GrammarCharacterExt.GetGrammarCharacter(Attributes);
 
