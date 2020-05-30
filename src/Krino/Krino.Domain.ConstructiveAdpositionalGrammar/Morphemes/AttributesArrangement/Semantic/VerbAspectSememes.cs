@@ -10,12 +10,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
         public VerbAspectSememes(EnumGroupBase parent) : base(parent)
         {
             Simple = new EnumValue(this);
-            Continous = new EnumValue(this);
+            Continuous = new EnumValue(this);
             Perfect = new EnumValue(this);
         }
 
         public EnumValue Simple { get; }
-        public EnumValue Continous { get; }
+        public EnumValue Continuous { get; }
         public EnumValue Perfect { get; }
     }
 }

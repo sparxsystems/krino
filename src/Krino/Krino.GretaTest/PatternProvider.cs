@@ -17,6 +17,13 @@ namespace Krino.GretaTest
                 LeftRule = MorphemeRule.Nothing,
             },
 
+            new Pattern("O+")
+            {
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.O.NonLexeme.NounSuffix),
+                RightRule = MorphemeRule.Nothing,
+                LeftRule = MorphemeRule.Nothing,
+            },
+
             new Pattern("I")
             {
                 MorphemeRule = MorphemeRule.I_Lexeme,
@@ -41,28 +48,21 @@ namespace Krino.GretaTest
             new Pattern("O-E-I")
             {
                 MorphemeRule = MorphemeRule.E_Lexeme,
-                RightRule = MorphemeRule.I.SetOrder(1),
-                LeftRule = MorphemeRule.O
-            },
-
-            new Pattern("O-sfx")
-            {
-                MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
-                RightRule = MorphemeRule.Nothing,
-                LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
+                LeftRule = MorphemeRule.O_Lexeme
             },
 
             new Pattern("O1-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                RightRule = MorphemeRule.I,
-                LeftRule = MorphemeRule.O.SetOrder(1),
+                RightRule = MorphemeRule.I_Lexeme,
+                LeftRule = MorphemeRule.O_Lexeme.SetOrder(1),
             },
             new Pattern("O2-I")
             {
                 MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                RightRule = MorphemeRule.I.SetOrder(1),
-                LeftRule = MorphemeRule.O,
+                RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
+                LeftRule = MorphemeRule.O_Lexeme,
             },
 
             new Pattern("A-O")
@@ -82,19 +82,26 @@ namespace Krino.GretaTest
             new Pattern("O-U-O")
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.Lexeme.Conjunction),
-                RightRule = MorphemeRule.O.SetOrder(1),
-                LeftRule = MorphemeRule.O
+                RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
+                LeftRule = MorphemeRule.O_Lexeme
+            },
+
+            new Pattern("I-U-O")
+            {
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.Lexeme.Conjunction),
+                RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
+                LeftRule = MorphemeRule.I_Lexeme,
             },
 
             // Primitive transference.
             new Pattern("O>A")
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.A.Lexeme),
-                RightRule = MorphemeRule.O_Lexeme,
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.O.Lexeme.Noun),
                 LeftRule = MorphemeRule.Nothing,
             },
 
-            new Pattern("O>O-suffix")
+            new Pattern("O+>O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
                 RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
@@ -111,12 +118,13 @@ namespace Krino.GretaTest
             },
 
 
-            new Pattern()
-            {
-                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme),
-                RightRule = MorphemeRule.Anything.SetOrder(1),
-                LeftRule = MorphemeRule.Anything,
-            },
+            //new Pattern("EOS")
+            //{
+            //    MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark.Period),
+            //    RightRule = MorphemeRule.Anything.SetOrder(1),
+            //    LeftRule = MorphemeRule.Anything,
+            //},
+
         };
     }
 }

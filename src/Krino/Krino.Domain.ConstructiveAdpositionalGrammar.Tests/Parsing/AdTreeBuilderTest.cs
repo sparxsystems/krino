@@ -518,6 +518,80 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("book", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
         }
 
+        [Test]
+        public void World_as_you_know_ends()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                new Pattern("A")
+                {
+                    MorphemeRule = MorphemeRule.A_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("O")
+                {
+                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("I")
+                {
+                    MorphemeRule = MorphemeRule.I_Lexeme,
+                    RightRule = MorphemeRule.Nothing,
+                    LeftRule = MorphemeRule.Nothing,
+                },
+
+                new Pattern("A-O")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon,
+                    RightRule = MorphemeRule.O_Lexeme.SetInheritance(InheritanceRuleMaker.Epsilon),
+                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
+                },
+
+                new Pattern("O1-I")
+                {
+                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
+                    RightRule = MorphemeRule.I_Lexeme,
+                    LeftRule = MorphemeRule.O_Lexeme.SetOrder(1),
+                },
+
+                new Pattern("I-U-O")
+                {
+                    MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.Lexeme.Conjunction),
+                    RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
+                    LeftRule = MorphemeRule.I_Lexeme,
+                },
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[0], patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+            Morpheme morpheme = new Morpheme("the") { Attributes = Attributes.A.Lexeme.Determiner };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+             morpheme = new Morpheme("book") { Attributes = Attributes.O.Lexeme.Noun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("as") { Attributes = Attributes.U.Lexeme.Conjunction };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("you") { Attributes = Attributes.O.Lexeme.Pronoun };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("know") { Attributes = Attributes.I.Lexeme.Verb.Bivalent };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            morpheme = new Morpheme("ends") { Attributes = Attributes.I.Lexeme.Verb.Monovalent };
+            Assert.IsTrue(builder.AddMorpheme(morpheme));
+
+            builder.Purify();
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+        }
 
         [Test]
         public void I_read_the_book_in_the_room()
