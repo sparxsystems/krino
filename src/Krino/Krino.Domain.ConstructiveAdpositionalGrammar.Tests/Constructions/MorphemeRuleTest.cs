@@ -35,13 +35,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             Assert.IsTrue(morphemeRule.Evaluate(new Morpheme("", Attributes.I.Lexeme.Verb | Attributes.I.Lexeme.Interjection)));
             Assert.IsFalse(morphemeRule.Evaluate(new Morpheme("", Attributes.O)));
         }
-
-        [Test]
-        public void O_Not_NonLexeme()
-        {
-            Assert.IsTrue(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("", Attributes.O.Lexeme)));
-            Assert.IsTrue(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("", Attributes.O)));
-            Assert.IsFalse(MorphemeRule.O_Not_NonLexeme.Evaluate(new Morpheme("", Attributes.O.NonLexeme)));
-        }
     }
 }

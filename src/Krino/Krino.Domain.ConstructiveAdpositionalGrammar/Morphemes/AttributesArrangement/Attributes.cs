@@ -68,8 +68,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
 
         public static bool IsPrefix(BigInteger attributes)
         {
-            if (O.NonLexeme.NounPrefix.IsIn(attributes) ||
-                I.NonLexeme.VerbPrefix.IsIn(attributes) ||
+            if (O.NonLexeme.Prefix.IsIn(attributes) ||
+                I.NonLexeme.Prefix.IsIn(attributes) ||
                 A.NonLexeme.AdjextivePrefix.IsIn(attributes) ||
                 E.NonLexeme.AdverbPrefix.IsIn(attributes))
             {
@@ -81,8 +81,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
 
         public static bool IsSuffix(BigInteger attributes)
         {
-            if (O.NonLexeme.NounSuffix.IsIn(attributes) ||
-                I.NonLexeme.VerbSuffix.IsIn(attributes) ||
+            if (O.NonLexeme.Suffix.IsIn(attributes) ||
+                I.NonLexeme.Suffix.IsIn(attributes) ||
                 A.NonLexeme.AdjectiveSuffix.IsIn(attributes) ||
                 E.NonLexeme.AdverbSuffix.IsIn(attributes))
             {

@@ -37,8 +37,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Pattern("A-O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O,
-                    LeftRule = MorphemeRule.A
+                    RightRule = MorphemeRule.O_Lexeme,
+                    LeftRule = MorphemeRule.A_Lexeme
                 },
             };
 
@@ -65,8 +65,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Pattern("A-A")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.A,
-                    LeftRule = MorphemeRule.A
+                    RightRule = MorphemeRule.A_Lexeme,
+                    LeftRule = MorphemeRule.A_Lexeme
                 },
             };
 
@@ -105,10 +105,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("ex", Attributes.O.NonLexeme.NounPrefix),
-                new Morpheme("extra", Attributes.O.NonLexeme.NounPrefix),
-                new Morpheme("re", Attributes.O.NonLexeme.NounPrefix),
-                new Morpheme("er", Attributes.O.NonLexeme.NounSuffix),
+                new Morpheme("ex", Attributes.O.NonLexeme.Prefix),
+                new Morpheme("extra", Attributes.O.NonLexeme.Prefix),
+                new Morpheme("re", Attributes.O.NonLexeme.Prefix),
+                new Morpheme("er", Attributes.O.NonLexeme.Suffix),
                 new Morpheme("less", Attributes.A.NonLexeme.AdjectiveSuffix),
                 new Morpheme("write", Attributes.I.Lexeme),
                 new Morpheme("read", Attributes.I.Lexeme),
@@ -152,7 +152,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("write", Attributes.I.Lexeme.Verb),
-                new Morpheme("er", Attributes.O.NonLexeme.NounSuffix),
+                new Morpheme("er", Attributes.O.NonLexeme.Suffix),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);

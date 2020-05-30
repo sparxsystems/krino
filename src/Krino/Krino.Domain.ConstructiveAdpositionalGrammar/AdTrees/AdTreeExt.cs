@@ -317,6 +317,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <returns></returns>
         public static bool Evaluate(this IAdTree adTree)
         {
+            // Check the morpheme belonging to the adtree.
             if (!adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
             {
                 if (!adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) ||

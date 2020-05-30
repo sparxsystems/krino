@@ -41,8 +41,8 @@ namespace Krino.GretaTest
             // Non-lexemes.
             new Morpheme(".", Attributes.U.NonLexeme.PunctuationMark.Period),
             new Morpheme(",", Attributes.U.NonLexeme.PunctuationMark.Comma),
-            new Morpheme("ing", Attributes.I.NonLexeme.VerbSuffix.Sememe.Aspect.Continuous),
-            new Morpheme("s", Attributes.O.NonLexeme.NounSuffix),
+            new Morpheme("ing", Attributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous),
+            new Morpheme("s", Attributes.O.NonLexeme.Suffix),
         };
 
 

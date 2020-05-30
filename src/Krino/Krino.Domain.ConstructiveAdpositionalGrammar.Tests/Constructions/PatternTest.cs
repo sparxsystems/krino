@@ -42,8 +42,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             Pattern pattern = new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O,
-                LeftRule = MorphemeRule.A.SetOrder(1),
+                RightRule = MorphemeRule.O_Lexeme,
+                LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
             };
             Assert.IsTrue(pattern.IsModifier());
 
@@ -63,8 +63,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             Pattern pattern = new Pattern("A-U-A")
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U),
-                RightRule = MorphemeRule.A.SetOrder(1),
-                LeftRule = MorphemeRule.A,
+                RightRule = MorphemeRule.A_Lexeme.SetOrder(1),
+                LeftRule = MorphemeRule.A_Lexeme,
             };
             Assert.IsTrue(pattern.IsAdPositionModifier());
 
@@ -74,8 +74,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U),
 
                 // Same order means it is not adposition modifier.
-                RightRule = MorphemeRule.A,
-                LeftRule = MorphemeRule.A,
+                RightRule = MorphemeRule.A_Lexeme,
+                LeftRule = MorphemeRule.A_Lexeme,
             };
             Assert.IsFalse(pattern.IsAdPositionModifier());
 
@@ -84,8 +84,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             pattern = new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O,
-                LeftRule = MorphemeRule.A.SetOrder(1),
+                RightRule = MorphemeRule.O_Lexeme,
+                LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
             };
             Assert.IsFalse(pattern.IsAdPositionModifier());
         }

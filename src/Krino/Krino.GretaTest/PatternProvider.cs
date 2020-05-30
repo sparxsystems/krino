@@ -19,7 +19,7 @@ namespace Krino.GretaTest
 
             new Pattern("O+")
             {
-                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.O.NonLexeme.NounSuffix),
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.O.NonLexeme.Suffix),
                 RightRule = MorphemeRule.Nothing,
                 LeftRule = MorphemeRule.Nothing,
             },
@@ -105,7 +105,7 @@ namespace Krino.GretaTest
             {
                 MorphemeRule = MorphemeRule.Epsilon,
                 RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
-                LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.NounSuffix)),
+                LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.Suffix)),
             },
 
             new Pattern("I>I")

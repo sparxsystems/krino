@@ -93,18 +93,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void CanAttachToRight()
         {
             IAdTree adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { RightRule = MorphemeRule.O, }
+                new Pattern() { RightRule = MorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.O });
+                new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
 
 
             adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { RightRule = MorphemeRule.O, }
+                new Pattern() { RightRule = MorphemeRule.O_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { RightRule = MorphemeRule.A });
+                new Pattern() { RightRule = MorphemeRule.A_Lexeme });
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
         }
 
@@ -112,27 +112,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void CanAttachToRight_Inheritance()
         {
             IAdTree adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { RightRule = MorphemeRule.O, }
+                new Pattern() { RightRule = MorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
+                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement));
 
 
             // Inheritance is not allowed.
             adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { RightRule = MorphemeRule.O.SetInheritance(InheritanceRuleMaker.Nothing) }
+                new Pattern() { RightRule = MorphemeRule.O_Lexeme.SetInheritance(InheritanceRuleMaker.Nothing) }
             );
             adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
+                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O_Lexeme });
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
 
 
             adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { RightRule = MorphemeRule.O, }
+                new Pattern() { RightRule = MorphemeRule.O_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.A });
+                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.A_Lexeme });
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement));
         }
 
@@ -153,7 +153,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                         new Morpheme("read", Attributes.I.Lexeme.Verb),
                         new Pattern()
                         {
-                            MorphemeRule = MorphemeRule.I2,
+                            MorphemeRule = MorphemeRule.I2_Lexeme,
                             RightRule = MorphemeRule.Nothing,
                             LeftRule = MorphemeRule.Nothing,
                         }
@@ -219,18 +219,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void CanAttachToLeft()
         {
             IAdTree adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { LeftRule = MorphemeRule.O, }
+                new Pattern() { LeftRule = MorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.O });
+                new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
 
 
             adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { LeftRule = MorphemeRule.O, }
+                new Pattern() { LeftRule = MorphemeRule.O_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { RightRule = MorphemeRule.A });
+                new Pattern() { RightRule = MorphemeRule.A_Lexeme });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
         }
 
@@ -238,27 +238,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void CanAttachToLeft_Inheritance()
         {
             IAdTree adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { LeftRule = MorphemeRule.O, }
+                new Pattern() { LeftRule = MorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
+                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
 
 
             // Inheritance is not allowed.
             adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { LeftRule = MorphemeRule.O.SetInheritance(InheritanceRuleMaker.Nothing) }
+                new Pattern() { LeftRule = MorphemeRule.O_Lexeme.SetInheritance(InheritanceRuleMaker.Nothing) }
             );
             adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O });
+                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.O_Lexeme });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
 
 
             adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { LeftRule = MorphemeRule.O, }
+                new Pattern() { LeftRule = MorphemeRule.O_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.A });
+                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, RightRule = MorphemeRule.A_Lexeme });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
         }
 
