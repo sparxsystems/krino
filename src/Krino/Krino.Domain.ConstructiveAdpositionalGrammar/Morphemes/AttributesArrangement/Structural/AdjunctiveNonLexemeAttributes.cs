@@ -9,18 +9,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
     {
         public AdjunctiveNonLexemeAttributes(EnumGroupBase parent) : base(parent)
         {
-            AdjextivePrefix = new AdjectiveAttributes(this);
-            AdjectiveSuffix = new AdjectiveAttributes(this);
+            Prefix = new AdjectiveAttributes(this);
+            Suffix = new AdjectiveAttributes(this);
         }
 
         /// <summary>
         /// Prefix.
         /// </summary>
-        public AdjectiveAttributes AdjextivePrefix { get; }
+        public AdjectiveAttributes Prefix { get; }
 
         /// <summary>
         /// Suffix.
         /// </summary>
-        public AdjectiveAttributes AdjectiveSuffix { get; }
+        public AdjectiveAttributes Suffix { get; }
     }
 }

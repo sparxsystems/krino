@@ -59,5 +59,15 @@ namespace Krino.Vertical.Utils_Tests.Rules
 
             Assert.IsFalse(RuleMaker.Nothing<int>().IsSubruleOf(RuleMaker.Anything<int>()));
         }
+
+        [Test]
+        public void IsSubruleOf_Negations()
+        {
+            IRule<int> rule1 = !RuleMaker.Is(1) & !RuleMaker.Is(2);
+            IRule<int> rule2 = !RuleMaker.Is(1) & !RuleMaker.Is(2) & !RuleMaker.Is(3);
+
+            Assert.IsTrue(rule2.IsSubruleOf(rule1));
+            Assert.IsFalse(rule1.IsSubruleOf(rule2));
+        }
     }
 }

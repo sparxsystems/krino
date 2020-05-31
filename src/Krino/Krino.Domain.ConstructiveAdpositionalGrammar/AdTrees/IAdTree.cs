@@ -124,7 +124,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         IEnumerable<IAdTree> ValencyAdPositions { get; }
 
-
         /// <summary>
         /// Returns the phrase sequence of elements.
         /// </summary>

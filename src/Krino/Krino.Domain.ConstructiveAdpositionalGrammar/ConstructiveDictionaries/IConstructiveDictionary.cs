@@ -52,12 +52,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <returns></returns>
         IEnumerable<Pattern> FindPrimitiveTransferencePatterns(Morpheme morpheme);
 
-        /// <summary>
-        /// Finds modifier patterns.
-        /// </summary>
-        /// <param name="morpheme"></param>
-        /// <returns></returns>
-        IEnumerable<Pattern> FindModifierPatterns(Morpheme morpheme);
 
         /// <summary>
         /// All non-lexemes.

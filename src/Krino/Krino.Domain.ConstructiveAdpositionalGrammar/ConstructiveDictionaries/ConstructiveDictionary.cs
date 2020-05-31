@@ -99,30 +99,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             return result;
         }
 
-        public IEnumerable<Pattern> FindModifierPatterns(Morpheme morpheme)
-        {
-            foreach (Pattern pattern in Patterns)
-            {
-                if (pattern.IsModifier() || pattern.IsAdPositionModifier())
-                {
-                    if (pattern.LeftRule.Order < pattern.RightRule.Order)
-                    {
-                        if (pattern.LeftRule.Evaluate(morpheme))
-                        {
-                            yield return pattern;
-                        }
-                    }
-                    else if (pattern.LeftRule.Order > pattern.RightRule.Order)
-                    {
-                        if (pattern.RightRule.Evaluate(morpheme))
-                        {
-                            yield return pattern;
-                        }
-                    }
-                }
-            }
-        }
-
         private void InitializeMorphemes(IEnumerable<Morpheme> morphemes)
         {
             MorphemeEqualityComparer morphemeEqualityComparer = new MorphemeEqualityComparer();

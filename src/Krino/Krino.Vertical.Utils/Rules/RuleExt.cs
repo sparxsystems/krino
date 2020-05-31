@@ -35,18 +35,26 @@ namespace Krino.Vertical.Utils.Rules
             {
                 return false;
             }
-
-            IEnumerable<T> requiredValues = rule.GetReferenceValues();
-            if (requiredValues.Any())
+            
+            // Check that all values accepted by the rule are alco accepted by the parentRule.
+            IEnumerable<T> ruleValues = rule.GetReferenceValues();
+            foreach (T value in ruleValues)
             {
-                foreach (T value in requiredValues)
+                bool ruleResult = rule.Evaluate(value);
+                if (ruleResult && !parentRule.Evaluate(value))
                 {
-                    bool ruleResult = rule.Evaluate(value);
-                    bool parentRuleResult = parentRule.Evaluate(value);
-                    if (ruleResult != parentRuleResult)
-                    {
-                        return false;
-                    }
+                    return false;
+                }
+            }
+
+            // Check that all values not accepted by the parentRule are also not accepted by the rule.
+            IEnumerable<T> parentRuleValues = parentRule.GetReferenceValues();
+            foreach (T value in parentRuleValues)
+            {
+                bool parentRuleResult = parentRule.Evaluate(value);
+                if (!parentRuleResult && rule.Evaluate(value))
+                {
+                    return false;
                 }
             }
 

@@ -9,11 +9,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
     public class PatternTest
     {
         [Test]
+        public void IsMorpheme()
+        {
+            Pattern pattern = Pattern.Morpheme(Attributes.A);
+            Assert.IsTrue(pattern.IsMorpheme());
+
+            // Empty string rule causes it is not the morpheme pattern.
+            pattern = new Pattern()
+            {
+                MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
+                RightRule = MorphemeRule.Nothing,
+                LeftRule = MorphemeRule.Nothing,
+            };
+            Assert.IsFalse(pattern.IsMorpheme());
+
+
+            // Right and left rule is not Nothing - it is not the morpheme rule.
+            pattern = new Pattern()
+            {
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.E.Lexeme),
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.O.Lexeme),
+                LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme),
+            };
+            Assert.IsFalse(pattern.IsMorpheme());
+        }
+
+        [Test]
         public void IsPrimitiveTransference()
         {
             Pattern pattern = new Pattern()
             {
-                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.A.Lexeme),
+                MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
                 RightRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
             };
@@ -21,11 +47,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
 
             pattern = new Pattern()
             {
-                MorphemeRule = MorphemeRule.Is("hello", Attributes.A.Lexeme),
+                MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
                 RightRule = MorphemeRule.O_Lexeme,
-                LeftRule = MorphemeRule.Nothing,
+                LeftRule = MorphemeRule.Is("s", Attributes.A.NonLexeme.Prefix)
             };
-            Assert.IsTrue(pattern.IsPrimitiveTransference());
+            Assert.IsFalse(pattern.IsPrimitiveTransference());
 
             pattern = new Pattern()
             {
@@ -37,57 +63,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
         }
 
         [Test]
-        public void IsModifier()
+        public void IsEpsilonAdPosition()
         {
-            Pattern pattern = new Pattern("A-O")
-            {
-                MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O_Lexeme,
-                LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
-            };
-            Assert.IsTrue(pattern.IsModifier());
-
-
-            pattern = new Pattern("A")
-            {
-                MorphemeRule = MorphemeRule.A_Lexeme,
-                RightRule = MorphemeRule.Nothing,
-                LeftRule = MorphemeRule.Nothing,
-            };
-            Assert.IsFalse(pattern.IsModifier());
-        }
-
-        [Test]
-        public void IsAdPositionModifier()
-        {
-            Pattern pattern = new Pattern("A-U-A")
-            {
-                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U),
-                RightRule = MorphemeRule.A_Lexeme.SetOrder(1),
-                LeftRule = MorphemeRule.A_Lexeme,
-            };
-            Assert.IsTrue(pattern.IsAdPositionModifier());
+            Pattern pattern = Pattern.EpsilonAdPosition("A-O", Attributes.A, Attributes.O);
+            Assert.IsTrue(pattern.IsEpsilonAdPosition());
 
 
             pattern = new Pattern("A-U-A")
             {
+                // Grammar character is not epsilon -> it is not epsilon adposition.
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U),
-
-                // Same order means it is not adposition modifier.
                 RightRule = MorphemeRule.A_Lexeme,
                 LeftRule = MorphemeRule.A_Lexeme,
             };
-            Assert.IsFalse(pattern.IsAdPositionModifier());
-
+            Assert.IsFalse(pattern.IsEpsilonAdPosition());
 
 
             pattern = new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
                 RightRule = MorphemeRule.O_Lexeme,
-                LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
+                // It is not epsilon adposition.
+                LeftRule = MorphemeRule.Nothing,
             };
-            Assert.IsFalse(pattern.IsAdPositionModifier());
+            Assert.IsFalse(pattern.IsEpsilonAdPosition());
         }
     }
 }

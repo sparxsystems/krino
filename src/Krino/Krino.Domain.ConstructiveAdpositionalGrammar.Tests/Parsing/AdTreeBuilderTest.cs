@@ -18,26 +18,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
 
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("O1-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
-                },
+                Pattern.O1_I,
 
                 new Pattern(".")
                 {
@@ -79,41 +63,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
 
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.I.NonLexeme.Suffix),
 
-                new Pattern("-s")
-                {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.NonLexeme.Suffix)),
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.O1_I,
 
-                new Pattern("O-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme.SetOrder(1)
-                },
-
-                // Transference pattern.
-                new Pattern("I-s")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
-                    LeftRule = new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.NonLexeme.Suffix)),
-                },
+                Pattern.Transference("I>I+", Attributes.Epsilon, Attributes.I.NonLexeme.Suffix, Attributes.I.Lexeme)
+                    .SetRightFirst(),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
@@ -144,49 +102,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
 
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme("O+", Attributes.O.NonLexeme.Suffix),
 
-                new Pattern("-er")
-                {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Suffix("er"), MaskRule.Is(Attributes.O.NonLexeme.Suffix)),
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.O1_I,
+                Pattern.O2_I,
 
-                new Pattern("O1-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme,
-                },
-
-                new Pattern("O2-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                    RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
-                    LeftRule = MorphemeRule.O_Lexeme,
-                },
-
-                // Transference pattern.
-                // Note: suffix er transfers 'I' to 'O'.
-                new Pattern("I>O")
-                {
-                    MorphemeRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.Lexeme)),
-                    RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
-                    LeftRule = new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme.Suffix)),
-                },
+                Pattern.Transference("I>O", Attributes.O.Lexeme, Attributes.O.NonLexeme.Suffix, Attributes.I.Lexeme)
+                    .SetRightFirst(),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
@@ -212,26 +137,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.A.Lexeme),
+                Pattern.Morpheme(Attributes.O.Lexeme),
 
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Lexeme,
-                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
-                },
+                Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
+                    .SetLeftFirst(),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
@@ -258,34 +168,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.A.Lexeme),
+                Pattern.Morpheme(Attributes.O.Lexeme),
 
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
+                    .SetLeftFirst(),
 
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Lexeme,
-                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
-                },
-
-                // Primitive transference.
-                new Pattern("O>A")
-                {
-                    MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.A.Lexeme),
-                    RightRule = MorphemeRule.O_Lexeme,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -317,35 +206,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
 
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.O1_I,
 
-                new Pattern("O-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme,
-                },
-
-                new Pattern("I-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal)
-                        .SetOrder(1)
-                        .SetInheritance(InheritanceRuleMaker.Nothing),
-                },
+                Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb.Modal, Attributes.I.Lexeme)
+                    .SetLeftFirst()
+                    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -377,49 +245,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
+                Pattern.Morpheme(Attributes.E.Lexeme),
 
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.O1_I,
 
-                new Pattern("E")
-                {
-                    MorphemeRule = MorphemeRule.E_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb.Modal, Attributes.I.Lexeme)
+                    .SetLeftFirst()
+                    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 
-                new Pattern("O1-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme,
-                },
-
-                new Pattern("I-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Modal)
-                        .SetOrder(1)
-                        .SetInheritance(InheritanceRuleMaker.Nothing),
-                },
-
-                new Pattern("E-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.E_Lexeme.SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
-                },
+                Pattern.EpsilonAdPosition("E-I", Attributes.E.Lexeme, Attributes.I.Lexeme)
+                    .SetLeftFirst()
+                    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -454,42 +292,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("O1-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
-                },
-                new Pattern("O2-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
-                },
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Lexeme,
-                    LeftRule = MorphemeRule.A_Lexeme
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
+                Pattern.Morpheme(Attributes.A.Lexeme),
+
+                Pattern.O1_I,
+                Pattern.O2_I,
+
+                Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(Enumerable.Empty<Morpheme>(), patterns);
@@ -523,40 +333,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
+                Pattern.Morpheme(Attributes.A.Lexeme),
 
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
+                Pattern.O1_I,
 
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Lexeme.SetInheritance(InheritanceRuleMaker.Epsilon),
-                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1),
-                },
-
-                new Pattern("O1-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme.SetOrder(1),
-                },
+                Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
+                    .SetLeftFirst()
+                    .SetInheritanceForRight(InheritanceRuleMaker.Epsilon),
 
                 new Pattern("I-U-O")
                 {
@@ -573,7 +358,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Morpheme morpheme = new Morpheme("the", Attributes.A.Lexeme.Determiner);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-             morpheme = new Morpheme("book", Attributes.O.Lexeme.Noun);
+            morpheme = new Morpheme("book", Attributes.O.Lexeme.Noun);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             morpheme = new Morpheme("as", Attributes.U.Lexeme.Conjunction);
@@ -598,43 +383,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("O1-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme,
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
+                Pattern.Morpheme(Attributes.A.Lexeme),
 
-                new Pattern("O2-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme,
-                },
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Lexeme,
-                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1)
-                },
+                Pattern.O1_I,
+                Pattern.O2_I,
+
+                Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
+                    .SetLeftFirst(),
+
                 new Pattern("E")
                 {
                     MorphemeRule = MorphemeRule.E_Lexeme,
@@ -687,42 +445,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("O")
-                {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("I")
-                {
-                    MorphemeRule = MorphemeRule.I_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-                new Pattern("O1-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
-                },
-                new Pattern("O2-I")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2),
-                    RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
-                },
-                new Pattern("A-O")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.O_Lexeme,
-                    LeftRule = MorphemeRule.A_Lexeme.SetOrder(1)
-                },
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
+                Pattern.Morpheme(Attributes.A.Lexeme),
+
+                Pattern.O1_I,
+                Pattern.O2_I,
+
+                Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
+                    .SetLeftFirst(),
+
                 new Pattern("A-U-A")
                 {
                     MorphemeRule = MorphemeRule.U_Lexeme,

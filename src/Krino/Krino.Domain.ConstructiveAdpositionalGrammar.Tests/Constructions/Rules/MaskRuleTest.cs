@@ -24,5 +24,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions.Rules
             Assert.IsTrue(rule.Evaluate(Attributes.O));
             Assert.IsFalse(rule.Evaluate(Attributes.O.NonLexeme));
         }
+
+        [Test]
+        public void IsSubruleOf()
+        {
+            IRule<BigInteger> rule1 = MaskRule.Is(Attributes.I.Lexeme.Verb.Modal);
+            IRule<BigInteger> rule2 = MaskRule.Is(Attributes.I.Lexeme);
+
+            Assert.IsTrue(rule1.IsSubruleOf(rule2));
+            Assert.IsTrue(rule1.IsSubruleOf(rule1));
+            Assert.IsTrue(rule2.IsSubruleOf(rule2));
+            Assert.IsFalse(rule2.IsSubruleOf(rule1));
+        }
     }
 }
