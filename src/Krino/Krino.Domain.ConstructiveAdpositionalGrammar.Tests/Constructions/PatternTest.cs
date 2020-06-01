@@ -88,5 +88,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             };
             Assert.IsFalse(pattern.IsEpsilonAdPosition());
         }
+
+        [Test]
+        public void IsMorphematicAdPosition()
+        {
+            Pattern pattern = Pattern.MorphematicAdPosition("O-E-I", Attributes.E, Attributes.O, Attributes.I);
+            Assert.IsTrue(pattern.IsMorphematicAdPosition());
+
+            pattern = Pattern.EpsilonAdPosition("A-O", Attributes.A, Attributes.O);
+            Assert.IsFalse(pattern.IsMorphematicAdPosition());
+        }
     }
 }

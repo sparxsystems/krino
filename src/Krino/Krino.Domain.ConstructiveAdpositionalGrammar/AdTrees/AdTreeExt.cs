@@ -397,7 +397,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             foreach (IAdTree item in adTree)
             {
-                if (!item.Evaluate())
+                if (!item.IsCorrect())
                 {
                     yield return item;
                 }
@@ -409,7 +409,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <param name="adTree"></param>
         /// <returns></returns>
-        public static bool Evaluate(this IAdTree adTree)
+        public static bool IsCorrect(this IAdTree adTree)
         {
             // Check the morpheme belonging to the adtree.
             if (!adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
@@ -454,6 +454,52 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return true;
         }
 
+        /// <summary>
+        /// Returns true if the adtree has filled all required data.
+        /// </summary>
+        /// <remarks>
+        /// It does not evaluate rules. It just checks if required data are present.
+        /// </remarks>
+        /// <param name="adtree"></param>
+        /// <returns></returns>
+        public static bool IsComplete(this IAdTree adTree)
+        {
+            // Check if the morph is set.
+            if (string.IsNullOrEmpty(adTree.Morpheme.Morph) &&
+                !adTree.Pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
+                !adTree.Pattern.MorphemeRule.MorphRule.Evaluate(adTree.Morpheme.Morph))
+            {
+                return false;
+            }
+
+            // Check if the attribute is set.
+            if (adTree.Morpheme.Attributes == 0 &&
+                !adTree.Pattern.MorphemeRule.AttributesRule.Equals(MaskRule.Nothing) &&
+                !adTree.Pattern.MorphemeRule.AttributesRule.Equals(MaskRule.Anything))
+            {
+                return false;
+            }
+
+
+            // Left
+            if (adTree.Left == null &&
+                !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) &&
+                !adTree.Pattern.LeftRule.Equals(MorphemeRule.Anything))
+            {
+                return false;
+            }
+
+
+            // Right
+            if (adTree.Right == null &&
+                !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) &&
+                !adTree.Pattern.RightRule.Equals(MorphemeRule.Anything))
+            {
+                return false;
+            }
+
+            return true;
+        }
         
 
         private static bool IsSubruleOf(this MorphemeRule morphemeRule, MorphemeRule other)

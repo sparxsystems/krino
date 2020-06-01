@@ -9,6 +9,7 @@ namespace Krino.GretaTest
         public static List<Morpheme> Morphemes => new List<Morpheme>()
         {
             // Lexemes.
+            new Morpheme("a", Attributes.A.Lexeme.Determiner.IndefiniteArticle),
             new Morpheme("and", Attributes.U.Lexeme.Conjunction),
             new Morpheme("as", Attributes.U.Lexeme.Conjunction),
             new Morpheme("climate", Attributes.O.Lexeme.Noun),

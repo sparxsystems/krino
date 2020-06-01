@@ -53,6 +53,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
                 LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
             };
 
+        public static Pattern MorphematicAdPosition(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
+            => new Pattern(patternName)
+            {
+                MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, morphemeAttributes),
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
+                LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
+            };
+
         private static Pattern On_I(string patternName, int valencyPosition) => new Pattern(patternName)
         {
             MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(valencyPosition),
@@ -187,8 +195,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             bool result = MorphemeRule.Equals(MorphemeRule.Epsilon) &&
                           !RightRule.Equals(MorphemeRule.Nothing) &&
                           !LeftRule.Equals(MorphemeRule.Nothing) &&
-                          !RightRule.MorphRule.Evaluate(null) && !RightRule.MorphRule.Evaluate("") &&
-                          !LeftRule.MorphRule.Evaluate(null) && !LeftRule.MorphRule.Evaluate("");
+                          !RightRule.MorphRule.Evaluate(null) && !RightRule.MorphRule.Evaluate("") && !RightRule.AttributesRule.Evaluate(0) &&
+                          !LeftRule.MorphRule.Evaluate(null) && !LeftRule.MorphRule.Evaluate("") && !LeftRule.AttributesRule.Evaluate(0);
+
+            return result;
+        }
+
+        public bool IsMorphematicAdPosition()
+        {
+            bool result = MorphemeRule.MorphRule.Equals(MorphRuleMaker.Something) &&
+                          !MorphemeRule.AttributesRule.Evaluate(0) &&
+                          !RightRule.Equals(MorphemeRule.Nothing) &&
+                          !LeftRule.Equals(MorphemeRule.Nothing) &&
+                          !RightRule.MorphRule.Evaluate(null) && !RightRule.MorphRule.Evaluate("") && !RightRule.AttributesRule.Evaluate(0) &&
+                          !LeftRule.MorphRule.Evaluate(null) && !LeftRule.MorphRule.Evaluate("") && !LeftRule.AttributesRule.Evaluate(0);
 
             return result;
         }

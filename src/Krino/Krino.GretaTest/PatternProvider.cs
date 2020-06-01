@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using System.Collections.Generic;
 
@@ -12,13 +13,14 @@ namespace Krino.GretaTest
             Pattern.Morpheme(Attributes.O.Lexeme),
             Pattern.Morpheme(Attributes.I.Lexeme),
             Pattern.Morpheme(Attributes.A.Lexeme),
-            Pattern.Morpheme(Attributes.E.Lexeme),
+            Pattern.Morpheme(Attributes.E.Lexeme.Adverb),
 
             Pattern.Morpheme("O+", Attributes.O.NonLexeme.Suffix),
 
-            Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme),
+            Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme.Noun),
 
-            Pattern.O1_I,
+            Pattern.O1_I.SetLeftFirst(),
+            Pattern.O1_I.SetRightFirst(),
             Pattern.O2_I,
             Pattern.O3_I,
             Pattern.O4_I,
@@ -29,31 +31,38 @@ namespace Krino.GretaTest
                 .SetLeftFirst()
                 .SetInheritanceForRight(InheritanceRuleMaker.Epsilon),
 
-            Pattern.EpsilonAdPosition("E-I", Attributes.E.Lexeme, Attributes.I.Lexeme)
+            Pattern.EpsilonAdPosition("E-I", Attributes.E.Lexeme.Adverb, Attributes.I.Lexeme)
                 .SetLeftFirst()
                 .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 
-            Pattern.EpsilonAdPosition("O+-O", Attributes.O.Lexeme, Attributes.O.NonLexeme.Suffix)
+            Pattern.EpsilonAdPosition("O+-O", Attributes.O.NonLexeme.Suffix, Attributes.O.Lexeme)
                 .SetRightFirst(),
 
             Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb.Modal, Attributes.I.Lexeme)
                 .SetLeftFirst()
                 .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 
-            Pattern.Transference("O-E-I", Attributes.E.Lexeme, Attributes.O.Lexeme, Attributes.I.Lexeme)
+            // Verbant circumstantial with a preposition.
+            Pattern.MorphematicAdPosition("O-E-I", Attributes.E.Lexeme.Preposition, Attributes.O.Lexeme, Attributes.I.Lexeme)
+                .SetRightFirst(),
+            
+            // E.g. speed of light
+            Pattern.MorphematicAdPosition("O-E-O", Attributes.E.Lexeme.Preposition, Attributes.O.Lexeme, Attributes.I.Lexeme)
                 .SetRightFirst(),
 
-            Pattern.Transference("O-U-O", Attributes.U.Lexeme.Conjunction, Attributes.O.Lexeme, Attributes.O.Lexeme)
+
+            // E.g. O and O
+            Pattern.MorphematicAdPosition("O-U-O", Attributes.U.Lexeme.Conjunction, Attributes.O.Lexeme, Attributes.O.Lexeme)
                 .SetRightFirst(),
 
-            Pattern.Transference("I-U-O", Attributes.U.Lexeme.Conjunction, Attributes.I.Lexeme, Attributes.O.Lexeme)
+            Pattern.MorphematicAdPosition("I-U-O", Attributes.U.Lexeme.Conjunction, Attributes.I.Lexeme, Attributes.O.Lexeme)
                 .SetRightFirst(),
 
 
-            new Pattern("EOS")
+            new Pattern("•")
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark.Period),
-                RightRule = MorphemeRule.Anything.SetOrder(1),
+                RightRule = new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Something),
                 LeftRule = MorphemeRule.Anything,
             },
 

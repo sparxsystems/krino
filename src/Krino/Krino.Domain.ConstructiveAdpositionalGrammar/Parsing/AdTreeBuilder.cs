@@ -34,7 +34,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             foreach (IAdTree adTree in myActiveAdTrees)
             {
-                int nonConformities = adTree.Root.GetNonconformities().Count();
+                IEnumerable<IAdTree> nonconformities = adTree.Root.GetNonconformities();
+                int nonConformities = nonconformities.Count();
                 if (nonConformities == 0)
                 {
                     adTrees.Add(adTree);
@@ -222,6 +223,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 return;
             }
 
+            bool isMorphematicAdPosition = newElement.Pattern.IsMorphematicAdPosition();
+            bool canAppendIndirectly = CanAppendIndirectly(current) && !isMorphematicAdPosition;
+
 
             // If the new element can be attached to left.
             if (placeToAppend.Left == null && !placeToAppend.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
@@ -234,7 +238,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     adTreeCopy.Left = newAdTreeElementCopy;
                     results.Add(newAdTreeElementCopy);
                 }
-                else
+                else if (canAppendIndirectly)
                 {
                     // Try to attach the new element indirectly.
                     TryToAppendIndirectly(AttachPosition.ParrentForLeft, placeToAppend, newElement, results, 2);
@@ -252,7 +256,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     adTreeCopy.Right = newAdTreeElementCopy;
                     results.Add(newAdTreeElementCopy);
                 }
-                else
+                else if (canAppendIndirectly)
                 {
                     // Try to attach the new element indirectly.
                     TryToAppendIndirectly(AttachPosition.ParrentForRight, placeToAppend, newElement, results, 2);
@@ -274,7 +278,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         results.Add(adTreeCopy);
                     }
                     // Try to attach the adtree indirectly via new element's left.
-                    else
+                    else if (canAppendIndirectly)
                     {
                         TryToAppendIndirectly(AttachPosition.ParrentForLeft, newElement, placeToAppend, results, 2);
                     }
@@ -291,15 +295,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         results.Add(adTreeCopy);
                     }
                     // Try to attach the adtree indirectly via new element's right.
-                    else
+                    else if (canAppendIndirectly)
                     {
                         TryToAppendIndirectly(AttachPosition.ParrentForRight, newElement, placeToAppend, results, 2);
                     }
                 }
 
-                // Also try to connect the adtree and the new element indirectly via adtree adposition.
-                TryToAppendIndirectly(AttachPosition.ChildOnLeft, placeToAppend, newElement, results, 2);
-                TryToAppendIndirectly(AttachPosition.ChildOnRight, placeToAppend, newElement, results, 2);
+                if (canAppendIndirectly)
+                {
+                    // Also try to connect the adtree and the new element indirectly via adtree adposition.
+                    TryToAppendIndirectly(AttachPosition.ChildOnLeft, placeToAppend, newElement, results, 2);
+                    TryToAppendIndirectly(AttachPosition.ChildOnRight, placeToAppend, newElement, results, 2);
+                }
             }
         }
 
@@ -310,6 +317,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 return;
             }
             --stopLevel;
+
+
 
             GrammarCharacter startGrammarCharacter = GrammarCharacter.e;
             GrammarCharacter endGrammarCharacter = GrammarCharacter.e;
@@ -341,9 +350,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             // Get possibile ways how to connect new element.
             IEnumerable<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
-                .FindAllEdges(startGrammarCharacter, endGrammarCharacter,
-                x => x.Count < 4 &&
-                     x.Count(y => !y.Value.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) && !y.Value.MorphemeRule.MorphRule.Evaluate("")) <= 1);
+                .FindAllEdges(startGrammarCharacter, endGrammarCharacter, x => x.Count < 4);
 
             // Go via all possible ways.
             foreach (IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>> path in connectionPaths)
@@ -451,6 +458,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     previousBridge = bridge;
                 }
             }
+        }
+
+        private bool CanAppendIndirectly(IAdTree current)
+        {
+            IEnumerable<IAdTree> incomleteAdTrees = current.GetSequenceToRoot().Where(x => !x.IsComplete()).Take(5);
+            int count = incomleteAdTrees.Count();
+            return count < 5;
         }
 
         private IAdTree GetPlaceToAppend(IAdTree current)

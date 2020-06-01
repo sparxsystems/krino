@@ -70,7 +70,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 Pattern.O1_I,
 
-                Pattern.Transference("I>I+", Attributes.Epsilon, Attributes.I.NonLexeme.Suffix, Attributes.I.Lexeme)
+                Pattern.EpsilonAdPosition("I>I+", Attributes.I.NonLexeme.Suffix, Attributes.I.Lexeme)
                     .SetRightFirst(),
             };
 

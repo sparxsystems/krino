@@ -42,7 +42,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public string Serialize(IAdTree adTree)
         {
-            string result = adTree.Phrase;
+            string result = adTree?.Phrase ?? "";
             return result;
         }
 

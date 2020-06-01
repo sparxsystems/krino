@@ -73,7 +73,7 @@ namespace Krino.GretaTest
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
             Parser parser = new Parser(dictionary);
-            IAdTree adTree = parser.Deserialize("The world as people say end", 1);
+            IAdTree adTree = parser.Deserialize("The world will not end in eleven years as a small number of people have been saying lately", 1);
 
             string s = parser.Serialize(adTree);
 

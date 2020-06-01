@@ -13,7 +13,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// <summary>
     /// Implements the AdTree as defined in the document Constructive Adposition Grammar.
     /// </summary>
-    [DebuggerDisplay("({Left != null ? string.Join(\"\", Left.Pattern.Name, \"=\", Left.Morpheme.Morph) : \"\"})<-({Pattern.Name}={Morpheme.Morph})->({Right != null ? string.Join(\"\", Right.Pattern.Name, \"=\", Right.Morpheme.Morph) : \"\"})")]
+    [DebuggerDisplay("{DebuggerDisplay}")]
     public class AdTree : IAdTree
     {
         private IAdTree myAdPosition;
@@ -366,6 +366,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return GetEnumerator();
         }
 
-        
+        private string DebuggerDisplay
+        {
+            get
+            {
+                //string left = Left != null ? string.Join("", Left.Pattern.Name, "=", !string.IsNullOrEmpty(Left.Morpheme.Morph) ? Left.Morpheme.Morph : "?") : "?";
+                string aThis = string.Join("", Pattern.Name, "=", !string.IsNullOrEmpty(Morpheme.Morph) ? Morpheme.Morph : "?");
+                //string right = Right != null ? string.Join("", Right.Pattern.Name, "=", !string.IsNullOrEmpty(Right.Morpheme.Morph) ? Right.Morpheme.Morph : "?") : "?";
+
+                //string result = string.Join("", "(", left, ")", "<-", "(", aThis, ")", "->", "(", right, ")");
+                return aThis;
+            }
+        }
     }
 }

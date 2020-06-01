@@ -27,18 +27,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static MorphemeRule I_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.Lexeme));
 
-        public static MorphemeRule I1_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.Lexeme.Verb.Monovalent));
-
-        public static MorphemeRule I2_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.Lexeme.Verb.Bivalent));
-
-        public static MorphemeRule I3_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.Lexeme.Verb.Trivalent));
-
-        public static MorphemeRule I4_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.Lexeme.Verb.Quadrivalent));
-
-        public static MorphemeRule I5_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.Lexeme.Verb.Pentavalent));
-
-        public static MorphemeRule I_NonLexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.NonLexeme));
-
         public static MorphemeRule A_Lexeme => new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Something, MaskRule.Is(Attributes.A.Lexeme));
 
         public static MorphemeRule E_Lexeme => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.Something, MaskRule.Is(Attributes.E.Lexeme));

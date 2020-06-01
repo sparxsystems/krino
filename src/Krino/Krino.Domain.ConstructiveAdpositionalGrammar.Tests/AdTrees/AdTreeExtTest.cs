@@ -427,18 +427,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void Evaluate()
+        public void IsCorrect()
         {
             AdTree adTree = new AdTree(new Morpheme("book", Attributes.O.Lexeme), Pattern.Morpheme(Attributes.O.Lexeme));
-            Assert.IsTrue(adTree.Evaluate());
+            Assert.IsTrue(adTree.IsCorrect());
 
             // Empty string is not allowed.
             adTree = new AdTree(new Morpheme("", Attributes.O.Lexeme), Pattern.Morpheme(Attributes.O.Lexeme));
-            Assert.IsFalse(adTree.Evaluate());
+            Assert.IsFalse(adTree.IsCorrect());
 
             // Non-lexeme is not allowed.
             adTree = new AdTree(new Morpheme("bla", Attributes.O.NonLexeme), Pattern.Morpheme(Attributes.O.Lexeme));
-            Assert.IsFalse(adTree.Evaluate());
+            Assert.IsFalse(adTree.IsCorrect());
 
             // Left and right rules are anything so it should also accept if they are null.
             adTree = new AdTree(new Morpheme(".", Attributes.U.NonLexeme), new Pattern("")
@@ -447,7 +447,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 LeftRule = MorphemeRule.Anything,
                 RightRule = MorphemeRule.Anything,
             });
-            Assert.IsTrue(adTree.Evaluate());
+            Assert.IsTrue(adTree.IsCorrect());
         }
 
         [Test]
@@ -493,6 +493,59 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             List<IAdTree> nonconformities = adTree.GetNonconformities().ToList();
             Assert.AreEqual(0, nonconformities.Count);
+        }
+
+        [Test]
+        public void IsComplete()
+        {
+            AdTree adTree = new AdTree(new Morpheme("book", Attributes.O.Lexeme), Pattern.Morpheme(Attributes.O.Lexeme));
+            Assert.IsTrue(adTree.IsComplete());
+
+            // Missing morph.
+            adTree = new AdTree(new Morpheme("", Attributes.O.Lexeme), Pattern.Morpheme(Attributes.O.Lexeme));
+            Assert.IsFalse(adTree.IsComplete());
+
+            // Missing attributes.
+            adTree = new AdTree(new Morpheme("book", 0), Pattern.Morpheme(Attributes.O.Lexeme));
+            Assert.IsFalse(adTree.IsComplete());
+
+
+            adTree = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
+            {
+                Left = null,
+                Right = new AdTree(new Morpheme("", 0), new Pattern()),
+            };
+            Assert.IsTrue(adTree.IsComplete());
+
+            // Right is missing.
+            adTree = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
+            {
+                Left = null,
+                Right = null,
+            };
+            Assert.IsFalse(adTree.IsComplete());
+
+
+            adTree = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("A-O", Attributes.A, Attributes.O))
+            {
+                Left = new AdTree(new Morpheme("", 0), new Pattern()),
+                Right = new AdTree(new Morpheme("", 0), new Pattern()),
+            };
+            Assert.IsTrue(adTree.IsComplete());
+
+            adTree = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("A-O", Attributes.A, Attributes.O))
+            {
+                Left = null,
+                Right = new AdTree(new Morpheme("", 0), new Pattern()),
+            };
+            Assert.IsFalse(adTree.IsComplete());
+
+            adTree = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("A-O", Attributes.A, Attributes.O))
+            {
+                Left = new AdTree(new Morpheme("", 0), new Pattern()),
+                Right = null,
+            };
+            Assert.IsFalse(adTree.IsComplete());
         }
 
 
@@ -546,5 +599,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.Left.Left.Morpheme == copy.Left.Left.Morpheme);
             Assert.IsTrue(adTree.Left.Left.Pattern == copy.Left.Left.Pattern);
         }
+
+        
     }
 }
