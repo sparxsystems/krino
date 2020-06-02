@@ -6,7 +6,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
@@ -155,39 +154,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public bool IsOnLeft => AdPosition != null ? AdPosition.Left == this : false;
 
-        public IAdTree Governor
+        public IAdTree GetGovernor()
         {
-            get
-            {
-                IAdTree result = null;
+            IAdTree result = null;
 
-                // If this element is not a governor.
-                if (!IsGovernor)
+            // If this element is not a governor.
+            if (!IsGovernor)
+            {
+                // If this element is the root or is located on the right.
+                if (AdPosition == null || IsOnRight)
                 {
-                    // If this element is the root or is located on the right.
-                    if (AdPosition == null || IsOnRight)
-                    {
-                        result = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
-                    }
-                    // This element is not the root and is located on the left.
-                    else
-                    {
-                        // Go via all adpositions and find the first governor.
-                        result = AdPositions.SelectMany(x => x.RightChildren)
-                            .FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e && x.Morpheme.GrammarCharacter != GrammarCharacter.U);
-                    }
+                    result = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
                 }
+                // This element is not the root and is located on the left.
                 else
                 {
-                    // Find the first adposition which is located on the left or it is the root.
-                    IAdTree adPositionOnLeftOrRoot = AdPositions.FirstOrDefault(x => x.IsOnLeft || x.AdPosition == null);
-
-                    // Get the governor of the governor.
-                    result = adPositionOnLeftOrRoot.Governor;
+                    // Go via all adpositions and find the first governor.
+                    result = AdPositions.SelectMany(x => x.RightChildren)
+                        .FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e && x.Morpheme.GrammarCharacter != GrammarCharacter.U);
                 }
-
-                return result;
             }
+            else
+            {
+                // Find the first adposition which is located on the left or it is the root.
+                IAdTree adPositionOnLeftOrRoot = AdPositions.FirstOrDefault(x => x.IsOnLeft || x.AdPosition == null);
+
+                // Get the governor of the governor.
+                result = adPositionOnLeftOrRoot.GetGovernor();
+            }
+
+            return result;
         }
 
         public bool IsGovernor => IsOnRight && Morpheme.GrammarCharacter != GrammarCharacter.e && Morpheme.GrammarCharacter != GrammarCharacter.U;
@@ -216,39 +212,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         // Note: dependent may have the epsilon grammar character.
         public bool IsDependent => IsOnLeft && Morpheme.GrammarCharacter != GrammarCharacter.U;
 
-        public IAdTree ValencyAdPosition
+        public IAdTree GetValencyAdPositionElement()
         {
-            get
+            IAdTree result = null;
+
+            // If this element is left child.
+            if (IsOnLeft)
             {
-                IAdTree result = null;
-
-                // If this element is left child.
-                if (IsOnLeft)
-                {
-                    // then if this element saturates a valency position return it otherwise
-                    // just iterate up and find the first adposition which saturates an adposition.
-                    result = Pattern.MorphemeRule.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
-                }
-                else if (IsOnRight)
-                {
-                    // Iterate up and find the first adposition which is on left.
-                    IAdTree onLeftAdPosition = AdPositions.FirstOrDefault(x => x.IsOnLeft);
-                    if (onLeftAdPosition != null)
-                    {
-                        result = onLeftAdPosition.ValencyAdPosition;
-                    }
-                }
-                // This is the root.
-                else
-                {
-                    if (Pattern.MorphemeRule.ValencyPosition > 0)
-                    {
-                        result = this;
-                    }
-                }
-
-                return result;
+                // then if this element saturates a valency position return it otherwise
+                // just iterate up and find the first adposition which saturates an adposition.
+                result = Pattern.MorphemeRule.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
             }
+            else if (IsOnRight)
+            {
+                // Iterate up and find the first adposition which is on left.
+                IAdTree onLeftAdPosition = AdPositions.FirstOrDefault(x => x.IsOnLeft);
+                if (onLeftAdPosition != null)
+                {
+                    result = onLeftAdPosition.GetValencyAdPositionElement();
+                }
+            }
+            // This is the root.
+            else
+            {
+                if (Pattern.MorphemeRule.ValencyPosition > 0)
+                {
+                    result = this;
+                }
+            }
+
+            return result;
         }
 
         public IEnumerable<IAdTree> ValencyAdPositions => IsGovernor ? AdPosition
@@ -256,37 +249,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             .Where(x => x.Pattern.MorphemeRule.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
 
 
-        public async Task<IEnumerable<IAdTree>> GetPhraseElementsAsync()
-        {
-            // Collapse the call-stack and schedule the continuation to the queue.
-            await Task.Yield();
-
-            IEnumerable<IAdTree> result = Enumerable.Empty<IAdTree>();
-
-            bool isLeftBeforeRight = Pattern.LeftRule.Order < Pattern.RightRule.Order;
-
-            IAdTree first =  isLeftBeforeRight ? Left : Right;
-            IAdTree second = this;
-            IAdTree third = isLeftBeforeRight ? Right : Left;
-
-            if (first != null)
-            {
-                IEnumerable<IAdTree> subFraseElements = await first.GetPhraseElementsAsync();
-                result = result.Concat(subFraseElements);
-            }
-
-            result = result.Concat(new[] { second });
-
-            if (third != null)
-            {
-                IEnumerable<IAdTree> subFraseElements = await third.GetPhraseElementsAsync();
-                result = result.Concat(subFraseElements);
-            }
-
-            return result;
-        }
-
-        public string Phrase => string.Join(" ", GetPhraseElementsAsync().Result.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
+        public string Phrase => string.Join(" ", this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
 
 
         public bool Equals(IAdTree other)
@@ -341,22 +304,44 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             // Note: using the stack has a better performance than a recursive call.
             //       Also there is not a danger of of the stack overflow.
+            // Note: the enumeration order matches the adtree order.
             Stack<IAdTree> stack = new Stack<IAdTree>();
             stack.Push(this);
+
+            Stack<IAdTree> adPositionStack = new Stack<IAdTree>();
 
             while (stack.Count > 0)
             {
                 IAdTree aThis = stack.Pop();
-                yield return aThis;
 
-                if (aThis.Left != null)
+                if (aThis != null && (aThis.Left != null || aThis.Right != null))
                 {
-                    stack.Push(aThis.Left);
+                    adPositionStack.Push(aThis);
+
+                    // If left is before right.
+                    if (aThis.Pattern.LeftRule.Order < aThis.Pattern.RightRule.Order)
+                    {
+                        stack.Push(aThis.Right);
+                        stack.Push(aThis.Left);
+                    }
+                    else
+                    {
+                        stack.Push(aThis.Left);
+                        stack.Push(aThis.Right);
+                    }
                 }
-
-                if (aThis.Right != null)
+                else
                 {
-                    stack.Push(aThis.Right);
+                    if (aThis != null)
+                    {
+                        yield return aThis;
+                    }
+
+                    if (adPositionStack.Count > 0)
+                    {
+                        IAdTree adPosition = adPositionStack.Pop();
+                        yield return adPosition;
+                    }
                 }
             }
         }

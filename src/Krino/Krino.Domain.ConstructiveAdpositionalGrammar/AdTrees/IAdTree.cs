@@ -2,7 +2,6 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using System;
 using System.Collections.Generic;
-using System.Threading.Tasks;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
@@ -84,7 +83,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// If the governor does not exist then it returns null.
         /// If this is the governer then it returns the governor of this governor.
         /// </remarks>
-        IAdTree Governor { get; }
+        /// <returns></returns>
+        IAdTree GetGovernor();
 
         /// <summary>
         /// Returns true if this tree element is the governor.
@@ -116,21 +116,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <remarks>
         /// If this element has set the valency attribute then it finds the valencyAdPosition of this 'valencied' element.
         /// </remarks>
-        IAdTree ValencyAdPosition { get; }
+        IAdTree GetValencyAdPositionElement();
 
 
         /// <summary>
         /// It returns the sequence of dependents which saturate particular valencies.
         /// </summary>
         IEnumerable<IAdTree> ValencyAdPositions { get; }
-
-        /// <summary>
-        /// Returns the phrase sequence of elements.
-        /// </summary>
-        /// <remarks>
-        /// Note: The method is async to avoid recursive calls.
-        /// </remarks>
-        Task<IEnumerable<IAdTree>> GetPhraseElementsAsync();
 
         /// <summary>
         /// Returns the phrase text represented by this adtree.

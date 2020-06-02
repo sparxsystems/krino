@@ -225,23 +225,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             };
 
             // the governor of 'I' is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Right.Left.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Right.Left.GetGovernor());
 
             // the governor of 'book'-adposition is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Left.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Left.GetGovernor());
 
             // the governor of 'book' is the 'read'.
             // Note: the book is already the governor so the governor of the governor shall be found.
-            Assert.IsTrue(adTree.Right.Right == adTree.Left.Right.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Left.Right.GetGovernor());
 
             // the governor of 'the' is the 'book'.
-            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.Governor);
+            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.GetGovernor());
 
             // the governor of the root is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.GetGovernor());
 
             // the governor of the 'read'-adposition is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Right.Governor);
+            Assert.IsTrue(adTree.Right.Right == adTree.Right.GetGovernor());
         }
 
         [Test]
@@ -265,13 +265,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             };
 
             // the governor of 'bla' is the 'book'. (adposition U - 'bla' shall be ignored.
-            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.Left.Governor);
+            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.Left.GetGovernor());
 
             // the 'book' does not have any governor.
-            Assert.IsTrue(adTree.Left.Right.Governor == null);
+            Assert.IsTrue(adTree.Left.Right.GetGovernor() == null);
 
             // the root does not have any governor.
-            Assert.IsTrue(adTree.Governor == null);
+            Assert.IsTrue(adTree.GetGovernor() == null);
         }
 
         [Test]
@@ -361,7 +361,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void ValencyAdPosition()
+        public void ValencyAdPositionElement()
         {
             AdTree adTree = new AdTree(new Morpheme("", 0),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2) })
@@ -380,22 +380,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             };
 
             //'I'
-            Assert.IsTrue(adTree.Right == adTree.Right.Left.ValencyAdPosition);
+            Assert.IsTrue(adTree.Right == adTree.Right.Left.GetValencyAdPositionElement());
 
             // book
-            Assert.IsTrue(adTree == adTree.Left.Right.ValencyAdPosition);
+            Assert.IsTrue(adTree == adTree.Left.Right.GetValencyAdPositionElement());
 
             // the
-            Assert.IsTrue(adTree == adTree.Left.Left.ValencyAdPosition);
+            Assert.IsTrue(adTree == adTree.Left.Left.GetValencyAdPositionElement());
 
             // book-adposition shall return root
-            Assert.IsTrue(adTree == adTree.Left.ValencyAdPosition);
+            Assert.IsTrue(adTree == adTree.Left.GetValencyAdPositionElement());
 
             // root has defined the valency position so it should return itself
-            Assert.IsTrue(adTree == adTree.ValencyAdPosition);
+            Assert.IsTrue(adTree == adTree.GetValencyAdPositionElement());
 
             // read shall return null - because it is the verb
-            Assert.IsTrue(null == adTree.Right.Right.ValencyAdPosition);
+            Assert.IsTrue(null == adTree.Right.Right.GetValencyAdPositionElement());
 
             Assert.That(true, Is.True);
         }
