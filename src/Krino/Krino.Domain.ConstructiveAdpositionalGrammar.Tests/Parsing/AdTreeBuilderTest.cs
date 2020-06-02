@@ -38,7 +38,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Morpheme morpheme = new Morpheme("I", Attributes.O.Lexeme.Pronoun);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb);
+            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             morpheme = new Morpheme(".", Attributes.U.NonLexeme.PunctuationMark.Period);
@@ -57,7 +57,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("he", Attributes.O.Lexeme.Pronoun),
-                new Morpheme("read", Attributes.I.Lexeme.Verb),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
                 new Morpheme("s", Attributes.I.NonLexeme.Suffix),
             };
 
@@ -96,7 +96,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Morpheme("he", Attributes.O.Lexeme.Pronoun),
                 new Morpheme("is", Attributes.I.Lexeme.Verb.Bivalent),
-                new Morpheme("write", Attributes.I.Lexeme.Verb),
+                new Morpheme("write", Attributes.I.Lexeme.Verb.Bivalent),
                 new Morpheme("er", Attributes.O.NonLexeme.Suffix),
             };
 
@@ -221,7 +221,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Lexemes.
                 new Morpheme("I", Attributes.O.Lexeme.Pronoun),
                 new Morpheme("will", Attributes.I.Lexeme.Verb.Modal),
-                new Morpheme("read", Attributes.I.Lexeme.Verb),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
@@ -265,7 +265,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Lexemes.
                 new Morpheme("I", Attributes.O.Lexeme.Pronoun),
                 new Morpheme("will", Attributes.I.Lexeme.Verb.Modal),
-                new Morpheme("read", Attributes.I.Lexeme.Verb),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
                 new Morpheme("not", Attributes.E.Lexeme.Adverb),
             };
 

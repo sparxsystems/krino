@@ -138,7 +138,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
         public bool IsMorpheme()
         {
-            if (MorphemeRule.MorphRule.Equals(MorphRuleMaker.Something) &&
+            if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                MorphemeRule.MorphRule.Equals(MorphRuleMaker.Something) &&
                 LeftRule.Equals(MorphemeRule.Nothing) &&
                 RightRule.Equals(MorphemeRule.Nothing))
             {
@@ -152,6 +153,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         {
             // AdPosition
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
                 MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
                 MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString))
             {
@@ -173,6 +175,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         {
             // AdPosition
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
                 MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
                 MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString))
             {
@@ -212,6 +215,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
 
             return result;
         }
+
 
         public bool Equals(Pattern other) => MorphemeRule.Equals(other.MorphemeRule) && LeftRule.Equals(other.LeftRule) && RightRule.Equals(other.RightRule);
 

@@ -43,7 +43,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
         public GrammarCharacter GrammarCharacter { get; private set; }
         public IRule<BigInteger> AttributesRule { get; private set; }
 
-        public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRuleMaker.Epsilon_U;
+        public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRuleMaker.Epsilon_U_E;
 
         public int ValencyPosition { get; private set; }
 

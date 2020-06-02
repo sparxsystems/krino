@@ -27,9 +27,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes.Attribute
             Assert.AreEqual(1, count);
 
 
-            // If the enum does not encode any valency then it should return 0. 
+            // If the enum does not encode any valency then it should return -1. 
             count = Attributes.I.Lexeme.Verb.GetNumberOfValencies(Attributes.I.Lexeme.Verb.Unaccusative);
-            Assert.AreEqual(0, count);
+            Assert.AreEqual(-1, count);
         }
 
         [Test]

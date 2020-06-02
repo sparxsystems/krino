@@ -131,7 +131,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
                 return 5;
             }
 
-            return 0;
+            return -1;
         }
     }
 }

@@ -195,7 +195,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read
             AdTree adTree = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.O1_I)
             {
-                Right = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb), Pattern.Morpheme(Attributes.I.Lexeme.Verb.Bivalent)),
+                Right = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent), Pattern.Morpheme(Attributes.I.Lexeme.Verb.Bivalent)),
                 Left = new AdTree(new Morpheme("I", Attributes.O.Lexeme.Pronoun), Pattern.Morpheme(Attributes.O.Lexeme))
             };
 

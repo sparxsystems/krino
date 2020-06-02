@@ -47,7 +47,7 @@ namespace Krino.GretaTest
                 .SetRightFirst(),
             
             // E.g. speed of light
-            Pattern.MorphematicAdPosition("O-E-O", Attributes.E.Lexeme.Preposition, Attributes.O.Lexeme, Attributes.I.Lexeme)
+            Pattern.MorphematicAdPosition("O-E-O", Attributes.E.Lexeme.Preposition, Attributes.O.Lexeme, Attributes.O.Lexeme)
                 .SetRightFirst(),
 
 
@@ -55,8 +55,8 @@ namespace Krino.GretaTest
             Pattern.MorphematicAdPosition("O-U-O", Attributes.U.Lexeme.Conjunction, Attributes.O.Lexeme, Attributes.O.Lexeme)
                 .SetRightFirst(),
 
-            Pattern.MorphematicAdPosition("I-U-O", Attributes.U.Lexeme.Conjunction, Attributes.I.Lexeme, Attributes.O.Lexeme)
-                .SetRightFirst(),
+            //Pattern.MorphematicAdPosition("I-U-O", Attributes.U.Lexeme.Conjunction, Attributes.I.Lexeme, Attributes.O.Lexeme)
+            //    .SetRightFirst(),
 
 
             new Pattern("•")

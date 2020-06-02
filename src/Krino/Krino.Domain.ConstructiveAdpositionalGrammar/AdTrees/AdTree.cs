@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Collections;
 using System;
@@ -6,6 +7,7 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
@@ -186,7 +188,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return result;
         }
 
-        public bool IsGovernor => IsOnRight && Morpheme.GrammarCharacter != GrammarCharacter.e && Morpheme.GrammarCharacter != GrammarCharacter.U;
+        public bool IsGovernor
+        {
+            get
+            {
+                bool result = IsOnRight &&
+                              Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                              Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
+                              (Pattern.IsMorpheme() || Pattern.IsPrimitiveTransference());
+                return result;
+            }
+        }
+            
+
 
         public IEnumerable<IAdTree> DependentAdPositions
         {
@@ -355,12 +369,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             get
             {
-                //string left = Left != null ? string.Join("", Left.Pattern.Name, "=", !string.IsNullOrEmpty(Left.Morpheme.Morph) ? Left.Morpheme.Morph : "?") : "?";
-                string aThis = string.Join("", Pattern.Name, "=", !string.IsNullOrEmpty(Morpheme.Morph) ? Morpheme.Morph : "?");
-                //string right = Right != null ? string.Join("", Right.Pattern.Name, "=", !string.IsNullOrEmpty(Right.Morpheme.Morph) ? Right.Morpheme.Morph : "?") : "?";
+                StringBuilder builder = new StringBuilder();
+                builder.Append(Pattern.Name);
 
-                //string result = string.Join("", "(", left, ")", "<-", "(", aThis, ")", "->", "(", right, ")");
-                return aThis;
+                if (!string.IsNullOrEmpty(Morpheme.Morph))
+                {
+                    builder.Append(": ");
+                    builder.Append(Morpheme.Morph);
+                }
+                else if (!Pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
+                         !Pattern.MorphemeRule.MorphRule.Evaluate(null) &&
+                         !Pattern.MorphemeRule.MorphRule.Evaluate(""))
+                {
+                    builder.Append(": ");
+                    builder.Append("?");
+                }
+
+                return builder.ToString();
             }
         }
     }
