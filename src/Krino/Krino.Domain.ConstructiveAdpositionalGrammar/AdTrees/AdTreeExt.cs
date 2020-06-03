@@ -15,11 +15,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     public static class AdTreeExt
     {
         /// <summary>
-        /// Returns sequence from the specified adtree to the root.
+        /// Returns the sequence from the specified adtree to the root.
         /// </summary>
         /// <param name="adTree"></param>
         /// <returns></returns>
         public static IEnumerable<IAdTree> GetSequenceToRoot(this IAdTree adTree) => new IAdTree[] { adTree }.Concat(adTree.AdPositions);
+
+        /// <summary>
+        /// Returns the sequence from the specified adtree through right children.
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static IEnumerable<IAdTree> GetRightSequence(this IAdTree adTree) => new IAdTree[] { adTree }.Concat(adTree.RightChildren);
 
         /// <summary>
         /// Returns the shallow copy (Morpheme and Pattern are not duplicated) of the adtree. The returned copy is on the same path.
@@ -124,7 +131,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <returns></returns>
         public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeToAttach)
         {
-            bool result = adTree.CanAttachViaRule(false, adTreeToAttach);
+            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachPosition.ChildOnRight);
             return result;
         }
 
@@ -136,182 +143,210 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <returns></returns>
         public static bool CanAttachToLeft(this IAdTree adTree, IAdTree adTreeToAttach)
         {
-            bool result = adTree.CanAttachViaRule(true, adTreeToAttach);
+            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachPosition.ChildOnLeft);
             return result;
         }
 
-        private static bool CanAttachViaRule(this IAdTree adTree, bool attachToLeft , IAdTree adTreeToAttach)
+        private static bool CanAttachViaRule(this IAdTree adTree, IAdTree adTreeToAttach, AttachPosition attachPosition)
         {
-            MorphemeRule rule = attachToLeft ? adTree.Pattern.LeftRule : adTree.Pattern.RightRule;
+            MorphemeRule rule = attachPosition == AttachPosition.ChildOnLeft ? adTree.Pattern.LeftRule : adTree.Pattern.RightRule;
 
-            // If the rule does not allow to attach.
-            if (rule.Equals(MorphemeRule.Nothing))
+            // If the rule allows to attach and the order of attaching is correct.
+            if (!rule.Equals(MorphemeRule.Nothing) && IsOrderOfAttachingCorrect(adTree, attachPosition))
             {
-                return false;
-            }
+                IAdTree morphematicAdTree = null;
 
-            // Check the order of attaching.
-            if (attachToLeft)
-            {
-                if (adTree.Pattern.LeftRule.Order > adTree.Pattern.RightRule.Order &&
-                    !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) &&
-                    adTree.Right == null)
+                // If the adTreeToAttach is a morpheme or a transference.
+                if (adTreeToAttach.Pattern.IsMorpheme() ||
+                    adTreeToAttach.Pattern.IsPrimitiveTransference() ||
+                    adTreeToAttach.Pattern.IsTransference())
                 {
-                    return false;
+                    morphematicAdTree = adTreeToAttach;
                 }
-            }
-            else
-            {
-                if (adTree.Pattern.RightRule.Order > adTree.Pattern.LeftRule.Order &&
-                    !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) &&
-                    adTree.Left == null)
+                // It is an adposition.
+                else if (adTreeToAttach.Pattern.IsEpsilonAdPosition() ||
+                         adTreeToAttach.Pattern.IsMorphematicAdPosition())
                 {
-                    return false;
-                }
-            }
-
-            IAdTree morphematicAdTree = null;
-
-            // If the adTreeToAttach is a morpheme or a transference.
-            if (adTreeToAttach.Pattern.IsMorpheme() ||
-                adTreeToAttach.Pattern.IsPrimitiveTransference() ||
-                adTreeToAttach.Pattern.IsTransference())
-            {
-                morphematicAdTree = adTreeToAttach;
-            }
-            // It is an adposition.
-            else if (adTreeToAttach.Pattern.IsEpsilonAdPosition() ||
-                     adTreeToAttach.Pattern.IsMorphematicAdPosition())
-            {
-                // If the rule allows the inheritance.
-                if (rule.InheritanceRule.Evaluate(adTreeToAttach.Morpheme.GrammarCharacter))
-                {
-                    // If it shall be attached to the right and
-                    // the valency position is specified then check correctness with regard to presence of previous valencies.
-                    if (!attachToLeft && adTree.Pattern.MorphemeRule.ValencyPosition > 0)
+                    // If the rule allows the inheritance.
+                    if (rule.InheritanceRule.Evaluate(adTreeToAttach.Morpheme.GrammarCharacter))
                     {
-                        IAdTree closestValencyAdPosition = new IAdTree[] { adTreeToAttach }.Concat(adTreeToAttach.RightChildren)
-                            .FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
-
-                        if (closestValencyAdPosition == null && adTree.Pattern.MorphemeRule.ValencyPosition > 1 ||
-                            closestValencyAdPosition != null && adTree.Pattern.MorphemeRule.ValencyPosition != closestValencyAdPosition.Pattern.MorphemeRule.ValencyPosition + 1)
+                        // If it shall be attached to the right and
+                        // the valency position is specified then check correctness with regard to presence of previous valencies.
+                        if (attachPosition == AttachPosition.ChildOnRight)
                         {
-                            return false;
+                            IAdTree valencyElement = adTree.GetSequenceToRoot()
+                                .TakeUntil(x => x.IsOnRight)
+                                .FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
+
+                            if (valencyElement != null)
+                            {
+                                IAdTree previousValencyElement = adTreeToAttach.GetRightSequence()
+                                    .FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
+
+                                if (previousValencyElement == null && valencyElement.Pattern.MorphemeRule.ValencyPosition > 1 ||
+                                    previousValencyElement != null && valencyElement.Pattern.MorphemeRule.ValencyPosition != previousValencyElement.Pattern.MorphemeRule.ValencyPosition + 1)
+                                {
+                                    return false;
+                                }
+                            }
+                        }
+
+                        // Get the governor from the right children.
+                        morphematicAdTree = adTreeToAttach.RightChildren.FirstOrDefault(x => x.IsGovernor);
+
+                        // If the governor is not attached yet then check only rules.
+                        if (morphematicAdTree == null)
+                        {
+                            IEnumerable<IAdTree> rightSequence = new IAdTree[] { adTreeToAttach }.Concat(adTreeToAttach.RightChildren);
+                            if (rightSequence.Any(x => !x.Pattern.RightRule.IsSubruleOf(rule) && !rule.IsSubruleOf(x.Pattern.RightRule)))
+                            {
+                                return false;
+                            }
+
+                            return true;
+                        }
+                    }
+                }
+
+                if (morphematicAdTree != null)
+                {
+                    // If it shall be attached to the right then check the valency.
+                    if (attachPosition == AttachPosition.ChildOnRight && Attributes.I.Lexeme.Verb.IsIn(morphematicAdTree.Morpheme.Attributes))
+                    {
+                        int valency = Attributes.I.Lexeme.Verb.GetNumberOfValencies(morphematicAdTree.Morpheme.Attributes);
+
+                        if (valency > -1)
+                        {
+                            int[] valencyPositions = morphematicAdTree.GetSequenceToRoot()
+                                .TakeWhile(x => x != adTree) // This is to not make an assuption if it is already attached or not.
+                                .TakeUntil(x => x.IsOnRight)
+                                .Concat(adTree.GetSequenceToRoot().TakeUntil(x => x.IsOnRight))
+                                .Where(x => x.Pattern.MorphemeRule.ValencyPosition > 0)
+                                .Select(x => x.Pattern.MorphemeRule.ValencyPosition)
+                                .ToArray();
+
+                            // If more valency positions than the morpheme valency.
+                            if (valencyPositions.Length > valency)
+                            {
+                                return false;
+                            }
+
+                            for (int i = 0; i < valencyPositions.Length; ++i)
+                            {
+                                if (valencyPositions[i] != i + 1)
+                                {
+                                    return false;
+                                }
+                            }
                         }
                     }
 
-                    // Get the governor from the right children.
-                    morphematicAdTree = adTreeToAttach.RightChildren.FirstOrDefault(x => x.IsGovernor);
+                    Morpheme morphemeToEvaluate;
 
-                    // If the governor is not attached yet then check only rules.
-                    if (morphematicAdTree == null)
+                    if (morphematicAdTree.Pattern.IsPrimitiveTransference())
                     {
-                        IEnumerable<IAdTree> rightSequence = new IAdTree[] { adTreeToAttach }.Concat(adTreeToAttach.RightChildren);
-                        if (rightSequence.All(x => x.Pattern.RightRule.IsSubruleOf(rule) || rule.IsSubruleOf(x.Pattern.RightRule)))
+                        morphemeToEvaluate = new Morpheme(morphematicAdTree.Right.Morpheme.Morph, morphematicAdTree.Morpheme.Attributes);
+                    }
+                    else if (morphematicAdTree.Pattern.IsTransference())
+                    {
+                        string relevantMorph = morphematicAdTree.RightChildren.FirstOrDefault(x => !string.IsNullOrEmpty(x.Morpheme.Morph))?.Morpheme.Morph;
+                        if (relevantMorph != null)
                         {
-                            return true;
+                            morphemeToEvaluate = new Morpheme(relevantMorph, morphematicAdTree.Morpheme.Attributes);
                         }
                         else
                         {
-                            return false;
+                            // The morpheme with the morph is not attached yet so check only attributes.
+                            if (rule.AttributesRule.Evaluate(morphematicAdTree.Morpheme.Attributes))
+                            {
+                                return true;
+                            }
+                            else
+                            {
+                                return false;
+                            }
                         }
-                    }
-                }
-            }
-
-            if (morphematicAdTree != null)
-            {
-                // If it shall be attached to the right then check the valency.
-                if (!attachToLeft && Attributes.I.Lexeme.Verb.IsIn(morphematicAdTree.Morpheme.Attributes))
-                {
-                    int valency = Attributes.I.Lexeme.Verb.GetNumberOfValencies(morphematicAdTree.Morpheme.Attributes);
-
-                    if (valency > -1)
-                    {
-                        IEnumerable<IAdTree> rightAdPositions = new IAdTree[] { adTree }.Concat(adTree.AdPositions);
-                        if (rightAdPositions.Any(x => x.Pattern.MorphemeRule.ValencyPosition > valency))
-                        {
-                            return false;
-                        }
-                    }
-                }
-
-                Morpheme morphemeToEvaluate;
-
-                if (morphematicAdTree.Pattern.IsPrimitiveTransference())
-                {
-                    morphemeToEvaluate = new Morpheme(morphematicAdTree.Right.Morpheme.Morph, morphematicAdTree.Morpheme.Attributes);
-                }
-                else if (morphematicAdTree.Pattern.IsTransference())
-                {
-                    string relevantMorph = morphematicAdTree.RightChildren.FirstOrDefault(x => !string.IsNullOrEmpty(x.Morpheme.Morph))?.Morpheme.Morph;
-                    if (relevantMorph != null)
-                    {
-                        morphemeToEvaluate = new Morpheme(relevantMorph, morphematicAdTree.Morpheme.Attributes);
                     }
                     else
                     {
-                        // The morpheme with the morph is not attached yet so check only attributes.
-                        if (rule.AttributesRule.Evaluate(morphematicAdTree.Morpheme.Attributes))
-                        {
-                            return true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
+                        morphemeToEvaluate = morphematicAdTree.Morpheme;
                     }
-                }
-                else
-                {
-                    morphemeToEvaluate = morphematicAdTree.Morpheme;
-                }
 
-                // Check if the morpheme passes the rule.
-                if (attachToLeft)
-                {
-                    bool result = rule.Evaluate(morphemeToEvaluate);
-                    return result;
-                }
-                else
-                {
-                    // Check if the morpheme passes the rule in all relevant adpositions.
-                    bool result = true;
-                    IEnumerable<IAdTree> sequenceToRoot = adTree.GetSequenceToRoot();
-                    foreach (IAdTree item in sequenceToRoot)
+                    // Check if the morpheme passes the rule.
+                    if (attachPosition == AttachPosition.ChildOnLeft)
                     {
-                        if (!item.Pattern.RightRule.Evaluate(morphemeToEvaluate))
+                        bool result = rule.Evaluate(morphemeToEvaluate);
+                        return result;
+                    }
+                    else
+                    {
+                        // Check if the morpheme passes the rule in all relevant adpositions.
+                        bool result = true;
+                        IEnumerable<IAdTree> sequenceToRoot = adTree.GetSequenceToRoot();
+                        foreach (IAdTree item in sequenceToRoot)
                         {
-                            result = false;
-                            break;
-                        }
-
-                        if (item.IsOnLeft)
-                        {
-                            if (item.AdPosition.Morpheme.GrammarCharacter != GrammarCharacter.e &&
-                                item.AdPosition.Morpheme.GrammarCharacter != GrammarCharacter.U &&
-                                !item.AdPosition.Pattern.LeftRule.Evaluate(morphemeToEvaluate))
+                            if (!item.Pattern.RightRule.Evaluate(morphemeToEvaluate))
                             {
                                 result = false;
+                                break;
                             }
 
-                            break;
+                            if (item.IsOnLeft)
+                            {
+                                if (item.AdPosition.Morpheme.GrammarCharacter != GrammarCharacter.e &&
+                                    item.AdPosition.Morpheme.GrammarCharacter != GrammarCharacter.U &&
+                                    !item.AdPosition.Pattern.LeftRule.Evaluate(morphemeToEvaluate))
+                                {
+                                    result = false;
+                                }
+
+                                break;
+                            }
+
+                            if (item.Morpheme.GrammarCharacter != GrammarCharacter.e &&
+                                item.Morpheme.GrammarCharacter != GrammarCharacter.U)
+                            {
+                                break;
+                            }
                         }
 
-                        if (item.Morpheme.GrammarCharacter != GrammarCharacter.e &&
-                            item.Morpheme.GrammarCharacter != GrammarCharacter.U)
-                        {
-                            break;
-                        }
+                        return result;
                     }
-
-                    return result;
                 }
             }
+
+
+
+            
 
             return false;
         }
 
+        private static bool IsOrderOfAttachingCorrect(IAdTree adTree, AttachPosition position)
+        {
+            bool result = false;
+
+            if (position == AttachPosition.ChildOnLeft)
+            {
+                if (adTree.Pattern.LeftRule.Order <= adTree.Pattern.RightRule.Order ||
+                    adTree.Right != null ||
+                    adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
+                {
+                    result = true;
+                }
+            }
+            else
+            {
+                if (adTree.Pattern.RightRule.Order <= adTree.Pattern.LeftRule.Order ||
+                    adTree.Left != null ||
+                    adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
+                {
+                    result = true;
+                }
+            }
+
+            return result;
+        }
 
         /// <summary>
         /// Gets the first adtree element which is attached on the left or null if it does not exist.

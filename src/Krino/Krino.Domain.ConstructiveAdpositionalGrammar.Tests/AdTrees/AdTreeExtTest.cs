@@ -170,8 +170,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsFalse(adTree.Left.CanAttachToRight(adTreeElement));
 
 
-            // Attach and then conrinue in testing.
-            adTree.Left.Right = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme));
+            adTree = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("O-A", Attributes.O.Lexeme, Attributes.A.Lexeme))
+            {
+                Left = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme))
+                {
+                    Right = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme))
+                }
+            };
 
             // Now try to attach the morpheme.
             adTreeElement = new AdTree(new Morpheme("car", Attributes.O.Lexeme), Pattern.Morpheme(Attributes.O.Lexeme));
@@ -203,7 +208,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             AdTree valency2 = new AdTree(Morpheme.Epsilon, Pattern.O2_I);
             Assert.IsTrue(valency2.CanAttachToRight(adTree));
 
-
             // Try to connect the first valency position.
             AdTree valency1 = new AdTree(Morpheme.Epsilon, Pattern.O1_I);
             Assert.IsFalse(valency1.CanAttachToRight(adTree));
@@ -211,6 +215,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // Try to connect the third valency position.
             AdTree valency3 = new AdTree(Morpheme.Epsilon, Pattern.O3_I);
             Assert.IsFalse(valency3.CanAttachToRight(adTree));
+
+
+            // Try to connect the verb directly to the second valency.
+            adTree = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent), Pattern.Morpheme(Attributes.I.Lexeme.Verb.Bivalent));
+            Assert.IsFalse(valency2.CanAttachToRight(adTree));
         }
 
 
