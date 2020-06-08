@@ -1,10 +1,13 @@
-﻿namespace Krino.Vertical.Utils.Graphs
+﻿using System.Diagnostics;
+
+namespace Krino.Vertical.Utils.Graphs
 {
     /// <summary>
     /// Directed edge.
     /// </summary>
     /// <typeparam name="V">type of the vertex</typeparam>
     /// <typeparam name="E">type of the edge</typeparam>
+    [DebuggerDisplay("{From}->{To}: {Value}")]
     public class DirectedEdge<V, E>
     {
         public DirectedEdge(V from, V to)

@@ -13,9 +13,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
-        public static MorphemeRule Is(string morph, BigInteger attributes) => new MorphemeRule(GrammarCharacterExt.GetGrammarCharacter(attributes), MorphRuleMaker.Is(morph), MaskRule.Is(attributes));
+        public static MorphemeRule Is(string morph, BigInteger attributes) => Is(MorphRuleMaker.Is(morph), attributes, 0);
 
-        public static MorphemeRule Is(IRule<string> morphRule, BigInteger attributes) => new MorphemeRule(GrammarCharacterExt.GetGrammarCharacter(attributes), morphRule, MaskRule.Is(attributes));
+        public static MorphemeRule Is(IRule<string> morphRule, BigInteger attributes) => Is(morphRule, attributes, 0);
+
+        public static MorphemeRule Is(IRule<string> morphRule, BigInteger attributes, BigInteger notAttributes) =>
+            notAttributes != 0 ?
+                new MorphemeRule(GrammarCharacterExt.GetGrammarCharacter(attributes), morphRule, MaskRule.Is(attributes) & !MaskRule.Is(notAttributes)) :
+                new MorphemeRule(GrammarCharacterExt.GetGrammarCharacter(attributes), morphRule, MaskRule.Is(attributes));
+
 
         public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Anything);
 
@@ -37,6 +43,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
 
         public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.Epsilon));
 
+
+        public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)
+        {
+            GrammarCharacter = grammarCharacter;
+            MorphRule = morphRule ?? throw new ArgumentNullException(nameof(morphRule));
+            AttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
+        }
 
 
         public IRule<string> MorphRule { get; private set; }
@@ -73,12 +86,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules
             return this;
         }
 
-        public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)
-        {
-            GrammarCharacter = grammarCharacter;
-            MorphRule = morphRule ?? throw new ArgumentNullException(nameof(morphRule));
-            AttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
-        }
+        
 
         /// <summary>
         /// Checks if the morpheme matches the rule.

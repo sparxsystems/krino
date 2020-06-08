@@ -16,8 +16,14 @@ namespace Krino.GretaTest
             Pattern.Morpheme(Attributes.E.Lexeme.Adverb),
 
             Pattern.Morpheme("O+", Attributes.O.NonLexeme.Suffix),
+            Pattern.Morpheme("I+", Attributes.I.NonLexeme.Suffix),
 
             Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme.Noun),
+
+            Pattern.Transference("I>I_ing",
+                Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
+                Attributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
+                Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb.Modal),
 
             Pattern.O1_I.SetLeftFirst(),
             Pattern.O1_I.SetRightFirst(),
@@ -38,7 +44,7 @@ namespace Krino.GretaTest
             Pattern.EpsilonAdPosition("O+-O", Attributes.O.NonLexeme.Suffix, Attributes.O.Lexeme)
                 .SetRightFirst(),
 
-            Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb.Modal, Attributes.I.Lexeme)
+            Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb)
                 .SetLeftFirst()
                 .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 

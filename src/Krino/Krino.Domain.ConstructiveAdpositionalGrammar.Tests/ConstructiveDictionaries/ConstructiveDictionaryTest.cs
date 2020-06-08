@@ -55,19 +55,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                new Pattern("A")
-                {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.Nothing,
-                    LeftRule = MorphemeRule.Nothing,
-                },
-
-                new Pattern("A-A")
-                {
-                    MorphemeRule = MorphemeRule.Epsilon,
-                    RightRule = MorphemeRule.A_Lexeme,
-                    LeftRule = MorphemeRule.A_Lexeme
-                },
+                Pattern.EpsilonAdPosition("A-A", Attributes.A.Lexeme, Attributes.A.Lexeme),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[0], patterns);

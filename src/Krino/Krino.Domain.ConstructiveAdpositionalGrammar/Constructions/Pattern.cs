@@ -37,6 +37,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
                 LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
             };
 
+        public static Pattern Transference(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger notLeftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes)
+            => new Pattern(patternName)
+            {
+                MorphemeRule = MorphemeRule.Is("", morphemeAttributes),
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes, notRightAttributes),
+                LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, leftAttributes, notLeftAttributes),
+            };
+
         public static Pattern PrimitiveTransference(string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
