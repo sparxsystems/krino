@@ -213,7 +213,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     // If it shall be attached to the right then check the valency.
                     if (attachPosition == AttachPosition.ChildOnRight && Attributes.I.Lexeme.Verb.IsIn(morphematicAdTree.Morpheme.Attributes))
                     {
-                        int valency = Attributes.I.Lexeme.Verb.GetNumberOfValencies(morphematicAdTree.Morpheme.Attributes);
+                        int valency = Attributes.I.Lexeme.Verb.Valency.GetNumberOfValencies(morphematicAdTree.Morpheme.Attributes);
 
                         if (valency > -1)
                         {

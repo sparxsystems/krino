@@ -88,8 +88,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
         private static Pattern On_I(string patternName, int valencyPosition) => new Pattern(patternName)
         {
             MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(valencyPosition),
-            LeftRule = MorphemeRule.O_Lexeme,
-            RightRule = MorphemeRule.I_Lexeme,
+            LeftRule = MorphemeRule.O_Lexeme.SetInheritance(InheritanceRuleMaker.Epsilon_U),
+            RightRule = MorphemeRule.I_Lexeme.SetInheritance(InheritanceRuleMaker.Epsilon_U),
         };
 
 

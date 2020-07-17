@@ -38,7 +38,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Morpheme morpheme = new Morpheme("I", Attributes.O.Lexeme.Pronoun);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent);
+            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             morpheme = new Morpheme(".", Attributes.U.NonLexeme.PunctuationMark.Period);
@@ -57,7 +57,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("he", Attributes.O.Lexeme.Pronoun),
-                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent),
                 new Morpheme("s", Attributes.I.NonLexeme.Suffix),
             };
 
@@ -95,8 +95,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("he", Attributes.O.Lexeme.Pronoun),
-                new Morpheme("is", Attributes.I.Lexeme.Verb.Bivalent),
-                new Morpheme("write", Attributes.I.Lexeme.Verb.Bivalent),
+                new Morpheme("is", Attributes.I.Lexeme.Verb.Valency.Bivalent),
+                new Morpheme("write", Attributes.I.Lexeme.Verb.Valency.Bivalent),
                 new Morpheme("er", Attributes.O.NonLexeme.Suffix),
             };
 
@@ -140,8 +140,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Morpheme("I", Attributes.O.Lexeme.Pronoun),
                 new Morpheme("have", Attributes.I.Lexeme.Verb),
-                new Morpheme("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple),
-                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
+                new Morpheme("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.Form.PastParticiple),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent),
                 new Morpheme("ing", Attributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous),
             };
 
@@ -157,11 +157,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Transference("I>PresentPerfect",
                     Attributes.I.Lexeme.Verb.Sememe.Tense.Present | Attributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                     MorphemeRule.Is(MorphRuleMaker.Is("have"), Attributes.I.Lexeme.Verb).SetInheritance(InheritanceRuleMaker.Nothing),
-                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.PastParticiple)),
+                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Form.PastParticiple)),
 
                 Pattern.Transference("been-I_ing",
-                    Attributes.I.Lexeme.Verb.PastParticiple,
-                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple).SetInheritance(InheritanceRuleMaker.Nothing),
+                    Attributes.I.Lexeme.Verb.Form.PastParticiple,
+                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.Form.PastParticiple).SetInheritance(InheritanceRuleMaker.Nothing),
                     MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
 
                 Pattern.Transference("I>I_ing",
@@ -279,7 +279,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Lexemes.
                 new Morpheme("I", Attributes.O.Lexeme.Pronoun),
                 new Morpheme("will", Attributes.I.Lexeme.Verb.Modal),
-                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Form.Infinitive | Attributes.I.Lexeme.Verb.Valency.Bivalent),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
@@ -323,7 +323,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Lexemes.
                 new Morpheme("I", Attributes.O.Lexeme.Pronoun),
                 new Morpheme("will", Attributes.I.Lexeme.Verb.Modal),
-                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent),
                 new Morpheme("not", Attributes.E.Lexeme.Adverb),
             };
 
@@ -368,7 +368,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Morpheme morpheme = new Morpheme("I", Attributes.O.Lexeme.Pronoun);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent);
+            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             morpheme = new Morpheme("the", Attributes.A.Lexeme.Determiner.DefiniteArticle);
@@ -425,10 +425,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             morpheme = new Morpheme("you", Attributes.O.Lexeme.Pronoun);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("know", Attributes.I.Lexeme.Verb.Bivalent);
+            morpheme = new Morpheme("know", Attributes.I.Lexeme.Verb.Valency.Bivalent);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("ends", Attributes.I.Lexeme.Verb.Monovalent);
+            morpheme = new Morpheme("ends", Attributes.I.Lexeme.Verb.Valency.Monovalent);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             builder.Purify();
@@ -467,7 +467,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Morpheme morpheme = new Morpheme("I", Attributes.O.Lexeme.Pronoun);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent);
+            morpheme = new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             morpheme = new Morpheme("the", Attributes.A.Lexeme.Determiner.DefiniteArticle);
@@ -529,7 +529,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Morpheme morpheme = new Morpheme("it", Attributes.O.Lexeme.Pronoun);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
-            morpheme = new Morpheme("is", Attributes.I.Lexeme.Verb.Bivalent);
+            morpheme = new Morpheme("is", Attributes.I.Lexeme.Verb.Valency.Bivalent);
             Assert.IsTrue(builder.AddMorpheme(morpheme));
 
             morpheme = new Morpheme("good", Attributes.A.Lexeme.Adjective.Attributive);

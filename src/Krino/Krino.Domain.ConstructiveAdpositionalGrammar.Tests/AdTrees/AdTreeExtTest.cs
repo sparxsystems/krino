@@ -200,7 +200,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // The phrase: I read
             AdTree adTree = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.O1_I)
             {
-                Right = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent), Pattern.Morpheme(Attributes.I.Lexeme.Verb.Bivalent)),
+                Right = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent), Pattern.Morpheme(Attributes.I.Lexeme.Verb.Valency.Bivalent)),
                 Left = new AdTree(new Morpheme("I", Attributes.O.Lexeme.Pronoun), Pattern.Morpheme(Attributes.O.Lexeme))
             };
 
@@ -218,7 +218,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
 
             // Try to connect the verb directly to the second valency.
-            adTree = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent), Pattern.Morpheme(Attributes.I.Lexeme.Verb.Bivalent));
+            adTree = new AdTree(new Morpheme("read", Attributes.I.Lexeme.Verb.Valency.Bivalent), Pattern.Morpheme(Attributes.I.Lexeme.Verb.Valency.Bivalent));
             Assert.IsFalse(valency2.CanAttachToRight(adTree));
         }
 

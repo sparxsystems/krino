@@ -28,14 +28,19 @@ namespace Krino.GretaTest
             Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme.Adjective, Attributes.O.Lexeme.Noun),
 
 
+            Pattern.Transference("I>SimpleFuture",
+                    Attributes.I.Lexeme.Verb.Sememe.Tense.Future,
+                    MorphemeRule.Is(MorphRuleMaker.Is("will"), Attributes.I.Lexeme.Verb.Modal).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
+                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Form.Infinitive)),
+
             Pattern.Transference("I>PresentPerfect",
                     Attributes.I.Lexeme.Verb.Sememe.Tense.Present | Attributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                     MorphemeRule.Is(MorphRuleMaker.Is("have"), Attributes.I.Lexeme.Verb).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
-                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.PastParticiple)),
+                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Form.PastParticiple)),
 
             Pattern.Transference("been-I_ing",
-                    Attributes.I.Lexeme.Verb.PastParticiple,
-                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
+                    Attributes.I.Lexeme.Verb.Form.PastParticiple,
+                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.Form.PastParticiple).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
                     MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
 
             Pattern.Transference("I>I_ing",
@@ -57,9 +62,9 @@ namespace Krino.GretaTest
             Pattern.EpsilonAdPosition("O+-O", Attributes.O.NonLexeme.Suffix, Attributes.O.Lexeme)
                 .SetRightFirst(),
 
-            Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb)
-                .SetLeftFirst()
-                .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
+            //Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb)
+            //    .SetLeftFirst()
+            //    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 
             // Verbant circumstantial with a preposition.
             Pattern.MorphematicAdPosition("O-E-I", Attributes.E.Lexeme.Preposition, Attributes.O.Lexeme, Attributes.I.Lexeme)
@@ -77,10 +82,6 @@ namespace Krino.GretaTest
             //Pattern.MorphematicAdPosition("I-U-O", Attributes.U.Lexeme.Conjunction, Attributes.I.Lexeme, Attributes.O.Lexeme)
             //    .SetRightFirst(),
 
-
-            Pattern.EpsilonAdPosition("been-I_ing",
-                MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past),
-                MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
 
             new Pattern("•")
             {
