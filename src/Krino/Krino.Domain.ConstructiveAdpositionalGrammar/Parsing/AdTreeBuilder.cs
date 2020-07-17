@@ -238,7 +238,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     adTreeCopy.Left = newAdTreeElementCopy;
                     results.Add(newAdTreeElementCopy);
                 }
-                else if (canAppendIndirectly)
+                if (canAppendIndirectly)
                 {
                     // Try to attach the new element indirectly.
                     TryToAppendIndirectly(AttachPosition.ParrentForLeft, placeToAppend, newElement, results, 2);
@@ -256,7 +256,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     adTreeCopy.Right = newAdTreeElementCopy;
                     results.Add(newAdTreeElementCopy);
                 }
-                else if (canAppendIndirectly)
+                if (canAppendIndirectly)
                 {
                     // Try to attach the new element indirectly.
                     TryToAppendIndirectly(AttachPosition.ParrentForRight, placeToAppend, newElement, results, 2);

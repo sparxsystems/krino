@@ -30,12 +30,12 @@ namespace Krino.GretaTest
 
             Pattern.Transference("I>PresentPerfect",
                     Attributes.I.Lexeme.Verb.Sememe.Tense.Present | Attributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
-                    MorphemeRule.Is(MorphRuleMaker.Is("have"), Attributes.I.Lexeme.Verb).SetOrder(1),
+                    MorphemeRule.Is(MorphRuleMaker.Is("have"), Attributes.I.Lexeme.Verb).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
                     MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.PastParticiple)),
 
             Pattern.Transference("been-I_ing",
                     Attributes.I.Lexeme.Verb.PastParticiple,
-                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple).SetOrder(1),
+                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
                     MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
 
             Pattern.Transference("I>I_ing",
