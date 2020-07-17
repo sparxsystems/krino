@@ -15,22 +15,35 @@ namespace Krino.GretaTest
             Pattern.Morpheme(Attributes.A.Lexeme),
             Pattern.Morpheme(Attributes.E.Lexeme.Adverb),
 
-            Pattern.Morpheme("O+", Attributes.O.NonLexeme.Suffix),
-            Pattern.Morpheme("I+", Attributes.I.NonLexeme.Suffix),
-
-            Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme.Noun),
-
-            Pattern.Transference("I>I_ing",
-                Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
-                Attributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
-                Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb.Modal),
-
             Pattern.O1_I.SetLeftFirst(),
             Pattern.O1_I.SetRightFirst(),
             Pattern.O2_I,
             Pattern.O3_I,
             Pattern.O4_I,
             Pattern.O5_I,
+
+            Pattern.Morpheme("O+", Attributes.O.NonLexeme.Suffix),
+            Pattern.Morpheme("I+", Attributes.I.NonLexeme.Suffix),
+
+            Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme.Adjective, Attributes.O.Lexeme.Noun),
+
+
+            Pattern.Transference("I>PresentPerfect",
+                    Attributes.I.Lexeme.Verb.Sememe.Tense.Present | Attributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
+                    MorphemeRule.Is(MorphRuleMaker.Is("have"), Attributes.I.Lexeme.Verb).SetOrder(1),
+                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.PastParticiple)),
+
+            Pattern.Transference("been-I_ing",
+                    Attributes.I.Lexeme.Verb.PastParticiple,
+                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple).SetOrder(1),
+                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
+
+            Pattern.Transference("I>I_ing",
+                Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
+                Attributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
+                Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb.Modal),
+
+            
 
 
             Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
@@ -65,11 +78,15 @@ namespace Krino.GretaTest
             //    .SetRightFirst(),
 
 
+            Pattern.EpsilonAdPosition("been-I_ing",
+                MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past),
+                MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
+
             new Pattern("•")
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark.Period),
-                RightRule = new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Something),
                 LeftRule = MorphemeRule.Anything,
+                RightRule = new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Something),
             },
 
         };

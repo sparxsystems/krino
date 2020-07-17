@@ -26,8 +26,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern(".")
                 {
                     MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.NonLexeme.PunctuationMark.Period),
-                    RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
                     LeftRule = MorphemeRule.Anything,
+                    RightRule = MorphemeRule.I_Lexeme.SetOrder(1),
                 },
             };
 
@@ -130,6 +130,64 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("write", builder.ActiveAdTrees[0].Left.Right.Morpheme.Morph);
             Assert.AreEqual("he", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
             Assert.AreEqual("is", builder.ActiveAdTrees[0].Right.Right.Morpheme.Morph);
+        }
+
+
+        [Test]
+        public void I_have_been_reading()
+        {
+            List<Morpheme> morphemes = new List<Morpheme>()
+            {
+                new Morpheme("I", Attributes.O.Lexeme.Pronoun),
+                new Morpheme("have", Attributes.I.Lexeme.Verb),
+                new Morpheme("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple),
+                new Morpheme("read", Attributes.I.Lexeme.Verb.Bivalent),
+                new Morpheme("ing", Attributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous),
+            };
+
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                Pattern.Morpheme(Attributes.O.Lexeme),
+                Pattern.Morpheme(Attributes.I.Lexeme),
+
+                Pattern.O1_I,
+
+                Pattern.Morpheme("I+", Attributes.I.NonLexeme.Suffix),
+
+                Pattern.Transference("I>PresentPerfect",
+                    Attributes.I.Lexeme.Verb.Sememe.Tense.Present | Attributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
+                    MorphemeRule.Is(MorphRuleMaker.Is("have"), Attributes.I.Lexeme.Verb).SetInheritance(InheritanceRuleMaker.Nothing),
+                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.PastParticiple)),
+
+                Pattern.Transference("been-I_ing",
+                    Attributes.I.Lexeme.Verb.PastParticiple,
+                    MorphemeRule.Is("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple).SetInheritance(InheritanceRuleMaker.Nothing),
+                    MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
+
+                Pattern.Transference("I>I_ing",
+                    Attributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
+                    Attributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
+                    Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb.Modal),
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, patterns);
+
+            AdTreeBuilder builder = new AdTreeBuilder(dictionary);
+
+            Assert.IsTrue(builder.AddWord("I", 1));
+            Assert.IsTrue(builder.AddWord("have", 1));
+            Assert.IsTrue(builder.AddWord("been", 1));
+            Assert.IsTrue(builder.AddWord("reading", 1));
+
+            builder.Purify();
+
+            Assert.AreEqual(1, builder.ActiveAdTrees.Count);
+
+            Assert.AreEqual("I", builder.ActiveAdTrees[0].Left.Morpheme.Morph);
+            Assert.AreEqual("have", builder.ActiveAdTrees[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("been", builder.ActiveAdTrees[0].Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("ing", builder.ActiveAdTrees[0].Right.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", builder.ActiveAdTrees[0].Right.Right.Right.Right.Morpheme.Morph);
         }
 
         [Test]
@@ -346,8 +404,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("I-U-O")
                 {
                     MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U.Lexeme.Conjunction),
-                    RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
                     LeftRule = MorphemeRule.I_Lexeme,
+                    RightRule = MorphemeRule.O_Lexeme.SetOrder(1),
                 },
             };
 
@@ -396,8 +454,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("E")
                 {
                     MorphemeRule = MorphemeRule.E_Lexeme,
+                    LeftRule = MorphemeRule.O_Lexeme,
                     RightRule = MorphemeRule.I_Lexeme,
-                    LeftRule = MorphemeRule.O_Lexeme
                 },
             };
 
@@ -458,8 +516,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("A-U-A")
                 {
                     MorphemeRule = MorphemeRule.U_Lexeme,
+                    LeftRule = MorphemeRule.A_Lexeme,
                     RightRule = MorphemeRule.A_Lexeme.SetOrder(1),
-                    LeftRule = MorphemeRule.A_Lexeme
                 },
             };
 

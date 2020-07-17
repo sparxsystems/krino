@@ -18,8 +18,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             pattern = new Pattern()
             {
                 MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
-                RightRule = MorphemeRule.Nothing,
                 LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.Nothing,
             };
             Assert.IsFalse(pattern.IsMorpheme());
 
@@ -28,8 +28,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             pattern = new Pattern()
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.E.Lexeme),
-                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.O.Lexeme),
                 LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.I.Lexeme),
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.O.Lexeme),
             };
             Assert.IsFalse(pattern.IsMorpheme());
         }
@@ -40,24 +40,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             Pattern pattern = new Pattern()
             {
                 MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
-                RightRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.O_Lexeme,
             };
             Assert.IsTrue(pattern.IsPrimitiveTransference());
 
             pattern = new Pattern()
             {
                 MorphemeRule = MorphemeRule.Is("", Attributes.A.Lexeme),
+                LeftRule = MorphemeRule.Is("s", Attributes.A.NonLexeme.Prefix),
                 RightRule = MorphemeRule.O_Lexeme,
-                LeftRule = MorphemeRule.Is("s", Attributes.A.NonLexeme.Prefix)
             };
             Assert.IsFalse(pattern.IsPrimitiveTransference());
 
             pattern = new Pattern()
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O_Lexeme,
                 LeftRule = MorphemeRule.A_Lexeme,
+                RightRule = MorphemeRule.O_Lexeme,
             };
             Assert.IsFalse(pattern.IsPrimitiveTransference());
         }
@@ -73,8 +73,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             {
                 // Grammar character is not epsilon -> it is not epsilon adposition.
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, Attributes.U),
-                RightRule = MorphemeRule.A_Lexeme,
                 LeftRule = MorphemeRule.A_Lexeme,
+                RightRule = MorphemeRule.A_Lexeme,
             };
             Assert.IsFalse(pattern.IsEpsilonAdPosition());
 
@@ -82,9 +82,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
             pattern = new Pattern("A-O")
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.O_Lexeme,
                 // It is not epsilon adposition.
                 LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.O_Lexeme,
             };
             Assert.IsFalse(pattern.IsEpsilonAdPosition());
         }

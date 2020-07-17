@@ -14,7 +14,7 @@ namespace Krino.GretaTest
             new Morpheme("as", Attributes.U.Lexeme.Conjunction),
             new Morpheme("climate", Attributes.O.Lexeme.Noun),
             new Morpheme("bad", Attributes.A.Lexeme.Adjective.Attributive),
-            new Morpheme("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past),
+            new Morpheme("been", Attributes.I.Lexeme.Verb.Sememe.Tense.Past | Attributes.I.Lexeme.Verb.PastParticiple),
             new Morpheme("eleven", Attributes.A.Lexeme.Numeral.Cardinal),
             new Morpheme("emergency", Attributes.O.Lexeme.Noun),
             new Morpheme("end", Attributes.I.Lexeme.Verb.Monovalent),

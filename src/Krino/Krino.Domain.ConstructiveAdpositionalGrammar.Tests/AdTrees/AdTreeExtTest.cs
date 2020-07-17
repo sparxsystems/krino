@@ -453,8 +453,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             adTree = new AdTree(new Morpheme(".", Attributes.U.NonLexeme), new Pattern("")
             {
                 MorphemeRule = MorphemeRule.U_NonLexeme,
-                LeftRule = MorphemeRule.Anything,
                 RightRule = MorphemeRule.Anything,
+                LeftRule = MorphemeRule.Anything,
             });
             Assert.IsTrue(adTree.IsCorrect());
         }

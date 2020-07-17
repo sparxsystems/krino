@@ -12,8 +12,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
         public VerbAttributes(EnumGroupBase parent) : base(parent)
         {
             Modal = new EnumValue(this);
+            Regular = new EnumValue(this);
+            Irregular = new EnumValue(this);
             Unergative = new EnumValue(this);
             Unaccusative = new EnumValue(this);
+            PastParticiple = new EnumValue(this);
             Avalent = new EnumValue(this);
             Monovalent = new EnumValue(this);
             Bivalent = new EnumValue(this);
@@ -29,6 +32,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
         public EnumValue Modal { get; }
 
         /// <summary>
+        /// Regular verb.
+        /// </summary>
+        public EnumValue Regular { get; }
+
+        /// <summary>
+        /// Irregular verb.
+        /// </summary>
+        public EnumValue Irregular { get; }
+
+        /// <summary>
         /// If stative does the verbant.
         /// </summary>
         public EnumValue Unergative { get; }
@@ -37,6 +50,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
         /// Verbant happens to the actant (stative).
         /// </summary>
         public EnumValue Unaccusative { get; }
+
+        /// <summary>
+        /// The form of a verb, typically ending in -ed in English, which is used in forming perfect and passive tenses and sometimes as an adjective.
+        /// (Third form of the verb.)
+        /// </summary>
+        public EnumValue PastParticiple { get; }
 
         /// <summary>
         /// Valency 0.

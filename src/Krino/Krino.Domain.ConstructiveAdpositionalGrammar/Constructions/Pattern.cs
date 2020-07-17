@@ -41,39 +41,55 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             => new Pattern(patternName)
             {
                 MorphemeRule = MorphemeRule.Is("", morphemeAttributes),
-                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes, notRightAttributes),
                 LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, leftAttributes, notLeftAttributes),
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes, notRightAttributes),
+            };
+
+        public static Pattern Transference(string patternName, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
+            => new Pattern(patternName)
+            {
+                MorphemeRule = MorphemeRule.Is("", morphemeAttributes),
+                LeftRule = leftRule,
+                RightRule = rightRule,
             };
 
         public static Pattern PrimitiveTransference(string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = MorphemeRule.Is("", morphemeAttributes),
-                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes).SetOrder(1),
                 LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes).SetOrder(1),
             };
 
         public static Pattern EpsilonAdPosition(string patternName, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
                 LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
+            };
+
+        public static Pattern EpsilonAdPosition(string patternName, MorphemeRule leftRule, MorphemeRule rightRule)
+            => new Pattern(patternName)
+            {
+                MorphemeRule = MorphemeRule.Epsilon,
+                LeftRule = leftRule,
+                RightRule = rightRule,
             };
 
         public static Pattern MorphematicAdPosition(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = MorphemeRule.Is(MorphRuleMaker.Something, morphemeAttributes),
-                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
                 LeftRule = MorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
+                RightRule = MorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
             };
 
         private static Pattern On_I(string patternName, int valencyPosition) => new Pattern(patternName)
         {
             MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(valencyPosition),
-            RightRule = MorphemeRule.I_Lexeme,
             LeftRule = MorphemeRule.O_Lexeme,
+            RightRule = MorphemeRule.I_Lexeme,
         };
 
 
