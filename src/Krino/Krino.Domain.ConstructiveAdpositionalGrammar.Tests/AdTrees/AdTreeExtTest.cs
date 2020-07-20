@@ -256,6 +256,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
+        public void CanAttachToLeft_MorphemicAdPosition()
+        {
+            IAdTree adTree = new AdTree(new Morpheme("", Attributes.U.Lexeme.Conjunction),
+                 Pattern.MorphematicAdPosition("O-U-O", Attributes.U.Lexeme.Conjunction, Attributes.O.Lexeme, Attributes.O.Lexeme)
+            );
+            IAdTree adTreeElement = new AdTree(new Morpheme("car", Attributes.O.Lexeme), new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme });
+            Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
+
+
+            adTree = new AdTree(new Morpheme("and", Attributes.U.Lexeme.Conjunction),
+                 Pattern.MorphematicAdPosition("O-U-O", Attributes.U.Lexeme.Conjunction, Attributes.O.Lexeme, Attributes.O.Lexeme)
+            )
+            {
+                Right = new AdTree(new Morpheme("car", Attributes.O.Lexeme), new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme })
+            };
+            adTreeElement = new AdTree(new Morpheme("bike", Attributes.O.Lexeme), new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme });
+            Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement));
+
+
+            // Note: the adposition morpheme is not set therefore it should not be allowsed to attach the second child.
+            adTree = new AdTree(new Morpheme("", Attributes.U.Lexeme.Conjunction),
+                 Pattern.MorphematicAdPosition("O-U-O", Attributes.U.Lexeme.Conjunction, Attributes.O.Lexeme, Attributes.O.Lexeme)
+            )
+            {
+                Right = new AdTree(new Morpheme("car", Attributes.O.Lexeme), new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme })
+            };
+            adTreeElement = new AdTree(new Morpheme("bike", Attributes.O.Lexeme), new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme });
+            Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement));
+        }
+
+        [Test]
         public void CanAttachToLeft_Inheritance()
         {
             IAdTree adTree = new AdTree(Morpheme.Epsilon,

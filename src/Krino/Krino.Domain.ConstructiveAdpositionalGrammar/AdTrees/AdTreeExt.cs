@@ -154,6 +154,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             // If the rule allows to attach and the order of attaching is correct.
             if (!rule.Equals(MorphemeRule.Nothing) && IsOrderOfAttachingCorrect(adTree, attachPosition))
             {
+                // If the adtree where to attach is morphematic then it is not possible to attach the second child until the morpheme is set.
+                if (adTree.Pattern.IsMorphematicAdPosition() && (adTree.Right != null || adTree.Left != null) && string.IsNullOrEmpty(adTree.Morpheme.Morph))
+                {
+                    return false;
+                }
+
                 IAdTree morphematicAdTree = null;
 
                 // If the adTreeToAttach is a morpheme or a transference.
