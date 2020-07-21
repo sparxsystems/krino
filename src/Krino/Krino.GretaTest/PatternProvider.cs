@@ -60,7 +60,9 @@ namespace Krino.GretaTest
                 .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 
             Pattern.EpsilonAdPosition("O+-O", Attributes.O.NonLexeme.Suffix, Attributes.O.Lexeme)
-                .SetRightFirst(),
+                .SetRightFirst()
+                .SetInheritanceForLeft(InheritanceRuleMaker.Nothing)
+                .SetInheritanceForRight(InheritanceRuleMaker.Epsilon),
 
             //Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb)
             //    .SetLeftFirst()
