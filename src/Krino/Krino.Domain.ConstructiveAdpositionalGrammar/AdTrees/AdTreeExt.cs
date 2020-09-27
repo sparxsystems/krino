@@ -164,7 +164,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                 // If the adTreeToAttach is a morpheme or a transference.
                 if (adTreeToAttach.Pattern.IsMorpheme() ||
-                    adTreeToAttach.Pattern.IsPrimitiveTransference() ||
+                    adTreeToAttach.Pattern.IsGrammarCharacterTransference() ||
                     adTreeToAttach.Pattern.IsTransference())
                 {
                     morphematicAdTree = adTreeToAttach;
@@ -249,7 +249,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     Morpheme morphemeToEvaluate;
 
-                    if (morphematicAdTree.Pattern.IsPrimitiveTransference())
+                    if (morphematicAdTree.Pattern.IsGrammarCharacterTransference())
                     {
                         morphemeToEvaluate = new Morpheme(morphematicAdTree.Right.Morpheme.Morph, morphematicAdTree.Morpheme.Attributes);
                     }

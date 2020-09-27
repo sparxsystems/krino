@@ -195,7 +195,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Constructions
             return false;
         }
 
-        public bool IsPrimitiveTransference()
+        public bool IsGrammarCharacterTransference()
         {
             // AdPosition
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&

@@ -1,6 +1,7 @@
 ﻿using Krino.Vertical.Utils.Strings;
 using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
 
 namespace Krino.Vertical.Utils.Collections
@@ -41,6 +42,61 @@ namespace Krino.Vertical.Utils.Collections
                 if (!shallContinue)
                 {
                     break;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the sequence has exactly one item.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static bool IsSingle<T>(this IEnumerable<T> source)
+        {
+            bool aResult = source.Take(2).Count() == 1;
+            return aResult;
+        }
+
+        /// <summary>
+        /// Returns variation of possible sequences.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <returns></returns>
+        public static IEnumerable<IEnumerable<T>> GetVariations<T>(this IEnumerable<IEnumerable<T>> source)
+        {
+            List<IEnumerator<T>> enumerators = source.Select(x =>
+            {
+                IEnumerator<T> enumerator = x.GetEnumerator();
+
+                // Set the enumerator to the first item.
+                if (!enumerator.MoveNext())
+                {
+                    throw new InvalidEnumArgumentException("The sequences inside the source cannot be empty.");
+                }
+                return enumerator;
+            }).ToList();
+
+            bool isCompleted = false;
+            while (!isCompleted)
+            {
+                IEnumerable<T> variation = enumerators.Select(x => x.Current);
+                yield return variation;
+
+                // Try to set enumerators to represent the next variation.
+                isCompleted = true;
+                foreach (IEnumerator<T> enumerator in enumerators)
+                {
+                    if (enumerator.MoveNext())
+                    {
+                        isCompleted = false;
+                        break;
+                    }
+
+                    // Reset to the first item.
+                    enumerator.Reset();
+                    enumerator.MoveNext();
                 }
             }
         }

@@ -42,5 +42,60 @@ namespace Krino.Vertical.Utils_Tests.Collections
             result = l.TakeUntil(x => x < 3).ToList();
             Assert.AreEqual(0, result.Count);
         }
+
+        [Test]
+        public void GetVariations()
+        {
+            List<List<int>> source = new List<List<int>>()
+            {
+                new List<int>() {1, 2},
+                new List<int>() {2, 21},
+                new List<int>() {3, 31},
+            };
+
+            List<List<int>> variations = source.GetVariations().Select(x => x.ToList()).ToList();
+
+            Assert.AreEqual(8, variations.Count());
+
+            Assert.AreEqual(1, variations[0][0]);
+            Assert.AreEqual(2, variations[0][1]);
+            Assert.AreEqual(3, variations[0][2]);
+
+            Assert.AreEqual(2, variations[1][0]);
+            Assert.AreEqual(2, variations[1][1]);
+            Assert.AreEqual(3, variations[1][2]);
+
+            Assert.AreEqual(1, variations[2][0]);
+            Assert.AreEqual(21, variations[2][1]);
+            Assert.AreEqual(3, variations[2][2]);
+
+            Assert.AreEqual(2, variations[3][0]);
+            Assert.AreEqual(21, variations[3][1]);
+            Assert.AreEqual(3, variations[3][2]);
+
+            Assert.AreEqual(1, variations[4][0]);
+            Assert.AreEqual(2, variations[4][1]);
+            Assert.AreEqual(31, variations[4][2]);
+
+            Assert.AreEqual(2, variations[5][0]);
+            Assert.AreEqual(2, variations[5][1]);
+            Assert.AreEqual(31, variations[5][2]);
+
+            Assert.AreEqual(1, variations[6][0]);
+            Assert.AreEqual(21, variations[6][1]);
+            Assert.AreEqual(31, variations[6][2]);
+
+            Assert.AreEqual(2, variations[7][0]);
+            Assert.AreEqual(21, variations[7][1]);
+            Assert.AreEqual(31, variations[7][2]);
+        }
+
+        [Test]
+        public void IsSingle()
+        {
+            Assert.IsFalse("".IsSingle());
+            Assert.IsTrue("a".IsSingle());
+            Assert.IsFalse("ab".IsSingle());
+        }
     }
 }

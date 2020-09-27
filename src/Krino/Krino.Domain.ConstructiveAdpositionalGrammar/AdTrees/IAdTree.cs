@@ -81,7 +81,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <remarks>
         /// If the governor does not exist then it returns null.
-        /// If this is the governer then it returns the governor of this governor.
         /// </remarks>
         /// <returns></returns>
         IAdTree GetGovernor();

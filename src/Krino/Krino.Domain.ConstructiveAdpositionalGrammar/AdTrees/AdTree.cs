@@ -195,7 +195,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 bool result = IsOnRight &&
                               Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
                               Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
-                              (Pattern.IsMorpheme() || Pattern.IsPrimitiveTransference());
+                              (Pattern.IsMorpheme() || Pattern.IsGrammarCharacterTransference());
                 return result;
             }
         }

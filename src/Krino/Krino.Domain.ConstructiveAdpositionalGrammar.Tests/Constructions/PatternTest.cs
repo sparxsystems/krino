@@ -43,7 +43,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
                 LeftRule = MorphemeRule.Nothing,
                 RightRule = MorphemeRule.O_Lexeme,
             };
-            Assert.IsTrue(pattern.IsPrimitiveTransference());
+            Assert.IsTrue(pattern.IsGrammarCharacterTransference());
 
             pattern = new Pattern()
             {
@@ -51,7 +51,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
                 LeftRule = MorphemeRule.Is("s", Attributes.A.NonLexeme.Prefix),
                 RightRule = MorphemeRule.O_Lexeme,
             };
-            Assert.IsFalse(pattern.IsPrimitiveTransference());
+            Assert.IsFalse(pattern.IsGrammarCharacterTransference());
 
             pattern = new Pattern()
             {
@@ -59,7 +59,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions
                 LeftRule = MorphemeRule.A_Lexeme,
                 RightRule = MorphemeRule.O_Lexeme,
             };
-            Assert.IsFalse(pattern.IsPrimitiveTransference());
+            Assert.IsFalse(pattern.IsGrammarCharacterTransference());
         }
 
         [Test]

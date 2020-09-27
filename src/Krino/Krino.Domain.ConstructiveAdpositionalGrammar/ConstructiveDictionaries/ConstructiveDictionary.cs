@@ -73,12 +73,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             return result ?? Enumerable.Empty<Morpheme>();
         }
 
-        public IEnumerable<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance)
+        public IReadOnlyList<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance)
         {
-            IEnumerable<IReadOnlyList<Morpheme>> result = FindAllMorphemeSequences(word, maxMorphDistance, new List<Morpheme>())
+            IReadOnlyList<IReadOnlyList<Morpheme>> result = FindAllMorphemeSequences(word, maxMorphDistance, new List<Morpheme>())
                 // Note: as an input parameter there is the list which is filled during the iteration.
                 //       Therefore it must be iterated in once - so it must be converteed to the list.
                 .ToList();
+            return result;
+        }
+
+        public IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> DecomposePhrase(IEnumerable<string> phrase, int maxMorphDistance)
+        {
+            List<IReadOnlyList<IReadOnlyList<Morpheme>>> result = new List<IReadOnlyList<IReadOnlyList<Morpheme>>>();
+
+            // Go via each word.
+            foreach (string word in phrase)
+            {
+                IReadOnlyList<IReadOnlyList<Morpheme>> wordPossibilities = DecomposeWord(word, maxMorphDistance);
+                result.Add(wordPossibilities);
+            }
+
             return result;
         }
 
@@ -86,15 +100,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             IEnumerable<Pattern> result = Patterns
                 .Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                            !x.IsPrimitiveTransference() &&
+                            !x.IsGrammarCharacterTransference() &&
                             x.MorphemeRule.Evaluate(morpheme));
             return result;
         }
 
-        public IEnumerable<Pattern> FindPrimitiveTransferencePatterns(Morpheme morpheme)
+        public IEnumerable<Pattern> FindGrammarCharacterTransferencePatterns(Morpheme morpheme)
         {
             IEnumerable<Pattern> result = Patterns
-                .Where(x => x.IsPrimitiveTransference() && x.RightRule.Evaluate(morpheme));
+                .Where(x => x.IsGrammarCharacterTransference() && x.RightRule.Evaluate(morpheme));
 
             return result;
         }
@@ -119,43 +133,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         private void InitializePatternGraph()
         {
+            // Defines how patterns connect grammar characters.
             PatternGraph = new DirectedGraph<GrammarCharacter, Pattern>();
             PatternGraph.AddVertices(GrammarCharacterExt.GetValues());
 
             foreach (Pattern pattern in Patterns)
             {
-                TryToAddEdges(PatternGraph, pattern.LeftRule, pattern.RightRule, pattern);
-                //TryToAddEdges(PatternGraph, pattern.MorphemeRule, pattern.RightRule, pattern);
-                //TryToAddEdges(PatternGraph, pattern.MorphemeRule, pattern.LeftRule, pattern);
+                // If the pattern connects two grammar characters.
+                bool isEdge = pattern.LeftRule.GrammarCharacter != GrammarCharacter.e &&
+                    pattern.RightRule.GrammarCharacter != GrammarCharacter.e;
+
+                if (isEdge)
+                {
+                    PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter, pattern.RightRule.GrammarCharacter, pattern);
+
+                    if (pattern.LeftRule.GrammarCharacter != pattern.RightRule.GrammarCharacter)
+                    {
+                        PatternGraph.AddEdge(pattern.RightRule.GrammarCharacter, pattern.LeftRule.GrammarCharacter, pattern);
+                    }
+                }
             }
-        }
-
-        private void TryToAddEdges(IDirectedGraph<GrammarCharacter, Pattern> graph, MorphemeRule rule1, MorphemeRule rule2, Pattern pattern)
-        {
-            bool isAlreadyCreated = false;
-
-            if (IsEdge(rule1, rule2))
-            {
-                graph.AddEdge(rule1.GrammarCharacter, rule2.GrammarCharacter, pattern);
-                isAlreadyCreated = true;
-            }
-
-            if ((rule1.GrammarCharacter != rule2.GrammarCharacter || rule1.GrammarCharacter == rule2.GrammarCharacter && !isAlreadyCreated) &&
-                IsEdge(rule2, rule1))
-            {
-                graph.AddEdge(rule2.GrammarCharacter, rule1.GrammarCharacter, pattern);
-            }
-        }
-
-        private bool IsEdge(MorphemeRule from, MorphemeRule to)
-        {
-            if (from.GrammarCharacter != GrammarCharacter.e &&
-                to.GrammarCharacter != GrammarCharacter.e)
-            {
-                return true;
-            }
-
-            return false;
         }
 
 

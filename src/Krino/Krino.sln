@@ -19,7 +19,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAdpositionalGrammar.Tests", "Krino.Domain.ConstructiveAdpositionalGrammar.Tests\Krino.Domain.ConstructiveAdpositionalGrammar.Tests.csproj", "{33450832-2032-4B58-B523-E456C985C4B0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.GretaTest", "Krino.GretaTest\Krino.GretaTest.csproj", "{11462B2C-56BE-4021-84B3-CFC61F7F4EFA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.GretaTest", "Krino.GretaTest\Krino.GretaTest.csproj", "{11462B2C-56BE-4021-84B3-CFC61F7F4EFA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

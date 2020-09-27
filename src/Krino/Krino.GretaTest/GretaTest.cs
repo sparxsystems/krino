@@ -11,6 +11,14 @@ namespace Krino.GretaTest
     [TestFixture]
     public class GretaTest
     {
+        [Test]
+        public void aa()
+        {
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary, "I will start with the good news".ToLower().Split(" "));
+            adTreeCreator.Create();
+        }
+
         // I have some good news and some bad news regarding the climate emergency.
         [Test]
         public void Sentence_1_1()

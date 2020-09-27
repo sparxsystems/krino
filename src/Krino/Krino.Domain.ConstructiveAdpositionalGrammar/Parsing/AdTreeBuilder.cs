@@ -45,6 +45,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myActiveAdTrees = adTrees;
         }
 
+        public void AddPhrase(IEnumerable<string> words)
+        {
+            IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> decomposedPhrase = myConstructiveDictionary.DecomposePhrase(words, 0);
+        }
+
         /// <summary>
         /// Appends a word.
         /// </summary>
@@ -191,7 +196,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         private IEnumerable<IAdTree> GetPrimitiveTransferences(IAdTree adTree)
         {
-            IEnumerable<Pattern> patterns = myConstructiveDictionary.FindPrimitiveTransferencePatterns(adTree.Morpheme);
+            IEnumerable<Pattern> patterns = myConstructiveDictionary.FindGrammarCharacterTransferencePatterns(adTree.Morpheme);
             foreach (Pattern pattern in patterns)
             {
                 if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)

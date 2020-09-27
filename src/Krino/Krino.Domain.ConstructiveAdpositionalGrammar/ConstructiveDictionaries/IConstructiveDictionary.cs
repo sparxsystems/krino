@@ -27,30 +27,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         IEnumerable<Morpheme> FindNonLexemes(string morph);
 
         /// <summary>
-        /// Finds all possible combinations of morphemes for the given word.
+        /// Finds all possible combinations of morphemes for all words in the phrase.
+        /// </summary>
+        /// <param name="phrase"></param>
+        /// <param name="maxMorphDistance"></param>
+        /// <returns></returns>
+        IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> DecomposePhrase(IEnumerable<string> phrase, int maxMorphDistance);
+
+        /// <summary>
+        /// Finds all possible combinations of morphemes for the word.
         /// </summary>
         /// <param name="word"></param>
         /// <param name="maxMorphDistance">The level of similarity. If 0 then the exact morph is searched.</param>
         /// <returns></returns>
-        IEnumerable<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance);
+        IReadOnlyList<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance);
 
         /// <summary>
-        /// Finds patterns matching the lexeme.
+        /// Finds patterns matching the morpheme (lexeme or non-lexeme).
         /// </summary>
-        /// <param name="lexeme"></param>
+        /// <param name="morpheme"></param>
         /// <returns></returns>
-        IEnumerable<Pattern> FindPatterns(Morpheme lexeme);
+        IEnumerable<Pattern> FindPatterns(Morpheme morpheme);
 
         /// <summary>
-        /// Finds primitive transference patterns for the morpheme.
+        /// Finds transference patterns which change the grammar character of the morpheme.
         /// </summary>
         /// <remarks>
-        /// Primitive transference patterns are those which have the morpheme rule differnet from epsilon
         /// E.g. it changes stative to adjunctive (A>O).
         /// </remarks>
         /// <param name="morpheme"></param>
         /// <returns></returns>
-        IEnumerable<Pattern> FindPrimitiveTransferencePatterns(Morpheme morpheme);
+        IEnumerable<Pattern> FindGrammarCharacterTransferencePatterns(Morpheme morpheme);
 
 
         /// <summary>
