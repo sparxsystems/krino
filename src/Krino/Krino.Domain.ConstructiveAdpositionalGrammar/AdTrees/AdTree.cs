@@ -265,7 +265,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public string Phrase => string.Join(" ", this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
 
-
         public bool Equals(IAdTree other)
         {
             // Note: to avoid the recursion use the enumeration.
@@ -317,7 +316,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         public IEnumerator<IAdTree> GetEnumerator()
         {
             // Note: using the stack has a better performance than a recursive call.
-            //       Also there is not a danger of of the stack overflow.
+            //       Also there is not a danger of the stack overflow.
             // Note: the enumeration order matches the adtree order.
             Stack<IAdTree> stack = new Stack<IAdTree>();
             stack.Push(this);

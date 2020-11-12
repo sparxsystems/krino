@@ -12,11 +12,27 @@ namespace Krino.GretaTest
     public class GretaTest
     {
         [Test]
-        public void aa()
+        public void Sentence_1_1_Creator()
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
-            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary, "I will start with the good news".ToLower().Split(" "));
-            adTreeCreator.Create();
+            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
+            List<IAdTree> results = adTreeCreator.Create("I have some good news and some bad news regarding the climate emergency .".ToLower().Split(" "));
+
+            Assert.AreEqual(2, results.Count);
+            Assert.AreEqual("i", results[0].Right.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("have", results[0].Right.Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("some", results[0].Right.Right.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("good", results[0].Right.Right.Left.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("news", results[0].Right.Right.Left.Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("and", results[0].Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("some", results[0].Right.Right.Left.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("bad", results[0].Right.Right.Left.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("news", results[0].Right.Right.Left.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("regarding", results[0].Right.Morpheme.Morph);
+            Assert.AreEqual("the", results[0].Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("climate", results[0].Right.Left.Right.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("emergency", results[0].Right.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual(".", results[0].Morpheme.Morph);
         }
 
         // I have some good news and some bad news regarding the climate emergency.

@@ -38,12 +38,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         public IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; private set; }
 
 
-        public IEnumerable<Morpheme> FindLexemes(string morph, int maxDistance)
+        public IEnumerable<Morpheme> FindLexemes(string word, int maxDistance)
         {
             IEnumerable<Morpheme> result = Enumerable.Empty<Morpheme>();
 
             // Try to find exact lexemes.
-            if (myLexemes.TryGetValues(morph, out ReadOnlySet<Morpheme> lexemes))
+            if (myLexemes.TryGetValues(word, out ReadOnlySet<Morpheme> lexemes))
             {
                 result = lexemes;
             }
@@ -51,11 +51,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             if (maxDistance > 0)
             {
                 // Also try to find lexemes which have similar morph.
-                IEnumerable<string> similarMorphs = myLexemes.Keys.FindSimilar(morph, maxDistance);
+                IEnumerable<string> similarMorphs = myLexemes.Keys.FindSimilar(word, maxDistance);
 
                 if (lexemes != null)
                 {
-                    // Note: exclude morphemes already returned among exact lexemes.
+                    // Note: skip morphemes already returned among exact lexemes.
                     result = result.Concat(similarMorphs.SelectMany(x => myLexemes[x].Where(y => !lexemes.Contains(y))));
                 }
                 else
@@ -75,10 +75,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IReadOnlyList<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance)
         {
-            IReadOnlyList<IReadOnlyList<Morpheme>> result = FindAllMorphemeSequences(word, maxMorphDistance, new List<Morpheme>())
+            List<IReadOnlyList<Morpheme>> wordConstructions = FindPossibleWordConstructions(word, maxMorphDistance, new List<Morpheme>())
                 // Note: as an input parameter there is the list which is filled during the iteration.
-                //       Therefore it must be iterated in once - so it must be converteed to the list.
+                //       Therefore it must be iterated in once - so it must be converted to the list.
                 .ToList();
+
+            List<Morpheme> nonLexemes = FindNonLexemes(word).ToList();
+
+            List<IReadOnlyList<Morpheme>> result = new List<IReadOnlyList<Morpheme>>();
+            if (wordConstructions.Any())
+            {
+                result.AddRange(wordConstructions);
+            }
+            if (nonLexemes.Any())
+            {
+                result.Add(nonLexemes);
+            }
+
             return result;
         }
 
@@ -89,8 +102,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             // Go via each word.
             foreach (string word in phrase)
             {
-                IReadOnlyList<IReadOnlyList<Morpheme>> wordPossibilities = DecomposeWord(word, maxMorphDistance);
-                result.Add(wordPossibilities);
+                IReadOnlyList<IReadOnlyList<Morpheme>> possibleWordConstructions = DecomposeWord(word, maxMorphDistance);
+
+                if (possibleWordConstructions.Any())
+                {
+                    result.Add(possibleWordConstructions);
+                }
             }
 
             return result;
@@ -156,7 +173,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         }
 
 
-        private IEnumerable<IReadOnlyList<Morpheme>> FindAllMorphemeSequences(
+        private IEnumerable<IReadOnlyList<Morpheme>> FindPossibleWordConstructions(
             string word,
             int morphDistance,
             List<Morpheme> localSequence)
@@ -192,7 +209,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                         localSequence.Add(prefix);
 
                         // Try if there are sub-prefixes.
-                        IEnumerable<IReadOnlyList<Morpheme>> sequences = FindAllMorphemeSequences(newWord, morphDistance, localSequence);
+                        IEnumerable<IReadOnlyList<Morpheme>> sequences = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
                         foreach (IReadOnlyList<Morpheme> sequence in sequences)
                         {
                             yield return sequence.ToList();

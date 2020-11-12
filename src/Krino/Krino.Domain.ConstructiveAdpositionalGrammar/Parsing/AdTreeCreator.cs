@@ -6,52 +6,44 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Graphs;
 using Krino.Vertical.Utils.Rules;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
-using System.Runtime.InteropServices;
-using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
     public class AdTreeCreator
     {
         private IConstructiveDictionary myConstructiveDictionary;
-        private IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> myDecomposedPhrase;
 
-        public AdTreeCreator(IConstructiveDictionary constructiveDictionary, IEnumerable<string> words)
+        public AdTreeCreator(IConstructiveDictionary constructiveDictionary)
         {
             myConstructiveDictionary = constructiveDictionary;
-            myDecomposedPhrase = myConstructiveDictionary.DecomposePhrase(words, 0);
         }
 
-        public IAdTree Create()
+        public List<IAdTree> Create(params string[] phrase)
         {
-            List<List<IAdTree>> wordsAdTrees = GetAllAdTreesForAllWords();
+            return Create((IEnumerable<string>)phrase);
+        }
+
+        public List<IAdTree> Create(IEnumerable<string> phrase)
+        {
+            IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> decomposedPhrase = myConstructiveDictionary.DecomposePhrase(phrase, 0);
+
+            List<List<IAdTree>> wordsAdTrees = GetAdTreesForEachWordConstructionOfEachWord(decomposedPhrase);
             List<List<IAdTree>> wordVariations = wordsAdTrees.GetVariations().Select(x => x.ToList()).ToList();
+
+            List<IAdTree> results = new List<IAdTree>();
 
             foreach (List<IAdTree> variation in wordVariations)
             {
-                List<IAdTree> results = ComposeAdTree(variation);
+                List<IAdTree> adTrees = ComposeAdTree(variation);
+
+                // Add only adtrees without errors.
+                results.AddRange(adTrees.Where(x => !x.GetNonconformities().Any()));
             }
 
-            return null;
-        }
-
-
-
-        private IEnumerable<IAdTree> GetAdTreesForMorpheme(Morpheme morpheme)
-        {
-            IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindPatterns(morpheme);
-
-            // Go via patterns matching the morpheme.
-            foreach (Pattern pattern in matchingPatterns)
-            {
-                // Create the adtree element from the morpheme and its pattern.
-                IAdTree newAdTree = new AdTree(morpheme, pattern);
-                yield return newAdTree;
-            }
+            return results;
         }
 
 
@@ -72,27 +64,29 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
         }
 
-        private List<List<IAdTree>> GetAllAdTreesForAllWords()
+        private List<List<IAdTree>> GetAdTreesForEachWordConstructionOfEachWord(IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> decomposedPhrase)
         {
-            // wordIdx, wordConstructionIdx, 
+            // AdTrees for each word construction of each word in the phrase.
             List<List<IAdTree>> result = new List<List<IAdTree>>();
 
 
             // Go via all words.
-            foreach (IReadOnlyList<IReadOnlyList<Morpheme>> possibleWordConstructions in myDecomposedPhrase)
+            foreach (IReadOnlyList<IReadOnlyList<Morpheme>> possibleWordConstructions in decomposedPhrase)
             {
-                List<IAdTree> particularWordAdTrees = new List<IAdTree>();
+                // The adtree for each word construction.
+                List<IAdTree> possibleWordAdTrees = new List<IAdTree>();
 
                 // Go via all possible word constructions (all combinations of prefixes, lexeme, suffixes).
                 foreach (IReadOnlyList<Morpheme> wordConstruction in possibleWordConstructions)
                 {
-                    List<List<IAdTree>> particularWordConstruction = new List<List<IAdTree>>();
+                    // List of adtrees for each word construction.
+                    List<List<IAdTree>> possibleWordConstructionAdTrees = new List<List<IAdTree>>();
 
-                    // Go via the particular sequence of prefixes, lexeme, suffixes the word is composed of.
-                    foreach (Morpheme morphemeItem in wordConstruction)
+                    // Go via the particular sequence of prefixes, lexemeand suffixes the word is composed of.
+                    foreach (Morpheme morpheme in wordConstruction)
                     {
-                        // Get all possible adtrees for the morpheme item.
-                        IEnumerable<IAdTree> morphemeAdTrees = GetAdTreesForMorpheme(morphemeItem);
+                        // Get all possible adtrees for the morpheme.
+                        IEnumerable<IAdTree> morphemeAdTrees = GetAdTreesForMorpheme(morpheme);
 
                         // Try to extend possible addtrees by applying grammar character transferences.
                         //List<IAdTree> morphemeAndTransferences = morphemeAdTrees
@@ -101,42 +95,63 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                         if (morphemeAdTrees.Any())
                         {
-                            particularWordConstruction.Add(morphemeAdTrees.ToList());
+                            possibleWordConstructionAdTrees.Add(morphemeAdTrees.ToList());
                         }
                     }
 
-                    if (particularWordConstruction.Any())
+                    if (possibleWordConstructionAdTrees.Any())
                     {
-                        IEnumerable<IEnumerable<IAdTree>> wordConstructionVariations = particularWordConstruction.GetVariations();
+                        IEnumerable<IEnumerable<IAdTree>> wordAdTreeVariations = possibleWordConstructionAdTrees.GetVariations();
 
 
-                        foreach (IEnumerable<IAdTree> wordVariation in wordConstructionVariations)
+                        foreach (IEnumerable<IAdTree> wordAdTreeVariation in wordAdTreeVariations)
                         {
-                            List<IAdTree> wordAdtrees = ComposeAdTree(wordVariation);
+                            List<IAdTree> wordAdTrees = ComposeAdTree(wordAdTreeVariation);
 
                             // Try to extend possible addtrees by applying grammar character transferences.
-                            List<IAdTree> wordAdTreesAndTransferences = wordAdtrees
+                            List<IAdTree> wordAdTreesAndTransferences = wordAdTrees
                                 .SelectMany(x => new IAdTree[] { x }.Concat(GetGrammarCharacterTransferences(x)))
                                 .ToList();
 
-                            particularWordAdTrees.AddRange(wordAdTreesAndTransferences);
+                            if (wordAdTreesAndTransferences.Any())
+                            {
+                                possibleWordAdTrees.AddRange(wordAdTreesAndTransferences);
+                            }
                         }
                     }
                 }
 
-                result.Add(particularWordAdTrees);
+                if (possibleWordAdTrees.Any())
+                {
+                    result.Add(possibleWordAdTrees);
+                }
             }
 
             return result;
         }
 
+        private IEnumerable<IAdTree> GetAdTreesForMorpheme(Morpheme morpheme)
+        {
+            IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindPatterns(morpheme);
 
-        private List<IAdTree> ComposeAdTree(IEnumerable<IAdTree> source)
+            // Go via patterns matching the morpheme.
+            foreach (Pattern pattern in matchingPatterns)
+            {
+                // Create the adtree element from the morpheme and its pattern.
+                IAdTree newAdTree = new AdTree(morpheme, pattern);
+                yield return newAdTree;
+            }
+        }
+
+
+        private List<IAdTree> ComposeAdTree(IEnumerable<IAdTree> wordAdTrees)
         {
             List<IAdTree> activeAdTrees = new List<IAdTree>();
 
+            string signature = string.Join("", wordAdTrees.Select(x => x.Morpheme.GrammarCharacter));
+
             bool isFirst = true;
-            foreach (IAdTree adTree in source)
+            foreach (IAdTree adTree in wordAdTrees)
             {
                 if (isFirst)
                 {
@@ -148,7 +163,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     List<IAdTree> newListOfAdTrees = new List<IAdTree>();
                     foreach (IAdTree current in activeAdTrees)
                     {
-                        TryToAppend(current, adTree, newListOfAdTrees);
+                        TryToAppend(current, adTree, signature, newListOfAdTrees);
                     }
 
                     activeAdTrees = newListOfAdTrees;
@@ -159,10 +174,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 }
             }
 
-            return activeAdTrees;
+            return activeAdTrees.Select(x => x.Root).ToList();
         }
 
-        private void TryToAppend(IAdTree current, IAdTree appendee, List<IAdTree> results)
+        private void TryToAppend(IAdTree current, IAdTree appendee, string signature, List<IAdTree> results)
         {
             IAdTree placeToAppend = GetPlaceToAppend(current);
 

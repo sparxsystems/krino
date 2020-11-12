@@ -12,19 +12,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     public interface IConstructiveDictionary
     {
         /// <summary>
-        /// Finds all lexemes which have similar or exactly matching morph.
+        /// Finds all lexemes which have similar or exactly matching word.
         /// </summary>
-        /// <param name="morph"></param>
+        /// <param name="word">A word for which lexemes shall be found.</param>
         /// <param name="maxDistance">The level of similarity. If 0 then the exact morph is searched.</param>
         /// <returns></returns>
-        IEnumerable<Morpheme> FindLexemes(string morph, int maxDistance);
+        IEnumerable<Morpheme> FindLexemes(string word, int maxDistance);
 
         /// <summary>
-        /// Finds all non-lexemes matching the morph.
+        /// Finds all non-lexemes matching the provided word.
         /// </summary>
-        /// <param name="morph"></param>
+        /// <param name="word">A "word" for which lexemes shall be found.</param>
         /// <returns></returns>
-        IEnumerable<Morpheme> FindNonLexemes(string morph);
+        IEnumerable<Morpheme> FindNonLexemes(string word);
 
         /// <summary>
         /// Finds all possible combinations of morphemes for all words in the phrase.
