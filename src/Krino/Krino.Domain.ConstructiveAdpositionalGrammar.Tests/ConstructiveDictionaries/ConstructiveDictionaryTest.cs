@@ -105,33 +105,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
 
             // prefix 're'
-            List<IReadOnlyList<Morpheme>> result = dictionary.DecomposeWord("rewrite", 0).ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(2, result[0].Count);
-            Assert.AreEqual("re", result[0][0].Morph);
-            Assert.AreEqual("write", result[0][1].Morph);
+            var result = dictionary.DecomposeWord("rewrite", 0);
+            Assert.AreEqual(1, result.Compositions.Count);
+            Assert.AreEqual(2, result.Compositions[0].Morphemes.Count);
+            Assert.AreEqual("re", result.Compositions[0].Morphemes[0].Morph);
+            Assert.AreEqual("write", result.Compositions[0].Morphemes[1].Morph);
 
             // suffix 'er'
-            result = dictionary.DecomposeWord("reader", 0).ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(2, result[0].Count);
-            Assert.AreEqual("read", result[0][0].Morph);
-            Assert.AreEqual("er", result[0][1].Morph);
+            result = dictionary.DecomposeWord("reader", 0);
+            Assert.AreEqual(1, result.Compositions.Count);
+            Assert.AreEqual(2, result.Compositions[0].Morphemes.Count);
+            Assert.AreEqual("read", result.Compositions[0].Morphemes[0].Morph);
+            Assert.AreEqual("er", result.Compositions[0].Morphemes[1].Morph);
 
             // multiple prefixes and sufixes
-            result = dictionary.DecomposeWord("extrarereaderless", 0).ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual(5, result[0].Count);
-            Assert.AreEqual("extra", result[0][0].Morph);
-            Assert.AreEqual("re", result[0][1].Morph);
-            Assert.AreEqual("read", result[0][2].Morph);
-            Assert.AreEqual("er", result[0][3].Morph);
-            Assert.AreEqual("less", result[0][4].Morph);
+            result = dictionary.DecomposeWord("extrarereaderless", 0);
+            Assert.AreEqual(1, result.Compositions.Count);
+            Assert.AreEqual(5, result.Compositions[0].Morphemes.Count);
+            Assert.AreEqual("extra", result.Compositions[0].Morphemes[0].Morph);
+            Assert.AreEqual("re", result.Compositions[0].Morphemes[1].Morph);
+            Assert.AreEqual("read", result.Compositions[0].Morphemes[2].Morph);
+            Assert.AreEqual("er", result.Compositions[0].Morphemes[3].Morph);
+            Assert.AreEqual("less", result.Compositions[0].Morphemes[4].Morph);
 
 
             // 're' is the prefix but 'bla' is not a known lexeme.
-            result = dictionary.DecomposeWord("rebla", 0).ToList();
-            Assert.AreEqual(0, result.Count);
+            result = dictionary.DecomposeWord("rebla", 0);
+            Assert.AreEqual(0, result.Compositions.Count);
         }
 
         [Test]
@@ -145,17 +145,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
 
-            List<IReadOnlyList<Morpheme>> morphemeSequences = dictionary.DecomposeWord("writer", 1).ToList();
-            Assert.AreEqual(2, morphemeSequences.Count);
+            var morphemeSequences = dictionary.DecomposeWord("writer", 1);
+            Assert.AreEqual(2, morphemeSequences.Compositions.Count);
 
             // 'writer' is very similar to write so it will just return 'write'.
-            Assert.AreEqual(1, morphemeSequences[0].Count);
-            Assert.AreEqual("write", morphemeSequences[0][0].Morph);
+            Assert.AreEqual(1, morphemeSequences.Compositions[0].Morphemes.Count);
+            Assert.AreEqual("write", morphemeSequences.Compositions[0].Morphemes[0].Morph);
 
             // Then it shall also return the sequence with the recognized suffix.
-            Assert.AreEqual(2, morphemeSequences[1].Count);
-            Assert.AreEqual("write", morphemeSequences[1][0].Morph);
-            Assert.AreEqual("er", morphemeSequences[1][1].Morph);
+            Assert.AreEqual(2, morphemeSequences.Compositions[1].Morphemes.Count);
+            Assert.AreEqual("write", morphemeSequences.Compositions[1].Morphemes[0].Morph);
+            Assert.AreEqual("er", morphemeSequences.Compositions[1].Morphemes[1].Morph);
         }
 
     }

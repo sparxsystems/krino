@@ -61,22 +61,25 @@ namespace Krino.Vertical.Utils.Collections
         /// <summary>
         /// Returns variation of possible sequences.
         /// </summary>
+        /// <remarks>
+        /// E.g. if source = ( (1, 2), (10, 20) ) then result = ( (1, 2), (10, 2), (1, 20), (10, 20) ).
+        /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>
         /// <returns></returns>
         public static IEnumerable<IEnumerable<T>> GetVariations<T>(this IEnumerable<IEnumerable<T>> source)
         {
             List<IEnumerator<T>> enumerators = source.Select(x =>
-            {
-                IEnumerator<T> enumerator = x.GetEnumerator();
-
-                // Set the enumerator to the first item.
-                if (!enumerator.MoveNext())
                 {
-                    throw new InvalidEnumArgumentException("The sequences inside the source cannot be empty.");
-                }
-                return enumerator;
-            }).ToList();
+                    IEnumerator<T> enumerator = x.GetEnumerator();
+
+                    // Set the enumerator to the first item.
+                    if (!enumerator.MoveNext())
+                    {
+                        throw new InvalidEnumArgumentException("The sequences inside the source cannot be empty.");
+                    }
+                    return enumerator;
+                }).ToList();
 
             bool isCompleted = false;
             while (!isCompleted)

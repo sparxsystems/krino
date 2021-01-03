@@ -47,7 +47,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public void AddPhrase(IEnumerable<string> words)
         {
-            IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> decomposedPhrase = myConstructiveDictionary.DecomposePhrase(words, 0);
+            var decomposedPhrase = myConstructiveDictionary.DecomposePhrase(words, 0);
         }
 
         /// <summary>
@@ -64,9 +64,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             List<IAdTree> adTreesToAdd = new List<IAdTree>();
 
             // Decompose the word string to list of morpheme sequences (prefixes, lexeme, suffixes).
-            IEnumerable<IReadOnlyList<Morpheme>> morphemeSequences = myConstructiveDictionary.DecomposeWord(word, 0);
+            var morphemeSequences = myConstructiveDictionary.DecomposeWord(word, 0);
 
-            if (!morphemeSequences.Any())
+            if (!morphemeSequences.Compositions.Any())
             {
                 // The typo tolerance does not have a sense for very short words.
                 int morphDistance = word.Length < 4 ? 0 : maxMorphDistance;
@@ -76,11 +76,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
 
             // Go via sequences of morphemes.
-            foreach (IReadOnlyList<Morpheme> sequence in morphemeSequences)
+            foreach (var sequence in morphemeSequences.Compositions)
             {
                 bool isCancelled = false;
                 AdTreeBuilder localAdTreeBuilder = new AdTreeBuilder(myConstructiveDictionary);
-                foreach (Morpheme morpheme in sequence)
+                foreach (var morpheme in sequence.Morphemes)
                 {
                     if (!localAdTreeBuilder.AddMorpheme(morpheme))
                     {

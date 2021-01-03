@@ -6,6 +6,7 @@ using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
@@ -14,6 +15,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     /// </summary>
     public static class AdTreeExt
     {
+        /// <summary>
+        /// Returns the signature (sequence of grammar characters) for the sequence of adtree items.
+        /// </summary>
+        /// <param name="adTreeSequence"></param>
+        /// <returns></returns>
+        public static string GetSignature(this IEnumerable<IAdTree> adTreeSequence)
+        {
+            var result = new StringBuilder();
+
+            foreach (var item in adTreeSequence)
+            {
+                if (item.Morpheme.GrammarCharacter != GrammarCharacter.e && !string.IsNullOrEmpty(item.Morpheme.Morph))
+                {
+                    result.Append(item.Morpheme.GrammarCharacter);
+                }
+            }
+
+            return result.ToString();
+        }
+
+        /// <summary>
+        /// Returns the signature (sequence of grammar characters) for the adtree.
+        /// </summary>
+        /// <param name="adTreeSequence"></param>
+        /// <returns></returns>
+        public static string GetSignature(this IAdTree adTree) => GetSignature((IEnumerable<IAdTree>)adTree);
+
         /// <summary>
         /// Returns the sequence from the specified adtree to the root.
         /// </summary>

@@ -14,6 +14,48 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
     public class AdTreeExtTest
     {
         [Test]
+        public void GetSignature()
+        {
+            AdTree adTree = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.O2_I)
+            {
+                Right = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.O1_I.SetLeftFirst())
+                {
+                    Right = new AdTree(new Morpheme("read", Attributes.I), Pattern.Morpheme(Attributes.I)),
+                    Left = new AdTree(new Morpheme("I", Attributes.O), Pattern.Morpheme(Attributes.O)),
+                },
+                Left = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.EpsilonAdPosition("", Attributes.A, Attributes.O).SetLeftFirst())
+                {
+                    Right = new AdTree(new Morpheme("book", Attributes.O), Pattern.Morpheme(Attributes.O)),
+                    Left = new AdTree(new Morpheme("the", Attributes.A), Pattern.Morpheme(Attributes.A))
+                }
+            };
+
+            Assert.AreEqual("OIAO", adTree.GetSignature());
+        }
+
+        [Test]
+        public void GetSignature_NotFilled()
+        {
+            AdTree adTree = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.O2_I)
+            {
+                Right = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.O1_I.SetLeftFirst())
+                {
+                    Right = new AdTree(new Morpheme("read", Attributes.I), Pattern.Morpheme(Attributes.I)),
+                    Left = new AdTree(new Morpheme("I", Attributes.O), Pattern.Morpheme(Attributes.O)),
+                },
+                Left = new AdTree(new Morpheme("", Attributes.Epsilon), Pattern.EpsilonAdPosition("", Attributes.A, Attributes.O)
+                    .SetLeftFirst())
+                {
+                    // Note: O is not filled yet. The signature shall not contain it.
+                    Right = null,
+                    Left = new AdTree(new Morpheme("the", Attributes.A), Pattern.Morpheme(Attributes.A))
+                }
+            };
+
+            Assert.AreEqual("OIA", adTree.GetSignature());
+        }
+
+        [Test]
         public void GetSequenceToRoot()
         {
             AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern())

@@ -31,7 +31,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.O.Lexeme),
                 Pattern.Morpheme(Attributes.I.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
 
                 new Pattern(".")
                 {
@@ -70,7 +70,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 Pattern.Morpheme(Attributes.I.NonLexeme.Suffix),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
 
                 Pattern.EpsilonAdPosition("I>I+", Attributes.I.NonLexeme.Suffix, Attributes.I.Lexeme)
                     .SetRightFirst(),
@@ -105,7 +105,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 Pattern.Morpheme("O+", Attributes.O.NonLexeme.Suffix),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
                 Pattern.O2_I,
 
                 Pattern.Transference("I>O", Attributes.O.Lexeme, Attributes.O.NonLexeme.Suffix, Attributes.I.Lexeme)
@@ -142,7 +142,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.O.Lexeme),
                 Pattern.Morpheme(Attributes.I.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
 
                 Pattern.Morpheme("I+", Attributes.I.NonLexeme.Suffix),
 
@@ -247,7 +247,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.O.Lexeme),
                 Pattern.Morpheme(Attributes.I.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
 
                 Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb.Modal, Attributes.I.Lexeme)
                     .SetLeftFirst()
@@ -282,7 +282,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.I.Lexeme),
                 Pattern.Morpheme(Attributes.E.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
 
                 Pattern.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb.Modal, Attributes.I.Lexeme)
                     .SetLeftFirst()
@@ -332,7 +332,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.I.Lexeme),
                 Pattern.Morpheme(Attributes.A.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
                 Pattern.O2_I,
 
                 Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme),
@@ -370,7 +370,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.I.Lexeme),
                 Pattern.Morpheme(Attributes.A.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
 
                 Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
                     .SetLeftFirst()
@@ -418,7 +418,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.I.Lexeme),
                 Pattern.Morpheme(Attributes.A.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
                 Pattern.O2_I,
 
                 Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
@@ -467,7 +467,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.Morpheme(Attributes.I.Lexeme),
                 Pattern.Morpheme(Attributes.A.Lexeme),
 
-                Pattern.O1_I,
+                Pattern.O1_I.SetLeftFirst(),
                 Pattern.O2_I,
 
                 Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)

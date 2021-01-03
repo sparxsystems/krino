@@ -9,9 +9,13 @@ using Krino.Vertical.Utils.Rules;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
+    /// <summary>
+    /// Functionality to create AdTree.
+    /// </summary>
     public class AdTreeCreator
     {
         private IConstructiveDictionary myConstructiveDictionary;
@@ -21,26 +25,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myConstructiveDictionary = constructiveDictionary;
         }
 
+        /// <summary>
+        /// Creates AdTree from the provided phrase.
+        /// </summary>
+        /// <param name="phrase"></param>
+        /// <returns></returns>
         public List<IAdTree> Create(params string[] phrase)
         {
             return Create((IEnumerable<string>)phrase);
         }
 
+        /// <summary>
+        /// Creates AdTree from the provided phrase.
+        /// </summary>
+        /// <param name="phrase"></param>
+        /// <returns></returns>
         public List<IAdTree> Create(IEnumerable<string> phrase)
         {
-            IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> decomposedPhrase = myConstructiveDictionary.DecomposePhrase(phrase, 0);
-
-            List<List<IAdTree>> wordsAdTrees = GetAdTreesForEachWordConstructionOfEachWord(decomposedPhrase);
-            List<List<IAdTree>> wordVariations = wordsAdTrees.GetVariations().Select(x => x.ToList()).ToList();
-
             List<IAdTree> results = new List<IAdTree>();
 
-            foreach (List<IAdTree> variation in wordVariations)
+            var phraseDecomposition = myConstructiveDictionary.DecomposePhrase(phrase, 0);
+
+            List<WordAdTrees> wordsAdTrees = GetWordAdTrees(phraseDecomposition);
+            List<List<IAdTree>> wordsVariations = wordsAdTrees.Select(x => x.AdTrees).GetVariations().Select(x => x.ToList()).ToList();
+
+            foreach (List<IAdTree> wordsVariation in wordsVariations)
             {
-                List<IAdTree> adTrees = ComposeAdTree(variation);
+                List<IAdTree> phraseAdTree = ComposeAdTree(wordsVariation);
 
                 // Add only adtrees without errors.
-                results.AddRange(adTrees.Where(x => !x.GetNonconformities().Any()));
+                results.AddRange(phraseAdTree.Where(x => !x.GetNonconformities().Any()));
             }
 
             return results;
@@ -64,45 +78,40 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
         }
 
-        private List<List<IAdTree>> GetAdTreesForEachWordConstructionOfEachWord(IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> decomposedPhrase)
+        private List<WordAdTrees> GetWordAdTrees(PhraseDecomposition phraseDecomposition)
         {
             // AdTrees for each word construction of each word in the phrase.
-            List<List<IAdTree>> result = new List<List<IAdTree>>();
+            List<WordAdTrees> result = new List<WordAdTrees>();
 
 
             // Go via all words.
-            foreach (IReadOnlyList<IReadOnlyList<Morpheme>> possibleWordConstructions in decomposedPhrase)
+            foreach (var wordDecomposition in phraseDecomposition.Words)
             {
                 // The adtree for each word construction.
-                List<IAdTree> possibleWordAdTrees = new List<IAdTree>();
+                var possibleWordAdTrees = new WordAdTrees(wordDecomposition.Word);
 
-                // Go via all possible word constructions (all combinations of prefixes, lexeme, suffixes).
-                foreach (IReadOnlyList<Morpheme> wordConstruction in possibleWordConstructions)
+                // Go via all possible word constructions (particular combinations of prefixes, lexeme, suffixes).
+                foreach (var wordComposition in wordDecomposition.Compositions)
                 {
                     // List of adtrees for each word construction.
-                    List<List<IAdTree>> possibleWordConstructionAdTrees = new List<List<IAdTree>>();
+                    var wordAdTreeDecomposition = new WordAdTreesDecomposition();
 
-                    // Go via the particular sequence of prefixes, lexemeand suffixes the word is composed of.
-                    foreach (Morpheme morpheme in wordConstruction)
+                    // Go via the particular sequence of morphemes (prefixes, lexeme and suffixes) the word is composed of.
+                    foreach (var morpheme in wordComposition.Morphemes)
                     {
                         // Get all possible adtrees for the morpheme.
-                        IEnumerable<IAdTree> morphemeAdTrees = GetAdTreesForMorpheme(morpheme);
+                        var morphemeAdTrees = GetAdTreesForMorpheme(morpheme);
 
-                        // Try to extend possible addtrees by applying grammar character transferences.
-                        //List<IAdTree> morphemeAndTransferences = morphemeAdTrees
-                        //    .SelectMany(x => new IAdTree[] { x }.Concat(GetGrammarCharacterTransferences(x)))
-                        //    .ToList();
-
-                        if (morphemeAdTrees.Any())
+                        if (morphemeAdTrees.AdTrees.Any())
                         {
-                            possibleWordConstructionAdTrees.Add(morphemeAdTrees.ToList());
+                            wordAdTreeDecomposition.MorphemeAdTrees.Add(morphemeAdTrees);
                         }
                     }
 
-                    if (possibleWordConstructionAdTrees.Any())
+                    if (wordAdTreeDecomposition.MorphemeAdTrees.Any())
                     {
-                        IEnumerable<IEnumerable<IAdTree>> wordAdTreeVariations = possibleWordConstructionAdTrees.GetVariations();
-
+                        // Get all variations of morpheme adtrees to compose the word.
+                        IEnumerable<IEnumerable<IAdTree>> wordAdTreeVariations = wordAdTreeDecomposition.MorphemeAdTrees.Select(x => x.AdTrees).GetVariations();
 
                         foreach (IEnumerable<IAdTree> wordAdTreeVariation in wordAdTreeVariations)
                         {
@@ -115,13 +124,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                             if (wordAdTreesAndTransferences.Any())
                             {
-                                possibleWordAdTrees.AddRange(wordAdTreesAndTransferences);
+                                possibleWordAdTrees.AdTrees.AddRange(wordAdTreesAndTransferences);
                             }
                         }
                     }
                 }
 
-                if (possibleWordAdTrees.Any())
+                if (possibleWordAdTrees.AdTrees.Any())
                 {
                     result.Add(possibleWordAdTrees);
                 }
@@ -130,8 +139,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-        private IEnumerable<IAdTree> GetAdTreesForMorpheme(Morpheme morpheme)
+        private MorphemeRelevantAdTrees GetAdTreesForMorpheme(Morpheme morpheme)
         {
+            var result = new MorphemeRelevantAdTrees();
+
             IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindPatterns(morpheme);
 
             // Go via patterns matching the morpheme.
@@ -139,19 +150,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 // Create the adtree element from the morpheme and its pattern.
                 IAdTree newAdTree = new AdTree(morpheme, pattern);
-                yield return newAdTree;
+                result.AdTrees.Add(newAdTree);
             }
+
+            return result;
         }
 
 
-        private List<IAdTree> ComposeAdTree(IEnumerable<IAdTree> wordAdTrees)
+        private List<IAdTree> ComposeAdTree(IEnumerable<IAdTree> source)
         {
             List<IAdTree> activeAdTrees = new List<IAdTree>();
 
-            string signature = string.Join("", wordAdTrees.Select(x => x.Morpheme.GrammarCharacter));
+            string expectedSignature = source.GetSignature();
 
             bool isFirst = true;
-            foreach (IAdTree adTree in wordAdTrees)
+            foreach (IAdTree adTree in source)
             {
                 if (isFirst)
                 {
@@ -163,7 +176,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     List<IAdTree> newListOfAdTrees = new List<IAdTree>();
                     foreach (IAdTree current in activeAdTrees)
                     {
-                        TryToAppend(current, adTree, signature, newListOfAdTrees);
+                        TryToAppend(current, adTree, expectedSignature, newListOfAdTrees);
                     }
 
                     activeAdTrees = newListOfAdTrees;
@@ -177,7 +190,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return activeAdTrees.Select(x => x.Root).ToList();
         }
 
-        private void TryToAppend(IAdTree current, IAdTree appendee, string signature, List<IAdTree> results)
+        private void TryToAppend(IAdTree current, IAdTree appendee, string expectedSignature, List<IAdTree> results)
         {
             IAdTree placeToAppend = GetPlaceToAppend(current);
 
@@ -214,7 +227,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 if (canAppendIndirectly)
                 {
                     // Try to attach the new element indirectly.
-                    TryToAppendIndirectly(AttachPosition.ParrentForLeft, placeToAppend, appendee, results, 2);
+                    TryToAppendIndirectly(AttachPosition.ParrentForLeft, placeToAppend, appendee, expectedSignature, results, 2);
                 }
             }
 
@@ -232,7 +245,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 if (canAppendIndirectly)
                 {
                     // Try to attach the new element indirectly.
-                    TryToAppendIndirectly(AttachPosition.ParrentForRight, placeToAppend, appendee, results, 2);
+                    TryToAppendIndirectly(AttachPosition.ParrentForRight, placeToAppend, appendee, expectedSignature, results, 2);
                 }
             }
 
@@ -253,7 +266,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     // Try to attach the adtree indirectly via new element's left.
                     else if (canAppendIndirectly)
                     {
-                        TryToAppendIndirectly(AttachPosition.ParrentForLeft, appendee, placeToAppend, results, 2);
+                        TryToAppendIndirectly(AttachPosition.ParrentForLeft, appendee, placeToAppend, expectedSignature, results, 2);
                     }
                 }
 
@@ -270,28 +283,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     // Try to attach the adtree indirectly via new element's right.
                     else if (canAppendIndirectly)
                     {
-                        TryToAppendIndirectly(AttachPosition.ParrentForRight, appendee, placeToAppend, results, 2);
+                        TryToAppendIndirectly(AttachPosition.ParrentForRight, appendee, placeToAppend, expectedSignature, results, 2);
                     }
                 }
 
                 if (canAppendIndirectly)
                 {
                     // Also try to connect the adtree and the new element indirectly via adtree adposition.
-                    TryToAppendIndirectly(AttachPosition.ChildOnLeft, placeToAppend, appendee, results, 2);
-                    TryToAppendIndirectly(AttachPosition.ChildOnRight, placeToAppend, appendee, results, 2);
+                    TryToAppendIndirectly(AttachPosition.ChildOnLeft, placeToAppend, appendee, expectedSignature, results, 2);
+                    TryToAppendIndirectly(AttachPosition.ChildOnRight, placeToAppend, appendee, expectedSignature, results, 2);
                 }
             }
         }
 
-        private void TryToAppendIndirectly(AttachPosition appendingPositionOfStartElement, IAdTree start, IAdTree end, List<IAdTree> results, int stopLevel)
+        // Note: indirect append means that adtress (with unfilled values) will be inserted inbetween start and end adtree.
+        //       Unfilled values are expected to be filled later otherwise the adtree will be not valid.
+        private void TryToAppendIndirectly(AttachPosition appendingPositionOfStartElement,
+            IAdTree start, IAdTree end,
+            string expectedSignature,
+            List<IAdTree> results,
+            int recursionStopLevel)
         {
-            if (stopLevel <= 0)
+            if (recursionStopLevel <= 0)
             {
                 return;
             }
-            --stopLevel;
-
-
+            --recursionStopLevel;
 
             GrammarCharacter startGrammarCharacter = GrammarCharacter.e;
             GrammarCharacter endGrammarCharacter = GrammarCharacter.e;
@@ -321,9 +338,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
             }
 
-            // Get possibile ways how to connect new element.
+            // Get all possibile ways how to get from start to end grammar character and path is not greater than 4.
             IEnumerable<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
-                .FindAllEdges(startGrammarCharacter, endGrammarCharacter, x => x.Count < 4);
+                .FindAllEdges(startGrammarCharacter, endGrammarCharacter, x => x.Count < 4).ToList();
 
             // Go via all possible ways.
             foreach (IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>> path in connectionPaths)
@@ -405,22 +422,38 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         }
                     }
 
+                    var currentSignature = bridge.Root.GetSignature();
+                    if (!expectedSignature.StartsWith(currentSignature))
+                    {
+                        break;
+                    }
+
                     // If it is the last item in the path.
                     if (i == path.Count - 1)
                     {
                         if (bridge.Left == null && bridge.CanAttachToLeft(end))
                         {
-                            TryToAppendIndirectly(AttachPosition.ParrentForLeft, bridge, endCopy, results, stopLevel);
+                            TryToAppendIndirectly(AttachPosition.ParrentForLeft, bridge, endCopy, expectedSignature, results, recursionStopLevel);
 
                             bridge.Left = endCopy;
-                            results.Add(endCopy);
+
+                            currentSignature = endCopy.Root.GetSignature();
+                            if (expectedSignature.StartsWith(currentSignature))
+                            {
+                                results.Add(endCopy);
+                            }
                         }
                         else if (bridge.Right == null && bridge.CanAttachToRight(end))
                         {
-                            TryToAppendIndirectly(AttachPosition.ParrentForRight, bridge, endCopy, results, stopLevel);
+                            TryToAppendIndirectly(AttachPosition.ParrentForRight, bridge, endCopy, expectedSignature, results, recursionStopLevel);
 
                             bridge.Right = endCopy;
-                            results.Add(endCopy);
+
+                            currentSignature = endCopy.Root.GetSignature();
+                            if (expectedSignature.StartsWith(currentSignature))
+                            {
+                                results.Add(endCopy);
+                            }
                         }
                         else
                         {
@@ -435,8 +468,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         private bool CanAppendIndirectly(IAdTree current)
         {
-            IEnumerable<IAdTree> incomleteAdTrees = current.GetSequenceToRoot().Where(x => !x.IsComplete()).Take(5);
-            int count = incomleteAdTrees.Count();
+            IEnumerable<IAdTree> incompleteAdTrees = current.GetSequenceToRoot().Where(x => !x.IsComplete()).Take(5);
+            int count = incompleteAdTrees.Count();
             return count < 5;
         }
 

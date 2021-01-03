@@ -73,43 +73,46 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             return result ?? Enumerable.Empty<Morpheme>();
         }
 
-        public IReadOnlyList<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance)
+        public WordDecomposition DecomposeWord(string word, int maxMorphDistance)
         {
-            List<IReadOnlyList<Morpheme>> wordConstructions = FindPossibleWordConstructions(word, maxMorphDistance, new List<Morpheme>())
+            List<WordConstruct> wordConstructs = FindPossibleWordConstructions(word, maxMorphDistance, new List<Morpheme>())
                 // Note: as an input parameter there is the list which is filled during the iteration.
                 //       Therefore it must be iterated in once - so it must be converted to the list.
                 .ToList();
 
             List<Morpheme> nonLexemes = FindNonLexemes(word).ToList();
 
-            List<IReadOnlyList<Morpheme>> result = new List<IReadOnlyList<Morpheme>>();
-            if (wordConstructions.Any())
+            List<WordConstruct> wordCompositions = new List<WordConstruct>();
+            if (wordConstructs.Any())
             {
-                result.AddRange(wordConstructions);
+                wordCompositions.AddRange(wordConstructs);
             }
             if (nonLexemes.Any())
             {
-                result.Add(nonLexemes);
+                var wordConstruct = new WordConstruct(nonLexemes);
+                wordCompositions.Add(wordConstruct);
             }
 
+            var result = new WordDecomposition(word, wordCompositions);
             return result;
         }
 
-        public IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> DecomposePhrase(IEnumerable<string> phrase, int maxMorphDistance)
+        public PhraseDecomposition DecomposePhrase(IEnumerable<string> phrase, int maxMorphDistance)
         {
-            List<IReadOnlyList<IReadOnlyList<Morpheme>>> result = new List<IReadOnlyList<IReadOnlyList<Morpheme>>>();
+            List<WordDecomposition> wordDecompositions = new List<WordDecomposition>();
 
             // Go via each word.
             foreach (string word in phrase)
             {
-                IReadOnlyList<IReadOnlyList<Morpheme>> possibleWordConstructions = DecomposeWord(word, maxMorphDistance);
+                var wordDecomposition = DecomposeWord(word, maxMorphDistance);
 
-                if (possibleWordConstructions.Any())
+                if (wordDecomposition.Compositions.Any())
                 {
-                    result.Add(possibleWordConstructions);
+                    wordDecompositions.Add(wordDecomposition);
                 }
             }
 
+            var result = new PhraseDecomposition(wordDecompositions);
             return result;
         }
 
@@ -157,9 +160,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             foreach (Pattern pattern in Patterns)
             {
                 // If the pattern connects two grammar characters.
-                bool isEdge = pattern.LeftRule.GrammarCharacter != GrammarCharacter.e &&
-                    pattern.RightRule.GrammarCharacter != GrammarCharacter.e;
-
+                bool isEdge = pattern.LeftRule.GrammarCharacter != GrammarCharacter.e && pattern.RightRule.GrammarCharacter != GrammarCharacter.e;
                 if (isEdge)
                 {
                     PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter, pattern.RightRule.GrammarCharacter, pattern);
@@ -173,7 +174,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         }
 
 
-        private IEnumerable<IReadOnlyList<Morpheme>> FindPossibleWordConstructions(
+        private IEnumerable<WordConstruct> FindPossibleWordConstructions(
             string word,
             int morphDistance,
             List<Morpheme> localSequence)
@@ -183,7 +184,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             foreach (Morpheme lexeme in lexemes)
             {
                 localSequence.Add(lexeme);
-                yield return localSequence.ToList();
+                var wordConstruct = new WordConstruct(localSequence.ToList());
+                yield return wordConstruct;
                 localSequence.RemoveAt(localSequence.Count - 1);
             }
 
@@ -191,7 +193,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             IEnumerable<IReadOnlyList<Morpheme>> wordSuffixes = FindLexemeAndItsSuffixes(word, morphDistance, new List<Morpheme>());
             foreach (IReadOnlyList<Morpheme> sequence in wordSuffixes)
             {
-                yield return localSequence.Concat(sequence.Reverse()).ToList();
+                var wordConstruct = new WordConstruct(localSequence.Concat(sequence.Reverse()).ToList());
+                yield return wordConstruct;
             }
 
             // Find if the word is a lexeme with prefixes and suffixes.
@@ -209,10 +212,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                         localSequence.Add(prefix);
 
                         // Try if there are sub-prefixes.
-                        IEnumerable<IReadOnlyList<Morpheme>> sequences = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
+                        IEnumerable<WordConstruct> sequences = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
                         foreach (IReadOnlyList<Morpheme> sequence in sequences)
                         {
-                            yield return sequence.ToList();
+                            var wordConstruct = new WordConstruct(sequence.ToList());
+                            yield return wordConstruct;
                         }
 
                         localSequence.RemoveAt(localSequence.Count - 1);

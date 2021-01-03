@@ -32,15 +32,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <param name="phrase"></param>
         /// <param name="maxMorphDistance"></param>
         /// <returns></returns>
-        IReadOnlyList<IReadOnlyList<IReadOnlyList<Morpheme>>> DecomposePhrase(IEnumerable<string> phrase, int maxMorphDistance);
+        PhraseDecomposition DecomposePhrase(IEnumerable<string> phrase, int maxMorphDistance);
 
         /// <summary>
-        /// Finds all possible combinations of morphemes for the word.
+        /// Finds all possible word constructions (morpheme sequences) for the word.
         /// </summary>
         /// <param name="word"></param>
         /// <param name="maxMorphDistance">The level of similarity. If 0 then the exact morph is searched.</param>
         /// <returns></returns>
-        IReadOnlyList<IReadOnlyList<Morpheme>> DecomposeWord(string word, int maxMorphDistance);
+        WordDecomposition DecomposeWord(string word, int maxMorphDistance);
 
         /// <summary>
         /// Finds patterns matching the morpheme (lexeme or non-lexeme).
