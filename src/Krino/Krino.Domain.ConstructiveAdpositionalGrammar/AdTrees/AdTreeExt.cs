@@ -26,10 +26,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
             foreach (var item in adTreeSequence)
             {
-                if (item.Morpheme.GrammarCharacter != GrammarCharacter.e && !string.IsNullOrEmpty(item.Morpheme.Morph))
-                {
-                    result.Append(item.Morpheme.GrammarCharacter);
-                }
+                var itemSignature = GetSignature(item);
+                result.Append(itemSignature);
             }
 
             return result.ToString();
@@ -40,7 +38,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <param name="adTreeSequence"></param>
         /// <returns></returns>
-        public static string GetSignature(this IAdTree adTree) => GetSignature((IEnumerable<IAdTree>)adTree);
+        public static string GetSignature(this IAdTree adTree)
+        {
+            var result = new StringBuilder();
+
+            foreach (var item in adTree)
+            {
+                if (item.Morpheme.GrammarCharacter != GrammarCharacter.e && !string.IsNullOrEmpty(item.Morpheme.Morph))
+                {
+                    result.Append(item.Morpheme.GrammarCharacter);
+                }
+            }
+
+            return result.ToString();
+        }
 
         /// <summary>
         /// Returns the sequence from the specified adtree to the root.
