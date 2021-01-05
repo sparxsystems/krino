@@ -1,7 +1,7 @@
 # krino
-A language-based, verifiable and inspectable AI
+A language-based, verifiable and inspectable AI.
 
-![Minerva's owl](https://github.com/sparxsystems/krino/blob/master/owl-icon-flat-01-.jpg | width=100)
+<img src="https://github.com/sparxsystems/krino/blob/master/owl-icon-flat-01-.jpg" width="100">
 
 The intention is to create an AI software tool that can help users to make decisions they can trust. At its core, Krino should be able to learn and converse with users on virtually any topic. It will be able to identify potential inconsistencies and misstatements. And because it is a white-box AI it always explain precisely why it provided any output.
 
