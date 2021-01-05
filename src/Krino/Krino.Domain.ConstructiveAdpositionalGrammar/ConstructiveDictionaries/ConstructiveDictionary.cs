@@ -213,9 +213,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
                         // Try if there are sub-prefixes.
                         IEnumerable<WordConstruct> sequences = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
-                        foreach (IReadOnlyList<Morpheme> sequence in sequences)
+                        foreach (var sequence in sequences)
                         {
-                            var wordConstruct = new WordConstruct(sequence.ToList());
+                            var wordConstruct = new WordConstruct(sequence.Morphemes.ToList());
                             yield return wordConstruct;
                         }
 
