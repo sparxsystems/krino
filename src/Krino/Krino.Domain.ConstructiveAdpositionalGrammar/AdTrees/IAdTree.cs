@@ -11,7 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     public interface IAdTree : IEquatable<IAdTree>, IEnumerable<IAdTree>
     {
         /// <summary>
-        /// Pattern followed by the adtree element.
+        /// Pattern followed by this adtree element.
         /// </summary>
         Pattern Pattern { get; }
 
@@ -21,17 +21,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         Morpheme Morpheme { get; }
 
         /// <summary>
+        /// Reference to the AdPosition (direct parent). Null if it is the root.
+        /// </summary>
+        IAdTree AdPosition { get; set; }
+
+        /// <summary>
+        /// The righ child.
+        /// </summary>
+        IAdTree Right { get; set; }
+
+        /// <summary>
+        /// The left child.
+        /// </summary>
+        IAdTree Left { get; set; }
+
+        /// <summary>
         /// Grammar character inherited from the governor. If this is the governor then it returns its grammar character.
         /// </summary>
         /// <remarks>
         /// If there is no a child governor then it returns Epsilon.
         /// </remarks>
         GrammarCharacter InheritedGrammarCharacter { get; }
-
-        /// <summary>
-        /// Reference to the AdPosition (direct parent). Null if it is the root.
-        /// </summary>
-        IAdTree AdPosition { get; set; }
 
         /// <summary>
         /// Returns true if this tree element is the adpostion.
@@ -52,19 +62,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         IAdTree Root { get; }
 
         /// <summary>
-        /// The righ child.
-        /// </summary>
-        IAdTree Right { get; set; }
-
-        /// <summary>
         /// The sequence of elements on the right branch.
         /// </summary>
         IEnumerable<IAdTree> RightChildren { get; }
-
-        /// <summary>
-        /// The left child.
-        /// </summary>
-        IAdTree Left { get; set; }
 
         /// <summary>
         /// Returns true if this tree element is located on the right branch.
@@ -110,21 +110,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
 
         /// <summary>
-        /// Returns the first parent adposition element which has set the valency position for this element.
-        /// </summary>
-        /// <remarks>
-        /// If this element has set the valency attribute then it finds the valencyAdPosition of this 'valencied' element.
-        /// </remarks>
-        IAdTree GetValencyAdPositionElement();
-
-
-        /// <summary>
-        /// It returns the sequence of dependents which saturate particular valencies.
-        /// </summary>
-        IEnumerable<IAdTree> ValencyAdPositions { get; }
-
-        /// <summary>
-        /// Returns the phrase text represented by this adtree.
+        /// Returns the text phrase represented by this adtree.
         /// </summary>
         string Phrase { get; }
     }

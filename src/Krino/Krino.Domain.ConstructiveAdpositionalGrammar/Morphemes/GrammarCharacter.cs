@@ -6,8 +6,11 @@
     public enum GrammarCharacter
     {
         /// <summary>
-        /// Epsilon
+        /// Epsilon - zero-marked adposition.
         /// </summary>
+        /// <remarks>
+        /// This grammar character is used for adpositions which are syntactic and do not have any morpheme.
+        /// </remarks>
         e,
 
         /// <summary>
@@ -33,6 +36,11 @@
         /// <summary>
         /// Adposition
         /// </summary>
+        /// <remarks>
+        /// This grammar character is used for adpositions which contain a morpheme linking other grammar characters
+        /// into complex structures.
+        /// E.g. conjunctions or punctation marks.
+        /// </remarks>
         U
     }
 }

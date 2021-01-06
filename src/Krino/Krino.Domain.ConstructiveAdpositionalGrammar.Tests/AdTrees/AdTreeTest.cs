@@ -302,47 +302,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.Left == dependentAdPositions[0]);
         }
 
-        [Test]
-        public void ValencyAdPositionElement()
-        {
-            AdTree adTree = new AdTree(new Morpheme("", 0),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(2) })
-            {
-                Right = new AdTree(new Morpheme("", 0),
-                    new Pattern() { MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(1) })
-                {
-                    Right = new AdTree(new Morpheme("read", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme("I", 0), new Pattern())
-                },
-                Left = new AdTree(new Morpheme("", 0), new Pattern())
-                {
-                    Right = new AdTree(new Morpheme("book", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme("the", 0), new Pattern())
-                }
-            };
-
-            //'I'
-            Assert.IsTrue(adTree.Right == adTree.Right.Left.GetValencyAdPositionElement());
-
-            // book
-            Assert.IsTrue(adTree == adTree.Left.Right.GetValencyAdPositionElement());
-
-            // the
-            Assert.IsTrue(adTree == adTree.Left.Left.GetValencyAdPositionElement());
-
-            // book-adposition shall return root
-            Assert.IsTrue(adTree == adTree.Left.GetValencyAdPositionElement());
-
-            // root has defined the valency position so it should return itself
-            Assert.IsTrue(adTree == adTree.GetValencyAdPositionElement());
-
-            // read shall return null - because it is the verb
-            Assert.IsTrue(null == adTree.Right.Right.GetValencyAdPositionElement());
-
-            Assert.That(true, Is.True);
-        }
-
-
 
         [Test]
         public void Phrase()

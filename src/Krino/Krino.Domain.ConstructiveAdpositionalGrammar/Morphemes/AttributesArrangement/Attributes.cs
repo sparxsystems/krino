@@ -66,6 +66,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArran
             return false;
         }
 
+        public static bool IsNonLexeme(BigInteger attributes)
+        {
+            if (O.NonLexeme.IsIn(attributes) ||
+                I.NonLexeme.IsIn(attributes) ||
+                A.NonLexeme.IsIn(attributes) ||
+                E.NonLexeme.IsIn(attributes) ||
+                U.NonLexeme.IsIn(attributes))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
         public static bool IsPrefix(BigInteger attributes)
         {
             if (O.NonLexeme.Prefix.IsIn(attributes) ||

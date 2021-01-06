@@ -16,8 +16,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     public static class AdTreeExt
     {
         /// <summary>
-        /// Returns the signature (sequence of grammar characters) for the sequence of adtree items.
+        /// Returns the signature (sequence of grammar characters) for the sequence of individual adtree items.
         /// </summary>
+        /// <remarks>
+        /// AdTree items in the sequence shall not be within the same adtree.
+        /// </remarks>
         /// <param name="adTreeSequence"></param>
         /// <returns></returns>
         public static string GetSignature(this IEnumerable<IAdTree> adTreeSequence)

@@ -32,24 +32,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public Morpheme Morpheme { get; }
 
-        public GrammarCharacter InheritedGrammarCharacter
-        {
-            get
-            {
-                GrammarCharacter result = GrammarCharacter.e;
-
-                // Find the first element on the right branch which has defined own grammar character.
-                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
-                if (rightChild != null)
-                {
-                    result = rightChild.Morpheme.GrammarCharacter;
-                }
-
-                return result;
-            }
-        }
-
-
         public IAdTree AdPosition
         {
             get => myAdPosition;
@@ -72,24 +54,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 }
             }
         }
-
-        public bool IsAdPosition => Right != null || Left != null;
-
-        public IEnumerable<IAdTree> AdPositions
-        {
-            get
-            {
-                IAdTree parent = AdPosition;
-                while (parent != null)
-                {
-                    yield return parent;
-
-                    parent = parent.AdPosition;
-                }
-            }
-        }
-
-        public IAdTree Root => AdPosition == null ? this : AdPositions.Last();
 
         public IAdTree Right
         {
@@ -116,20 +80,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public IEnumerable<IAdTree> RightChildren
-        {
-            get
-            {
-                IAdTree rightChild = Right;
-                while (rightChild != null)
-                {
-                    yield return rightChild;
-
-                    rightChild = rightChild.Right;
-                }
-            }
-        }
-
         public IAdTree Left
         {
             get => myLeftChild;
@@ -148,6 +98,56 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 if (myLeftChild != null)
                 {
                     myLeftChild.AdPosition = this;
+                }
+            }
+        }
+
+        public GrammarCharacter InheritedGrammarCharacter
+        {
+            get
+            {
+                GrammarCharacter result = GrammarCharacter.e;
+
+                // Find the first element on the right branch which has defined own grammar character.
+                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
+                if (rightChild != null)
+                {
+                    result = rightChild.Morpheme.GrammarCharacter;
+                }
+
+                return result;
+            }
+        }
+
+        public bool IsAdPosition => Right != null || Left != null;
+
+        public IEnumerable<IAdTree> AdPositions
+        {
+            get
+            {
+                IAdTree parent = AdPosition;
+                while (parent != null)
+                {
+                    yield return parent;
+
+                    parent = parent.AdPosition;
+                }
+            }
+        }
+
+        public IAdTree Root => AdPosition == null ? this : AdPositions.Last();
+
+        
+        public IEnumerable<IAdTree> RightChildren
+        {
+            get
+            {
+                IAdTree rightChild = Right;
+                while (rightChild != null)
+                {
+                    yield return rightChild;
+
+                    rightChild = rightChild.Right;
                 }
             }
         }
@@ -225,43 +225,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         // Note: dependent may have the epsilon grammar character.
         public bool IsDependent => IsOnLeft && Morpheme.GrammarCharacter != GrammarCharacter.U;
-
-        public IAdTree GetValencyAdPositionElement()
-        {
-            IAdTree result = null;
-
-            // If this element is left child.
-            if (IsOnLeft)
-            {
-                // then if this element saturates a valency position return it otherwise
-                // just iterate up and find the first adposition which saturates an adposition.
-                result = Pattern.MorphemeRule.ValencyPosition > 0 ? this : AdPositions.FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
-            }
-            else if (IsOnRight)
-            {
-                // Iterate up and find the first adposition which is on left.
-                IAdTree onLeftAdPosition = AdPositions.FirstOrDefault(x => x.IsOnLeft);
-                if (onLeftAdPosition != null)
-                {
-                    result = onLeftAdPosition.GetValencyAdPositionElement();
-                }
-            }
-            // This is the root.
-            else
-            {
-                if (Pattern.MorphemeRule.ValencyPosition > 0)
-                {
-                    result = this;
-                }
-            }
-
-            return result;
-        }
-
-        public IEnumerable<IAdTree> ValencyAdPositions => IsGovernor ? AdPosition
-            .TakeWhile(x => x.IsOnRight)
-            .Where(x => x.Pattern.MorphemeRule.ValencyPosition > 0) : Enumerable.Empty<IAdTree>();
-
 
         public string Phrase => string.Join(" ", this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
 

@@ -7,6 +7,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     [DebuggerDisplay("{DebuggerDisplay}")]
     public class Morpheme : IEquatable<Morpheme>
     {
+        /// <summary>
+        /// Indicates there is no morpheme.
+        /// </summary>
+        /// <remarks>
+        /// This is used by zero-marked adpositions.
+        /// </remarks>
         public static Morpheme Epsilon => new Morpheme("", AttributesArrangement.Attributes.Epsilon);
 
         public Morpheme (string morph, BigInteger attributes)
@@ -21,7 +27,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public GrammarCharacter GrammarCharacter => GrammarCharacterExt.GetGrammarCharacter(Attributes);
 
+        /// <summary>
+        /// Returns true if the morpheme is a lexeme.
+        /// </summary>
+        /// <remarks>
+        /// It does not have to be lexeme nor non-lexeme.
+        /// </remarks>
         public bool IsLexeme => AttributesArrangement.Attributes.IsLexeme(Attributes);
+
+        /// <summary>
+        /// Returns true if the morpheme is a non-lexeme.
+        /// </summary>
+        /// <remarks>
+        /// It does not have to be lexeme nor non-lexeme.
+        /// </remarks>
+        public bool IsNonLexeme => AttributesArrangement.Attributes.IsNonLexeme(Attributes);
 
         public bool Equals(Morpheme other) => Morph == other.Morph && Attributes == other.Attributes;
 
