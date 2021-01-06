@@ -1,5 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;

@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using System;
 using System.Collections.Generic;

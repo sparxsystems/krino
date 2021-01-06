@@ -1,6 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Collections;

@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Constructions.Rules.Strings;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules.Strings;
 using NUnit.Framework;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Constructions.Rules
