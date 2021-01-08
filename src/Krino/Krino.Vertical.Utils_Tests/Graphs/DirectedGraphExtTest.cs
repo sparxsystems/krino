@@ -9,7 +9,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
     public class DirectedGraphExtTest
     {
         [Test]
-        public void FindAllPaths()
+        public void FindAllEdges()
         {
             DirectedGraph<int, string> graph = new DirectedGraph<int, string>();
             graph.AddVertex(0);
@@ -28,7 +28,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
         }
 
         [Test]
-        public void FindAllPaths_ViaItself_MiddleStep()
+        public void FindAllEdges_ViaItself_MiddleStep()
         {
             DirectedGraph<string, string> graph = new DirectedGraph<string, string>();
             graph.AddVertex("A");
@@ -43,12 +43,13 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             List<string> allPaths = graph.FindAllEdges("I", "A").Select(x => string.Join("-", x.Select(y => y.Value))).ToList();
 
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("IO-OO-OA", allPaths[0]);
-            Assert.AreEqual("IO-OA", allPaths[1]);
+            Assert.AreEqual("IO-OA", allPaths[0]);
+            Assert.AreEqual("IO-OO-OA", allPaths[1]);
+            
         }
 
         [Test]
-        public void FindAllPaths_ToItself()
+        public void FindAllEdges_ToItself()
         {
             DirectedGraph<int, string> graph = new DirectedGraph<int, string>();
             graph.AddVertex(0);
@@ -64,7 +65,7 @@ namespace Krino.Vertical.Utils_Tests.Graphs
         }
 
         [Test]
-        public void FindAllPaths_ToItself_Indirectly()
+        public void FindAllEdges_ToItself_Indirectly()
         {
             DirectedGraph<string, string> graph = new DirectedGraph<string, string>();
             graph.AddVertex("A");
@@ -92,6 +93,79 @@ namespace Krino.Vertical.Utils_Tests.Graphs
             Assert.AreEqual("A", result[1][1].From);
             Assert.AreEqual("O", result[1][1].To);
             Assert.AreEqual("Pattern1", result[1][1].Value);
+        }
+
+
+        [Test]
+        public void FindAllPaths()
+        {
+            DirectedGraph<int, string> graph = new DirectedGraph<int, string>();
+            graph.AddVertex(0);
+            graph.AddVertex(1);
+            graph.AddVertex(2);
+            graph.AddVertex(3);
+            graph.AddEdge(0, 1, "01");
+            graph.AddEdge(1, 2, "12");
+            graph.AddEdge(0, 2, "02");
+            graph.AddEdge(0, 3, "03");
+
+            List<string> allPaths = graph.FindAllPaths(0, 2).Select(x => string.Join("-", x.Select(y => y))).ToList();
+            Assert.AreEqual(2, allPaths.Count);
+            Assert.AreEqual("0-1-2", allPaths[0]);
+            Assert.AreEqual("0-2", allPaths[1]);
+        }
+
+        [Test]
+        public void FindAllPaths_SelfReference()
+        {
+            DirectedGraph<string, string> graph = new DirectedGraph<string, string>();
+            graph.AddVertex("A");
+            graph.AddVertex("O");
+            graph.AddVertex("I");
+            graph.AddEdge("I", "O", "IO");
+            graph.AddEdge("O", "O", "OO"); // to itself
+            graph.AddEdge("O", "A", "OA");
+
+            // Get all paths from I to A.
+            var result = graph.FindAllPaths("I", "A").Select(x => string.Join("", x)).ToList();
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("IOA", result[0]);
+            Assert.AreEqual("IOOA", result[1]);
+        }
+
+        [Test]
+        public void FindAllPaths_SelfReference_FirstElement()
+        {
+            DirectedGraph<string, string> graph = new DirectedGraph<string, string>();
+            graph.AddVertex("A");
+            graph.AddVertex("O");
+            graph.AddEdge("A", "O", "AO");
+            graph.AddEdge("A", "A", "AA"); // to itself
+
+            // Get all paths from A to O.
+            var result = graph.FindAllPaths("A", "O").Select(x => string.Join("", x)).ToList();
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("AO", result[0]);
+            Assert.AreEqual("AAO", result[1]);
+        }
+
+        [Test]
+        public void FindAllPaths_SelfReference_LastElement()
+        {
+            DirectedGraph<string, string> graph = new DirectedGraph<string, string>();
+            graph.AddVertex("A");
+            graph.AddVertex("O");
+            graph.AddEdge("A", "O", "AO");
+            graph.AddEdge("O", "O", "OO"); // to itself
+
+            // Get all paths from A to O.
+            var result = graph.FindAllPaths("A", "O").Select(x => string.Join("", x)).ToList();
+
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("AO", result[0]);
+            Assert.AreEqual("AOO", result[1]);
         }
     }
 }

@@ -355,7 +355,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             // Get possibile ways how to connect new element.
             IEnumerable<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
-                .FindAllEdges(startGrammarCharacter, endGrammarCharacter, x => x.Count < 4);
+                .FindAllEdges(startGrammarCharacter, endGrammarCharacter);
 
             // Go via all possible ways.
             foreach (IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>> path in connectionPaths)
@@ -442,14 +442,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     {
                         if (bridge.Left == null && bridge.CanAttachToLeft(end))
                         {
-                            TryToAppendIndirectly(AttachingPosition.ParrentForLeft, bridge, endCopy, results, stopLevel);
+                            //TryToAppendIndirectly(AttachingPosition.ParrentForLeft, bridge, endCopy, results, stopLevel);
 
                             bridge.Left = endCopy;
                             results.Add(endCopy);
                         }
                         else if (bridge.Right == null && bridge.CanAttachToRight(end))
                         {
-                            TryToAppendIndirectly(AttachingPosition.ParrentForRight, bridge, endCopy, results, stopLevel);
+                            //TryToAppendIndirectly(AttachingPosition.ParrentForRight, bridge, endCopy, results, stopLevel);
 
                             bridge.Right = endCopy;
                             results.Add(endCopy);

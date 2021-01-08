@@ -62,7 +62,7 @@ namespace Krino.Vertical.Utils.Collections
         /// Returns variation of possible sequences.
         /// </summary>
         /// <remarks>
-        /// E.g. if source = ( (1, 2), (10, 20) ) then result = ( (1, 2), (10, 2), (1, 20), (10, 20) ).
+        /// E.g. if source = ( (1, 2), (10, 20) ) then result = ( (1, 10), (2, 10), (1, 20), (2, 20) ).
         /// </remarks>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>

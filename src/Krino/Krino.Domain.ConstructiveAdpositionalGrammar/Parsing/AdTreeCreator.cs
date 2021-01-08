@@ -364,7 +364,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                 // Get all possibile ways how to get from start to end grammar character and path is not greater than 4.
                 IEnumerable<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
-                    .FindAllEdges(startGrammarCharacter, endGrammarCharacter, x => x.Count < 4).ToList();
+                    .FindAllEdges(startGrammarCharacter, endGrammarCharacter).ToList();
 
                 // Go via all possible ways.
                 foreach (IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>> path in connectionPaths)
@@ -455,9 +455,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         // If it is the last item in the path.
                         if (i == path.Count - 1)
                         {
-                            if (bridge.Left == null && bridge.CanAttachToLeft(end))
+                            if (bridge.Left == null && bridge.CanAttachToLeft(endCopy))
                             {
-                                TryToAppendIndirectly(AttachingPosition.ParrentForLeft, bridge, endCopy, expectedSignature, results, recursionStopLevel);
+                                //TryToAppendIndirectly(AttachingPosition.ParrentForLeft, bridge, endCopy, expectedSignature, results, recursionStopLevel);
 
                                 bridge.Left = endCopy;
 
@@ -467,9 +467,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                                     results.Add(endCopy);
                                 }
                             }
-                            else if (bridge.Right == null && bridge.CanAttachToRight(end))
+                            else if (bridge.Right == null && bridge.CanAttachToRight(endCopy))
                             {
-                                TryToAppendIndirectly(AttachingPosition.ParrentForRight, bridge, endCopy, expectedSignature, results, recursionStopLevel);
+                                //TryToAppendIndirectly(AttachingPosition.ParrentForRight, bridge, endCopy, expectedSignature, results, recursionStopLevel);
 
                                 bridge.Right = endCopy;
 
