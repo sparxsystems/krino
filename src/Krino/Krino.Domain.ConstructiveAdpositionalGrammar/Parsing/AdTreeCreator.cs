@@ -68,26 +68,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        private IEnumerable<IAdTree> GetGrammarCharacterTransferences(IAdTree adTree)
-        {
-            using (Trace.Entering())
-            {
-                IEnumerable<Pattern> patterns = myConstructiveDictionary.FindGrammarCharacterTransferencePatterns(adTree.Morpheme);
-                foreach (Pattern pattern in patterns)
-                {
-                    // Note: in case of a grammar character transference it is expected the morpheme rule always represents
-                    //       a concrete value.
-                    if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
-                    {
-                        IAdTree adTreeCopy = adTree.MakeShallowCopy();
-                        IAdTree transferenceAdTree = new AdTree(new Morpheme("", isRule.ReferenceValue), pattern);
-                        transferenceAdTree.Right = adTreeCopy;
-                        yield return transferenceAdTree;
-                    }
-                }
-            }
-        }
-
         private List<WordAdTrees> GetWordAdTrees(PhraseDecomposition phraseDecomposition)
         {
             using (Trace.Entering())
@@ -172,6 +152,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
         }
 
+        private IEnumerable<IAdTree> GetGrammarCharacterTransferences(IAdTree adTree)
+        {
+            using (Trace.Entering())
+            {
+                IEnumerable<Pattern> patterns = myConstructiveDictionary.FindGrammarCharacterTransferencePatterns(adTree.Morpheme);
+                foreach (Pattern pattern in patterns)
+                {
+                    // Note: in case of a grammar character transference it is expected the morpheme rule always represents
+                    //       a concrete value.
+                    if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
+                    {
+                        IAdTree adTreeCopy = adTree.MakeShallowCopy();
+                        IAdTree transferenceAdTree = new AdTree(new Morpheme("", isRule.ReferenceValue), pattern);
+                        transferenceAdTree.Right = adTreeCopy;
+                        yield return transferenceAdTree;
+                    }
+                }
+            }
+        }
 
         private List<IAdTree> ComposeAdTree(IEnumerable<IAdTree> source)
         {
@@ -446,6 +445,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                             }
                         }
 
+                        // If the signature does not match then break it.
                         var currentSignature = bridge.Root.GetSignature();
                         if (!expectedSignature.StartsWith(currentSignature))
                         {
@@ -457,8 +457,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         {
                             if (bridge.Left == null && bridge.CanAttachToLeft(endCopy))
                             {
-                                //TryToAppendIndirectly(AttachingPosition.ParrentForLeft, bridge, endCopy, expectedSignature, results, recursionStopLevel);
-
                                 bridge.Left = endCopy;
 
                                 currentSignature = endCopy.Root.GetSignature();
@@ -469,8 +467,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                             }
                             else if (bridge.Right == null && bridge.CanAttachToRight(endCopy))
                             {
-                                //TryToAppendIndirectly(AttachingPosition.ParrentForRight, bridge, endCopy, expectedSignature, results, recursionStopLevel);
-
                                 bridge.Right = endCopy;
 
                                 currentSignature = endCopy.Root.GetSignature();
