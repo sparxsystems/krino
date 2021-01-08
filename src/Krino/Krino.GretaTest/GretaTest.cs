@@ -45,6 +45,8 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_1_1()
         {
+            //Trace.StartProfiler();
+
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
             Parser parser = new Parser(dictionary);
             IAdTree adTree = parser.Deserialize("I have some good news and some bad news regarding the climate emergency.", 1);
@@ -53,6 +55,8 @@ namespace Krino.GretaTest
                 .Where(x => !string.IsNullOrEmpty(x.Morpheme.Morph))
                 .Select(x => string.Join("->", string.Join("-", new IAdTree[] { x }.Concat(x.AdPositions).Select(y => y.IsOnLeft ? "L" : y.IsOnRight ? "R" : "").Reverse()), x.Morpheme.Morph))
                 .ToList();
+
+            //Trace.StopProfiler();
 
             Assert.AreEqual("i", adTree.Right.Right.Right.Left.Morpheme.Morph);
             Assert.AreEqual("have", adTree.Right.Right.Right.Right.Morpheme.Morph);

@@ -9,6 +9,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using Krino.Vertical.Utils.Diagnostic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
@@ -30,24 +31,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         /// </summary>
         public void Purify()
         {
-            List<IAdTree> adTrees = new List<IAdTree>();
-
-            foreach (IAdTree adTree in myActiveAdTrees)
+            using (Trace.Entering())
             {
-                IEnumerable<IAdTree> nonconformities = adTree.Root.GetNonconformities();
-                int nonConformities = nonconformities.Count();
-                if (nonConformities == 0)
-                {
-                    adTrees.Add(adTree);
-                }
-            }
+                List<IAdTree> adTrees = new List<IAdTree>();
 
-            myActiveAdTrees = adTrees;
+                foreach (IAdTree adTree in myActiveAdTrees)
+                {
+                    IEnumerable<IAdTree> nonconformities = adTree.Root.GetNonconformities();
+                    int nonConformities = nonconformities.Count();
+                    if (nonConformities == 0)
+                    {
+                        adTrees.Add(adTree);
+                    }
+                }
+
+                myActiveAdTrees = adTrees;
+            }
         }
 
         public void AddPhrase(IEnumerable<string> words)
         {
-            var decomposedPhrase = myConstructiveDictionary.DecomposePhrase(words, 0);
+            using (Trace.Entering())
+            {
+                var decomposedPhrase = myConstructiveDictionary.DecomposePhrase(words, 0);
+            }
         }
 
         /// <summary>
@@ -61,46 +68,49 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         /// <returns></returns>
         public bool AddWord(string word, int maxMorphDistance = 0)
         {
-            List<IAdTree> adTreesToAdd = new List<IAdTree>();
-
-            // Decompose the word string to list of morpheme sequences (prefixes, lexeme, suffixes).
-            var morphemeSequences = myConstructiveDictionary.DecomposeWord(word, 0);
-
-            if (!morphemeSequences.Compositions.Any())
+            using (Trace.Entering())
             {
-                // The typo tolerance does not have a sense for very short words.
-                int morphDistance = word.Length < 4 ? 0 : maxMorphDistance;
+                List<IAdTree> adTreesToAdd = new List<IAdTree>();
 
                 // Decompose the word string to list of morpheme sequences (prefixes, lexeme, suffixes).
-                morphemeSequences = myConstructiveDictionary.DecomposeWord(word, morphDistance);
-            }
+                var morphemeSequences = myConstructiveDictionary.DecomposeWord(word, 0);
 
-            // Go via sequences of morphemes.
-            foreach (var sequence in morphemeSequences.Compositions)
-            {
-                bool isCancelled = false;
-                AdTreeBuilder localAdTreeBuilder = new AdTreeBuilder(myConstructiveDictionary);
-                foreach (var morpheme in sequence.Morphemes)
+                if (!morphemeSequences.Compositions.Any())
                 {
-                    if (!localAdTreeBuilder.AddMorpheme(morpheme))
+                    // The typo tolerance does not have a sense for very short words.
+                    int morphDistance = word.Length < 4 ? 0 : maxMorphDistance;
+
+                    // Decompose the word string to list of morpheme sequences (prefixes, lexeme, suffixes).
+                    morphemeSequences = myConstructiveDictionary.DecomposeWord(word, morphDistance);
+                }
+
+                // Go via sequences of morphemes.
+                foreach (var sequence in morphemeSequences.Compositions)
+                {
+                    bool isCancelled = false;
+                    AdTreeBuilder localAdTreeBuilder = new AdTreeBuilder(myConstructiveDictionary);
+                    foreach (var morpheme in sequence.Morphemes)
                     {
-                        isCancelled = true;
-                        break;
+                        if (!localAdTreeBuilder.AddMorpheme(morpheme))
+                        {
+                            isCancelled = true;
+                            break;
+                        }
+                    }
+
+                    if (!isCancelled)
+                    {
+                        adTreesToAdd.AddRange(localAdTreeBuilder.ActiveAdTrees);
                     }
                 }
 
-                if (!isCancelled)
-                {
-                    adTreesToAdd.AddRange(localAdTreeBuilder.ActiveAdTrees);
-                }
+                IEnumerable<Morpheme> nonLexemes = myConstructiveDictionary.FindNonLexemes(word);
+                IEnumerable<IAdTree> adTrees = GetAdTrees(nonLexemes);
+                adTreesToAdd.AddRange(adTrees);
+
+                bool result = AddHomonyms(adTreesToAdd);
+                return result;
             }
-
-            IEnumerable<Morpheme> nonLexemes = myConstructiveDictionary.FindNonLexemes(word);
-            IEnumerable<IAdTree> adTrees = GetAdTrees(nonLexemes);
-            adTreesToAdd.AddRange(adTrees);
-
-            bool result = AddHomonyms(adTreesToAdd);
-            return result;
         }
 
         /// <summary>
@@ -110,8 +120,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         /// <returns></returns>
         public bool AddMorpheme(Morpheme morpheme)
         {
-            bool result = AddHomonyms(new Morpheme[] { morpheme });
-            return result;
+            using (Trace.Entering())
+            {
+                bool result = AddHomonyms(new Morpheme[] { morpheme });
+                return result;
+            }
         }
 
         /// <summary>
@@ -121,9 +134,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         /// <returns></returns>
         public bool AddHomonyms(IEnumerable<Morpheme> homonymMorphemes)
         {
-            IEnumerable<IAdTree> homonymAdTrees = GetAdTrees(homonymMorphemes);
-            bool isAdded = AddHomonyms(homonymAdTrees);
-            return isAdded;
+            using (Trace.Entering())
+            {
+                IEnumerable<IAdTree> homonymAdTrees = GetAdTrees(homonymMorphemes);
+                bool isAdded = AddHomonyms(homonymAdTrees);
+                return isAdded;
+            }
         }
 
         /// <summary>
@@ -133,382 +149,406 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         /// <returns></returns>
         public bool AddHomonyms(IEnumerable<IAdTree> homonymAdTrees)
         {
-            bool isAdded = false;
-
-            // Consider primitive transferences for each homonym e.g. O>A.
-            IEnumerable<IAdTree> homonymsAndPrimitiveTransferences = homonymAdTrees
-                .SelectMany(x => new IAdTree[] { x }.Concat(GetPrimitiveTransferences(x)))
-                .Distinct();
-
-            // Update active adtrees.
-            if (myActiveAdTrees.Count != 0)
+            using (Trace.Entering())
             {
-                List<IAdTree> newListOfAdTrees = new List<IAdTree>();
+                bool isAdded = false;
 
-                // Go via active adtrees.
-                foreach (IAdTree activeAdTree in myActiveAdTrees)
+                // Consider primitive transferences for each homonym e.g. O>A.
+                IEnumerable<IAdTree> homonymsAndPrimitiveTransferences = homonymAdTrees
+                    .SelectMany(x => new IAdTree[] { x }.Concat(GetPrimitiveTransferences(x)))
+                    .Distinct();
+
+                // Update active adtrees.
+                if (myActiveAdTrees.Count != 0)
                 {
-                    // Go via all homonyms and primitive transferences.
-                    foreach (IAdTree newAdTree in homonymsAndPrimitiveTransferences)
+                    List<IAdTree> newListOfAdTrees = new List<IAdTree>();
+
+                    // Go via active adtrees.
+                    foreach (IAdTree activeAdTree in myActiveAdTrees)
                     {
-                        // Try to append.
-                        TryToAppend(activeAdTree, newAdTree, newListOfAdTrees);
+                        // Go via all homonyms and primitive transferences.
+                        foreach (IAdTree newAdTree in homonymsAndPrimitiveTransferences)
+                        {
+                            // Try to append.
+                            TryToAppend(activeAdTree, newAdTree, newListOfAdTrees);
+                        }
+                    }
+
+                    if (newListOfAdTrees.Count > 0)
+                    {
+                        myActiveAdTrees = newListOfAdTrees;
+                        isAdded = true;
+                    }
+                }
+                // Create new adtrees.
+                else
+                {
+                    // Start active adtrees.
+                    myActiveAdTrees.AddRange(homonymsAndPrimitiveTransferences);
+
+                    if (myActiveAdTrees.Count > 0)
+                    {
+                        isAdded = true;
                     }
                 }
 
-                if (newListOfAdTrees.Count > 0)
-                {
-                    myActiveAdTrees = newListOfAdTrees;
-                    isAdded = true;
-                }
+                return isAdded;
             }
-            // Create new adtrees.
-            else
-            {
-                // Start active adtrees.
-                myActiveAdTrees.AddRange(homonymsAndPrimitiveTransferences);
-
-                if (myActiveAdTrees.Count > 0)
-                {
-                    isAdded = true;
-                }
-            }
-
-            return isAdded;
         }
 
 
         private IEnumerable<IAdTree> GetAdTrees(IEnumerable<Morpheme> morphemes)
         {
-            foreach (Morpheme morpheme in morphemes)
+            using (Trace.Entering())
             {
-                IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindPatterns(morpheme);
-
-                // Go via patterns matching the incoming morpheme.
-                foreach (Pattern pattern in matchingPatterns)
+                foreach (Morpheme morpheme in morphemes)
                 {
-                    // Create the adtree element from the incoming morpheme and its pattern.
-                    IAdTree newAdTree = new AdTree(morpheme, pattern);
-                    yield return newAdTree;
+                    IEnumerable<Pattern> matchingPatterns = myConstructiveDictionary.FindPatterns(morpheme);
+
+                    // Go via patterns matching the incoming morpheme.
+                    foreach (Pattern pattern in matchingPatterns)
+                    {
+                        // Create the adtree element from the incoming morpheme and its pattern.
+                        IAdTree newAdTree = new AdTree(morpheme, pattern);
+                        yield return newAdTree;
+                    }
                 }
             }
         }
 
         private IEnumerable<IAdTree> GetPrimitiveTransferences(IAdTree adTree)
         {
-            IEnumerable<Pattern> patterns = myConstructiveDictionary.FindGrammarCharacterTransferencePatterns(adTree.Morpheme);
-            foreach (Pattern pattern in patterns)
+            using (Trace.Entering())
             {
-                if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
+                IEnumerable<Pattern> patterns = myConstructiveDictionary.FindGrammarCharacterTransferencePatterns(adTree.Morpheme);
+                foreach (Pattern pattern in patterns)
                 {
-                    IAdTree adTreeCopy = adTree.MakeShallowCopy();
-                    IAdTree transferenceAdTree = new AdTree(new Morpheme("", isRule.ReferenceValue), pattern);
-                    transferenceAdTree.Right = adTreeCopy;
-                    yield return transferenceAdTree;
+                    if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
+                    {
+                        IAdTree adTreeCopy = adTree.MakeShallowCopy();
+                        IAdTree transferenceAdTree = new AdTree(new Morpheme("", isRule.ReferenceValue), pattern);
+                        transferenceAdTree.Right = adTreeCopy;
+                        yield return transferenceAdTree;
+                    }
                 }
             }
         }
 
         private void TryToAppend(IAdTree current, IAdTree newElement, List<IAdTree> results)
         {
-            IAdTree placeToAppend = GetPlaceToAppend(current);
-
-            // If an adposition needs to be filled.
-            if (!placeToAppend.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
-                !placeToAppend.Pattern.MorphemeRule.Evaluate(placeToAppend.Morpheme))
+            using (Trace.Entering())
             {
-                if (placeToAppend.Pattern.Equals(newElement.Pattern))
+                IAdTree placeToAppend = GetPlaceToAppend(current);
+
+                // If an adposition needs to be filled.
+                if (!placeToAppend.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
+                    !placeToAppend.Pattern.MorphemeRule.Evaluate(placeToAppend.Morpheme))
                 {
-                    IAdTree newElementCopy = newElement.MakeShallowCopy();
-                    IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
-                    adTreeCopy.Replace(newElementCopy);
-                    results.Add(newElementCopy);
+                    if (placeToAppend.Pattern.Equals(newElement.Pattern))
+                    {
+                        IAdTree newElementCopy = newElement.MakeShallowCopy();
+                        IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
+                        adTreeCopy.Replace(newElementCopy);
+                        results.Add(newElementCopy);
+                    }
+
+                    return;
                 }
 
-                return;
-            }
-
-            bool isMorphematicAdPosition = newElement.Pattern.IsMorphematicAdPosition();
-            bool canAppendIndirectly = CanAppendIndirectly(current) && !isMorphematicAdPosition;
+                bool isMorphematicAdPosition = newElement.Pattern.IsMorphematicAdPosition();
+                bool canAppendIndirectly = CanAppendIndirectly(current) && !isMorphematicAdPosition;
 
 
-            // If the new element can be attached to left.
-            if (placeToAppend.Left == null && !placeToAppend.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
-            {
-                // Try to attach the new element directly.
-                if (placeToAppend.CanAttachToLeft(newElement))
+                // If the new element can be attached to left.
+                if (placeToAppend.Left == null && !placeToAppend.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
                 {
-                    IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
-                    IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
-                    adTreeCopy.Left = newAdTreeElementCopy;
-                    results.Add(newAdTreeElementCopy);
-                }
-                if (canAppendIndirectly)
-                {
-                    // Try to attach the new element indirectly.
-                    TryToAppendIndirectly(AttachingPosition.ParrentForLeft, placeToAppend, newElement, results, 2);
-                }
-            }
-
-            // If the new element can be attached to right.
-            if (placeToAppend.Right == null && !placeToAppend.Pattern.RightRule.Equals(MorphemeRule.Nothing))
-            {
-                // Try to attach the new element directly.
-                if (placeToAppend.CanAttachToRight(newElement))
-                {
-                    IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
-                    IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
-                    adTreeCopy.Right = newAdTreeElementCopy;
-                    results.Add(newAdTreeElementCopy);
-                }
-                if (canAppendIndirectly)
-                {
-                    // Try to attach the new element indirectly.
-                    TryToAppendIndirectly(AttachingPosition.ParrentForRight, placeToAppend, newElement, results, 2);
-                }
-            }
-
-            // If the new element can attach the placeToAppend to its left or right.
-            // If the adtree has free adposition - i.e. it can be attached to left or right.
-            if (placeToAppend.AdPosition == null)
-            {
-                // The new element tries to attach the adtree to its left.
-                if (newElement.Left == null && !newElement.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
-                {
-                    if (newElement.CanAttachToLeft(placeToAppend))
+                    // Try to attach the new element directly.
+                    if (placeToAppend.CanAttachToLeft(newElement))
                     {
                         IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
                         IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
-                        newAdTreeElementCopy.Left = adTreeCopy;
-                        results.Add(adTreeCopy);
+                        adTreeCopy.Left = newAdTreeElementCopy;
+                        results.Add(newAdTreeElementCopy);
                     }
-                    // Try to attach the adtree indirectly via new element's left.
-                    else if (canAppendIndirectly)
+                    if (canAppendIndirectly)
                     {
-                        TryToAppendIndirectly(AttachingPosition.ParrentForLeft, newElement, placeToAppend, results, 2);
+                        // Try to attach the new element indirectly.
+                        TryToAppendIndirectly(AttachingPosition.ParrentForLeft, placeToAppend, newElement, results, 2);
                     }
                 }
 
-                // The new element tries to attach the adtree to its right.
-                if (newElement.Right == null && !newElement.Pattern.RightRule.Equals(MorphemeRule.Nothing))
+                // If the new element can be attached to right.
+                if (placeToAppend.Right == null && !placeToAppend.Pattern.RightRule.Equals(MorphemeRule.Nothing))
                 {
-                    if (newElement.CanAttachToRight(placeToAppend))
+                    // Try to attach the new element directly.
+                    if (placeToAppend.CanAttachToRight(newElement))
                     {
                         IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
                         IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
-                        newAdTreeElementCopy.Right = adTreeCopy;
-                        results.Add(adTreeCopy);
+                        adTreeCopy.Right = newAdTreeElementCopy;
+                        results.Add(newAdTreeElementCopy);
                     }
-                    // Try to attach the adtree indirectly via new element's right.
-                    else if (canAppendIndirectly)
+                    if (canAppendIndirectly)
                     {
-                        TryToAppendIndirectly(AttachingPosition.ParrentForRight, newElement, placeToAppend, results, 2);
+                        // Try to attach the new element indirectly.
+                        TryToAppendIndirectly(AttachingPosition.ParrentForRight, placeToAppend, newElement, results, 2);
                     }
                 }
 
-                if (canAppendIndirectly)
+                // If the new element can attach the placeToAppend to its left or right.
+                // If the adtree has free adposition - i.e. it can be attached to left or right.
+                if (placeToAppend.AdPosition == null)
                 {
-                    // Also try to connect the adtree and the new element indirectly via adtree adposition.
-                    TryToAppendIndirectly(AttachingPosition.ChildOnLeft, placeToAppend, newElement, results, 2);
-                    TryToAppendIndirectly(AttachingPosition.ChildOnRight, placeToAppend, newElement, results, 2);
+                    // The new element tries to attach the adtree to its left.
+                    if (newElement.Left == null && !newElement.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
+                    {
+                        if (newElement.CanAttachToLeft(placeToAppend))
+                        {
+                            IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
+                            IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
+                            newAdTreeElementCopy.Left = adTreeCopy;
+                            results.Add(adTreeCopy);
+                        }
+                        // Try to attach the adtree indirectly via new element's left.
+                        else if (canAppendIndirectly)
+                        {
+                            TryToAppendIndirectly(AttachingPosition.ParrentForLeft, newElement, placeToAppend, results, 2);
+                        }
+                    }
+
+                    // The new element tries to attach the adtree to its right.
+                    if (newElement.Right == null && !newElement.Pattern.RightRule.Equals(MorphemeRule.Nothing))
+                    {
+                        if (newElement.CanAttachToRight(placeToAppend))
+                        {
+                            IAdTree newAdTreeElementCopy = newElement.MakeShallowCopy();
+                            IAdTree adTreeCopy = placeToAppend.MakeShallowCopy();
+                            newAdTreeElementCopy.Right = adTreeCopy;
+                            results.Add(adTreeCopy);
+                        }
+                        // Try to attach the adtree indirectly via new element's right.
+                        else if (canAppendIndirectly)
+                        {
+                            TryToAppendIndirectly(AttachingPosition.ParrentForRight, newElement, placeToAppend, results, 2);
+                        }
+                    }
+
+                    if (canAppendIndirectly)
+                    {
+                        // Also try to connect the adtree and the new element indirectly via adtree adposition.
+                        TryToAppendIndirectly(AttachingPosition.ChildOnLeft, placeToAppend, newElement, results, 2);
+                        TryToAppendIndirectly(AttachingPosition.ChildOnRight, placeToAppend, newElement, results, 2);
+                    }
                 }
             }
         }
 
         private void TryToAppendIndirectly(AttachingPosition startElementAppendPosition, IAdTree start, IAdTree end, List<IAdTree> results, int stopLevel)
         {
-            if (stopLevel <= 0)
+            using (Trace.Entering())
             {
-                return;
-            }
-            --stopLevel;
-
-
-
-            GrammarCharacter startGrammarCharacter = GrammarCharacter.e;
-            GrammarCharacter endGrammarCharacter = GrammarCharacter.e;
-
-            // If start adTree connects the bridge via its left.
-            if (startElementAppendPosition == AttachingPosition.ParrentForLeft)
-            {
-                startGrammarCharacter = start.Pattern.LeftRule.GrammarCharacter;
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
-            }
-            // If start adTree connects the bridge via its right.
-            else if (startElementAppendPosition == AttachingPosition.ParrentForRight)
-            {
-                startGrammarCharacter = start.Pattern.RightRule.GrammarCharacter;
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
-            }
-            // If the bridge connects the start adtree via its left.
-            else if (startElementAppendPosition == AttachingPosition.ChildOnLeft)
-            {
-                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
-            }
-            // If the bridge connects the start adtree via its right.
-            else if (startElementAppendPosition == AttachingPosition.ChildOnRight)
-            {
-                startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
-            }
-
-            // Get possibile ways how to connect new element.
-            IEnumerable<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
-                .FindAllEdges(startGrammarCharacter, endGrammarCharacter);
-
-            // Go via all possible ways.
-            foreach (IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>> path in connectionPaths)
-            {
-                IAdTree startCopy = start.MakeShallowCopy();
-                IAdTree endCopy = end.MakeShallowCopy();
-
-                IAdTree previousBridge = null;
-
-                // Go via the path.
-                for (int i = 0; i < path.Count; ++i)
+                if (stopLevel <= 0)
                 {
-                    DirectedEdge<GrammarCharacter, Pattern> edge = path[i];
+                    return;
+                }
+                --stopLevel;
 
-                    BigInteger attributes = edge.Value.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> referenceAttributes ? referenceAttributes.ReferenceValue : edge.Value.MorphemeRule.GrammarCharacter.GetAttributes();
-                    IAdTree bridge = new AdTree(new Morpheme("", attributes), edge.Value);
 
-                    // If it is the first item on the path.
-                    if (i == 0)
+
+                GrammarCharacter startGrammarCharacter = GrammarCharacter.e;
+                GrammarCharacter endGrammarCharacter = GrammarCharacter.e;
+
+                // If start adTree connects the bridge via its left.
+                if (startElementAppendPosition == AttachingPosition.ParrentForLeft)
+                {
+                    startGrammarCharacter = start.Pattern.LeftRule.GrammarCharacter;
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                }
+                // If start adTree connects the bridge via its right.
+                else if (startElementAppendPosition == AttachingPosition.ParrentForRight)
+                {
+                    startGrammarCharacter = start.Pattern.RightRule.GrammarCharacter;
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                }
+                // If the bridge connects the start adtree via its left.
+                else if (startElementAppendPosition == AttachingPosition.ChildOnLeft)
+                {
+                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                }
+                // If the bridge connects the start adtree via its right.
+                else if (startElementAppendPosition == AttachingPosition.ChildOnRight)
+                {
+                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                }
+
+                // Get possibile ways how to connect new element.
+                IEnumerable<IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>>> connectionPaths = myConstructiveDictionary.PatternGraph
+                    .FindAllEdges(startGrammarCharacter, endGrammarCharacter);
+
+                // Go via all possible ways.
+                foreach (IReadOnlyList<DirectedEdge<GrammarCharacter, Pattern>> path in connectionPaths)
+                {
+                    IAdTree startCopy = start.MakeShallowCopy();
+                    IAdTree endCopy = end.MakeShallowCopy();
+
+                    IAdTree previousBridge = null;
+
+                    // Go via the path.
+                    for (int i = 0; i < path.Count; ++i)
                     {
-                        if (startElementAppendPosition == AttachingPosition.ParrentForLeft)
+                        DirectedEdge<GrammarCharacter, Pattern> edge = path[i];
+
+                        BigInteger attributes = edge.Value.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> referenceAttributes ? referenceAttributes.ReferenceValue : edge.Value.MorphemeRule.GrammarCharacter.GetAttributes();
+                        IAdTree bridge = new AdTree(new Morpheme("", attributes), edge.Value);
+
+                        // If it is the first item on the path.
+                        if (i == 0)
                         {
-                            if (startCopy.Left == null && startCopy.CanAttachToLeft(bridge))
+                            if (startElementAppendPosition == AttachingPosition.ParrentForLeft)
                             {
-                                startCopy.Left = bridge;
+                                if (startCopy.Left == null && startCopy.CanAttachToLeft(bridge))
+                                {
+                                    startCopy.Left = bridge;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
-                            else
+                            else if (startElementAppendPosition == AttachingPosition.ParrentForRight)
                             {
-                                break;
+                                if (startCopy.Right == null && startCopy.CanAttachToRight(bridge))
+                                {
+                                    startCopy.Right = bridge;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
-                        }
-                        else if (startElementAppendPosition == AttachingPosition.ParrentForRight)
-                        {
-                            if (startCopy.Right == null && startCopy.CanAttachToRight(bridge))
+                            else if (startElementAppendPosition == AttachingPosition.ChildOnLeft)
                             {
-                                startCopy.Right = bridge;
+                                if (bridge.Left == null && bridge.CanAttachToLeft(startCopy))
+                                {
+                                    bridge.Left = startCopy;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
-                            else
+                            else if (startElementAppendPosition == AttachingPosition.ChildOnRight)
                             {
-                                break;
+                                if (bridge.Right == null && bridge.CanAttachToRight(startCopy))
+                                {
+                                    bridge.Right = startCopy;
+                                }
+                                else
+                                {
+                                    break;
+                                }
                             }
-                        }
-                        else if (startElementAppendPosition == AttachingPosition.ChildOnLeft)
-                        {
-                            if (bridge.Left == null && bridge.CanAttachToLeft(startCopy))
-                            {
-                                bridge.Left = startCopy;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                        else if (startElementAppendPosition == AttachingPosition.ChildOnRight)
-                        {
-                            if (bridge.Right == null && bridge.CanAttachToRight(startCopy))
-                            {
-                                bridge.Right = startCopy;
-                            }
-                            else
-                            {
-                                break;
-                            }
-                        }
-                    }
-                    else
-                    {
-                        if (previousBridge.Left == null && previousBridge.CanAttachToLeft(bridge))
-                        {
-                            previousBridge.Left = bridge;
-                        }
-                        else if (previousBridge.Right == null && previousBridge.CanAttachToRight(bridge))
-                        {
-                            previousBridge.Right = bridge;
                         }
                         else
                         {
-                            break;
+                            if (previousBridge.Left == null && previousBridge.CanAttachToLeft(bridge))
+                            {
+                                previousBridge.Left = bridge;
+                            }
+                            else if (previousBridge.Right == null && previousBridge.CanAttachToRight(bridge))
+                            {
+                                previousBridge.Right = bridge;
+                            }
+                            else
+                            {
+                                break;
+                            }
                         }
+
+                        // If it is the last item in the path.
+                        if (i == path.Count - 1)
+                        {
+                            if (bridge.Left == null && bridge.CanAttachToLeft(end))
+                            {
+                                //TryToAppendIndirectly(AttachingPosition.ParrentForLeft, bridge, endCopy, results, stopLevel);
+
+                                bridge.Left = endCopy;
+                                results.Add(endCopy);
+                            }
+                            else if (bridge.Right == null && bridge.CanAttachToRight(end))
+                            {
+                                //TryToAppendIndirectly(AttachingPosition.ParrentForRight, bridge, endCopy, results, stopLevel);
+
+                                bridge.Right = endCopy;
+                                results.Add(endCopy);
+                            }
+                            else
+                            {
+                                break;
+                            }
+                        }
+
+                        previousBridge = bridge;
                     }
-
-                    // If it is the last item in the path.
-                    if (i == path.Count - 1)
-                    {
-                        if (bridge.Left == null && bridge.CanAttachToLeft(end))
-                        {
-                            //TryToAppendIndirectly(AttachingPosition.ParrentForLeft, bridge, endCopy, results, stopLevel);
-
-                            bridge.Left = endCopy;
-                            results.Add(endCopy);
-                        }
-                        else if (bridge.Right == null && bridge.CanAttachToRight(end))
-                        {
-                            //TryToAppendIndirectly(AttachingPosition.ParrentForRight, bridge, endCopy, results, stopLevel);
-
-                            bridge.Right = endCopy;
-                            results.Add(endCopy);
-                        }
-                        else
-                        {
-                            break;
-                        }
-                    }
-
-                    previousBridge = bridge;
                 }
             }
         }
 
         private bool CanAppendIndirectly(IAdTree current)
         {
-            IEnumerable<IAdTree> incomleteAdTrees = current.GetSequenceToRoot().Where(x => !x.IsComplete()).Take(5);
-            int count = incomleteAdTrees.Count();
-            return count < 5;
+            using (Trace.Entering())
+            {
+                IEnumerable<IAdTree> incomleteAdTrees = current.GetSequenceToRoot().Where(x => !x.IsComplete()).Take(5);
+                int count = incomleteAdTrees.Count();
+                return count < 5;
+            }
         }
 
         private IAdTree GetPlaceToAppend(IAdTree current)
         {
-            IEnumerable<IAdTree> adTrees = current.GetSequenceToRoot();
-            foreach (IAdTree adTree in adTrees)
+            using (Trace.Entering())
             {
-                // If left or right position can be filled.
-                if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) ||
-                    adTree.Right == null && !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) ||
-                    // or an adposition morpheme is still expected.
-                    !adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
-                    !adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
+                IEnumerable<IAdTree> adTrees = current.GetSequenceToRoot();
+                foreach (IAdTree adTree in adTrees)
                 {
-                    return adTree;
+                    // If left or right position can be filled.
+                    if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) ||
+                        adTree.Right == null && !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) ||
+                        // or an adposition morpheme is still expected.
+                        !adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
+                        !adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
+                    {
+                        return adTree;
+                    }
                 }
-            }
 
-            return current.Root;
+                return current.Root;
+            }
         }
 
         private GrammarCharacter ChooseGrammarCharacter(params GrammarCharacter[] grammarCharacters)
         {
-            GrammarCharacter result = GrammarCharacter.e;
-
-            foreach (GrammarCharacter grammarCharacter in grammarCharacters)
+            using (Trace.Entering())
             {
-                if (grammarCharacter != GrammarCharacter.e)
-                {
-                    result = grammarCharacter;
+                GrammarCharacter result = GrammarCharacter.e;
 
-                    if (grammarCharacter != GrammarCharacter.U)
+                foreach (GrammarCharacter grammarCharacter in grammarCharacters)
+                {
+                    if (grammarCharacter != GrammarCharacter.e)
                     {
-                        break;
+                        result = grammarCharacter;
+
+                        if (grammarCharacter != GrammarCharacter.U)
+                        {
+                            break;
+                        }
                     }
                 }
-            }
 
-            return result;
+                return result;
+            }
         }
     }
 }

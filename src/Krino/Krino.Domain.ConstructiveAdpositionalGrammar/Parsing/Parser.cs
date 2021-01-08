@@ -2,6 +2,7 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+using Krino.Vertical.Utils.Diagnostic;
 using System;
 using System.Linq;
 
@@ -13,53 +14,65 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public Parser(IConstructiveDictionary constructiveDictionary)
         {
-            myConstructiveDictionary = constructiveDictionary;
+            using (Trace.Entering())
+            {
+                myConstructiveDictionary = constructiveDictionary;
+            }
         }
 
         public IAdTree Deserialize(string text, int maxMorphDistance)
         {
-            IAdTree result = null;
-
-            if (!string.IsNullOrEmpty(text))
+            using (Trace.Entering())
             {
-                AdTreeBuilder builder = new AdTreeBuilder(myConstructiveDictionary);
+                IAdTree result = null;
 
-                string normalizedText = Normalize(text);
-
-                string[] words = normalizedText.ToLowerInvariant().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (string word in words)
+                if (!string.IsNullOrEmpty(text))
                 {
-                    builder.AddWord(word, maxMorphDistance);
+                    AdTreeBuilder builder = new AdTreeBuilder(myConstructiveDictionary);
+
+                    string normalizedText = Normalize(text);
+
+                    string[] words = normalizedText.ToLowerInvariant().Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (string word in words)
+                    {
+                        builder.AddWord(word, maxMorphDistance);
+                    }
+
+                    builder.Purify();
+
+                    result = builder.ActiveAdTrees.FirstOrDefault();
                 }
 
-                builder.Purify();
-
-                result = builder.ActiveAdTrees.FirstOrDefault();
+                return result;
             }
-
-            return result;
         }
 
         public string Serialize(IAdTree adTree)
         {
-            string result = adTree?.Phrase ?? "";
-            return result;
+            using (Trace.Entering())
+            {
+                string result = adTree?.Phrase ?? "";
+                return result;
+            }
         }
 
         private string Normalize(string s)
         {
-            string result = s;
-
-            foreach (Morpheme morpheme in myConstructiveDictionary.NonLexemes)
+            using (Trace.Entering())
             {
-                if (!string.IsNullOrEmpty(morpheme.Morph) &&
-                    Attributes.U.NonLexeme.PunctuationMark.IsIn(morpheme.Attributes))
-                {
-                    result = result.Replace(morpheme.Morph, string.Join("", " ", morpheme.Morph, " "));
-                }
-            }
+                string result = s;
 
-            return result;
+                foreach (Morpheme morpheme in myConstructiveDictionary.NonLexemes)
+                {
+                    if (!string.IsNullOrEmpty(morpheme.Morph) &&
+                        Attributes.U.NonLexeme.PunctuationMark.IsIn(morpheme.Attributes))
+                    {
+                        result = result.Replace(morpheme.Morph, string.Join("", " ", morpheme.Morph, " "));
+                    }
+                }
+
+                return result;
+            }
         }
     }
 }
