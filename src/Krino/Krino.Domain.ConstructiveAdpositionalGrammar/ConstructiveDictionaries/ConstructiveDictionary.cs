@@ -4,6 +4,7 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
 using Krino.Vertical.Utils.Collections;
+using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Graphs;
 using Krino.Vertical.Utils.Rules;
 using System;
@@ -23,11 +24,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public ConstructiveDictionary(IEnumerable<Morpheme> morphemes, IEnumerable<Pattern> patterns)
         {
-            morphemes = morphemes ?? Enumerable.Empty<Morpheme>();
-            Patterns = patterns ?? Enumerable.Empty<Pattern>();
+            using (Trace.Entering())
+            {
+                morphemes = morphemes ?? Enumerable.Empty<Morpheme>();
+                Patterns = patterns ?? Enumerable.Empty<Pattern>();
 
-            InitializeMorphemes(morphemes);
-            InitializePatternGraph();
+                InitializeMorphemes(morphemes);
+                InitializePatternGraph();
+            }
         }
 
 
@@ -40,134 +44,158 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IEnumerable<Morpheme> FindLexemes(string word, int maxDistance)
         {
-            IEnumerable<Morpheme> result = Enumerable.Empty<Morpheme>();
-
-            // Try to find exact lexemes.
-            if (myLexemes.TryGetValues(word, out ReadOnlySet<Morpheme> lexemes))
+            using (Trace.Entering())
             {
-                result = lexemes;
-            }
+                IEnumerable<Morpheme> result = Enumerable.Empty<Morpheme>();
 
-            if (maxDistance > 0)
-            {
-                // Also try to find lexemes which have similar morph.
-                IEnumerable<string> similarMorphs = myLexemes.Keys.FindSimilar(word, maxDistance);
-
-                if (lexemes != null)
+                // Try to find exact lexemes.
+                if (myLexemes.TryGetValues(word, out ReadOnlySet<Morpheme> lexemes))
                 {
-                    // Note: skip morphemes already returned among exact lexemes.
-                    result = result.Concat(similarMorphs.SelectMany(x => myLexemes[x].Where(y => !lexemes.Contains(y))));
+                    result = lexemes;
                 }
-                else
-                {
-                    result = result.Concat(similarMorphs.SelectMany(x => myLexemes[x]));
-                }
-            }
 
-            return result;
+                if (maxDistance > 0)
+                {
+                    // Also try to find lexemes which have similar morph.
+                    IEnumerable<string> similarMorphs = myLexemes.Keys.FindSimilar(word, maxDistance);
+
+                    if (lexemes != null)
+                    {
+                        // Note: skip morphemes already returned among exact lexemes.
+                        result = result.Concat(similarMorphs.SelectMany(x => myLexemes[x].Where(y => !lexemes.Contains(y))));
+                    }
+                    else
+                    {
+                        result = result.Concat(similarMorphs.SelectMany(x => myLexemes[x]));
+                    }
+                }
+
+                return result;
+            }
         }
 
         public IEnumerable<Morpheme> FindNonLexemes(string morph)
         {
-            myNonLexemes.TryGetValues(morph, out ReadOnlySet<Morpheme> result);
-            return result ?? Enumerable.Empty<Morpheme>();
+            using (Trace.Entering())
+            {
+                myNonLexemes.TryGetValues(morph, out ReadOnlySet<Morpheme> result);
+                return result ?? Enumerable.Empty<Morpheme>();
+            }
         }
 
         public WordDecomposition DecomposeWord(string word, int maxMorphDistance)
         {
-            List<WordConstruct> wordConstructs = FindPossibleWordConstructions(word, maxMorphDistance, new List<Morpheme>())
+            using (Trace.Entering())
+            {
+                List<WordConstruct> wordConstructs = FindPossibleWordConstructions(word, maxMorphDistance, new List<Morpheme>())
                 // Note: as an input parameter there is the list which is filled during the iteration.
                 //       Therefore it must be iterated in once - so it must be converted to the list.
                 .ToList();
 
-            List<Morpheme> nonLexemes = FindNonLexemes(word).ToList();
+                List<Morpheme> nonLexemes = FindNonLexemes(word).ToList();
 
-            List<WordConstruct> wordCompositions = new List<WordConstruct>();
-            if (wordConstructs.Any())
-            {
-                wordCompositions.AddRange(wordConstructs);
-            }
-            if (nonLexemes.Any())
-            {
-                var wordConstruct = new WordConstruct(nonLexemes);
-                wordCompositions.Add(wordConstruct);
-            }
+                List<WordConstruct> wordCompositions = new List<WordConstruct>();
+                if (wordConstructs.Any())
+                {
+                    wordCompositions.AddRange(wordConstructs);
+                }
+                if (nonLexemes.Any())
+                {
+                    var wordConstruct = new WordConstruct(nonLexemes);
+                    wordCompositions.Add(wordConstruct);
+                }
 
-            var result = new WordDecomposition(word, wordCompositions);
-            return result;
+                var result = new WordDecomposition(word, wordCompositions);
+                return result;
+            }
         }
 
         public PhraseDecomposition DecomposePhrase(IEnumerable<string> phrase, int maxMorphDistance)
         {
-            List<WordDecomposition> wordDecompositions = new List<WordDecomposition>();
-
-            // Go via each word.
-            foreach (string word in phrase)
+            using (Trace.Entering())
             {
-                var wordDecomposition = DecomposeWord(word, maxMorphDistance);
+                List<WordDecomposition> wordDecompositions = new List<WordDecomposition>();
 
-                if (wordDecomposition.Compositions.Any())
+                // Go via each word.
+                foreach (string word in phrase)
                 {
-                    wordDecompositions.Add(wordDecomposition);
-                }
-            }
+                    var wordDecomposition = DecomposeWord(word, maxMorphDistance);
 
-            var result = new PhraseDecomposition(wordDecompositions);
-            return result;
+                    if (wordDecomposition.Compositions.Any())
+                    {
+                        wordDecompositions.Add(wordDecomposition);
+                    }
+                }
+
+                var result = new PhraseDecomposition(wordDecompositions);
+                return result;
+            }
         }
 
         public IEnumerable<Pattern> FindPatterns(Morpheme morpheme)
         {
-            IEnumerable<Pattern> result = Patterns
+            using (Trace.Entering())
+            {
+                IEnumerable<Pattern> result = Patterns
                 .Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
                             !x.IsGrammarCharacterTransference() &&
                             x.MorphemeRule.Evaluate(morpheme));
-            return result;
+                return result;
+            }
         }
 
         public IEnumerable<Pattern> FindGrammarCharacterTransferencePatterns(Morpheme morpheme)
         {
-            IEnumerable<Pattern> result = Patterns
+            using (Trace.Entering())
+            {
+                IEnumerable<Pattern> result = Patterns
                 .Where(x => x.IsGrammarCharacterTransference() && x.RightRule.Evaluate(morpheme));
 
-            return result;
+                return result;
+            }
         }
 
         private void InitializeMorphemes(IEnumerable<Morpheme> morphemes)
         {
-            MorphemeEqualityComparer morphemeEqualityComparer = new MorphemeEqualityComparer();
-            myLexemes = new MultiKeyDistinctValueDictionary<string, Morpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
-            myNonLexemes = new MultiKeyDistinctValueDictionary<string, Morpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
-            foreach (Morpheme morpheme in morphemes)
+            using (Trace.Entering())
             {
-                if (morpheme.IsLexeme)
+                MorphemeEqualityComparer morphemeEqualityComparer = new MorphemeEqualityComparer();
+                myLexemes = new MultiKeyDistinctValueDictionary<string, Morpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
+                myNonLexemes = new MultiKeyDistinctValueDictionary<string, Morpheme>(EqualityComparer<string>.Default, morphemeEqualityComparer);
+                foreach (Morpheme morpheme in morphemes)
                 {
-                    myLexemes.Add(morpheme.Morph, morpheme);
-                }
-                else
-                {
-                    myNonLexemes.Add(morpheme.Morph, morpheme);
+                    if (morpheme.IsLexeme)
+                    {
+                        myLexemes.Add(morpheme.Morph, morpheme);
+                    }
+                    else
+                    {
+                        myNonLexemes.Add(morpheme.Morph, morpheme);
+                    }
                 }
             }
         }
 
         private void InitializePatternGraph()
         {
-            // Defines how patterns connect grammar characters.
-            PatternGraph = new DirectedGraph<GrammarCharacter, Pattern>();
-            PatternGraph.AddVertices(GrammarCharacterExt.GetValues());
-
-            foreach (Pattern pattern in Patterns)
+            using (Trace.Entering())
             {
-                // If the pattern connects two grammar characters.
-                bool isEdge = pattern.LeftRule.GrammarCharacter != GrammarCharacter.e && pattern.RightRule.GrammarCharacter != GrammarCharacter.e;
-                if (isEdge)
-                {
-                    PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter, pattern.RightRule.GrammarCharacter, pattern);
+                // Defines how patterns connect grammar characters.
+                PatternGraph = new DirectedGraph<GrammarCharacter, Pattern>();
+                PatternGraph.AddVertices(GrammarCharacterExt.GetValues());
 
-                    if (pattern.LeftRule.GrammarCharacter != pattern.RightRule.GrammarCharacter)
+                foreach (Pattern pattern in Patterns)
+                {
+                    // If the pattern connects two grammar characters.
+                    bool isEdge = pattern.LeftRule.GrammarCharacter != GrammarCharacter.e && pattern.RightRule.GrammarCharacter != GrammarCharacter.e;
+                    if (isEdge)
                     {
-                        PatternGraph.AddEdge(pattern.RightRule.GrammarCharacter, pattern.LeftRule.GrammarCharacter, pattern);
+                        PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter, pattern.RightRule.GrammarCharacter, pattern);
+
+                        if (pattern.LeftRule.GrammarCharacter != pattern.RightRule.GrammarCharacter)
+                        {
+                            PatternGraph.AddEdge(pattern.RightRule.GrammarCharacter, pattern.LeftRule.GrammarCharacter, pattern);
+                        }
                     }
                 }
             }
@@ -179,51 +207,53 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             int morphDistance,
             List<Morpheme> localSequence)
         {
-            // Find if the word is a lexeme.
-            IEnumerable<Morpheme> lexemes = FindLexemes(word, morphDistance);
-            foreach (Morpheme lexeme in lexemes)
+            using (Trace.Entering())
             {
-                localSequence.Add(lexeme);
-                var wordConstruct = new WordConstruct(localSequence.ToList());
-                yield return wordConstruct;
-                localSequence.RemoveAt(localSequence.Count - 1);
-            }
-
-            // Find if the word is a lexeme with suffixes.
-            IEnumerable<IReadOnlyList<Morpheme>> wordSuffixes = FindLexemeAndItsSuffixes(word, morphDistance, new List<Morpheme>());
-            foreach (IReadOnlyList<Morpheme> sequence in wordSuffixes)
-            {
-                var wordConstruct = new WordConstruct(localSequence.Concat(sequence.Reverse()).ToList());
-                yield return wordConstruct;
-            }
-
-            // Find if the word is a lexeme with prefixes and suffixes.
-            for (int i = 1; i < word.Length; ++i)
-            {
-                string nonLexeme = word.Substring(0, i);
-                IEnumerable<Morpheme> prefixHomonyms = FindNonLexemes(nonLexeme)
-                    .Where(x => Attributes.IsPrefix(x.Attributes));
-                if (prefixHomonyms.Any())
+                // Find if the word is a lexeme.
+                IEnumerable<Morpheme> lexemes = FindLexemes(word, morphDistance);
+                foreach (Morpheme lexeme in lexemes)
                 {
-                    string newWord = word.Substring(i);
+                    localSequence.Add(lexeme);
+                    var wordConstruct = new WordConstruct(localSequence.ToList());
+                    yield return wordConstruct;
+                    localSequence.RemoveAt(localSequence.Count - 1);
+                }
 
-                    foreach (Morpheme prefix in prefixHomonyms)
+                // Find if the word is a lexeme with suffixes.
+                IEnumerable<IReadOnlyList<Morpheme>> wordSuffixes = FindLexemeAndItsSuffixes(word, morphDistance, new List<Morpheme>());
+                foreach (IReadOnlyList<Morpheme> sequence in wordSuffixes)
+                {
+                    var wordConstruct = new WordConstruct(localSequence.Concat(sequence.Reverse()).ToList());
+                    yield return wordConstruct;
+                }
+
+                // Find if the word is a lexeme with prefixes and suffixes.
+                for (int i = 1; i < word.Length; ++i)
+                {
+                    string nonLexeme = word.Substring(0, i);
+                    IEnumerable<Morpheme> prefixHomonyms = FindNonLexemes(nonLexeme)
+                        .Where(x => Attributes.IsPrefix(x.Attributes));
+                    if (prefixHomonyms.Any())
                     {
-                        localSequence.Add(prefix);
+                        string newWord = word.Substring(i);
 
-                        // Try if there are sub-prefixes.
-                        IEnumerable<WordConstruct> sequences = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
-                        foreach (var sequence in sequences)
+                        foreach (Morpheme prefix in prefixHomonyms)
                         {
-                            var wordConstruct = new WordConstruct(sequence.Morphemes.ToList());
-                            yield return wordConstruct;
-                        }
+                            localSequence.Add(prefix);
 
-                        localSequence.RemoveAt(localSequence.Count - 1);
+                            // Try if there are sub-prefixes.
+                            IEnumerable<WordConstruct> sequences = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
+                            foreach (var sequence in sequences)
+                            {
+                                var wordConstruct = new WordConstruct(sequence.Morphemes.ToList());
+                                yield return wordConstruct;
+                            }
+
+                            localSequence.RemoveAt(localSequence.Count - 1);
+                        }
                     }
                 }
             }
-
         }
 
         private IEnumerable<IReadOnlyList<Morpheme>> FindLexemeAndItsSuffixes(
@@ -231,40 +261,43 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             int morphDistance,
             List<Morpheme> localSequence)
         {
-            // If there is some suffix.
-            if (localSequence.Count > 0)
+            using (Trace.Entering())
             {
-                // If the word is a lexeme.
-                IEnumerable<Morpheme> lexemes = FindLexemes(word, morphDistance);
-                foreach (Morpheme lexeme in lexemes)
+                // If there is some suffix.
+                if (localSequence.Count > 0)
                 {
-                    localSequence.Add(lexeme);
-                    yield return localSequence.ToList();
-                    localSequence.RemoveAt(localSequence.Count - 1);
-                }
-            }
-
-            // Try to find suffixes in the word.
-            for (int i = word.Length - 1; i > 0; --i)
-            {
-                string nonLexeme = word.Substring(i);
-                IEnumerable<Morpheme> suffixes = FindNonLexemes(nonLexeme)
-                    .Where(x => Attributes.IsSuffix(x.Attributes));
-                if (suffixes.Any())
-                {
-                    string newWord = word.Substring(0, i);
-
-                    foreach (Morpheme sufix in suffixes)
+                    // If the word is a lexeme.
+                    IEnumerable<Morpheme> lexemes = FindLexemes(word, morphDistance);
+                    foreach (Morpheme lexeme in lexemes)
                     {
-                        localSequence.Add(sufix);
-
-                        IEnumerable<IReadOnlyList<Morpheme>> sequences = FindLexemeAndItsSuffixes(newWord, morphDistance, localSequence);
-                        foreach (IReadOnlyList<Morpheme> sequence in sequences)
-                        {
-                            yield return sequence;
-                        }
-
+                        localSequence.Add(lexeme);
+                        yield return localSequence.ToList();
                         localSequence.RemoveAt(localSequence.Count - 1);
+                    }
+                }
+
+                // Try to find suffixes in the word.
+                for (int i = word.Length - 1; i > 0; --i)
+                {
+                    string nonLexeme = word.Substring(i);
+                    IEnumerable<Morpheme> suffixes = FindNonLexemes(nonLexeme)
+                        .Where(x => Attributes.IsSuffix(x.Attributes));
+                    if (suffixes.Any())
+                    {
+                        string newWord = word.Substring(0, i);
+
+                        foreach (Morpheme sufix in suffixes)
+                        {
+                            localSequence.Add(sufix);
+
+                            IEnumerable<IReadOnlyList<Morpheme>> sequences = FindLexemeAndItsSuffixes(newWord, morphDistance, localSequence);
+                            foreach (IReadOnlyList<Morpheme> sequence in sequences)
+                            {
+                                yield return sequence;
+                            }
+
+                            localSequence.RemoveAt(localSequence.Count - 1);
+                        }
                     }
                 }
             }

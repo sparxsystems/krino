@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -14,9 +15,14 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_1_1_Creator()
         {
+
+            //Trace.StartProfiler();
+
             ConstructiveDictionary dictionary = new ConstructiveDictionary(MorphemeProvider.Morphemes, PatternProvider.Patterns);
             AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
             List<IAdTree> results = adTreeCreator.Create("I have some good news and some bad news regarding the climate emergency .".ToLower().Split(" "));
+
+            //Trace.StopProfiler();
 
             Assert.AreEqual(2, results.Count);
             Assert.AreEqual("i", results[0].Right.Right.Right.Left.Morpheme.Morph);
