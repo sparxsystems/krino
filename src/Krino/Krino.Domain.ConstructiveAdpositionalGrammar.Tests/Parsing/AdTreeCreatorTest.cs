@@ -217,7 +217,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme)
                     .SetLeftFirst(),
 
-                Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme),
+                Pattern.GrammerCharacterTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()

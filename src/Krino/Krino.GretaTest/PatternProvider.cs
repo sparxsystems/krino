@@ -25,7 +25,7 @@ namespace Krino.GretaTest
             Pattern.Morpheme("O+", Attributes.O.NonLexeme.Suffix),
             Pattern.Morpheme("I+", Attributes.I.NonLexeme.Suffix),
 
-            Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme.Adjective, Attributes.O.Lexeme.Noun),
+            Pattern.GrammerCharacterTransference("O>A", Attributes.A.Lexeme.Adjective, Attributes.O.Lexeme.Noun),
 
 
             Pattern.Transference("I>SimpleFuture",

@@ -53,7 +53,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 RightRule = rightRule,
             };
 
-        public static Pattern PrimitiveTransference(string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
+        public static Pattern GrammerCharacterTransference(string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = MorphemeRule.Is("", morphemeAttributes),
@@ -173,6 +173,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return false;
         }
 
+        /// <summary>
+        /// Returns true if the pattern changes
+        /// </summary>
+        /// <returns></returns>
         public bool IsTransference()
         {
             // AdPosition
@@ -195,6 +199,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return false;
         }
 
+        /// <summary>
+        /// Returs true if the pattern just changes the grammar character.
+        /// </summary>
+        /// <returns></returns>
         public bool IsGrammarCharacterTransference()
         {
             // AdPosition

@@ -96,10 +96,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 }
             };
 
-            AttachPosition[] path = adTree.Right.Left.GetPath();
+            AttachingPosition[] path = adTree.Right.Left.GetPath();
             Assert.AreEqual(2, path.Length);
-            Assert.AreEqual(AttachPosition.ChildOnRight, path[0]);
-            Assert.AreEqual(AttachPosition.ChildOnLeft, path[1]);
+            Assert.AreEqual(AttachingPosition.ChildOnRight, path[0]);
+            Assert.AreEqual(AttachingPosition.ChildOnLeft, path[1]);
 
             // Root
             path = adTree.GetPath();
@@ -123,11 +123,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 }
             };
 
-            adTree.TryGetAdTree(new AttachPosition[] { AttachPosition.ChildOnRight, AttachPosition.ChildOnLeft }, out IAdTree result);
+            adTree.TryGetAdTree(new AttachingPosition[] { AttachingPosition.ChildOnRight, AttachingPosition.ChildOnLeft }, out IAdTree result);
             Assert.AreEqual("I", result.Morpheme.Morph);
 
             // Root
-            adTree.TryGetAdTree(new AttachPosition[] { }, out IAdTree root);
+            adTree.TryGetAdTree(new AttachingPosition[] { }, out IAdTree root);
             Assert.IsTrue(adTree == root);
         }
 
@@ -147,7 +147,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { RightRule = MorphemeRule.A_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme("", Attributes.A.Lexeme),
-                Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
+                Pattern.GrammerCharacterTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme("car", Attributes.O.Lexeme),
                     new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme })
@@ -281,7 +281,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { LeftRule = MorphemeRule.A_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme("", Attributes.A.Lexeme),
-                Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
+                Pattern.GrammerCharacterTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme("car", Attributes.O.Lexeme),
                     new Pattern() { MorphemeRule = MorphemeRule.O_Lexeme })
@@ -445,14 +445,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             AdTree adTree = new AdTree(new Morpheme("", 0), new Pattern());
             AdTree toAppend = new AdTree(new Morpheme("hello", 0), new Pattern());
-            adTree.Attach(toAppend, AttachPosition.ChildOnLeft);
+            adTree.Attach(toAppend, AttachingPosition.ChildOnLeft);
             Assert.AreEqual("hello", adTree.Left.Morpheme.Morph);
             Assert.IsNull(adTree.Right);
 
 
             adTree = new AdTree(new Morpheme("", 0), new Pattern());
             toAppend = new AdTree(new Morpheme("hello", 0), new Pattern());
-            adTree.Attach(toAppend, AttachPosition.ChildOnRight);
+            adTree.Attach(toAppend, AttachingPosition.ChildOnRight);
             Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
             Assert.IsTrue(adTree.Left == null);
         }
@@ -465,7 +465,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 Right = new AdTree(new Morpheme("A11", 0), new Pattern()),
             };
             AdTree toInsert = new AdTree(new Morpheme("hello", 0), new Pattern());
-            adTree.Right.Insert(toInsert, toInsert, AttachPosition.ChildOnLeft);
+            adTree.Right.Insert(toInsert, toInsert, AttachingPosition.ChildOnLeft);
 
             Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
             Assert.AreEqual("A11", adTree.Right.Left.Morpheme.Morph);
@@ -476,7 +476,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 Right = new AdTree(new Morpheme("A11", 0), new Pattern()),
             };
             toInsert = new AdTree(new Morpheme("hello", 0), new Pattern());
-            adTree.Right.Insert(toInsert, toInsert, AttachPosition.ChildOnRight);
+            adTree.Right.Insert(toInsert, toInsert, AttachingPosition.ChildOnRight);
             
             Assert.AreEqual("hello", adTree.Right.Morpheme.Morph);
             Assert.AreEqual("A11", adTree.Right.Right.Morpheme.Morph);
@@ -488,7 +488,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 Right = new AdTree(new Morpheme("A11", 0), new Pattern()),
             };
             toInsert = new AdTree(new Morpheme("hello", 0), new Pattern());
-            adTree.Insert(toInsert, toInsert, AttachPosition.ChildOnRight);
+            adTree.Insert(toInsert, toInsert, AttachingPosition.ChildOnRight);
 
             IAdTree root = adTree.Root;
             Assert.AreEqual("hello", root.Morpheme.Morph);
@@ -566,7 +566,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             AdTree adTree = new AdTree(Morpheme.Epsilon, Pattern.EpsilonAdPosition("A-O", Attributes.A.Lexeme, Attributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme("car", Attributes.O.Lexeme), Pattern.Morpheme(Attributes.O.Lexeme)),
-                Left = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
+                Left = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.GrammerCharacterTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
                 {
                     Right = new AdTree(new Morpheme("race", Attributes.O.Lexeme), Pattern.Morpheme(Attributes.O.Lexeme)),
                     Left = null,
@@ -592,7 +592,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsFalse(adTree.IsComplete());
 
 
-            adTree = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
+            adTree = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.GrammerCharacterTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
             {
                 Left = null,
                 Right = new AdTree(new Morpheme("", 0), new Pattern()),
@@ -600,7 +600,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.IsComplete());
 
             // Right is missing.
-            adTree = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.PrimitiveTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
+            adTree = new AdTree(new Morpheme("", Attributes.A.Lexeme), Pattern.GrammerCharacterTransference("O>A", Attributes.A.Lexeme, Attributes.O.Lexeme))
             {
                 Left = null,
                 Right = null,
