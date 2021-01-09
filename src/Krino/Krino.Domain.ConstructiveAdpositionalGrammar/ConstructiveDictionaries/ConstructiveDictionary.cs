@@ -1,16 +1,11 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Graphs;
-using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 {
@@ -19,13 +14,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     /// </summary>
     public class ConstructiveDictionary : IConstructiveDictionary
     {
+        private IAttributesModel myAttributesModel;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myLexemes;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myNonLexemes;
 
-        public ConstructiveDictionary(IEnumerable<Morpheme> morphemes, IEnumerable<Pattern> patterns)
+        public ConstructiveDictionary(IAttributesModel attributesModel, IEnumerable<Morpheme> morphemes, IEnumerable<Pattern> patterns)
         {
             using (Trace.Entering())
             {
+                myAttributesModel = attributesModel;
                 morphemes = morphemes ?? Enumerable.Empty<Morpheme>();
                 Patterns = patterns ?? Enumerable.Empty<Pattern>();
 
@@ -232,7 +229,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 {
                     string nonLexeme = word.Substring(0, i);
                     IEnumerable<Morpheme> prefixHomonyms = FindNonLexemes(nonLexeme)
-                        .Where(x => Attributes.IsPrefix(x.Attributes));
+                        .Where(x => myAttributesModel.IsPrefix(x.Attributes));
                     if (prefixHomonyms.Any())
                     {
                         string newWord = word.Substring(i);
@@ -281,7 +278,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 {
                     string nonLexeme = word.Substring(i);
                     IEnumerable<Morpheme> suffixes = FindNonLexemes(nonLexeme)
-                        .Where(x => Attributes.IsSuffix(x.Attributes));
+                        .Where(x => myAttributesModel.IsSuffix(x.Attributes));
                     if (suffixes.Any())
                     {
                         string newWord = word.Substring(0, i);

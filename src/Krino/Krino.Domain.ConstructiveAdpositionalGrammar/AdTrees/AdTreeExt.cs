@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Rules;
 using System;
@@ -170,10 +169,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <param name="adTree"></param>
         /// <param name="adTreeToAttach"></param>
+        /// <param name="attributesModel"></param>
         /// <returns></returns>
-        public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeToAttach)
+        public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeToAttach, IAttributesModel attributesModel)
         {
-            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachingPosition.ChildOnRight);
+            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachingPosition.ChildOnRight, attributesModel);
             return result;
         }
 
@@ -182,14 +182,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <param name="adTree"></param>
         /// <param name="adTreeToAttach"></param>
+        /// <param name="attributesModel"></param>
         /// <returns></returns>
-        public static bool CanAttachToLeft(this IAdTree adTree, IAdTree adTreeToAttach)
+        public static bool CanAttachToLeft(this IAdTree adTree, IAdTree adTreeToAttach, IAttributesModel attributesModel)
         {
-            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachingPosition.ChildOnLeft);
+            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachingPosition.ChildOnLeft, attributesModel);
             return result;
         }
 
-        private static bool CanAttachViaRule(this IAdTree adTree, IAdTree adTreeToAttach, AttachingPosition attachPosition)
+        private static bool CanAttachViaRule(this IAdTree adTree, IAdTree adTreeToAttach, AttachingPosition attachPosition, IAttributesModel attributesModel)
         {
             MorphemeRule rule = attachPosition == AttachingPosition.ChildOnLeft ? adTree.Pattern.LeftRule : adTree.Pattern.RightRule;
 
@@ -259,9 +260,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 if (morphematicAdTree != null)
                 {
                     // If it shall be attached to the right then check the valency.
-                    if (attachPosition == AttachingPosition.ChildOnRight && Attributes.I.Lexeme.Verb.IsIn(morphematicAdTree.Morpheme.Attributes))
+                    if (attachPosition == AttachingPosition.ChildOnRight && attributesModel.IsVerb(morphematicAdTree.Morpheme.Attributes))
                     {
-                        int valency = Attributes.I.Lexeme.Verb.Valency.GetNumberOfValencies(morphematicAdTree.Morpheme.Attributes);
+                        int valency = attributesModel.GetNumberOfValencies(morphematicAdTree.Morpheme.Attributes);
 
                         if (valency > -1)
                         {
@@ -293,14 +294,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     if (morphematicAdTree.Pattern.IsGrammarCharacterTransference())
                     {
-                        morphemeToEvaluate = new Morpheme(morphematicAdTree.Right.Morpheme.Morph, morphematicAdTree.Morpheme.Attributes);
+                        morphemeToEvaluate = new Morpheme(attributesModel, morphematicAdTree.Right.Morpheme.Morph, morphematicAdTree.Morpheme.Attributes);
                     }
                     else if (morphematicAdTree.Pattern.IsTransference())
                     {
                         string relevantMorph = morphematicAdTree.RightChildren.FirstOrDefault(x => !string.IsNullOrEmpty(x.Morpheme.Morph))?.Morpheme.Morph;
                         if (relevantMorph != null)
                         {
-                            morphemeToEvaluate = new Morpheme(relevantMorph, morphematicAdTree.Morpheme.Attributes);
+                            morphemeToEvaluate = new Morpheme(attributesModel, relevantMorph, morphematicAdTree.Morpheme.Attributes);
                         }
                         else
                         {
@@ -484,11 +485,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <param name="adTree"></param>
         /// <returns></returns>
-        public static IEnumerable<IAdTree> GetNonconformities(this IAdTree adTree)
+        public static IEnumerable<IAdTree> GetNonconformities(this IAdTree adTree, IAttributesModel attributesModel)
         {
             foreach (IAdTree item in adTree)
             {
-                if (!item.IsCorrect())
+                if (!item.IsCorrect(attributesModel))
                 {
                     yield return item;
                 }
@@ -500,7 +501,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <param name="adTree"></param>
         /// <returns></returns>
-        public static bool IsCorrect(this IAdTree adTree)
+        public static bool IsCorrect(this IAdTree adTree, IAttributesModel attributesModel)
         {
             // Check the morpheme belonging to the adtree.
             if (!adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
@@ -516,7 +517,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             // Left
             if (adTree.Left != null)
             {
-                if (!adTree.CanAttachToLeft(adTree.Left))
+                if (!adTree.CanAttachToLeft(adTree.Left, attributesModel))
                 {
                     return false;
                 }
@@ -531,7 +532,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             // Right
             if (adTree.Right != null)
             {
-                if (!adTree.CanAttachToRight(adTree.Right))
+                if (!adTree.CanAttachToRight(adTree.Right, attributesModel))
                 {
                     return false;
                 }

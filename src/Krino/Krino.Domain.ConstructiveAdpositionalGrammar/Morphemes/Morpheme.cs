@@ -13,19 +13,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// This is used by zero-marked adpositions.
         /// </remarks>
-        public static Morpheme Epsilon => new Morpheme("", Attributing.Attributes.Epsilon);
+        public static Morpheme Epsilon(IAttributesModel attributesModel) => new Morpheme(attributesModel, "", attributesModel.Epsilon);
 
-        public Morpheme (string morph, BigInteger attributes)
+        private IAttributesModel myAttributesModel;
+
+        public Morpheme (IAttributesModel attributesModel, string morph, BigInteger attributes)
         {
             Morph = morph;
             Attributes = attributes;
+            myAttributesModel = attributesModel;
         }
 
         public string Morph { get; private set; }
 
         public BigInteger Attributes { get; private set; }
 
-        public GrammarCharacter GrammarCharacter => GrammarCharacterExt.GetGrammarCharacter(Attributes);
+        public GrammarCharacter GrammarCharacter => myAttributesModel.GetGrammarCharacter(Attributes);
 
         /// <summary>
         /// Returns true if the morpheme is a lexeme.
@@ -33,7 +36,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// It does not have to be lexeme nor non-lexeme.
         /// </remarks>
-        public bool IsLexeme => Attributing.Attributes.IsLexeme(Attributes);
+        public bool IsLexeme => myAttributesModel.IsLexeme(Attributes);
 
         /// <summary>
         /// Returns true if the morpheme is a non-lexeme.
@@ -41,7 +44,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// It does not have to be lexeme nor non-lexeme.
         /// </remarks>
-        public bool IsNonLexeme => Attributing.Attributes.IsNonLexeme(Attributes);
+        public bool IsNonLexeme => myAttributesModel.IsNonLexeme(Attributes);
 
         public bool Equals(Morpheme other) => Morph == other.Morph && Attributes == other.Attributes;
 

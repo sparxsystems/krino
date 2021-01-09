@@ -18,3 +18,7 @@
 /src/Krino/Krino.GretaTest/bin
 /src/Krino/Krino.GretaTest/obj
 /model/Krino.ldb
+/src/Krino/Krino.Domain.EnglishGrammar/bin
+/src/Krino/Krino.Domain.EnglishGrammar/obj
+/src/Krino/Krino.Domain.EnglishGrammar.Tests/bin
+/src/Krino/Krino.Domain.EnglishGrammar.Tests/obj

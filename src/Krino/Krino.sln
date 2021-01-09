@@ -21,6 +21,10 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAd
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.GretaTest", "Krino.GretaTest\Krino.GretaTest.csproj", "{11462B2C-56BE-4021-84B3-CFC61F7F4EFA}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Domain.EnglishGrammar", "Krino.Domain.EnglishGrammar\Krino.Domain.EnglishGrammar.csproj", "{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Domain.EnglishGrammar.Tests", "Krino.Domain.EnglishGrammar.Tests\Krino.Domain.EnglishGrammar.Tests.csproj", "{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +51,14 @@ Global
 		{11462B2C-56BE-4021-84B3-CFC61F7F4EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{11462B2C-56BE-4021-84B3-CFC61F7F4EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{11462B2C-56BE-4021-84B3-CFC61F7F4EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +69,8 @@ Global
 		{F02994F7-32A2-4D9D-9184-B55315003A77} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{33450832-2032-4B58-B523-E456C985C4B0} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{11462B2C-56BE-4021-84B3-CFC61F7F4EFA} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
+		{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
+		{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {923BE6CA-31CF-4753-82D6-544032C43C43}

@@ -9,12 +9,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.T
     /// </summary>
     public class DerivationMorphemeTransference : ITransformation<Morpheme>
     {
+        private IAttributesModel myAttributesModel;
         private ITransformation<string> myMorphTransformation;
         private ITransformation<BigInteger> myAttributeTransformation;
 
 
-        public DerivationMorphemeTransference(ITransformation<string> morphTransformation, ITransformation<BigInteger> attributeTransformation)
+        public DerivationMorphemeTransference(IAttributesModel attributesModel, ITransformation<string> morphTransformation, ITransformation<BigInteger> attributeTransformation)
         {
+            myAttributesModel = attributesModel;
             myMorphTransformation = morphTransformation;
             myAttributeTransformation = attributeTransformation;
         }
@@ -24,7 +26,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.T
         {
             string transformedMorph = myMorphTransformation.Transform(value.Morph);
             BigInteger transformedAttributes = myAttributeTransformation.Transform(value.Attributes);
-            Morpheme result = new Morpheme(transformedMorph, transformedAttributes);
+            Morpheme result = new Morpheme(myAttributesModel, transformedMorph, transformedAttributes);
             return result;
         }
 

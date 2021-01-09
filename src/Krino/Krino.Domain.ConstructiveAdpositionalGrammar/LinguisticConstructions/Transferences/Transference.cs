@@ -19,16 +19,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.T
         /// </summary>
         /// <param name="attributesTransformation"></param>
         /// <returns></returns>
-        public static DerivationMorphemeTransference AttributesDerivation(ITransformation<BigInteger> attributesTransformation)
-            => Derivation(Trans.NothingToDo<string>(), attributesTransformation);
+        public static DerivationMorphemeTransference AttributesDerivation(IAttributesModel attributesModel, ITransformation<BigInteger> attributesTransformation)
+            => Derivation(attributesModel, Trans.NothingToDo<string>(), attributesTransformation);
 
         /// <summary>
         /// Derivation transference of the morph. Attributes are not changed.
         /// </summary>
         /// <param name="morphTransformation"></param>
         /// <returns></returns>
-        public static DerivationMorphemeTransference MorphDerivation(ITransformation<string> morphTransformation)
-            => Derivation(morphTransformation, Trans.NothingToDo<BigInteger>());
+        public static DerivationMorphemeTransference MorphDerivation(IAttributesModel attributesModel, ITransformation<string> morphTransformation)
+            => Derivation(attributesModel, morphTransformation, Trans.NothingToDo<BigInteger>());
 
         /// <summary>
         /// Derivation transference.
@@ -36,7 +36,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.T
         /// <param name="morphTransformation"></param>
         /// <param name="attributesTransformation"></param>
         /// <returns></returns>
-        public static DerivationMorphemeTransference Derivation(ITransformation<string> morphTransformation, ITransformation<BigInteger> attributesTransformation)
-            => new DerivationMorphemeTransference(morphTransformation, attributesTransformation);
+        public static DerivationMorphemeTransference Derivation(IAttributesModel attributesModel, ITransformation<string> morphTransformation, ITransformation<BigInteger> attributesTransformation)
+            => new DerivationMorphemeTransference(attributesModel, morphTransformation, attributesTransformation);
     }
 }

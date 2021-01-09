@@ -19,6 +19,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalGrammar\Krino.Domain.ConstructiveAdpositionalGrammar.csproj" />
+    <ProjectReference Include="..\Krino.Domain.EnglishGrammar\Krino.Domain.EnglishGrammar.csproj" />
   </ItemGroup>
 
 </Project>

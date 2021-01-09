@@ -1,5 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
+using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes
@@ -10,7 +10,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes
         [Test]
         public void GrammarCharacter_Property()
         {
-            Morpheme morpheme = new Morpheme("hello", Attributes.A.Lexeme);
+            IAttributesModel attributesModel = new EnglishAttributesModel();
+
+            Morpheme morpheme = new Morpheme(attributesModel, "hello", EnglishAttributes.A.Lexeme);
             Assert.AreEqual(GrammarCharacter.A, morpheme.GrammarCharacter);
         }
     }

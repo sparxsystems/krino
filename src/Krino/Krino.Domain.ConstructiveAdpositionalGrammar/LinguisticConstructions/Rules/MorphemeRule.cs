@@ -1,5 +1,4 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
@@ -13,36 +12,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
-        public static MorphemeRule Is(string morph, BigInteger attributes) => Is(MorphRuleMaker.Is(morph), attributes, 0);
-
-        public static MorphemeRule Is(IRule<string> morphRule, BigInteger attributes) => Is(morphRule, attributes, 0);
-
-        public static MorphemeRule Is(IRule<string> morphRule, BigInteger attributes, BigInteger notAttributes) =>
-            notAttributes != 0 ?
-                new MorphemeRule(GrammarCharacterExt.GetGrammarCharacter(attributes), morphRule, MaskRule.Is(attributes) & !MaskRule.Is(notAttributes)) :
-                new MorphemeRule(GrammarCharacterExt.GetGrammarCharacter(attributes), morphRule, MaskRule.Is(attributes));
-
-
         public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Anything);
 
         public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Nothing, MaskRule.Nothing);
 
-        public static MorphemeRule O_Lexeme => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.Lexeme));
-
-        public static MorphemeRule O_NonLexeme => new MorphemeRule(GrammarCharacter.O, MorphRuleMaker.Something, MaskRule.Is(Attributes.O.NonLexeme));
-
-        public static MorphemeRule I_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRuleMaker.Something, MaskRule.Is(Attributes.I.Lexeme));
-
-        public static MorphemeRule A_Lexeme => new MorphemeRule(GrammarCharacter.A, MorphRuleMaker.Something, MaskRule.Is(Attributes.A.Lexeme));
-
-        public static MorphemeRule E_Lexeme => new MorphemeRule(GrammarCharacter.E, MorphRuleMaker.Something, MaskRule.Is(Attributes.E.Lexeme));
-
-
-        public static MorphemeRule U_Lexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Something, MaskRule.Is(Attributes.U.Lexeme));
-        public static MorphemeRule U_NonLexeme => new MorphemeRule(GrammarCharacter.U, MorphRuleMaker.Something, MaskRule.Is(Attributes.U.NonLexeme));
-
-        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.EmptyString, MaskRule.Is(Attributes.Epsilon));
-
+        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.EmptyString, MaskRule.Is(0));
 
         public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)
         {

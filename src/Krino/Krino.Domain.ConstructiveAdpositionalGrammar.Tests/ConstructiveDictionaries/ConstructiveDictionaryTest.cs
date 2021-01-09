@@ -1,14 +1,13 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
-using Krino.Vertical.Utils.Graphs;
+using Krino.Domain.EnglishGrammar.LinguisticConstructions;
+using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
+using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Security.Cryptography.X509Certificates;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDictionaries
 {
@@ -22,14 +21,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             {
                 new Pattern("A")
                 {
-                    MorphemeRule = MorphemeRule.A_Lexeme,
+                    MorphemeRule = EnglishMorphemeRule.A_Lexeme,
                     LeftRule = MorphemeRule.Nothing,
                     RightRule = MorphemeRule.Nothing,
                 },
 
                 new Pattern("O")
                 {
-                    MorphemeRule = MorphemeRule.O_Lexeme,
+                    MorphemeRule = EnglishMorphemeRule.O_Lexeme,
                     LeftRule = MorphemeRule.Nothing,
                     RightRule = MorphemeRule.Nothing,
                 },
@@ -37,12 +36,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Pattern("A-O")
                 {
                     MorphemeRule = MorphemeRule.Epsilon,
-                    LeftRule = MorphemeRule.A_Lexeme,
-                    RightRule = MorphemeRule.O_Lexeme,
+                    LeftRule = EnglishMorphemeRule.A_Lexeme,
+                    RightRule = EnglishMorphemeRule.O_Lexeme,
                 },
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[0], patterns);
+            IAttributesModel attributesModel = new EnglishAttributesModel();
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, new Morpheme[0], patterns);
 
             Assert.AreEqual(6, dictionary.PatternGraph.Count);
             Assert.AreEqual(2, dictionary.PatternGraph.Edges.Count());
@@ -53,12 +53,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void PatternGraph_Itself()
         {
+            IAttributesModel attributesModel = new EnglishAttributesModel();
+
             List<Pattern> patterns = new List<Pattern>()
             {
-                Pattern.EpsilonAdPosition("A-A", Attributes.A.Lexeme, Attributes.A.Lexeme),
+                EnglishPattern.EpsilonAdPosition("A-A", EnglishAttributes.A.Lexeme, EnglishAttributes.A.Lexeme),
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(new Morpheme[0], patterns);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, new Morpheme[0], patterns);
 
             Assert.AreEqual(1, dictionary.PatternGraph.Edges.Count());
             Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.A && x.Value.Name == "A-A"));
@@ -68,13 +70,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void FindLexemes_Similar()
         {
+            IAttributesModel attributesModel = new EnglishAttributesModel();
+
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("write", Attributes.I.Lexeme.Verb),
-                new Morpheme("book", Attributes.O.Lexeme.Noun),
+                new Morpheme(attributesModel, "write", EnglishAttributes.I.Lexeme.Verb),
+                new Morpheme(attributesModel, "book", EnglishAttributes.O.Lexeme.Noun),
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, morphemes, null);
 
             List<Morpheme> result = dictionary.FindLexemes("writ", 1).ToList();
             Assert.AreEqual(1, result.Count);
@@ -91,18 +95,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void FindMorphemeSequences()
         {
+            IAttributesModel attributesModel = new EnglishAttributesModel();
+
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("ex", Attributes.O.NonLexeme.Prefix),
-                new Morpheme("extra", Attributes.O.NonLexeme.Prefix),
-                new Morpheme("re", Attributes.O.NonLexeme.Prefix),
-                new Morpheme("er", Attributes.O.NonLexeme.Suffix),
-                new Morpheme("less", Attributes.A.NonLexeme.Suffix),
-                new Morpheme("write", Attributes.I.Lexeme),
-                new Morpheme("read", Attributes.I.Lexeme),
+                new Morpheme(attributesModel, "ex", EnglishAttributes.O.NonLexeme.Prefix),
+                new Morpheme(attributesModel, "extra", EnglishAttributes.O.NonLexeme.Prefix),
+                new Morpheme(attributesModel, "re", EnglishAttributes.O.NonLexeme.Prefix),
+                new Morpheme(attributesModel, "er", EnglishAttributes.O.NonLexeme.Suffix),
+                new Morpheme(attributesModel, "less", EnglishAttributes.A.NonLexeme.Suffix),
+                new Morpheme(attributesModel, "write", EnglishAttributes.I.Lexeme),
+                new Morpheme(attributesModel, "read", EnglishAttributes.I.Lexeme),
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, morphemes, null);
 
             // prefix 're'
             var result = dictionary.DecomposeWord("rewrite", 0);
@@ -137,13 +143,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         [Test]
         public void FindMorphemeSequences_SuffixChangesLexeme()
         {
+            IAttributesModel attributesModel = new EnglishAttributesModel();
+
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("write", Attributes.I.Lexeme.Verb),
-                new Morpheme("er", Attributes.O.NonLexeme.Suffix),
+                new Morpheme(attributesModel, "write", EnglishAttributes.I.Lexeme.Verb),
+                new Morpheme(attributesModel, "er", EnglishAttributes.O.NonLexeme.Suffix),
             };
 
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(morphemes, null);
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, morphemes, null);
 
             var morphemeSequences = dictionary.DecomposeWord("writer", 1);
             Assert.AreEqual(2, morphemeSequences.Compositions.Count);
