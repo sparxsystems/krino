@@ -1,5 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.AttributesArrangement;
 using NUnit.Framework;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Morphemes

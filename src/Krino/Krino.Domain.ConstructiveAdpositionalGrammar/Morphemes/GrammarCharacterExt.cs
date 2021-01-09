@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes.AttributesArrangement;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AttributesArrangement;
 using System;
 using System.Linq;
 using System.Numerics;
