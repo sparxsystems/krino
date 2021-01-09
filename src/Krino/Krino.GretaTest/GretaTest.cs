@@ -52,19 +52,15 @@ namespace Krino.GretaTest
             AdTreeCreator adTreeCreator = new AdTreeCreator(myEnglishAttributesModel, dictionary);
             List<IAdTree> results = adTreeCreator.Create("I will start with the good news .".ToLower().Split(" "));
 
-            //List<string> phraseElements = adTree
-            //    .Where(x => !string.IsNullOrEmpty(x.Morpheme.Morph))
-            //    .Select(x => string.Join("->", string.Join("-", new IAdTree[] { x }.Concat(x.AdPositions).Select(y => y.IsOnLeft ? "L" : y.IsOnRight ? "R" : "").Reverse()), x.Morpheme.Morph))
-            //    .ToList();
-
-            //Assert.AreEqual("i", adTree.Right.Right.Left.Morpheme.Morph);
-            //Assert.AreEqual("will", adTree.Right.Right.Right.Left.Morpheme.Morph);
-            //Assert.AreEqual("start", adTree.Right.Right.Right.Right.Morpheme.Morph);
-            //Assert.AreEqual("with", adTree.Right.Morpheme.Morph);
-            //Assert.AreEqual("the", adTree.Right.Left.Left.Morpheme.Morph);
-            //Assert.AreEqual("good", adTree.Right.Left.Right.Left.Morpheme.Morph);
-            //Assert.AreEqual("news", adTree.Right.Left.Right.Right.Morpheme.Morph);
-            //Assert.AreEqual(".", adTree.Morpheme.Morph);
+            Assert.AreEqual(1, results.Count);
+            Assert.AreEqual("i", results[0].Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("will", results[0].Right.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("start", results[0].Right.Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("with", results[0].Right.Morpheme.Morph);
+            Assert.AreEqual("the", results[0].Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("good", results[0].Right.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("news", results[0].Right.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual(".", results[0].Morpheme.Morph);
         }
 
         // The world, as a small number of people have been saying lately, will not end in 11 years.
@@ -73,7 +69,7 @@ namespace Krino.GretaTest
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myEnglishAttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
             AdTreeCreator adTreeCreator = new AdTreeCreator(myEnglishAttributesModel, dictionary);
-            List<IAdTree> results = adTreeCreator.Create("people have been saying".ToLower().Split(" "));
+            List<IAdTree> results = adTreeCreator.Create("number of people say".ToLower().Split(" "));
 
             //List<string> phraseElements = adTree
             //    .Where(x => !string.IsNullOrEmpty(x.Morpheme.Morph))
