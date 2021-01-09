@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AttributesArrangement;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using System;
 using System.Linq;
 using System.Numerics;

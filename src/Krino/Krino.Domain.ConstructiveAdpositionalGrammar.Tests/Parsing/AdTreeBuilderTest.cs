@@ -2,7 +2,7 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using NUnit.Framework;
 using System.Collections.Generic;

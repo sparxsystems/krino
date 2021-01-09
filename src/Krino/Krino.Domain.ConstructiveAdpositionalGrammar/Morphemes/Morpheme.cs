@@ -13,7 +13,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// This is used by zero-marked adpositions.
         /// </remarks>
-        public static Morpheme Epsilon => new Morpheme("", AttributesArrangement.Attributes.Epsilon);
+        public static Morpheme Epsilon => new Morpheme("", Attributing.Attributes.Epsilon);
 
         public Morpheme (string morph, BigInteger attributes)
         {
@@ -33,7 +33,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// It does not have to be lexeme nor non-lexeme.
         /// </remarks>
-        public bool IsLexeme => AttributesArrangement.Attributes.IsLexeme(Attributes);
+        public bool IsLexeme => Attributing.Attributes.IsLexeme(Attributes);
 
         /// <summary>
         /// Returns true if the morpheme is a non-lexeme.
@@ -41,7 +41,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// It does not have to be lexeme nor non-lexeme.
         /// </remarks>
-        public bool IsNonLexeme => AttributesArrangement.Attributes.IsNonLexeme(Attributes);
+        public bool IsNonLexeme => Attributing.Attributes.IsNonLexeme(Attributes);
 
         public bool Equals(Morpheme other) => Morph == other.Morph && Attributes == other.Attributes;
 

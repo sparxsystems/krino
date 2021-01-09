@@ -1,5 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
 using System.Numerics;

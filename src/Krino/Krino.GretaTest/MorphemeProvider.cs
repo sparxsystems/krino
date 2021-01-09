@@ -1,5 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using System.Collections.Generic;
 
 namespace Krino.GretaTest

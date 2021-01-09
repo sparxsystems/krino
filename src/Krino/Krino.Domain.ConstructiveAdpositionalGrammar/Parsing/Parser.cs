@@ -1,7 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.AttributesArrangement;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Attributing;
 using Krino.Vertical.Utils.Diagnostic;
 using System;
 using System.Linq;
