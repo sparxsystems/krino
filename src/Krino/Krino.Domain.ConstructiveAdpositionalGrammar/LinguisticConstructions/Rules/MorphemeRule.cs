@@ -49,7 +49,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// <remarks>
         /// E.g. O can be provided via the A-O pattern.
         /// </remarks>
-        public IRule<GrammarCharacter> SubstitutionRule { get; private set; } = InheritanceRules.Epsilon_U_E;
+        public IRule<GrammarCharacter> SubstitutionRule { get; private set; } = SubstitutionRules.Epsilon_U_E;
 
         public MorphemeRule SetSubstitution(IRule<GrammarCharacter> inheritanceRule)
         {

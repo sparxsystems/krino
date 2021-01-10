@@ -214,7 +214,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void CanAttachToRight_Inheritance()
+        public void CanAttachToRight_Substitution()
         {
             IAdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel),
                 new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }
@@ -228,9 +228,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
 
 
-            // Inheritance is not allowed.
+            // Substitution is not allowed.
             adTree = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }.SetInheritanceForRight(InheritanceRules.Nothing)
+                new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }.SetSubstitutionForRight(SubstitutionRules.Nothing)
             );
             adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
@@ -242,7 +242,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void CanAttachToRight_Inheritance_Morphemic()
+        public void CanAttachToRight_Substitution_Morphemic()
         {
             IAdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("O-A", EnglishAttributes.O.Lexeme, EnglishAttributes.A.Lexeme))
             {
@@ -379,7 +379,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void CanAttachToLeft_Inheritance()
+        public void CanAttachToLeft_Substitution()
         {
             IAdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel),
                 new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }
@@ -393,9 +393,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 
 
-            // Inheritance is not allowed.
+            // Substitution is not allowed.
             adTree = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }.SetInheritanceForLeft(InheritanceRules.Nothing)
+                new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }.SetSubstitutionForLeft(SubstitutionRules.Nothing)
             );
             adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
@@ -407,7 +407,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void CanAttachToLeft_Inheritance_Morphemic()
+        public void CanAttachToLeft_Substitution_Morphemic()
         {
             IAdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {

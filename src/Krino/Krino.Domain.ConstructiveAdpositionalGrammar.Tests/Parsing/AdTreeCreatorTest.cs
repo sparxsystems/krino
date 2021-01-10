@@ -150,13 +150,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.PairTransference("I>PresentPerfect",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
-                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetSubstitution(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetSubstitution(SubstitutionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple))
                     .SetLeftFirst(),
 
                 EnglishPattern.PairTransference("been-I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
-                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetSubstitution(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetSubstitution(SubstitutionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous))
                     .SetLeftFirst(),
 
@@ -288,7 +288,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.EpsilonAdPosition("I-I", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForLeft(InheritanceRules.Nothing),
+                    .SetSubstitutionForLeft(SubstitutionRules.Nothing),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -323,11 +323,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.EpsilonAdPosition("I-I", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForLeft(InheritanceRules.Nothing),
+                    .SetSubstitutionForLeft(SubstitutionRules.Nothing),
 
                 EnglishPattern.EpsilonAdPosition("E-I", EnglishAttributes.E.Lexeme, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForLeft(InheritanceRules.Nothing),
+                    .SetSubstitutionForLeft(SubstitutionRules.Nothing),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -411,7 +411,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForRight(InheritanceRules.Epsilon),
+                    .SetSubstitutionForRight(SubstitutionRules.Epsilon),
 
                 new Pattern("I-U-O")
                 {
