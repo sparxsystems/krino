@@ -39,7 +39,7 @@ namespace Krino.GretaTest
             new Morpheme(myEnglishAttributesModel, "will", EnglishAttributes.I.Lexeme.Verb.Modal),
             new Morpheme(myEnglishAttributesModel, "with", EnglishAttributes.E.Lexeme.Preposition),
             new Morpheme(myEnglishAttributesModel, "world", EnglishAttributes.O.Lexeme.Noun),
-            new Morpheme(myEnglishAttributesModel, "year", EnglishAttributes.O.Lexeme.Noun),
+            new Morpheme(myEnglishAttributesModel, "year", EnglishAttributes.O.Lexeme.Noun.Common | EnglishAttributes.O.Lexeme.Noun.Countable),
 
             // Non-lexemes.
             new Morpheme(myEnglishAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period),

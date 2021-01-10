@@ -277,6 +277,40 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
+        public void World_as_people_say_lately_ends()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme),
+                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme),
+                EnglishPattern.Morpheme(EnglishAttributes.E.Lexeme),
+
+                EnglishPattern.O1_I.SetLeftFirst(),
+                EnglishPattern.MorphematicAdPosition("I-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.O.Lexeme),
+                EnglishPattern.EpsilonAdPosition("E-I", EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme).SetSubstitutionForLeft(SubstitutionRules.Nothing),
+            };
+
+            List<Morpheme> morphemes = new List<Morpheme>()
+            {
+                // Lexemes.
+                new Morpheme(myAttributesModel, "world", EnglishAttributes.O.Lexeme.Noun),
+                new Morpheme(myAttributesModel, "as", EnglishAttributes.U.Lexeme.Conjunction),
+                new Morpheme(myAttributesModel, "people", EnglishAttributes.O.Lexeme.Noun),
+                new Morpheme(myAttributesModel, "say", EnglishAttributes.I.Lexeme.Verb),
+                new Morpheme(myAttributesModel, "lately", EnglishAttributes.E.Lexeme.Adverb),
+                new Morpheme(myAttributesModel, "ends", EnglishAttributes.I.Lexeme.Verb),
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
+
+            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            List<IAdTree> results = creator.Create("world", "as", "people", "say", "lately", "ends");
+
+            // TODO:
+            Assert.AreEqual(1, results.Count);
+        }
+
+        [Test]
         public void I_will_read()
         {
             List<Pattern> patterns = new List<Pattern>()

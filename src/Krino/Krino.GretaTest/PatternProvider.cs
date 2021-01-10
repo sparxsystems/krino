@@ -29,14 +29,22 @@ namespace Krino.GretaTest
 
             EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme.Adjective, EnglishAttributes.O.Lexeme.Noun),
 
+            // negation: TODO: negation sjould appear in sememe attributes ??
+            EnglishPattern.PairTransference("I>not_I",
+                    EnglishAttributes.I.Lexeme.Verb.Form.Infinitive,
+                    EnglishMorphemeRule.Is(MorphRules.Is("not"), EnglishAttributes.E.Lexeme.Adverb).SetSubstitution(SubstitutionRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive))
+                    .SetLeftFirst(),
 
-            EnglishPattern.PairTransference("I>SimpleFuture",
+            // simple future
+            EnglishPattern.PairTransference("I>will_I",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
                     EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetSubstitution(SubstitutionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive))
                     .SetLeftFirst(),
 
-            EnglishPattern.PairTransference("I>PresentPerfect",
+            // present perfect
+            EnglishPattern.PairTransference("I>have_I",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                     EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetSubstitution(SubstitutionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple))
@@ -53,7 +61,14 @@ namespace Krino.GretaTest
                 EnglishAttributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
                 EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb.Modal),
 
-            
+
+            EnglishPattern.PairTransference("O>O_s",
+                EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
+                EnglishAttributes.O.NonLexeme.Suffix,
+                EnglishAttributes.O.Lexeme.Noun)
+                .SetSubstitutionForLeft(SubstitutionRules.Nothing),
+
+
 
 
             EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
@@ -61,16 +76,10 @@ namespace Krino.GretaTest
                 .SetSubstitutionForRight(SubstitutionRules.Epsilon),
 
             EnglishPattern.EpsilonAdPosition("E-I", EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme)
-                .SetLeftFirst()
+                //.SetLeftFirst()
                 .SetSubstitutionForLeft(SubstitutionRules.Nothing),
 
-            EnglishPattern.EpsilonAdPosition("O+-O", EnglishAttributes.O.NonLexeme.Suffix, EnglishAttributes.O.Lexeme)
-                .SetSubstitutionForLeft(SubstitutionRules.Nothing)
-                .SetSubstitutionForRight(SubstitutionRules.Epsilon),
 
-            //PatternExt.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb)
-            //    .SetLeftFirst()
-            //    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 
             // Verbant circumstantial with a preposition.
             EnglishPattern.MorphematicAdPosition("O-E-I", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme),
@@ -82,8 +91,8 @@ namespace Krino.GretaTest
             // E.g. O and O
             EnglishPattern.MorphematicAdPosition("O-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme),
 
-            //PatternExt.MorphematicAdPosition("I-U-O", Attributes.U.Lexeme.Conjunction, Attributes.I.Lexeme, Attributes.O.Lexeme)
-            //    .SetRightFirst(),
+            // E.g. I as O ('the world' as 'people were saying')
+            EnglishPattern.MorphematicAdPosition("I-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.O.Lexeme),
 
 
             new Pattern("•")
