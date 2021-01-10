@@ -91,8 +91,8 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         {
             ValencyPosition = valencyPosition,
             MorphemeRule = MorphemeRule.Epsilon,
-            LeftRule = EnglishMorphemeRule.O_Lexeme.SetSubstitution(InheritanceRules.Epsilon_U),
-            RightRule = EnglishMorphemeRule.I_Lexeme.SetSubstitution(InheritanceRules.Epsilon_U),
+            LeftRule = EnglishMorphemeRule.O_Lexeme,
+            RightRule = EnglishMorphemeRule.I_Lexeme,
         };
     }
 }

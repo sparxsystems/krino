@@ -244,6 +244,39 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
+        public void Number_of_people_say()
+        {
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme),
+                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme),
+
+                EnglishPattern.O1_I.SetLeftFirst(),
+                EnglishPattern.MorphematicAdPosition("O-E-O", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme),
+            };
+
+            List<Morpheme> morphemes = new List<Morpheme>()
+            {
+                // Lexemes.
+                new Morpheme(myAttributesModel, "number", EnglishAttributes.O.Lexeme.Noun),
+                new Morpheme(myAttributesModel, "people", EnglishAttributes.O.Lexeme.Noun),
+                new Morpheme(myAttributesModel, "say", EnglishAttributes.I.Lexeme.Verb),
+                new Morpheme(myAttributesModel, "of", EnglishAttributes.E.Lexeme.Preposition),
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
+
+            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            List<IAdTree> results = creator.Create("number", "of", "people", "say");
+
+            Assert.AreEqual(1, results.Count);
+            Assert.AreEqual("number", results[0].Left.Right.Morpheme.Morph);
+            Assert.AreEqual("of", results[0].Left.Morpheme.Morph);
+            Assert.AreEqual("people", results[0].Left.Left.Morpheme.Morph);
+            Assert.AreEqual("say", results[0].Right.Morpheme.Morph);
+        }
+
+        [Test]
         public void I_will_read()
         {
             List<Pattern> patterns = new List<Pattern>()

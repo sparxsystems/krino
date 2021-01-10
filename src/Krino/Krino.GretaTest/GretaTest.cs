@@ -69,7 +69,7 @@ namespace Krino.GretaTest
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myEnglishAttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
             AdTreeCreator adTreeCreator = new AdTreeCreator(myEnglishAttributesModel, dictionary);
-            List<IAdTree> results = adTreeCreator.Create("number of people say".ToLower().Split(" "));
+            List<IAdTree> results = adTreeCreator.Create("a small number of people have been saying".ToLower().Split(" "));
 
             //List<string> phraseElements = adTree
             //    .Where(x => !string.IsNullOrEmpty(x.Morpheme.Morph))

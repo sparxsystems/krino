@@ -102,23 +102,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public GrammarCharacter RulingGrammarCharacter
-        {
-            get
-            {
-                GrammarCharacter result = GrammarCharacter.e;
-
-                // Find the first element on the right branch which acts as a morpheme.
-                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Pattern.IsLikeMorpheme);
-
-                if (rightChild != null)
-                {
-                    result = rightChild.Morpheme.GrammarCharacter;
-                }
-
-                return result;
-            }
-        }
+        public GrammarCharacter RulingGrammarCharacter => Pattern.IsLikeMorpheme ? Pattern.MorphemeRule.GrammarCharacter : Pattern.RightRule.GrammarCharacter;
 
         public bool IsAdPosition => Right != null || Left != null;
 
