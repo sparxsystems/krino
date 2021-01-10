@@ -135,7 +135,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             {
                 IEnumerable<Pattern> result = Patterns
                 .Where(x => x.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                            !x.IsGrammarCharacterTransference() &&
+                            !x.IsMonoTransference() &&
                             x.MorphemeRule.Evaluate(morpheme));
                 return result;
             }
@@ -146,7 +146,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             using (Trace.Entering())
             {
                 IEnumerable<Pattern> result = Patterns
-                .Where(x => x.IsGrammarCharacterTransference() && x.RightRule.Evaluate(morpheme));
+                .Where(x => x.IsMonoTransference() && x.RightRule.Evaluate(morpheme));
 
                 return result;
             }

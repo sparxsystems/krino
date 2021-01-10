@@ -39,7 +39,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes, notRightAttributes),
             };
 
-        public static Pattern Transference(string patternName, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
+        public static Pattern PairTransference(string patternName, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
             => new Pattern(patternName)
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
@@ -47,7 +47,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 RightRule = rightRule,
             };
 
-        public static Pattern GrammerCharacterTransference(string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
+        public static Pattern MonoTransference(string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),

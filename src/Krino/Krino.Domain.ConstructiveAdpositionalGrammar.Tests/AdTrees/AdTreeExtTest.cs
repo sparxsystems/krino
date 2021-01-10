@@ -150,7 +150,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { RightRule = EnglishMorphemeRule.A_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme),
-                EnglishPattern.GrammerCharacterTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+                EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
                     new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme })
@@ -284,7 +284,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { LeftRule = EnglishMorphemeRule.A_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme),
-                EnglishPattern.GrammerCharacterTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+                EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
                     new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme })
@@ -569,7 +569,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             AdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)),
-                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme), EnglishPattern.GrammerCharacterTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme), EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
                 {
                     Right = new AdTree(new Morpheme(myAttributesModel, "race", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)),
                     Left = null,
@@ -595,7 +595,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsFalse(adTree.IsComplete());
 
 
-            adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme), EnglishPattern.GrammerCharacterTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+            adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme), EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
                 Left = null,
                 Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern()),
@@ -603,7 +603,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.IsComplete());
 
             // Right is missing.
-            adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme), EnglishPattern.GrammerCharacterTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+            adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme), EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
                 Left = null,
                 Right = null,

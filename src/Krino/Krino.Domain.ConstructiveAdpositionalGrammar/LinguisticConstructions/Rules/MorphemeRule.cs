@@ -104,6 +104,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             hash = (hash * 16777619) ^ MorphRule.GetHashCode();
             hash = (hash * 16777619) ^ GrammarCharacter.GetHashCode();
             hash = (hash * 16777619) ^ AttributesRule.GetHashCode();
+            hash = (hash * 16777619) ^ InheritanceRule.GetHashCode();
             hash = (hash * 16777619) ^ ValencyPosition.GetHashCode();
             hash = (hash * 16777619) ^ Order.GetHashCode();
 

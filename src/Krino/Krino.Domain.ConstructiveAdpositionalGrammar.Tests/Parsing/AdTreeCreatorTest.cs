@@ -150,12 +150,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.Morpheme("I+", EnglishAttributes.I.NonLexeme.Suffix),
 
-                EnglishPattern.Transference("I>PresentPerfect",
+                EnglishPattern.PairTransference("I>PresentPerfect",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                     EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetInheritance(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)),
 
-                EnglishPattern.Transference("been-I_ing",
+                EnglishPattern.PairTransference("been-I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
                     EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetInheritance(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
@@ -221,7 +221,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst(),
 
-                EnglishPattern.GrammerCharacterTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme),
+                EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()

@@ -78,7 +78,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return this;
         }
 
-
+        /// <summary>
+        /// Returns true if the pattern represents a morpheme.
+        /// </summary>
+        /// <returns></returns>
         public bool IsMorpheme()
         {
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
@@ -93,10 +96,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         }
 
         /// <summary>
-        /// Returns true if the pattern changes
+        /// Returns true if the pattern uses both positions (left and right) to set the grammar character. 
         /// </summary>
+        /// <remarks>
+        /// The adtree driven by the pair transference acts as morpheme.
+        /// E.g. this pattern can be used to create noun from a verb by the -ing suffix.
+        /// </remarks>
         /// <returns></returns>
-        public bool IsTransference()
+        public bool IsPairTransference()
         {
             // AdPosition
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
@@ -119,10 +126,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         }
 
         /// <summary>
-        /// Returs true if the pattern just changes the grammar character.
+        /// Returs true if the pattern just changes the grammar character of the right position (the left position stays empty).
         /// </summary>
+        /// <remarks>
+        /// E.g. english nouns can be used as adjectives.
+        /// </remarks>
         /// <returns></returns>
-        public bool IsGrammarCharacterTransference()
+        public bool IsMonoTransference()
         {
             // AdPosition
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
@@ -155,6 +165,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return result;
         }
 
+        /// <summary>
+        /// Returns true if the pattern represents an adposition with a morpheme.
+        /// </summary>
+        /// <remarks>
+        /// E.g. an adposition with the U grammar character containing a conjunction.
+        /// Or an adposition with the E grammar character containing a preposition.
+        /// </remarks>
+        /// <returns></returns>
         public bool IsMorphematicAdPosition()
         {
             bool result = MorphemeRule.MorphRule.Equals(MorphRules.Something) &&

@@ -27,20 +27,20 @@ namespace Krino.GretaTest
             EnglishPattern.Morpheme("O+", EnglishAttributes.O.NonLexeme.Suffix),
             EnglishPattern.Morpheme("I+", EnglishAttributes.I.NonLexeme.Suffix),
 
-            EnglishPattern.GrammerCharacterTransference("O>A", EnglishAttributes.A.Lexeme.Adjective, EnglishAttributes.O.Lexeme.Noun),
+            EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme.Adjective, EnglishAttributes.O.Lexeme.Noun),
 
 
-            EnglishPattern.Transference("I>SimpleFuture",
+            EnglishPattern.PairTransference("I>SimpleFuture",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
                     EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive)),
 
-            EnglishPattern.Transference("I>PresentPerfect",
+            EnglishPattern.PairTransference("I>PresentPerfect",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                     EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)),
 
-            EnglishPattern.Transference("been-I_ing",
+            EnglishPattern.PairTransference("been-I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
                     EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
