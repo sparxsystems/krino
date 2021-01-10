@@ -18,7 +18,7 @@ namespace Krino.GretaTest
             EnglishPattern.Morpheme(EnglishAttributes.E.Lexeme.Adverb),
 
             EnglishPattern.O1_I.SetLeftFirst(),
-            EnglishPattern.O1_I.SetRightFirst(),
+            EnglishPattern.O1_I,
             EnglishPattern.O2_I,
             EnglishPattern.O3_I,
             EnglishPattern.O4_I,
@@ -32,18 +32,21 @@ namespace Krino.GretaTest
 
             EnglishPattern.PairTransference("I>SimpleFuture",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
-                    EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
-                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive)),
+                    EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive))
+                    .SetLeftFirst(),
 
             EnglishPattern.PairTransference("I>PresentPerfect",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
-                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
-                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)),
+                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple))
+                    .SetLeftFirst(),
 
             EnglishPattern.PairTransference("been-I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
-                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
-                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
+                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous))
+                    .SetLeftFirst(),
 
             EnglishPattern.Transference("I>I_ing",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
@@ -62,7 +65,6 @@ namespace Krino.GretaTest
                 .SetInheritanceForLeft(InheritanceRules.Nothing),
 
             EnglishPattern.EpsilonAdPosition("O+-O", EnglishAttributes.O.NonLexeme.Suffix, EnglishAttributes.O.Lexeme)
-                .SetRightFirst()
                 .SetInheritanceForLeft(InheritanceRules.Nothing)
                 .SetInheritanceForRight(InheritanceRules.Epsilon),
 
@@ -71,17 +73,14 @@ namespace Krino.GretaTest
             //    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
 
             // Verbant circumstantial with a preposition.
-            EnglishPattern.MorphematicAdPosition("O-E-I", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme)
-                .SetRightFirst(),
+            EnglishPattern.MorphematicAdPosition("O-E-I", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme),
             
             // E.g. speed of light
-            EnglishPattern.MorphematicAdPosition("O-E-O", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme)
-                .SetRightFirst(),
+            EnglishPattern.MorphematicAdPosition("O-E-O", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme),
 
 
             // E.g. O and O
-            EnglishPattern.MorphematicAdPosition("O-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme)
-                .SetRightFirst(),
+            EnglishPattern.MorphematicAdPosition("O-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme),
 
             //PatternExt.MorphematicAdPosition("I-U-O", Attributes.U.Lexeme.Conjunction, Attributes.I.Lexeme, Attributes.O.Lexeme)
             //    .SetRightFirst(),

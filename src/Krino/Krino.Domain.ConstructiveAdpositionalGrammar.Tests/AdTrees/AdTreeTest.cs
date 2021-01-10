@@ -340,13 +340,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
                 {
                     Right = new AdTree(new Morpheme(myAttributesModel, "", 0),
-                        new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme.SetOrder(1) })
+                        new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, IsLeftFirst = true })
                     {
                         Right = new AdTree(new Morpheme(myAttributesModel, "read", 0), new Pattern()),
                         Left = new AdTree(new Morpheme(myAttributesModel, "I", 0), new Pattern())
                     },
                     Left = new AdTree(new Morpheme(myAttributesModel, "", 0),
-                        new Pattern() { LeftRule = EnglishMorphemeRule.A_Lexeme.SetOrder(1) })
+                        new Pattern() { LeftRule = EnglishMorphemeRule.A_Lexeme, IsLeftFirst = true })
                     {
                         Right = new AdTree(new Morpheme(myAttributesModel, "book", 0), new Pattern()),
                         Left = new AdTree(new Morpheme(myAttributesModel, "the", 0), new Pattern())

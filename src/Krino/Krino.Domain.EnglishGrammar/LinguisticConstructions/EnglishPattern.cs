@@ -18,10 +18,10 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern O1_I => On_I("O1-I", 1);
 
-        public static Pattern O2_I => On_I("O2-I", 2).SetRightFirst();
-        public static Pattern O3_I => On_I("O3-I", 3).SetRightFirst();
-        public static Pattern O4_I => On_I("O4-I", 4).SetRightFirst();
-        public static Pattern O5_I => On_I("O5-I", 5).SetRightFirst();
+        public static Pattern O2_I => On_I("O2-I", 2);
+        public static Pattern O3_I => On_I("O3-I", 3);
+        public static Pattern O4_I => On_I("O4-I", 4);
+        public static Pattern O5_I => On_I("O5-I", 5);
 
         public static Pattern Transference(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
@@ -52,7 +52,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
                 LeftRule = MorphemeRule.Nothing,
-                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes).SetOrder(1),
+                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
             };
 
         public static Pattern EpsilonAdPosition(string patternName, BigInteger leftAttributes, BigInteger rightAttributes)

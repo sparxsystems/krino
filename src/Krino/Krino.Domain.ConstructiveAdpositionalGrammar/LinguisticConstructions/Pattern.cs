@@ -60,18 +60,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         /// </remarks>
         public int ValencyPosition { get; set; }
 
+        /// <summary>
+        /// Indicates if the left branch is before the right branch in the phrase sequence.
+        /// </summary>
+        public bool IsLeftFirst { get; set; }
 
         public Pattern SetLeftFirst()
         {
-            LeftRule.SetOrder(1);
-            RightRule.SetOrder(2);
-            return this;
-        }
-
-        public Pattern SetRightFirst()
-        {
-            LeftRule.SetOrder(2);
-            RightRule.SetOrder(1);
+            IsLeftFirst = true;
             return this;
         }
 

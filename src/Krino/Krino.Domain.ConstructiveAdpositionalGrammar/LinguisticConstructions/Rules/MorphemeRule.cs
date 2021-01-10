@@ -45,21 +45,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
         public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRules.Epsilon_U_E;
 
-        /// <summary>
-        /// Indicates the phrase order in the adtree.
-        /// </summary>
-        /// <remarks>
-        /// If the Order property for the left rule is less than for the right rule then the left branch of adtree goes first.
-        /// Note, this is related only to the sequence order how the phrase is in the adtree is interpreted.
-        /// </remarks>
-        public int Order { get; private set; } = int.MaxValue;
-
-        public MorphemeRule SetOrder(int order)
-        {
-            Order = order;
-            return this;
-        }
-
         public MorphemeRule SetInheritance(IRule<GrammarCharacter> inheritanceRule)
         {
             InheritanceRule = inheritanceRule;
@@ -96,7 +81,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             hash = (hash * 16777619) ^ GrammarCharacter.GetHashCode();
             hash = (hash * 16777619) ^ AttributesRule.GetHashCode();
             hash = (hash * 16777619) ^ InheritanceRule.GetHashCode();
-            hash = (hash * 16777619) ^ Order.GetHashCode();
 
             return hash;
         }

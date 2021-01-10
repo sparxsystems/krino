@@ -304,7 +304,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         public void CanAttachToLeft_MorphemicAdPosition()
         {
             IAdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.U.Lexeme.Conjunction),
-                 EnglishPattern.MorphematicAdPosition("O-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme)
+                 EnglishPattern.MorphematicAdPosition("O-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme).SetLeftFirst()
             );
             IAdTree adTreeElement = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
@@ -364,7 +364,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             IAdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
-                Left = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("O-A", EnglishAttributes.O.Lexeme, EnglishAttributes.A.Lexeme))
+                Left = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("O-A", EnglishAttributes.O.Lexeme, EnglishAttributes.A.Lexeme).SetLeftFirst())
             };
             
             IAdTree adTreeElement = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme));
@@ -377,7 +377,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
 
             // Attach to the left on the root.
-            adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme));
+            adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme).SetLeftFirst());
             adTreeElement = new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme));
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 

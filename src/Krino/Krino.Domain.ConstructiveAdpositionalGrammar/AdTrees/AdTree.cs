@@ -299,7 +299,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     adPositionStack.Push(aThis);
 
                     // If left is before right.
-                    if (aThis.Pattern.LeftRule.Order < aThis.Pattern.RightRule.Order)
+                    if (aThis.Pattern.IsLeftFirst)
                     {
                         stack.Push(aThis.Right);
                         stack.Push(aThis.Left);

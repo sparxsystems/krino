@@ -377,7 +377,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             if (position == AttachingPosition.ChildOnLeft)
             {
                 // If left is before the right
-                if (adTree.Pattern.LeftRule.Order <= adTree.Pattern.RightRule.Order ||
+                if (adTree.Pattern.IsLeftFirst ||
                     // or right is already set
                     adTree.Right != null ||
                     // or right is not supposed to be set.
@@ -388,7 +388,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
             else
             {
-                if (adTree.Pattern.RightRule.Order <= adTree.Pattern.LeftRule.Order ||
+                if (!adTree.Pattern.IsLeftFirst ||
                     adTree.Left != null ||
                     adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing))
                 {
