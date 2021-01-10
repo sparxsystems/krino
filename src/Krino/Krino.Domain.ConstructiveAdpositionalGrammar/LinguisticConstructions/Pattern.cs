@@ -52,6 +52,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
         public MorphemeRule RightRule { get; set; } = MorphemeRule.Nothing;
 
+        /// <summary>
+        /// The valency position required by the pattern.
+        /// </summary>
+        /// <remarks>
+        /// If 0 then the valency position is not required.
+        /// </remarks>
+        public int ValencyPosition { get; set; }
+
+
         public Pattern SetLeftFirst()
         {
             LeftRule.SetOrder(1);
@@ -186,7 +195,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         }
 
 
-        public bool Equals(Pattern other) => MorphemeRule.Equals(other.MorphemeRule) && LeftRule.Equals(other.LeftRule) && RightRule.Equals(other.RightRule);
+        public bool Equals(Pattern other) =>
+            MorphemeRule.Equals(other.MorphemeRule) &&
+            LeftRule.Equals(other.LeftRule) &&
+            RightRule.Equals(other.RightRule) &&
+            ValencyPosition == other.ValencyPosition;
+
 
         public override int GetHashCode()
         {
@@ -195,6 +209,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             hash = (hash * 16777619) ^ MorphemeRule.GetHashCode();
             hash = (hash * 16777619) ^ LeftRule.GetHashCode();
             hash = (hash * 16777619) ^ RightRule.GetHashCode();
+            hash = (hash * 16777619) ^ ValencyPosition.GetHashCode();
 
             return hash;
         }

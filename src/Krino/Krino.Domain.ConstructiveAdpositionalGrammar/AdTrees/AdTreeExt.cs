@@ -227,15 +227,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                         {
                             IAdTree valencyElement = adTree.GetSequenceToRoot()
                                 .TakeUntil(x => x.IsOnRight)
-                                .FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
+                                .FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
 
                             if (valencyElement != null)
                             {
                                 IAdTree previousValencyElement = adTreeToAttach.GetRightSequence()
-                                    .FirstOrDefault(x => x.Pattern.MorphemeRule.ValencyPosition > 0);
+                                    .FirstOrDefault(x => x.Pattern.ValencyPosition > 0);
 
-                                if (previousValencyElement == null && valencyElement.Pattern.MorphemeRule.ValencyPosition > 1 ||
-                                    previousValencyElement != null && valencyElement.Pattern.MorphemeRule.ValencyPosition != previousValencyElement.Pattern.MorphemeRule.ValencyPosition + 1)
+                                if (previousValencyElement == null && valencyElement.Pattern.ValencyPosition > 1 ||
+                                    previousValencyElement != null && valencyElement.Pattern.ValencyPosition != previousValencyElement.Pattern.ValencyPosition + 1)
                                 {
                                     return false;
                                 }
@@ -273,8 +273,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                                 .TakeWhile(x => x != adTree) // This is to not make an assuption if it is already attached or not.
                                 .TakeUntil(x => x.IsOnRight)
                                 .Concat(adTree.GetSequenceToRoot().TakeUntil(x => x.IsOnRight))
-                                .Where(x => x.Pattern.MorphemeRule.ValencyPosition > 0)
-                                .Select(x => x.Pattern.MorphemeRule.ValencyPosition)
+                                .Where(x => x.Pattern.ValencyPosition > 0)
+                                .Select(x => x.Pattern.ValencyPosition)
                                 .ToArray();
 
                             // If such valency is already filled.

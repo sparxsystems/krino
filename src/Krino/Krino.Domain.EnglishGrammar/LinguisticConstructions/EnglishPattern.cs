@@ -81,7 +81,8 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         private static Pattern On_I(string patternName, int valencyPosition) => new Pattern(patternName)
         {
-            MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(valencyPosition),
+            ValencyPosition = valencyPosition,
+            MorphemeRule = MorphemeRule.Epsilon,
             LeftRule = EnglishMorphemeRule.O_Lexeme.SetInheritance(InheritanceRules.Epsilon_U),
             RightRule = EnglishMorphemeRule.I_Lexeme.SetInheritance(InheritanceRules.Epsilon_U),
         };

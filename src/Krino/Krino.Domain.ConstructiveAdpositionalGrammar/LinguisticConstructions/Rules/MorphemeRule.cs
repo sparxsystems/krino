@@ -46,11 +46,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRules.Epsilon_U_E;
 
         /// <summary>
-        /// Required valency position.
-        /// </summary>
-        public int ValencyPosition { get; private set; }
-
-        /// <summary>
         /// Indicates the phrase order in the adtree.
         /// </summary>
         /// <remarks>
@@ -58,12 +53,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// Note, this is related only to the sequence order how the phrase is in the adtree is interpreted.
         /// </remarks>
         public int Order { get; private set; } = int.MaxValue;
-
-        public MorphemeRule SetValencyPosition(int valencyPosition)
-        {
-            ValencyPosition = valencyPosition;
-            return this;
-        }
 
         public MorphemeRule SetOrder(int order)
         {
@@ -93,7 +82,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public bool Equals(MorphemeRule other)
         {
             bool result = MorphRule.Equals(other.MorphRule) &&
-                          AttributesRule.Equals(other.AttributesRule);
+                          GrammarCharacter == other.GrammarCharacter &&
+                          AttributesRule.Equals(other.AttributesRule) &&
+                          InheritanceRule.Equals(other.InheritanceRule);
             return result;
         }
 
@@ -105,7 +96,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             hash = (hash * 16777619) ^ GrammarCharacter.GetHashCode();
             hash = (hash * 16777619) ^ AttributesRule.GetHashCode();
             hash = (hash * 16777619) ^ InheritanceRule.GetHashCode();
-            hash = (hash * 16777619) ^ ValencyPosition.GetHashCode();
             hash = (hash * 16777619) ^ Order.GetHashCode();
 
             return hash;
