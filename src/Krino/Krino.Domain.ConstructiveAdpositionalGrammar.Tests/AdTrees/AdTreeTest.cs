@@ -358,5 +358,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             string phrase = adTree.Phrase;
             Assert.AreEqual("I read the book .", phrase);
         }
+
+        [Test]
+        public void Phrase_Suffix()
+        {
+            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.O.Lexeme),
+                EnglishPattern.PairTransference("I>O_ing", EnglishAttributes.O.Lexeme, EnglishAttributes.I.NonLexeme.Suffix, EnglishAttributes.I.Lexeme.Verb))
+            {
+                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme.Verb)),
+                Left = new AdTree(new Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix), EnglishPattern.Morpheme(EnglishAttributes.I.NonLexeme.Suffix)),
+            };
+
+            string phrase = adTree.Phrase;
+            Assert.AreEqual("reading", phrase);
+        }
     }
 }

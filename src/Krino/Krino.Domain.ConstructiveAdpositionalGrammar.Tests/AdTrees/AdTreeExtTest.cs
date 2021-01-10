@@ -135,6 +135,53 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
+        public void TryGetTransferenceMorpheme_MonoTransference()
+        {
+            AdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+            {
+                Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)),
+
+                // Mono-transference.
+                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.A.Lexeme), EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+                {
+                    Right = new AdTree(new Morpheme(myAttributesModel, "race", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)),
+                    Left = null,
+                },
+            };
+
+            Assert.IsTrue(adTree.Left.Pattern.IsMonoTransference);
+
+            var result = adTree.Left.TryGetTransferenceMorpheme();
+
+            // Attributes shall be taken from the parent.
+            Assert.AreEqual(adTree.Left.Morpheme.Attributes, result.Attributes);
+
+            // Morph shall be taken from the child.
+            Assert.AreEqual(adTree.Left.Right.Morpheme.Morph, result.Morph);
+        }
+
+        [Test]
+        public void TryGetTransferenceMorpheme_PairTransference()
+        {
+            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.O.Lexeme),
+                EnglishPattern.PairTransference("I>O_ing", EnglishAttributes.O.Lexeme, EnglishAttributes.I.NonLexeme.Suffix, EnglishAttributes.I.Lexeme.Verb))
+            {
+                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme.Verb)),
+                Left = new AdTree(new Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix), EnglishPattern.Morpheme(EnglishAttributes.I.NonLexeme.Suffix)),
+            };
+
+            Assert.IsTrue(adTree.Pattern.IsPairTransference);
+
+            var result = adTree.TryGetTransferenceMorpheme();
+
+            // Attributes shall be taken from the parent.
+            Assert.AreEqual(adTree.Morpheme.Attributes, result.Attributes);
+
+            // Morph shall be composed from the left and right branches.
+            Assert.AreEqual("reading", result.Morph);
+        }
+
+        [Test]
         public void CanAttachToRight()
         {
             IAdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel),
@@ -564,7 +611,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void GetNonconformities_PrimitiveTransference()
+        public void GetNonconformities_MonoTransference()
         {
             AdTree adTree = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {

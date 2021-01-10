@@ -157,7 +157,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             using (Trace.Entering())
             {
-                IEnumerable<Pattern> patterns = myConstructiveDictionary.FindGrammarCharacterTransferencePatterns(adTree.Morpheme);
+                IEnumerable<Pattern> patterns = myConstructiveDictionary.FindMonoTransferencePatterns(adTree.Morpheme);
                 foreach (Pattern pattern in patterns)
                 {
                     // Note: in case of a grammar character transference it is expected the morpheme rule always represents

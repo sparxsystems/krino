@@ -49,14 +49,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         IEnumerable<Pattern> FindPatterns(Morpheme morpheme);
 
         /// <summary>
-        /// Finds transference patterns which change the grammar character of the morpheme.
+        /// Finds transference patterns which change the grammar character of a morpheme.
         /// </summary>
         /// <remarks>
         /// E.g. it changes stative to adjunctive (A>O).
         /// </remarks>
         /// <param name="morpheme"></param>
         /// <returns></returns>
-        IEnumerable<Pattern> FindGrammarCharacterTransferencePatterns(Morpheme morpheme);
+        IEnumerable<Pattern> FindMonoTransferencePatterns(Morpheme morpheme);
 
 
         /// <summary>

@@ -141,13 +141,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             }
         }
 
-        public IEnumerable<Pattern> FindGrammarCharacterTransferencePatterns(Morpheme morpheme)
+        public IEnumerable<Pattern> FindMonoTransferencePatterns(Morpheme morpheme)
         {
             using (Trace.Entering())
             {
-                IEnumerable<Pattern> result = Patterns
-                .Where(x => x.IsMonoTransference && x.RightRule.Evaluate(morpheme));
-
+                IEnumerable<Pattern> result = Patterns.Where(x => x.IsMonoTransference && x.RightRule.Evaluate(morpheme));
                 return result;
             }
         }

@@ -48,7 +48,7 @@ namespace Krino.GretaTest
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous))
                     .SetLeftFirst(),
 
-            EnglishPattern.Transference("I>I_ing",
+            EnglishPattern.PairTransference("I>I_ing",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
                 EnglishAttributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
                 EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb.Modal),

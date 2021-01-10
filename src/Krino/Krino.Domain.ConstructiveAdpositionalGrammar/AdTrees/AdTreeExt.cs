@@ -165,6 +165,34 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         }
 
         /// <summary>
+        /// Returns the morpheme for Morpheme, MonoTransference or PairTransference adtree.
+        /// </summary>
+        /// <remarks>
+        /// Returns null if the 
+        /// </remarks>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static Morpheme TryGetTransferenceMorpheme(this IAdTree adTree)
+        {
+            Morpheme result = null;
+
+            if (adTree.Pattern.IsMorpheme)
+            {
+                result = adTree.Morpheme;
+            }
+            else if (adTree.Pattern.IsMonoTransference)
+            {
+                result = new Morpheme(adTree.Morpheme.AttributesModel, adTree.Right?.Morpheme.Morph, adTree.Morpheme.Attributes);
+            }
+            else if (adTree.Pattern.IsPairTransference)
+            {
+                result = new Morpheme(adTree.Morpheme.AttributesModel, adTree.Phrase, adTree.Morpheme.Attributes);
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns true if the adTreeElement can be attached to the right branch of the adTree.
         /// </summary>
         /// <param name="adTree"></param>
@@ -216,7 +244,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 else if (adTreeToAttach.Pattern.IsEpsilonAdPosition() ||
                          adTreeToAttach.Pattern.IsMorphematicAdPosition())
                 {
-                    // If the rule allows the substitution.
+                    // If a substitution (because adTreeToAttach is adposition) can be attached.
                     if (rule.SubstitutionRule.Evaluate(adTreeToAttach.Morpheme.GrammarCharacter))
                     {
                         // If it shall be attached to the right and
@@ -240,8 +268,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                             }
                         }
 
-                        // Get the governor from the right children.
-                        morphemeAdTree = adTreeToAttach.RightChildren.FirstOrDefault(x => x.IsGovernor);
+                        // Try to get the driving morpheme.
+                        morphemeAdTree = adTreeToAttach.RightChildren.FirstOrDefault(x => x.Pattern.IsLikeMorpheme);
 
                         // If the governor is not attached yet then check only rules.
                         if (morphemeAdTree == null)
@@ -259,7 +287,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                 if (morphemeAdTree != null)
                 {
-                    // If it shall be attached to the right then check the valency.
+                    // If it shall be attached to the right the morpheme is a verb then check the valency.
                     if (attachPosition == AttachingPosition.ChildOnRight && attributesModel.IsVerb(morphemeAdTree.Morpheme.Attributes))
                     {
                         int valency = attributesModel.GetNumberOfValencies(morphemeAdTree.Morpheme.Attributes);
@@ -290,77 +318,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                         }
                     }
 
-                    Morpheme morphemeToEvaluate;
+                    Morpheme morphemeToEvaluate = morphemeAdTree.TryGetTransferenceMorpheme();
 
-                    if (morphemeAdTree.Pattern.IsMonoTransference)
+                    if (string.IsNullOrEmpty(morphemeToEvaluate?.Morph) && morphemeAdTree.Pattern.IsPairTransference)
                     {
-                        morphemeToEvaluate = new Morpheme(attributesModel, morphemeAdTree.Right.Morpheme.Morph, morphemeAdTree.Morpheme.Attributes);
-                    }
-                    else if (morphemeAdTree.Pattern.IsPairTransference)
-                    {
-                        string relevantMorph = morphemeAdTree.RightChildren.FirstOrDefault(x => !string.IsNullOrEmpty(x.Morpheme.Morph))?.Morpheme.Morph;
-                        if (relevantMorph != null)
+                        // The morpheme with the morph is not attached yet so check only attributes.
+                        if (rule.AttributesRule.Evaluate(morphemeAdTree.Morpheme.Attributes))
                         {
-                            morphemeToEvaluate = new Morpheme(attributesModel, relevantMorph, morphemeAdTree.Morpheme.Attributes);
+                            return true;
                         }
                         else
                         {
-                            // The morpheme with the morph is not attached yet so check only attributes.
-                            if (rule.AttributesRule.Evaluate(morphemeAdTree.Morpheme.Attributes))
-                            {
-                                return true;
-                            }
-                            else
-                            {
-                                return false;
-                            }
+                            return false;
                         }
-                    }
-                    else
-                    {
-                        morphemeToEvaluate = morphemeAdTree.Morpheme;
                     }
 
                     // Check if the morpheme passes the rule.
-                    if (attachPosition == AttachingPosition.ChildOnLeft)
-                    {
-                        bool result = rule.Evaluate(morphemeToEvaluate);
-                        return result;
-                    }
-                    else
-                    {
-                        // Check if the morpheme passes the rule in all relevant adpositions.
-                        bool result = true;
-                        IEnumerable<IAdTree> sequenceToRoot = adTree.GetSequenceToRoot();
-                        foreach (IAdTree item in sequenceToRoot)
-                        {
-                            if (!item.Pattern.RightRule.Evaluate(morphemeToEvaluate))
-                            {
-                                result = false;
-                                break;
-                            }
-
-                            if (item.IsOnLeft)
-                            {
-                                if (item.AdPosition.Morpheme.GrammarCharacter != GrammarCharacter.e &&
-                                    item.AdPosition.Morpheme.GrammarCharacter != GrammarCharacter.U &&
-                                    !item.AdPosition.Pattern.LeftRule.Evaluate(morphemeToEvaluate))
-                                {
-                                    result = false;
-                                }
-
-                                break;
-                            }
-
-                            if (item.Morpheme.GrammarCharacter != GrammarCharacter.e &&
-                                item.Morpheme.GrammarCharacter != GrammarCharacter.U)
-                            {
-                                break;
-                            }
-                        }
-
-                        return result;
-                    }
+                    bool result = rule.Evaluate(morphemeToEvaluate);
+                    return result;
                 }
             }
 

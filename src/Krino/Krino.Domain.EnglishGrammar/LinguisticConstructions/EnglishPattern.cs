@@ -23,7 +23,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern O4_I => On_I("O4-I", 4);
         public static Pattern O5_I => On_I("O5-I", 5);
 
-        public static Pattern Transference(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
+        public static Pattern PairTransference(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
@@ -31,7 +31,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
             };
 
-        public static Pattern Transference(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger notLeftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes)
+        public static Pattern PairTransference(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger notLeftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),

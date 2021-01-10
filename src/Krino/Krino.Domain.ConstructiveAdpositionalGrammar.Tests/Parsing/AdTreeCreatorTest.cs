@@ -111,7 +111,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
 
-                EnglishPattern.Transference("I>O", EnglishAttributes.O.Lexeme, EnglishAttributes.O.NonLexeme.Suffix, EnglishAttributes.I.Lexeme),
+                EnglishPattern.PairTransference("I>O", EnglishAttributes.O.Lexeme, EnglishAttributes.O.NonLexeme.Suffix, EnglishAttributes.I.Lexeme),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
@@ -160,7 +160,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous))
                     .SetLeftFirst(),
 
-                EnglishPattern.Transference("I>I_ing",
+                EnglishPattern.PairTransference("I>I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
                     EnglishAttributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
                     EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb.Modal),

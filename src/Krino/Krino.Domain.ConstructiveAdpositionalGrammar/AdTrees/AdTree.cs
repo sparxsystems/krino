@@ -215,7 +215,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         // Note: dependent may have the epsilon grammar character. E.g. if it is a group of dependents.
         public bool IsDependent => IsOnLeft && Morpheme.GrammarCharacter != GrammarCharacter.U;
 
-        public string Phrase => string.Join(" ", this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
+        //public string Phrase2 => string.Join(" ", this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
+
+        public string Phrase
+        {
+            get
+            {
+                var result = new StringBuilder();
+
+                bool isFirst = true;
+                var items = this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph));
+                foreach (var item in items)
+                {
+                    if (isFirst)
+                    {
+                        result.Append(item.Morpheme.Morph);
+                        isFirst = false;
+                    }
+                    else
+                    {
+                        if (!item.Morpheme.IsSuffix)
+                        {
+                            result.Append(" ");
+                        }
+
+                        result.Append(item.Morpheme.Morph);
+                    }
+                }
+
+                return result.ToString();
+            }
+        }
 
         public bool Equals(IAdTree other)
         {

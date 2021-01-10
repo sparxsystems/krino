@@ -15,20 +15,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// </remarks>
         public static Morpheme Epsilon(IAttributesModel attributesModel) => new Morpheme(attributesModel, "", attributesModel.Epsilon);
 
-        private IAttributesModel myAttributesModel;
-
         public Morpheme (IAttributesModel attributesModel, string morph, BigInteger attributes)
         {
             Morph = morph;
             Attributes = attributes;
-            myAttributesModel = attributesModel;
+            AttributesModel = attributesModel;
         }
 
         public string Morph { get; private set; }
 
+        public IAttributesModel AttributesModel { get; private set; }
+
         public BigInteger Attributes { get; private set; }
 
-        public GrammarCharacter GrammarCharacter => myAttributesModel.GetGrammarCharacter(Attributes);
+        public GrammarCharacter GrammarCharacter => AttributesModel.GetGrammarCharacter(Attributes);
 
         /// <summary>
         /// Returns true if the morpheme is a lexeme.
@@ -36,7 +36,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// It does not have to be lexeme nor non-lexeme.
         /// </remarks>
-        public bool IsLexeme => myAttributesModel.IsLexeme(Attributes);
+        public bool IsLexeme => AttributesModel.IsLexeme(Attributes);
 
         /// <summary>
         /// Returns true if the morpheme is a non-lexeme.
@@ -44,7 +44,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         /// <remarks>
         /// It does not have to be lexeme nor non-lexeme.
         /// </remarks>
-        public bool IsNonLexeme => myAttributesModel.IsNonLexeme(Attributes);
+        public bool IsNonLexeme => AttributesModel.IsNonLexeme(Attributes);
+
+        public bool IsPrefix => AttributesModel.IsPrefix(Attributes);
+
+        public bool IsSuffix => AttributesModel.IsSuffix(Attributes);
 
         public bool Equals(Morpheme other) => Morph == other.Morph && Attributes == other.Attributes;
 
