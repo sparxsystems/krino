@@ -32,9 +32,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             // Right and left rule is not Nothing - it is not the morpheme rule.
             pattern = new Pattern()
             {
-                MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.E.Lexeme),
-                LeftRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.I.Lexeme),
-                RightRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.O.Lexeme),
+                MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.E.Lexeme),
+                LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme),
+                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme),
             };
             Assert.IsFalse(pattern.IsMorpheme());
         }
@@ -77,7 +77,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             pattern = new Pattern("A-U-A")
             {
                 // Grammar character is not epsilon -> it is not epsilon adposition.
-                MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.U),
+                MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U),
                 LeftRule = EnglishMorphemeRule.A_Lexeme,
                 RightRule = EnglishMorphemeRule.A_Lexeme,
             };

@@ -18,7 +18,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         private IAttributesModel myAttributesModel = new EnglishAttributesModel();
 
         [Test]
-        public void InheritedGrammarCharacter()
+        public void GovernorGrammarCharacter()
         {
             // The phrase: I read the book.
             AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
@@ -36,11 +36,35 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             };
 
 
-            Assert.AreEqual(GrammarCharacter.I, adTree.InheritedGrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.e, adTree.Right.Left.InheritedGrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.I, adTree.Right.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.GovernorGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.e, adTree.Right.Left.GovernorGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.Right.GovernorGrammarCharacter);
 
-            Assert.AreEqual(GrammarCharacter.O, adTree.Left.InheritedGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Left.GovernorGrammarCharacter);
+        }
+
+        [Test]
+        public void GovernorGrammarCharacter_E()
+        {
+            // The phrase: I read book of year.
+            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            {
+                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                {
+                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I), new Pattern()),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), new Pattern())
+                },
+                Left = new AdTree(new Morpheme(myAttributesModel, "of", EnglishAttributes.E), new Pattern())
+                {
+                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O), new Pattern()),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A), new Pattern())
+                }
+            };
+
+            Assert.AreEqual(GrammarCharacter.E, adTree.Left.Morpheme.GrammarCharacter);
+
+            // Although the grammar character in the morpheme is E the inherited grammar character is O.
+            Assert.AreEqual(GrammarCharacter.O, adTree.Left.GovernorGrammarCharacter);
         }
 
         [Test]
@@ -211,7 +235,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         }
 
         [Test]
-        public void Governor()
+        public void GetMyGovernor()
         {
             // The phrase: I read the book.
             AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
@@ -229,23 +253,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             };
 
             // the governor of 'I' is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Right.Left.GetGovernor());
+            Assert.IsTrue(adTree.Right.Right == adTree.Right.Left.GetMyGovernor());
 
             // the governor of 'book'-adposition is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Left.GetGovernor());
+            Assert.IsTrue(adTree.Right.Right == adTree.Left.GetMyGovernor());
 
             // the governor of 'book' is the 'read'.
             // Note: the book is already the governor so the governor of the governor shall be found.
-            Assert.IsTrue(adTree.Right.Right == adTree.Left.Right.GetGovernor());
+            Assert.IsTrue(adTree.Right.Right == adTree.Left.Right.GetMyGovernor());
 
             // the governor of 'the' is the 'book'.
-            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.GetGovernor());
+            Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.GetMyGovernor());
 
             // the governor of the root is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.GetGovernor());
+            Assert.IsTrue(adTree.Right.Right == adTree.GetMyGovernor());
 
             // the governor of the 'read'-adposition is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Right.GetGovernor());
+            Assert.IsTrue(adTree.Right.Right == adTree.Right.GetMyGovernor());
         }
 
         [Test]

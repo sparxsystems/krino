@@ -12,11 +12,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
-        public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Anything);
+        public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.e, MorphRules.Anything, MaskRule.Anything);
 
-        public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Nothing, MaskRule.Nothing);
+        public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.e, MorphRules.Nothing, MaskRule.Nothing);
 
-        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.EmptyString, MaskRule.Is(0));
+        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.e, MorphRules.EmptyString, MaskRule.Is(0));
+
+
 
         public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)
         {
@@ -26,14 +28,35 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         }
 
 
+        /// <summary>
+        /// Rule to evaluate the morph.
+        /// </summary>
         public IRule<string> MorphRule { get; private set; }
+
+        /// <summary>
+        /// Grammar character accepted by the morpheme rule.
+        /// </summary>
         public GrammarCharacter GrammarCharacter { get; private set; }
+
+        /// <summary>
+        /// Rule to evaluate morpheme attributes.
+        /// </summary>
         public IRule<BigInteger> AttributesRule { get; private set; }
 
-        public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRuleMaker.Epsilon_U_E;
+        public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRules.Epsilon_U_E;
 
+        /// <summary>
+        /// Required valency position.
+        /// </summary>
         public int ValencyPosition { get; private set; }
 
+        /// <summary>
+        /// Indicates the phrase order in the adtree.
+        /// </summary>
+        /// <remarks>
+        /// If the Order property for the left rule is less than for the right rule then the left branch of adtree goes first.
+        /// Note, this is related only to the sequence order how the phrase is in the adtree is interpreted.
+        /// </remarks>
         public int Order { get; private set; } = int.MaxValue;
 
         public MorphemeRule SetValencyPosition(int valencyPosition)
@@ -45,12 +68,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public MorphemeRule SetOrder(int order)
         {
             Order = order;
-            return this;
-        }
-
-        public MorphemeRule SetAttributes(BigInteger attributes)
-        {
-            AttributesRule = MaskRule.Is(attributes);
             return this;
         }
 

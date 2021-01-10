@@ -102,14 +102,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public GrammarCharacter InheritedGrammarCharacter
+        public GrammarCharacter GovernorGrammarCharacter
         {
             get
             {
                 GrammarCharacter result = GrammarCharacter.e;
 
                 // Find the first element on the right branch which has defined own grammar character.
-                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
+                IAdTree rightChild = RightChildren.FirstOrDefault(x =>
+                    x.Morpheme.GrammarCharacter != GrammarCharacter.e &&
+                    x.Morpheme.GrammarCharacter != GrammarCharacter.E &&
+                    x.Morpheme.GrammarCharacter != GrammarCharacter.U);
+
                 if (rightChild != null)
                 {
                     result = rightChild.Morpheme.GrammarCharacter;
@@ -156,7 +160,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         public bool IsOnLeft => AdPosition != null ? AdPosition.Left == this : false;
 
-        public IAdTree GetGovernor()
+        public IAdTree GetMyGovernor()
         {
             IAdTree result = null;
 
@@ -182,7 +186,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 IAdTree adPositionOnLeftOrRoot = AdPositions.FirstOrDefault(x => x.IsOnLeft || x.AdPosition == null);
 
                 // Get the governor of the governor.
-                result = adPositionOnLeftOrRoot.GetGovernor();
+                result = adPositionOnLeftOrRoot.GetMyGovernor();
             }
 
             return result;
@@ -339,7 +343,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     builder.Append(": ");
                     builder.Append(Morpheme.Morph);
                 }
-                else if (!Pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
+                else if (!Pattern.MorphemeRule.MorphRule.Equals(MorphRules.Nothing) &&
                          !Pattern.MorphemeRule.MorphRule.Evaluate(null) &&
                          !Pattern.MorphemeRule.MorphRule.Evaluate(""))
                 {

@@ -41,7 +41,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <remarks>
         /// If there is no a child governor then it returns Epsilon.
         /// </remarks>
-        GrammarCharacter InheritedGrammarCharacter { get; }
+        GrammarCharacter GovernorGrammarCharacter { get; }
 
         /// <summary>
         /// Returns true if this tree element is the adpostion.
@@ -83,7 +83,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// If the governor does not exist then it returns null.
         /// </remarks>
         /// <returns></returns>
-        IAdTree GetGovernor();
+        IAdTree GetMyGovernor();
 
         /// <summary>
         /// Returns true if this tree element is the governor.

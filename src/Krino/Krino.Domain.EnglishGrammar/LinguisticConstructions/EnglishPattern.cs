@@ -11,7 +11,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern Morpheme(string patternName, BigInteger attributes) => new Pattern(patternName)
         {
-            MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, attributes),
+            MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, attributes),
             LeftRule = MorphemeRule.Nothing,
             RightRule = MorphemeRule.Nothing,
         };
@@ -27,16 +27,16 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
-                RightRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
-                LeftRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
+                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
+                LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
             };
 
         public static Pattern Transference(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger notLeftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
-                LeftRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, leftAttributes, notLeftAttributes),
-                RightRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, rightAttributes, notRightAttributes),
+                LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes, notLeftAttributes),
+                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes, notRightAttributes),
             };
 
         public static Pattern Transference(string patternName, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
@@ -52,15 +52,15 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             {
                 MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
                 LeftRule = MorphemeRule.Nothing,
-                RightRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, rightAttributes).SetOrder(1),
+                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes).SetOrder(1),
             };
 
         public static Pattern EpsilonAdPosition(string patternName, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
                 MorphemeRule = MorphemeRule.Epsilon,
-                LeftRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
-                RightRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
+                LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
+                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
             };
 
         public static Pattern EpsilonAdPosition(string patternName, MorphemeRule leftRule, MorphemeRule rightRule)
@@ -74,16 +74,16 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern MorphematicAdPosition(string patternName, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
-                MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, morphemeAttributes),
-                LeftRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, leftAttributes),
-                RightRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, rightAttributes),
+                MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, morphemeAttributes),
+                LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
+                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
             };
 
         private static Pattern On_I(string patternName, int valencyPosition) => new Pattern(patternName)
         {
             MorphemeRule = MorphemeRule.Epsilon.SetValencyPosition(valencyPosition),
-            LeftRule = EnglishMorphemeRule.O_Lexeme.SetInheritance(InheritanceRuleMaker.Epsilon_U),
-            RightRule = EnglishMorphemeRule.I_Lexeme.SetInheritance(InheritanceRuleMaker.Epsilon_U),
+            LeftRule = EnglishMorphemeRule.O_Lexeme.SetInheritance(InheritanceRules.Epsilon_U),
+            RightRule = EnglishMorphemeRule.I_Lexeme.SetInheritance(InheritanceRules.Epsilon_U),
         };
     }
 }

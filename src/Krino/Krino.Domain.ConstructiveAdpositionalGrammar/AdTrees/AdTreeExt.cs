@@ -192,10 +192,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
         private static bool CanAttachViaRule(this IAdTree adTree, IAdTree adTreeToAttach, AttachingPosition attachPosition, IAttributesModel attributesModel)
         {
+            // Get rule to evalute.
             MorphemeRule rule = attachPosition == AttachingPosition.ChildOnLeft ? adTree.Pattern.LeftRule : adTree.Pattern.RightRule;
 
             // If the rule allows to attach and the order of attaching is correct.
-            if (!rule.Equals(MorphemeRule.Nothing) && IsOrderOfAttachingCorrect(adTree, attachPosition))
+            if (!rule.Equals(MorphemeRule.Nothing) && IsAttachingOrderCorrect(adTree, attachPosition))
             {
                 // If the adtree where to attach is morphematic then it is not possible to attach the second child until the morpheme is set.
                 if (adTree.Pattern.IsMorphematicAdPosition() && (adTree.Right != null || adTree.Left != null) && string.IsNullOrEmpty(adTree.Morpheme.Morph))
@@ -203,14 +204,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     return false;
                 }
 
-                IAdTree morphematicAdTree = null;
+                // Note: from the tree to attach we need to get the adtree representing the morpheme which shall be evaluated.
+                IAdTree morphemeAdTree = null;
 
                 // If the adTreeToAttach is a morpheme or a transference.
                 if (adTreeToAttach.Pattern.IsMorpheme() ||
                     adTreeToAttach.Pattern.IsGrammarCharacterTransference() ||
                     adTreeToAttach.Pattern.IsTransference())
                 {
-                    morphematicAdTree = adTreeToAttach;
+                    morphemeAdTree = adTreeToAttach;
                 }
                 // It is an adposition.
                 else if (adTreeToAttach.Pattern.IsEpsilonAdPosition() ||
@@ -220,7 +222,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     if (rule.InheritanceRule.Evaluate(adTreeToAttach.Morpheme.GrammarCharacter))
                     {
                         // If it shall be attached to the right and
-                        // the valency position is specified then check correctness with regard to presence of previous valencies.
+                        // the valency position is specified then check correctness with regard to presence of previously filled valencies.
                         if (attachPosition == AttachingPosition.ChildOnRight)
                         {
                             IAdTree valencyElement = adTree.GetSequenceToRoot()
@@ -241,10 +243,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                         }
 
                         // Get the governor from the right children.
-                        morphematicAdTree = adTreeToAttach.RightChildren.FirstOrDefault(x => x.IsGovernor);
+                        morphemeAdTree = adTreeToAttach.RightChildren.FirstOrDefault(x => x.IsGovernor);
 
                         // If the governor is not attached yet then check only rules.
-                        if (morphematicAdTree == null)
+                        if (morphemeAdTree == null)
                         {
                             IEnumerable<IAdTree> rightSequence = new IAdTree[] { adTreeToAttach }.Concat(adTreeToAttach.RightChildren);
                             if (rightSequence.Any(x => !x.Pattern.RightRule.IsSubruleOf(rule) && !rule.IsSubruleOf(x.Pattern.RightRule)))
@@ -257,16 +259,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     }
                 }
 
-                if (morphematicAdTree != null)
+                if (morphemeAdTree != null)
                 {
                     // If it shall be attached to the right then check the valency.
-                    if (attachPosition == AttachingPosition.ChildOnRight && attributesModel.IsVerb(morphematicAdTree.Morpheme.Attributes))
+                    if (attachPosition == AttachingPosition.ChildOnRight && attributesModel.IsVerb(morphemeAdTree.Morpheme.Attributes))
                     {
-                        int valency = attributesModel.GetNumberOfValencies(morphematicAdTree.Morpheme.Attributes);
+                        int valency = attributesModel.GetNumberOfValencies(morphemeAdTree.Morpheme.Attributes);
 
                         if (valency > -1)
                         {
-                            int[] valencyPositions = morphematicAdTree.GetSequenceToRoot()
+                            // Get already filled valency positions.
+                            int[] valencyPositions = morphemeAdTree.GetSequenceToRoot()
                                 .TakeWhile(x => x != adTree) // This is to not make an assuption if it is already attached or not.
                                 .TakeUntil(x => x.IsOnRight)
                                 .Concat(adTree.GetSequenceToRoot().TakeUntil(x => x.IsOnRight))
@@ -274,12 +277,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                                 .Select(x => x.Pattern.MorphemeRule.ValencyPosition)
                                 .ToArray();
 
-                            // If more valency positions than the morpheme valency.
+                            // If such valency is already filled.
                             if (valencyPositions.Length > valency)
                             {
                                 return false;
                             }
-
                             for (int i = 0; i < valencyPositions.Length; ++i)
                             {
                                 if (valencyPositions[i] != i + 1)
@@ -292,21 +294,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     Morpheme morphemeToEvaluate;
 
-                    if (morphematicAdTree.Pattern.IsGrammarCharacterTransference())
+                    if (morphemeAdTree.Pattern.IsGrammarCharacterTransference())
                     {
-                        morphemeToEvaluate = new Morpheme(attributesModel, morphematicAdTree.Right.Morpheme.Morph, morphematicAdTree.Morpheme.Attributes);
+                        morphemeToEvaluate = new Morpheme(attributesModel, morphemeAdTree.Right.Morpheme.Morph, morphemeAdTree.Morpheme.Attributes);
                     }
-                    else if (morphematicAdTree.Pattern.IsTransference())
+                    else if (morphemeAdTree.Pattern.IsTransference())
                     {
-                        string relevantMorph = morphematicAdTree.RightChildren.FirstOrDefault(x => !string.IsNullOrEmpty(x.Morpheme.Morph))?.Morpheme.Morph;
+                        string relevantMorph = morphemeAdTree.RightChildren.FirstOrDefault(x => !string.IsNullOrEmpty(x.Morpheme.Morph))?.Morpheme.Morph;
                         if (relevantMorph != null)
                         {
-                            morphemeToEvaluate = new Morpheme(attributesModel, relevantMorph, morphematicAdTree.Morpheme.Attributes);
+                            morphemeToEvaluate = new Morpheme(attributesModel, relevantMorph, morphemeAdTree.Morpheme.Attributes);
                         }
                         else
                         {
                             // The morpheme with the morph is not attached yet so check only attributes.
-                            if (rule.AttributesRule.Evaluate(morphematicAdTree.Morpheme.Attributes))
+                            if (rule.AttributesRule.Evaluate(morphemeAdTree.Morpheme.Attributes))
                             {
                                 return true;
                             }
@@ -318,7 +320,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     }
                     else
                     {
-                        morphemeToEvaluate = morphematicAdTree.Morpheme;
+                        morphemeToEvaluate = morphemeAdTree.Morpheme;
                     }
 
                     // Check if the morpheme passes the rule.
@@ -367,14 +369,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return false;
         }
 
-        private static bool IsOrderOfAttachingCorrect(IAdTree adTree, AttachingPosition position)
+        private static bool IsAttachingOrderCorrect(IAdTree adTree, AttachingPosition position)
         {
             bool result = false;
 
+            // If the attaching position is on the left.
             if (position == AttachingPosition.ChildOnLeft)
             {
+                // If left is before the right
                 if (adTree.Pattern.LeftRule.Order <= adTree.Pattern.RightRule.Order ||
+                    // or right is already set
                     adTree.Right != null ||
+                    // or right is not supposed to be set.
                     adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing))
                 {
                     result = true;
@@ -558,7 +564,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             // Check if the morph is set.
             if (string.IsNullOrEmpty(adTree.Morpheme.Morph) &&
-                !adTree.Pattern.MorphemeRule.MorphRule.Equals(MorphRuleMaker.Nothing) &&
+                !adTree.Pattern.MorphemeRule.MorphRule.Equals(MorphRules.Nothing) &&
                 !adTree.Pattern.MorphemeRule.MorphRule.Evaluate(adTree.Morpheme.Morph))
             {
                 return false;
@@ -599,7 +605,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             if (other.GrammarCharacter == GrammarCharacter.e ||
                 other.GrammarCharacter == morphemeRule.GrammarCharacter)
             {
-                if (other.MorphRule.Equals(MorphRuleMaker.Anything) ||
+                if (other.MorphRule.Equals(MorphRules.Anything) ||
                     morphemeRule.MorphRule.IsSubruleOf(other.MorphRule))
                 {
                     if (other.AttributesRule.Equals(MaskRule.Anything) ||

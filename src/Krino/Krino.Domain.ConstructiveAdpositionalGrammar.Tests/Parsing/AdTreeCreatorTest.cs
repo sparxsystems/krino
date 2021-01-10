@@ -39,7 +39,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern(".")
                 {
-                    MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
+                    MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
                     LeftRule = MorphemeRule.Anything,
                     RightRule = EnglishMorphemeRule.I_Lexeme.SetOrder(1),
                 },
@@ -152,13 +152,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.Transference("I>PresentPerfect",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetInheritance(InheritanceRuleMaker.Nothing),
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)),
+                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)),
 
                 EnglishPattern.Transference("been-I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
-                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetInheritance(InheritanceRuleMaker.Nothing),
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
+                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
 
                 EnglishPattern.Transference("I>I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
@@ -255,7 +255,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.EpsilonAdPosition("I-I", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
+                    .SetInheritanceForLeft(InheritanceRules.Nothing),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -290,11 +290,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.EpsilonAdPosition("I-I", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
+                    .SetInheritanceForLeft(InheritanceRules.Nothing),
 
                 EnglishPattern.EpsilonAdPosition("E-I", EnglishAttributes.E.Lexeme, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
+                    .SetInheritanceForLeft(InheritanceRules.Nothing),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -378,11 +378,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst()
-                    .SetInheritanceForRight(InheritanceRuleMaker.Epsilon),
+                    .SetInheritanceForRight(InheritanceRules.Epsilon),
 
                 new Pattern("I-U-O")
                 {
-                    MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.U.Lexeme.Conjunction),
+                    MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.Lexeme.Conjunction),
                     LeftRule = EnglishMorphemeRule.I_Lexeme,
                     RightRule = EnglishMorphemeRule.O_Lexeme.SetOrder(1),
                 },

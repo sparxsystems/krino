@@ -176,20 +176,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
 
 
             // Inheritance is not allowed.
             adTree = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }.SetInheritanceForRight(InheritanceRuleMaker.Nothing)
+                new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }.SetInheritanceForRight(InheritanceRules.Nothing)
             );
             adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
         }
@@ -341,20 +341,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 
 
             // Inheritance is not allowed.
             adTree = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }.SetInheritanceForLeft(InheritanceRuleMaker.Nothing)
+                new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }.SetInheritanceForLeft(InheritanceRules.Nothing)
             );
             adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
                 new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
         }

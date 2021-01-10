@@ -248,7 +248,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     if (canAppendIndirectly)
                     {
                         // Try to attach the new element indirectly.
-                        TryToAppendIndirectly(AttachingPosition.ParrentForLeft, placeToAppend, appendee, expectedSignature, results, 2);
+                        TryToAppendIndirectly(AttachingPosition.ParrentForLeft, placeToAppend, appendee, expectedSignature, results);
                     }
                 }
 
@@ -266,7 +266,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     if (canAppendIndirectly)
                     {
                         // Try to attach the new element indirectly.
-                        TryToAppendIndirectly(AttachingPosition.ParrentForRight, placeToAppend, appendee, expectedSignature, results, 2);
+                        TryToAppendIndirectly(AttachingPosition.ParrentForRight, placeToAppend, appendee, expectedSignature, results);
                     }
                 }
 
@@ -287,7 +287,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         // Try to attach the adtree indirectly via new element's left.
                         else if (canAppendIndirectly)
                         {
-                            TryToAppendIndirectly(AttachingPosition.ParrentForLeft, appendee, placeToAppend, expectedSignature, results, 2);
+                            TryToAppendIndirectly(AttachingPosition.ParrentForLeft, appendee, placeToAppend, expectedSignature, results);
                         }
                     }
 
@@ -304,15 +304,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         // Try to attach the adtree indirectly via new element's right.
                         else if (canAppendIndirectly)
                         {
-                            TryToAppendIndirectly(AttachingPosition.ParrentForRight, appendee, placeToAppend, expectedSignature, results, 2);
+                            TryToAppendIndirectly(AttachingPosition.ParrentForRight, appendee, placeToAppend, expectedSignature, results);
                         }
                     }
 
                     if (canAppendIndirectly)
                     {
                         // Also try to connect the adtree and the new element indirectly via adtree adposition.
-                        TryToAppendIndirectly(AttachingPosition.ChildOnLeft, placeToAppend, appendee, expectedSignature, results, 2);
-                        TryToAppendIndirectly(AttachingPosition.ChildOnRight, placeToAppend, appendee, expectedSignature, results, 2);
+                        TryToAppendIndirectly(AttachingPosition.ChildOnLeft, placeToAppend, appendee, expectedSignature, results);
+                        TryToAppendIndirectly(AttachingPosition.ChildOnRight, placeToAppend, appendee, expectedSignature, results);
                     }
                 }
             }
@@ -323,43 +323,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         private void TryToAppendIndirectly(AttachingPosition appendingPositionOfStartElement,
             IAdTree start, IAdTree end,
             string expectedSignature,
-            List<IAdTree> results,
-            int recursionStopLevel)
+            List<IAdTree> results)
         {
             using (Trace.Entering())
             {
-                if (recursionStopLevel <= 0)
-                {
-                    return;
-                }
-                --recursionStopLevel;
-
                 GrammarCharacter startGrammarCharacter = GrammarCharacter.e;
                 GrammarCharacter endGrammarCharacter = GrammarCharacter.e;
 
-                // If start adTree connects the bridge via its left.
+                // If start adTree connects the bridge on its left.
                 if (appendingPositionOfStartElement == AttachingPosition.ParrentForLeft)
                 {
                     startGrammarCharacter = start.Pattern.LeftRule.GrammarCharacter;
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
                 }
-                // If start adTree connects the bridge via its right.
+                // If start adTree connects the bridge on its right.
                 else if (appendingPositionOfStartElement == AttachingPosition.ParrentForRight)
                 {
                     startGrammarCharacter = start.Pattern.RightRule.GrammarCharacter;
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
                 }
-                // If the bridge connects the start adtree via its left.
+                // If the bridge connects the start adtree on its left.
                 else if (appendingPositionOfStartElement == AttachingPosition.ChildOnLeft)
                 {
-                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.GovernorGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
                 }
-                // If the bridge connects the start adtree via its right.
+                // If the bridge connects the start adtree on its right.
                 else if (appendingPositionOfStartElement == AttachingPosition.ChildOnRight)
                 {
-                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.InheritedGrammarCharacter);
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.InheritedGrammarCharacter);
+                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.GovernorGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
                 }
 
                 // Get all possibile ways how to get from start to end grammar character and path is not greater than 4.

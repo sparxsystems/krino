@@ -32,18 +32,18 @@ namespace Krino.GretaTest
 
             EnglishPattern.Transference("I>SimpleFuture",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive)),
+                    EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive)),
 
             EnglishPattern.Transference("I>PresentPerfect",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)),
+                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)),
 
             EnglishPattern.Transference("been-I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
-                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetOrder(1).SetInheritance(InheritanceRuleMaker.Nothing),
-                    EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
+                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetOrder(1).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)),
 
             EnglishPattern.Transference("I>I_ing",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
@@ -55,16 +55,16 @@ namespace Krino.GretaTest
 
             EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                 .SetLeftFirst()
-                .SetInheritanceForRight(InheritanceRuleMaker.Epsilon),
+                .SetInheritanceForRight(InheritanceRules.Epsilon),
 
             EnglishPattern.EpsilonAdPosition("E-I", EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme)
                 .SetLeftFirst()
-                .SetInheritanceForLeft(InheritanceRuleMaker.Nothing),
+                .SetInheritanceForLeft(InheritanceRules.Nothing),
 
             EnglishPattern.EpsilonAdPosition("O+-O", EnglishAttributes.O.NonLexeme.Suffix, EnglishAttributes.O.Lexeme)
                 .SetRightFirst()
-                .SetInheritanceForLeft(InheritanceRuleMaker.Nothing)
-                .SetInheritanceForRight(InheritanceRuleMaker.Epsilon),
+                .SetInheritanceForLeft(InheritanceRules.Nothing)
+                .SetInheritanceForRight(InheritanceRules.Epsilon),
 
             //PatternExt.EpsilonAdPosition("I-I", Attributes.I.Lexeme.Verb, Attributes.I.Lexeme.Verb)
             //    .SetLeftFirst()
@@ -89,9 +89,9 @@ namespace Krino.GretaTest
 
             new Pattern("•")
             {
-                MorphemeRule = EnglishMorphemeRule.Is(MorphRuleMaker.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
+                MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
                 LeftRule = MorphemeRule.Anything,
-                RightRule = new MorphemeRule(GrammarCharacter.e, MorphRuleMaker.Anything, MaskRule.Something),
+                RightRule = new MorphemeRule(GrammarCharacter.e, MorphRules.Anything, MaskRule.Something),
             },
 
         };

@@ -82,7 +82,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         public bool IsMorpheme()
         {
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                MorphemeRule.MorphRule.Equals(MorphRuleMaker.Something) &&
+                MorphemeRule.MorphRule.Equals(MorphRules.Something) &&
                 LeftRule.Equals(MorphemeRule.Nothing) &&
                 RightRule.Equals(MorphemeRule.Nothing))
             {
@@ -102,7 +102,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
                 MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
                 MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString))
+                MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
             {
                 // Left.
                 if (LeftRule.GrammarCharacter != GrammarCharacter.e)
@@ -128,7 +128,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
                 MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
                 MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                MorphemeRule.MorphRule.Equals(MorphRuleMaker.EmptyString))
+                MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
             {
                 // Left.
                 if (LeftRule.Equals(MorphemeRule.Nothing))
@@ -157,7 +157,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
         public bool IsMorphematicAdPosition()
         {
-            bool result = MorphemeRule.MorphRule.Equals(MorphRuleMaker.Something) &&
+            bool result = MorphemeRule.MorphRule.Equals(MorphRules.Something) &&
                           !MorphemeRule.AttributesRule.Evaluate(0) &&
                           !RightRule.Equals(MorphemeRule.Nothing) &&
                           !LeftRule.Equals(MorphemeRule.Nothing) &&
