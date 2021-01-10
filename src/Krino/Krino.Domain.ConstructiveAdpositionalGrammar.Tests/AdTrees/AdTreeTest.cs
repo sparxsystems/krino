@@ -18,53 +18,54 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         private IAttributesModel myAttributesModel = new EnglishAttributesModel();
 
         [Test]
-        public void GovernorGrammarCharacter()
+        public void RulingGrammarCharacter()
         {
             // The phrase: I read the book.
-            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), EnglishPattern.O2_I)
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), EnglishPattern.O1_I)
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), new Pattern())
+                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme))
                 },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Left = new AdTree(new Morpheme(myAttributesModel, "", 0), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A), new Pattern())
+                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A), EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme))
                 }
             };
 
 
-            Assert.AreEqual(GrammarCharacter.I, adTree.GovernorGrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.e, adTree.Right.Left.GovernorGrammarCharacter);
-            Assert.AreEqual(GrammarCharacter.I, adTree.Right.GovernorGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.RulingGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.e, adTree.Right.Left.RulingGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.Right.RulingGrammarCharacter);
 
-            Assert.AreEqual(GrammarCharacter.O, adTree.Left.GovernorGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Left.RulingGrammarCharacter);
         }
 
         [Test]
-        public void GovernorGrammarCharacter_E()
+        public void RulingGrammarCharacter_E()
         {
             // The phrase: I read book of year.
-            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U), EnglishPattern.MorphematicAdPosition("*-U-*", EnglishMorphemeRule.Is(".", EnglishAttributes.U), MorphemeRule.Anything, MorphemeRule.Anything))
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Right = new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E), EnglishPattern.MorphematicAdPosition("O-E-I", EnglishAttributes.E.Lexeme, EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), new Pattern())
-                },
-                Left = new AdTree(new Morpheme(myAttributesModel, "of", EnglishAttributes.E), new Pattern())
-                {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A), new Pattern())
+                    Right = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.O1_I)
+                    {
+                        Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)),
+                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme))
+                    },
+                    Left = new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E), EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
+                    {
+                        Right = new AdTree(new Morpheme(myAttributesModel, "room", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)),
+                        Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A), EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme))
+                    }
                 }
             };
 
-            Assert.AreEqual(GrammarCharacter.E, adTree.Left.Morpheme.GrammarCharacter);
-
-            // Although the grammar character in the morpheme is E the inherited grammar character is O.
-            Assert.AreEqual(GrammarCharacter.O, adTree.Left.GovernorGrammarCharacter);
+            // Although there is E in between but the ruling grammar character is I.
+            Assert.AreEqual(GrammarCharacter.I, adTree.RulingGrammarCharacter);
         }
 
         [Test]

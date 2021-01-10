@@ -102,17 +102,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public GrammarCharacter GovernorGrammarCharacter
+        public GrammarCharacter RulingGrammarCharacter
         {
             get
             {
                 GrammarCharacter result = GrammarCharacter.e;
 
-                // Find the first element on the right branch which has defined own grammar character.
-                IAdTree rightChild = RightChildren.FirstOrDefault(x =>
-                    x.Morpheme.GrammarCharacter != GrammarCharacter.e &&
-                    x.Morpheme.GrammarCharacter != GrammarCharacter.E &&
-                    x.Morpheme.GrammarCharacter != GrammarCharacter.U);
+                // Find the first element on the right branch which acts as a morpheme.
+                IAdTree rightChild = RightChildren.FirstOrDefault(x => x.Pattern.IsLikeMorpheme);
 
                 if (rightChild != null)
                 {
@@ -170,14 +167,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 // If this element is the root or is located on the right.
                 if (AdPosition == null || IsOnRight)
                 {
-                    result = RightChildren.FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e);
+                    result = RightChildren.FirstOrDefault(x => x.IsGovernor);
                 }
                 // This element is not the root and is located on the left.
                 else
                 {
                     // Go via all adpositions and find the first governor.
                     result = AdPositions.SelectMany(x => x.RightChildren)
-                        .FirstOrDefault(x => x.Morpheme.GrammarCharacter != GrammarCharacter.e && x.Morpheme.GrammarCharacter != GrammarCharacter.U);
+                        .FirstOrDefault(x => x.IsGovernor);
                 }
             }
             else
@@ -199,7 +196,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 bool result = IsOnRight &&
                               Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
                               Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
-                              (Pattern.IsMorpheme() || Pattern.IsMonoTransference());
+                              Pattern.IsLikeMorpheme;
                 return result;
             }
         }

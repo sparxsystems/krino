@@ -17,7 +17,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         public void IsMorpheme()
         {
             Pattern pattern = EnglishPattern.Morpheme(EnglishAttributes.A);
-            Assert.IsTrue(pattern.IsMorpheme());
+            Assert.IsTrue(pattern.IsMorpheme);
 
             // Empty string rule causes it is not the morpheme pattern.
             pattern = new Pattern()
@@ -26,7 +26,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
                 LeftRule = MorphemeRule.Nothing,
                 RightRule = MorphemeRule.Nothing,
             };
-            Assert.IsFalse(pattern.IsMorpheme());
+            Assert.IsFalse(pattern.IsMorpheme);
 
 
             // Right and left rule is not Nothing - it is not the morpheme rule.
@@ -36,7 +36,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
                 LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme),
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme),
             };
-            Assert.IsFalse(pattern.IsMorpheme());
+            Assert.IsFalse(pattern.IsMorpheme);
         }
 
         [Test]
@@ -48,7 +48,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
                 LeftRule = MorphemeRule.Nothing,
                 RightRule = EnglishMorphemeRule.O_Lexeme,
             };
-            Assert.IsTrue(pattern.IsMonoTransference());
+            Assert.IsTrue(pattern.IsMonoTransference);
 
             pattern = new Pattern()
             {
@@ -56,7 +56,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
                 LeftRule = EnglishMorphemeRule.Is("s", EnglishAttributes.A.NonLexeme.Prefix),
                 RightRule = EnglishMorphemeRule.O_Lexeme,
             };
-            Assert.IsFalse(pattern.IsMonoTransference());
+            Assert.IsFalse(pattern.IsMonoTransference);
 
             pattern = new Pattern()
             {
@@ -64,7 +64,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
                 LeftRule = EnglishMorphemeRule.A_Lexeme,
                 RightRule = EnglishMorphemeRule.O_Lexeme,
             };
-            Assert.IsFalse(pattern.IsMonoTransference());
+            Assert.IsFalse(pattern.IsMonoTransference);
         }
 
         [Test]

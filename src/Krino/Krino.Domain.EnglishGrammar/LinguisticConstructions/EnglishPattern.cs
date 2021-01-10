@@ -79,6 +79,14 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
             };
 
+        public static Pattern MorphematicAdPosition(string patternName, MorphemeRule morphemeRule, MorphemeRule leftRule, MorphemeRule rightRule)
+            => new Pattern(patternName)
+            {
+                MorphemeRule = morphemeRule,
+                LeftRule = leftRule,
+                RightRule = rightRule,
+            };
+
         private static Pattern On_I(string patternName, int valencyPosition) => new Pattern(patternName)
         {
             ValencyPosition = valencyPosition,

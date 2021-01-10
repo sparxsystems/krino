@@ -334,25 +334,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 if (appendingPositionOfStartElement == AttachingPosition.ParrentForLeft)
                 {
                     startGrammarCharacter = start.Pattern.LeftRule.GrammarCharacter;
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.RulingGrammarCharacter);
                 }
                 // If start adTree connects the bridge on its right.
                 else if (appendingPositionOfStartElement == AttachingPosition.ParrentForRight)
                 {
                     startGrammarCharacter = start.Pattern.RightRule.GrammarCharacter;
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.RulingGrammarCharacter);
                 }
                 // If the bridge connects the start adtree on its left.
                 else if (appendingPositionOfStartElement == AttachingPosition.ChildOnLeft)
                 {
-                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.GovernorGrammarCharacter);
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
+                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.RulingGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.RulingGrammarCharacter);
                 }
                 // If the bridge connects the start adtree on its right.
                 else if (appendingPositionOfStartElement == AttachingPosition.ChildOnRight)
                 {
-                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.GovernorGrammarCharacter);
-                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.GovernorGrammarCharacter);
+                    startGrammarCharacter = ChooseGrammarCharacter(start.Morpheme.GrammarCharacter, start.Pattern.RightRule.GrammarCharacter, start.RulingGrammarCharacter);
+                    endGrammarCharacter = ChooseGrammarCharacter(end.Morpheme.GrammarCharacter, end.Pattern.RightRule.GrammarCharacter, end.RulingGrammarCharacter);
                 }
 
                 // Get all possibile ways how to get from start to end grammar character and path is not greater than 4.

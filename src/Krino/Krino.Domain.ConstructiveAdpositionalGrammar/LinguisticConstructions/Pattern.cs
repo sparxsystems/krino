@@ -83,21 +83,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return this;
         }
 
+        public bool IsLikeMorpheme => IsMorpheme || IsMonoTransference | IsPairTransference;
+
         /// <summary>
         /// Returns true if the pattern represents a morpheme.
         /// </summary>
         /// <returns></returns>
-        public bool IsMorpheme()
+        public bool IsMorpheme
         {
-            if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                MorphemeRule.MorphRule.Equals(MorphRules.Something) &&
-                LeftRule.Equals(MorphemeRule.Nothing) &&
-                RightRule.Equals(MorphemeRule.Nothing))
+            get
             {
-                return true;
-            }
+                if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                    MorphemeRule.MorphRule.Equals(MorphRules.Something) &&
+                    LeftRule.Equals(MorphemeRule.Nothing) &&
+                    RightRule.Equals(MorphemeRule.Nothing))
+                {
+                    return true;
+                }
 
-            return false;
+                return false;
+            }
         }
 
         /// <summary>
@@ -108,26 +113,29 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         /// E.g. this pattern can be used to create noun from a verb by the -ing suffix.
         /// </remarks>
         /// <returns></returns>
-        public bool IsPairTransference()
+        public bool IsPairTransference
         {
-            // AdPosition
-            if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
-                MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
+            get
             {
-                // Left.
-                if (LeftRule.GrammarCharacter != GrammarCharacter.e)
+                // AdPosition
+                if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                    MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
+                    MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                    MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
                 {
-                    // Right - inheriting site.
-                    if (RightRule.GrammarCharacter != GrammarCharacter.e)
+                    // Left.
+                    if (LeftRule.GrammarCharacter != GrammarCharacter.e)
                     {
-                        return true;
+                        // Right - inheriting site.
+                        if (RightRule.GrammarCharacter != GrammarCharacter.e)
+                        {
+                            return true;
+                        }
                     }
                 }
-            }
 
-            return false;
+                return false;
+            }
         }
 
         /// <summary>
@@ -137,26 +145,29 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         /// E.g. english nouns can be used as adjectives.
         /// </remarks>
         /// <returns></returns>
-        public bool IsMonoTransference()
+        public bool IsMonoTransference
         {
-            // AdPosition
-            if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
-                MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
+            get
             {
-                // Left.
-                if (LeftRule.Equals(MorphemeRule.Nothing))
+                // AdPosition
+                if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
+                    MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
+                    MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                    MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
                 {
-                    // Right - inheriting site.
-                    if (RightRule.GrammarCharacter != GrammarCharacter.e)
+                    // Left.
+                    if (LeftRule.Equals(MorphemeRule.Nothing))
                     {
-                        return true;
+                        // Right - inheriting site.
+                        if (RightRule.GrammarCharacter != GrammarCharacter.e)
+                        {
+                            return true;
+                        }
                     }
                 }
-            }
 
-            return false;
+                return false;
+            }
         }
 
         public bool IsEpsilonAdPosition()

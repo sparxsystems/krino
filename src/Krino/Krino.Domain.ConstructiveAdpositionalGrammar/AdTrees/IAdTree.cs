@@ -36,12 +36,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         IAdTree Left { get; set; }
 
         /// <summary>
-        /// Grammar character inherited from the governor. If this is the governor then it returns its grammar character.
+        /// Grammar character character representing this adtree in the context of its adposition.
         /// </summary>
-        /// <remarks>
-        /// If there is no a child governor then it returns Epsilon.
-        /// </remarks>
-        GrammarCharacter GovernorGrammarCharacter { get; }
+        GrammarCharacter RulingGrammarCharacter { get; }
 
         /// <summary>
         /// Returns true if this tree element is the adpostion.
@@ -89,7 +86,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Returns true if this tree element is the governor.
         /// </summary>
         /// <remarks>
-        /// The element is the governor if it is located on right and its grammar character is not epsilon.
+        /// The element is the governor if it is located on the right and it acts like a morpheme.
         /// It is the element which may have several dependents.
         /// </remarks>
         bool IsGovernor { get; }

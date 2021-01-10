@@ -208,9 +208,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 IAdTree morphemeAdTree = null;
 
                 // If the adTreeToAttach is a morpheme or a transference.
-                if (adTreeToAttach.Pattern.IsMorpheme() ||
-                    adTreeToAttach.Pattern.IsMonoTransference() ||
-                    adTreeToAttach.Pattern.IsPairTransference())
+                if (adTreeToAttach.Pattern.IsLikeMorpheme)
                 {
                     morphemeAdTree = adTreeToAttach;
                 }
@@ -218,7 +216,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 else if (adTreeToAttach.Pattern.IsEpsilonAdPosition() ||
                          adTreeToAttach.Pattern.IsMorphematicAdPosition())
                 {
-                    // If the rule allows the inheritance.
+                    // If the rule allows the substitution.
                     if (rule.SubstitutionRule.Evaluate(adTreeToAttach.Morpheme.GrammarCharacter))
                     {
                         // If it shall be attached to the right and
@@ -294,11 +292,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     Morpheme morphemeToEvaluate;
 
-                    if (morphemeAdTree.Pattern.IsMonoTransference())
+                    if (morphemeAdTree.Pattern.IsMonoTransference)
                     {
                         morphemeToEvaluate = new Morpheme(attributesModel, morphemeAdTree.Right.Morpheme.Morph, morphemeAdTree.Morpheme.Attributes);
                     }
-                    else if (morphemeAdTree.Pattern.IsPairTransference())
+                    else if (morphemeAdTree.Pattern.IsPairTransference)
                     {
                         string relevantMorph = morphemeAdTree.RightChildren.FirstOrDefault(x => !string.IsNullOrEmpty(x.Morpheme.Morph))?.Morpheme.Morph;
                         if (relevantMorph != null)
