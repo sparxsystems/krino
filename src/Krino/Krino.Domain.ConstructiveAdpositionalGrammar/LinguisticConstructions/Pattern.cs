@@ -73,13 +73,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
         public Pattern SetInheritanceForLeft(IRule<GrammarCharacter> inheritanceRule)
         {
-            LeftRule.SetInheritance(inheritanceRule);
+            LeftRule.SetSubstitution(inheritanceRule);
             return this;
         }
 
         public Pattern SetInheritanceForRight(IRule<GrammarCharacter> inheritanceRule)
         {
-            RightRule.SetInheritance(inheritanceRule);
+            RightRule.SetSubstitution(inheritanceRule);
             return this;
         }
 

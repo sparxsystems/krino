@@ -43,11 +43,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// </summary>
         public IRule<BigInteger> AttributesRule { get; private set; }
 
-        public IRule<GrammarCharacter> InheritanceRule { get; private set; } = InheritanceRules.Epsilon_U_E;
+        /// <summary>
+        /// Rule to evaluate if themorpheme can be provided via the substitution.
+        /// </summary>
+        /// <remarks>
+        /// E.g. O can be provided via the A-O pattern.
+        /// </remarks>
+        public IRule<GrammarCharacter> SubstitutionRule { get; private set; } = InheritanceRules.Epsilon_U_E;
 
-        public MorphemeRule SetInheritance(IRule<GrammarCharacter> inheritanceRule)
+        public MorphemeRule SetSubstitution(IRule<GrammarCharacter> inheritanceRule)
         {
-            InheritanceRule = inheritanceRule;
+            SubstitutionRule = inheritanceRule;
             return this;
         }
 
@@ -69,7 +75,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             bool result = MorphRule.Equals(other.MorphRule) &&
                           GrammarCharacter == other.GrammarCharacter &&
                           AttributesRule.Equals(other.AttributesRule) &&
-                          InheritanceRule.Equals(other.InheritanceRule);
+                          SubstitutionRule.Equals(other.SubstitutionRule);
             return result;
         }
 
@@ -80,7 +86,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             hash = (hash * 16777619) ^ MorphRule.GetHashCode();
             hash = (hash * 16777619) ^ GrammarCharacter.GetHashCode();
             hash = (hash * 16777619) ^ AttributesRule.GetHashCode();
-            hash = (hash * 16777619) ^ InheritanceRule.GetHashCode();
+            hash = (hash * 16777619) ^ SubstitutionRule.GetHashCode();
 
             return hash;
         }

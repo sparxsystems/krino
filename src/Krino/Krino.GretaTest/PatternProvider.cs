@@ -32,19 +32,19 @@ namespace Krino.GretaTest
 
             EnglishPattern.PairTransference("I>SimpleFuture",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
-                    EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetSubstitution(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive))
                     .SetLeftFirst(),
 
             EnglishPattern.PairTransference("I>PresentPerfect",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
-                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetSubstitution(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple))
                     .SetLeftFirst(),
 
             EnglishPattern.PairTransference("been-I_ing",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
-                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetInheritance(InheritanceRules.Nothing),
+                    EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetSubstitution(InheritanceRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous))
                     .SetLeftFirst(),
 
