@@ -189,19 +189,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return result;
         }
 
-        public bool IsGovernor
-        {
-            get
-            {
-                bool result = IsOnRight &&
-                              Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                              Pattern.MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
-                              Pattern.IsLikeMorpheme;
-                return result;
-            }
-        }
-            
-
+        public bool IsGovernor => IsOnRight && Pattern.IsLikeMorpheme;
 
         public IEnumerable<IAdTree> DependentAdPositions
         {
@@ -224,7 +212,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        // Note: dependent may have the epsilon grammar character.
+        // Note: dependent may have the epsilon grammar character. E.g. if it is a group of dependents.
         public bool IsDependent => IsOnLeft && Morpheme.GrammarCharacter != GrammarCharacter.U;
 
         public string Phrase => string.Join(" ", this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph)).Select(x => x.Morpheme.Morph));
