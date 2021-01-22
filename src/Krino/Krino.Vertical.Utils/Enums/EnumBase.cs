@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Reflection;
+using System.Text;
 
 namespace Krino.Vertical.Utils.Enums
 {
@@ -12,7 +14,7 @@ namespace Krino.Vertical.Utils.Enums
     /// <remarks>
     /// This class is intended to derive from when a group is needed in the structured enum.
     /// </remarks>
-    [DebuggerDisplay("{(System.Numerics.BigInteger)this}")]
+    [DebuggerDisplay("{DebuggerDisplay}")]
     public abstract class EnumBase
     {
         /// <summary>
@@ -59,6 +61,41 @@ namespace Krino.Vertical.Utils.Enums
                     parent = parent.ParentEnum;
                 }
             }
+        }
+
+        public string GetFullName()
+        {
+            var result = new StringBuilder();
+
+            object parentInstance = null;
+            var path = ParentEnums.Reverse();
+            foreach (var item in path)
+            {
+                if (item == path.First())
+                {
+                    // Root.
+                    result.Append(item.GetType().Name).Append(".");
+                }
+                else
+                {
+                    // Property chain from the root.
+                    var referencingProperty = GetReferencingProperty(parentInstance, item);
+                    result.Append(referencingProperty.Name).Append(".");
+                }
+
+                parentInstance = item;
+            }
+
+            var property = GetReferencingProperty(parentInstance, this);
+            result.Append(property.Name);
+            return result.ToString();
+        }
+
+        private PropertyInfo GetReferencingProperty(object instance, object value)
+        {
+            var properties = instance.GetType().GetProperties();
+            var referencingProperty = properties.First(x => x.GetValue(instance) == value);
+            return referencingProperty;
         }
 
         /// <summary>
@@ -129,5 +166,7 @@ namespace Krino.Vertical.Utils.Enums
         public static bool operator <(EnumBase item1, EnumBase item2) => item1.Value < item2.Value;
 
         public static bool operator <=(EnumBase item1, EnumBase item2) => item1.Value <= item2.Value;
+
+        private string DebuggerDisplay => $"{GetFullName()} = {(BigInteger)this}";
     }
 }

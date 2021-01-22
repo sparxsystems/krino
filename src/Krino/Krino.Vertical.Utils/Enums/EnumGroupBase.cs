@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Linq;
+using System.Numerics;
 
 namespace Krino.Vertical.Utils.Enums
 {
@@ -18,6 +20,30 @@ namespace Krino.Vertical.Utils.Enums
         }
 
         internal int Length { get; set; }
+
+        public IEnumerable<EnumValue> EnumValues
+        {
+            get
+            {
+                var enumProperties = GetType().GetProperties().Where(x => typeof(EnumBase).IsAssignableFrom(x.PropertyType));
+                foreach (var enumProperty in enumProperties)
+                {
+                    var value = enumProperty.GetValue(this);
+                    if (value is EnumRootBase == false && value is EnumGroupBase enumGroup)
+                    {
+                        var enumValues = enumGroup.EnumValues;
+                        foreach (var enumValue in enumValues)
+                        {
+                            yield return enumValue;
+                        }
+                    }
+                    else if (value is EnumValue)
+                    {
+                        yield return (EnumValue)value;
+                    }
+                }
+            }
+        }
 
         /// <summary>
         /// Clears all bits related to this group.

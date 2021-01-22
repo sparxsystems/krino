@@ -1,5 +1,7 @@
 ﻿using Krino.Vertical.Utils.Enums;
 using NUnit.Framework;
+using System.Collections.Generic;
+using System.Linq;
 using System.Numerics;
 
 namespace Krino.Vertical.Utils_Tests.Enums
@@ -14,6 +16,8 @@ namespace Krino.Vertical.Utils_Tests.Enums
             public static EnumValue Val1 { get; } = new EnumValue(Instance);
 
             public static EnumValue Val2 { get; } = new EnumValue(Instance);
+
+            public static IEnumerable<EnumValue> GetEnumValues() => Instance.EnumValues;
         }
 
         public class DummyEnumRoot : EnumRootBase
@@ -57,7 +61,30 @@ namespace Krino.Vertical.Utils_Tests.Enums
             public static DummyCategory1 Category1 { get; } = new DummyCategory1(Instance);
             // 7th bit
             public static EnumValue Val2 { get; } = new EnumValue(Instance);
+
+            public static IEnumerable<EnumValue> GetEnumValues() => Instance.EnumValues;
         }
+
+
+        [Test]
+        public void GetFullName()
+        {
+            var result = DummyEnumRoot.Category1.Category11.Attr112.GetFullName();
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr112", result);
+        }
+
+        [Test]
+        public void EnumValues()
+        {
+            var result = DummyEnumRoot.GetEnumValues().ToList();
+            Assert.AreEqual(5, result.Count);
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr111", result[0].GetFullName());
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr112", result[1].GetFullName());
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr113", result[2].GetFullName());
+            Assert.AreEqual("DummyEnumRoot.Category1.Val12", result[3].GetFullName());
+            Assert.AreEqual("DummyEnumRoot.Val2", result[4].GetFullName());
+        }
+
 
         [Test]
         public void Value()
