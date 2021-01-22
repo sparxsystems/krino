@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.EnglishGrammar.Morphemes.Structural;
 using Krino.Vertical.Utils.Enums;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace Krino.Domain.EnglishGrammar.Morphemes
@@ -105,5 +106,8 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
 
             return false;
         }
+
+        public static IEnumerable<EnumBase> FindParticularAttributes(BigInteger attributes) => Instance.FindEnums(attributes);
+        
     }
 }

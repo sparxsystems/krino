@@ -70,7 +70,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         [Test]
         public void IsEpsilonAdPosition()
         {
-            Pattern pattern = EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A, EnglishAttributes.O);
+            Pattern pattern = EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A, EnglishAttributes.O);
             Assert.IsTrue(pattern.IsEpsilonAdPosition());
 
 
@@ -97,10 +97,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         [Test]
         public void IsMorphematicAdPosition()
         {
-            Pattern pattern = EnglishPattern.MorphematicAdPosition("O-E-I", EnglishAttributes.E, EnglishAttributes.O, EnglishAttributes.I);
+            Pattern pattern = EnglishPattern.MorphematicAdPosition("O-E-I", "", EnglishAttributes.E, EnglishAttributes.O, EnglishAttributes.I);
             Assert.IsTrue(pattern.IsMorphematicAdPosition());
 
-            pattern = EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A, EnglishAttributes.O);
+            pattern = EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A, EnglishAttributes.O);
             Assert.IsFalse(pattern.IsMorphematicAdPosition());
         }
     }

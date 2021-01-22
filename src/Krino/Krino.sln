@@ -5,11 +5,11 @@ VisualStudioVersion = 16.0.29613.14
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "01 Application", "01 Application", "{78E4D6AB-483E-4A47-8AC3-B7C7AA234C04}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 Model", "02 Model", "{45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Model", "03 Model", "{45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "03 Infrastructure", "03 Infrastructure", "{3561EA2A-5D33-4189-81AC-91334D5150BC}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Infrastructure", "04 Infrastructure", "{3561EA2A-5D33-4189-81AC-91334D5150BC}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "04 Vertical", "04 Vertical", "{F738F09E-3C90-41F2-9AEF-D57EE20B30AD}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "05 Vertical", "05 Vertical", "{F738F09E-3C90-41F2-9AEF-D57EE20B30AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Vertical.Utils", "Krino.Vertical.Utils\Krino.Vertical.Utils.csproj", "{2337182D-889D-466F-915B-6C4A0E205DB2}"
 EndProject
@@ -26,6 +26,12 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.EnglishGrammar.Tests", "Krino.Domain.EnglishGrammar.Tests\Krino.Domain.EnglishGrammar.Tests.csproj", "{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Domain.ConstructiveAdpositionalArgumentation", "Krino.Domain.ConstructiveAdpositionalArgumentation\Krino.Domain.ConstructiveAdpositionalArgumentation.csproj", "{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.WebApp", "Krino.WebApp\Krino.WebApp.csproj", "{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 ViewModel", "02 ViewModel", "{2284589E-ACEB-455D-9085-89BFB4EB1F1C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.ViewModel", "Krino.ViewModel\Krino.ViewModel.csproj", "{463786A2-95E9-4B2A-9F84-FDAE5A454454}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -65,6 +71,14 @@ Global
 		{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16}.Release|Any CPU.Build.0 = Release|Any CPU
+		{463786A2-95E9-4B2A-9F84-FDAE5A454454}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{463786A2-95E9-4B2A-9F84-FDAE5A454454}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{463786A2-95E9-4B2A-9F84-FDAE5A454454}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{463786A2-95E9-4B2A-9F84-FDAE5A454454}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -78,6 +92,8 @@ Global
 		{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
+		{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16} = {78E4D6AB-483E-4A47-8AC3-B7C7AA234C04}
+		{463786A2-95E9-4B2A-9F84-FDAE5A454454} = {2284589E-ACEB-455D-9085-89BFB4EB1F1C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {923BE6CA-31CF-4753-82D6-544032C43C43}

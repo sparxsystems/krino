@@ -1,4 +1,6 @@
-﻿using System.Numerics;
+﻿using Krino.Vertical.Utils.Enums;
+using System.Collections.Generic;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
@@ -39,5 +41,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         bool IsPrefix(BigInteger attributes);
 
         bool IsSuffix(BigInteger attributes);
+
+        IEnumerable<EnumBase> FindParticularAttributes(BigInteger attributes);
     }
 }

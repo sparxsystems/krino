@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Krino.Vertical.Utils.Enums;
+using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -27,6 +29,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         public IAttributesModel AttributesModel { get; private set; }
 
         public BigInteger Attributes { get; private set; }
+
+        public IEnumerable<EnumBase> AttributeItems => AttributesModel.FindParticularAttributes(Attributes);
 
         public GrammarCharacter GrammarCharacter => AttributesModel.GetGrammarCharacter(Attributes);
 

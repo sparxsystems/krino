@@ -14,7 +14,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     /// </summary>
     public class ConstructiveDictionary : IConstructiveDictionary
     {
-        private IAttributesModel myAttributesModel;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myLexemes;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myNonLexemes;
 
@@ -22,7 +21,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             using (Trace.Entering())
             {
-                myAttributesModel = attributesModel;
+                AttributesModel = attributesModel;
                 morphemes = morphemes ?? Enumerable.Empty<Morpheme>();
                 Patterns = patterns ?? Enumerable.Empty<Pattern>();
 
@@ -31,6 +30,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             }
         }
 
+        public IAttributesModel AttributesModel { get; private set; }
+
+        public IEnumerable<Morpheme> Lexemes => myLexemes.Select(x => x.Value);
 
         public IEnumerable<Morpheme> NonLexemes => myNonLexemes.Select(x => x.Value);
 
@@ -227,7 +229,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 {
                     string nonLexeme = word.Substring(0, i);
                     IEnumerable<Morpheme> prefixHomonyms = FindNonLexemes(nonLexeme)
-                        .Where(x => myAttributesModel.IsPrefix(x.Attributes));
+                        .Where(x => AttributesModel.IsPrefix(x.Attributes));
                     if (prefixHomonyms.Any())
                     {
                         string newWord = word.Substring(i);
@@ -276,7 +278,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 {
                     string nonLexeme = word.Substring(i);
                     IEnumerable<Morpheme> suffixes = FindNonLexemes(nonLexeme)
-                        .Where(x => myAttributesModel.IsSuffix(x.Attributes));
+                        .Where(x => AttributesModel.IsSuffix(x.Attributes));
                     if (suffixes.Any())
                     {
                         string newWord = word.Substring(0, i);

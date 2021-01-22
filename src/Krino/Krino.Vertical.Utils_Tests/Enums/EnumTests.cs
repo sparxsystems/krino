@@ -16,8 +16,6 @@ namespace Krino.Vertical.Utils_Tests.Enums
             public static EnumValue Val1 { get; } = new EnumValue(Instance);
 
             public static EnumValue Val2 { get; } = new EnumValue(Instance);
-
-            public static IEnumerable<EnumValue> GetEnumValues() => Instance.EnumValues;
         }
 
         public class DummyEnumRoot : EnumRootBase
@@ -63,6 +61,8 @@ namespace Krino.Vertical.Utils_Tests.Enums
             public static EnumValue Val2 { get; } = new EnumValue(Instance);
 
             public static IEnumerable<EnumValue> GetEnumValues() => Instance.EnumValues;
+
+            public static new IEnumerable<EnumBase> FindEnums(BigInteger value) => ((EnumRootBase)Instance).FindEnums(value);
         }
 
 
@@ -71,6 +71,16 @@ namespace Krino.Vertical.Utils_Tests.Enums
         {
             var result = DummyEnumRoot.Category1.Category11.Attr112.GetFullName();
             Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr112", result);
+        }
+
+        [Test]
+        public void FindEnums()
+        {
+            var value = DummyEnumRoot.Category1.Category11.Attr112 | DummyEnumRoot.Category1.Category11.Attr113;
+            var result = DummyEnumRoot.FindEnums(value).ToList();
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr112", result[0].GetFullName());
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr113", result[1].GetFullName());
         }
 
         [Test]

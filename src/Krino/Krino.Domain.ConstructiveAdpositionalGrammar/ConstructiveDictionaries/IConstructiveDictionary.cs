@@ -11,6 +11,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     public interface IConstructiveDictionary
     {
         /// <summary>
+        /// Returns the attributes model for reading morpheme structural and semantic attributes.
+        /// </summary>
+        IAttributesModel AttributesModel { get; }
+
+        /// <summary>
+        /// All lexemes in the dictionary.
+        /// </summary>
+        IEnumerable<Morpheme> Lexemes { get; }
+
+        /// <summary>
+        /// All non-lexemes in the dictionary.
+        /// </summary>
+        IEnumerable<Morpheme> NonLexemes { get; }
+
+        /// <summary>
         /// Finds all lexemes which have similar or exactly matching word.
         /// </summary>
         /// <param name="word">A word for which lexemes shall be found.</param>
@@ -57,12 +72,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// <param name="morpheme"></param>
         /// <returns></returns>
         IEnumerable<Pattern> FindMonoTransferencePatterns(Morpheme morpheme);
-
-
-        /// <summary>
-        /// All non-lexemes.
-        /// </summary>
-        IEnumerable<Morpheme> NonLexemes { get; }
 
 
         /// <summary>

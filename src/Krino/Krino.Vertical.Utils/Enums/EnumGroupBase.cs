@@ -28,8 +28,8 @@ namespace Krino.Vertical.Utils.Enums
                 var enumProperties = GetType().GetProperties().Where(x => typeof(EnumBase).IsAssignableFrom(x.PropertyType));
                 foreach (var enumProperty in enumProperties)
                 {
-                    var value = enumProperty.GetValue(this);
-                    if (value is EnumRootBase == false && value is EnumGroupBase enumGroup)
+                    var enumPropertyValue = enumProperty.GetValue(this);
+                    if (enumPropertyValue is EnumRootBase == false && enumPropertyValue is EnumGroupBase enumGroup)
                     {
                         var enumValues = enumGroup.EnumValues;
                         foreach (var enumValue in enumValues)
@@ -37,9 +37,51 @@ namespace Krino.Vertical.Utils.Enums
                             yield return enumValue;
                         }
                     }
-                    else if (value is EnumValue)
+                    else if (enumPropertyValue is EnumValue)
                     {
-                        yield return (EnumValue)value;
+                        yield return (EnumValue)enumPropertyValue;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        /// Finds all enums applicable for the value.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public IEnumerable<EnumBase> FindEnums(BigInteger value)
+        {
+            var enumProperties = GetType().GetProperties().Where(x => typeof(EnumBase).IsAssignableFrom(x.PropertyType));
+            foreach (var enumProperty in enumProperties)
+            {
+                var enumPropertyValue = enumProperty.GetValue(this);
+                if (enumPropertyValue is EnumRootBase == false && enumPropertyValue is EnumGroupBase enumGroup)
+                {
+                    // If the group of enums contains the value then find biggest ones.
+                    if (enumGroup.IsIn(value))
+                    {
+                        // If there are some sub-enums containing the input value.
+                        var enumValues = enumGroup.FindEnums(value);
+                        if (enumValues.Any())
+                        {
+                            foreach (var enumValue in enumValues)
+                            {
+                                yield return enumValue;
+                            }
+                        }
+                        // If this is that biggest value.
+                        else
+                        {
+                            yield return enumGroup;
+                        }
+                    }
+                }
+                else if (enumPropertyValue is EnumValue enumValue)
+                {
+                    if (enumValue.IsIn(value))
+                    {
+                        yield return enumValue;
                     }
                 }
             }

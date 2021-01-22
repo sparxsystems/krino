@@ -1,0 +1,101 @@
+﻿@page "/"
+
+@using System.Linq
+@using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
+@using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
+@using Krino.Vertical.Utils.Enums
+
+@inject Krino.ViewModel.IConstructiveDictionaryViewModel myConstructiveDictionary
+
+
+<div class="row">
+    <div class="col-md">
+        <h3>Krino</h3>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md">
+        <h4 class="text-center">Constructive Dictionary</h4>
+    </div>
+</div>
+<div class="row border-bottom">
+    <div class="col-md-4">
+        <h5 class="text-center">Lexemes</h5>
+        <div class="row">
+            <div class="col-md">
+                <RadzenGrid Data="@Lexemes" AllowFiltering="true" AllowSorting="true"  Style=@($"height:{@TableHeight};")>
+                    <Columns>
+                        <RadzenGridColumn TItem="Morpheme" Sortable="true" Filterable="true" Title="Morph" Property="@nameof(Morpheme.Morph)" />
+                        <RadzenGridColumn TItem="Morpheme" Title="Attributes">
+                            <Template Context="morpheme">
+                                @foreach (var attribute in morpheme.AttributeItems)
+                                {
+                                    <div>@(GetAttributeName(attribute))</div>
+                                }
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h5 class="text-center">Non-Lexemes</h5>
+        <div class="row">
+            <div class="col-md">
+                <RadzenGrid Data="@NonLexemes"  Style=@($"height:{@TableHeight};")>
+                    <Columns>
+                        <RadzenGridColumn TItem="Morpheme" Sortable="true" Title="Morph" Property="@nameof(Morpheme.Morph)" />
+                        <RadzenGridColumn TItem="Morpheme" Title="Attributes">
+                            <Template Context="morpheme">
+                                @foreach (var attribute in morpheme.AttributeItems)
+                                {
+                                    <div>@(GetAttributeName(attribute))</div>
+                                }
+                            </Template>
+                        </RadzenGridColumn>
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-4">
+        <h5 class="text-center">Patterns</h5>
+        <div class="row">
+            <div class="col-md">
+                <RadzenGrid Data="@Patterns" Style=@($"height:{@TableHeight};")>
+                    <Columns>
+                        <RadzenGridColumn TItem="Pattern" Title="Rule" Property="@nameof(Pattern.Name)" Width="5em" />
+                        <RadzenGridColumn TItem="Pattern" Title="Description" Property="@nameof(Pattern.Description)" />
+                    </Columns>
+                </RadzenGrid>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="row mt-3">
+    <div class="col-md-12 d-flex justify-content-center">
+        <div class="mr-1" style="width:50%">
+            <RadzenTextBox @bind-Value="Statement" Style="width:100%;" />
+        </div>
+        <RadzenButton Text="Go" Click="@OnGo"/>
+    </div>
+</div>
+
+
+@code {
+    private string TableHeight = "400px";
+
+    private IEnumerable<Morpheme> Lexemes => myConstructiveDictionary.Lexemes;
+    private IEnumerable<Morpheme> NonLexemes => myConstructiveDictionary.NonLexemes;
+    private IEnumerable<Pattern> Patterns => myConstructiveDictionary.Patterns;
+
+    private string Statement { get; set; }
+
+    private string GetAttributeName(EnumBase enumValue) => enumValue.GetFullName()?.Replace("EnglishAttributes.", "");
+
+    private void OnGo()
+    {
+
+    }
+}

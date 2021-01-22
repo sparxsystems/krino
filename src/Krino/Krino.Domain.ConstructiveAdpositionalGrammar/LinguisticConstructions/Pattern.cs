@@ -46,6 +46,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             }
         }
 
+        public string Description { get; set; }
+
         public BigInteger Attributes { get; private set; }
 
 

@@ -24,3 +24,8 @@
 /src/Krino/Krino.Domain.EnglishGrammar.Tests/obj
 /src/Krino/Krino.Domain.ConstructiveAdpositionalArgumentation/bin/Debug/netstandard2.1
 /src/Krino/Krino.Domain.ConstructiveAdpositionalArgumentation/obj
+/src/Krino/Krino.WebApp/bin/Debug/net5.0
+/src/Krino/Krino.WebApp/obj
+/src/Krino/Krino.ViewModel/obj/Debug
+/src/Krino/Krino.ViewModel/bin/Debug/netstandard2.1
+/src/Krino/Krino.ViewModel/obj

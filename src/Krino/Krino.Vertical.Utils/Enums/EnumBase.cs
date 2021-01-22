@@ -50,7 +50,7 @@ namespace Krino.Vertical.Utils.Enums
         /// <summary>
         /// Returns the sequence of parents to the root.
         /// </summary>
-        protected IEnumerable<EnumGroupBase> ParentEnums
+        internal protected IEnumerable<EnumGroupBase> ParentEnums
         {
             get
             {

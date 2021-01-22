@@ -76,7 +76,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.EpsilonAdPosition("I>I+", EnglishAttributes.I.NonLexeme.Suffix, EnglishAttributes.I.Lexeme),
+                EnglishPattern.EpsilonAdPosition("I>I+", "",EnglishAttributes.I.NonLexeme.Suffix, EnglishAttributes.I.Lexeme),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
@@ -106,12 +106,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme),
                 EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme),
 
-                EnglishPattern.Morpheme("O+", EnglishAttributes.O.NonLexeme.Suffix),
+                EnglishPattern.Morpheme(EnglishAttributes.O.NonLexeme.Suffix, "O+"),
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
 
-                EnglishPattern.PairTransference("I>O", EnglishAttributes.O.Lexeme, EnglishAttributes.O.NonLexeme.Suffix, EnglishAttributes.I.Lexeme),
+                EnglishPattern.PairTransference("I>O", "",EnglishAttributes.O.Lexeme, EnglishAttributes.O.NonLexeme.Suffix, EnglishAttributes.I.Lexeme),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
@@ -146,21 +146,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.Morpheme("I+", EnglishAttributes.I.NonLexeme.Suffix),
+                EnglishPattern.Morpheme(EnglishAttributes.I.NonLexeme.Suffix, "I+"),
 
-                EnglishPattern.PairTransference("I>PresentPerfect",
+                EnglishPattern.PairTransference("I>PresentPerfect", "",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                     EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetSubstitution(SubstitutionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple))
                     .SetLeftFirst(),
 
-                EnglishPattern.PairTransference("been-I_ing",
+                EnglishPattern.PairTransference("been-I_ing", "",
                     EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
                     EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetSubstitution(SubstitutionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous))
                     .SetLeftFirst(),
 
-                EnglishPattern.PairTransference("I>I_ing",
+                EnglishPattern.PairTransference("I>I_ing", "",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
                     EnglishAttributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous, 0,
                     EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb.Modal),
@@ -195,7 +195,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme),
                 EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme),
 
-                EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
+                EnglishPattern.EpsilonAdPosition("A-O", "",EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst(),
             };
 
@@ -218,7 +218,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme),
                 EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme),
 
-                EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
+                EnglishPattern.EpsilonAdPosition("A-O", "",EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst(),
 
                 EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme),
@@ -252,7 +252,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme),
 
                 EnglishPattern.O1_I.SetLeftFirst(),
-                EnglishPattern.MorphematicAdPosition("O-E-O", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme),
+                EnglishPattern.MorphematicAdPosition("O-E-O", "",EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -286,8 +286,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.Morpheme(EnglishAttributes.E.Lexeme),
 
                 EnglishPattern.O1_I.SetLeftFirst(),
-                EnglishPattern.MorphematicAdPosition("I-U-O", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.O.Lexeme),
-                EnglishPattern.EpsilonAdPosition("E-I", EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme).SetSubstitutionForLeft(SubstitutionRules.Nothing),
+                EnglishPattern.MorphematicAdPosition("I-U-O", "", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.O.Lexeme),
+                EnglishPattern.EpsilonAdPosition("E-I", "", EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme).SetSubstitutionForLeft(SubstitutionRules.Nothing),
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -320,7 +320,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.EpsilonAdPosition("I-I", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
+                EnglishPattern.EpsilonAdPosition("I-I", "", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
                     .SetSubstitutionForLeft(SubstitutionRules.Nothing),
             };
@@ -355,11 +355,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.EpsilonAdPosition("I-I", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
+                EnglishPattern.EpsilonAdPosition("I-I", "", EnglishAttributes.I.Lexeme.Verb.Modal, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
                     .SetSubstitutionForLeft(SubstitutionRules.Nothing),
 
-                EnglishPattern.EpsilonAdPosition("E-I", EnglishAttributes.E.Lexeme, EnglishAttributes.I.Lexeme)
+                EnglishPattern.EpsilonAdPosition("E-I", "", EnglishAttributes.E.Lexeme, EnglishAttributes.I.Lexeme)
                     .SetLeftFirst()
                     .SetSubstitutionForLeft(SubstitutionRules.Nothing),
             };
@@ -406,7 +406,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
 
-                EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme).SetLeftFirst(),
+                EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme).SetLeftFirst(),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
@@ -443,7 +443,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
+                EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst()
                     .SetSubstitutionForRight(SubstitutionRules.Epsilon),
 
@@ -492,7 +492,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
 
-                EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
+                EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst(),
 
                 new Pattern("E")
@@ -541,7 +541,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
 
-                EnglishPattern.EpsilonAdPosition("A-O", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
+                EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
                     .SetLeftFirst(),
 
                 new Pattern("A-U-A")
