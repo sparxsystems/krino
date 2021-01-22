@@ -15,8 +15,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
     {
         private string myName;
 
-        public Pattern(string name = null)
+        public Pattern(string name = null, BigInteger attributes = default(BigInteger))
         {
+            Attributes = attributes;
             myName = name;
         }
 
@@ -44,6 +45,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 return name;
             }
         }
+
+        public BigInteger Attributes { get; private set; }
 
 
         public MorphemeRule MorphemeRule { get; set; } = MorphemeRule.Nothing;
