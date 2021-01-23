@@ -25,13 +25,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.EnglishGrammar
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.EnglishGrammar.Tests", "Krino.Domain.EnglishGrammar.Tests\Krino.Domain.EnglishGrammar.Tests.csproj", "{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Domain.ConstructiveAdpositionalArgumentation", "Krino.Domain.ConstructiveAdpositionalArgumentation\Krino.Domain.ConstructiveAdpositionalArgumentation.csproj", "{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAdpositionalArgumentation", "Krino.Domain.ConstructiveAdpositionalArgumentation\Krino.Domain.ConstructiveAdpositionalArgumentation.csproj", "{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.WebApp", "Krino.WebApp\Krino.WebApp.csproj", "{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.WebApp", "Krino.WebApp\Krino.WebApp.csproj", "{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 ViewModel", "02 ViewModel", "{2284589E-ACEB-455D-9085-89BFB4EB1F1C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.ViewModel", "Krino.ViewModel\Krino.ViewModel.csproj", "{463786A2-95E9-4B2A-9F84-FDAE5A454454}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ViewModel", "Krino.ViewModel\Krino.ViewModel.csproj", "{463786A2-95E9-4B2A-9F84-FDAE5A454454}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.ViewModel.Tests", "Krino.ViewModel.Tests\Krino.ViewModel.Tests.csproj", "{EED163A2-0231-470A-BB6F-1E6D587B96E5}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +81,10 @@ Global
 		{463786A2-95E9-4B2A-9F84-FDAE5A454454}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{463786A2-95E9-4B2A-9F84-FDAE5A454454}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{463786A2-95E9-4B2A-9F84-FDAE5A454454}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EED163A2-0231-470A-BB6F-1E6D587B96E5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EED163A2-0231-470A-BB6F-1E6D587B96E5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EED163A2-0231-470A-BB6F-1E6D587B96E5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EED163A2-0231-470A-BB6F-1E6D587B96E5}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +100,7 @@ Global
 		{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{BA9DA7CA-6CDF-4692-8429-AB0B522E0A16} = {78E4D6AB-483E-4A47-8AC3-B7C7AA234C04}
 		{463786A2-95E9-4B2A-9F84-FDAE5A454454} = {2284589E-ACEB-455D-9085-89BFB4EB1F1C}
+		{EED163A2-0231-470A-BB6F-1E6D587B96E5} = {2284589E-ACEB-455D-9085-89BFB4EB1F1C}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {923BE6CA-31CF-4753-82D6-544032C43C43}

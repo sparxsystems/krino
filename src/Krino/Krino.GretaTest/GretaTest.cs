@@ -22,7 +22,7 @@ namespace Krino.GretaTest
             //Trace.StartProfiler();
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myEnglishAttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
-            AdTreeCreator adTreeCreator = new AdTreeCreator(myEnglishAttributesModel, dictionary);
+            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
             List<IAdTree> results = adTreeCreator.Create("I have some good news and some bad news regarding the climate emergency .".ToLower().Split(" "));
 
             //Trace.StopProfiler();
@@ -49,7 +49,7 @@ namespace Krino.GretaTest
         public void Sentence_1_2()
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myEnglishAttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
-            AdTreeCreator adTreeCreator = new AdTreeCreator(myEnglishAttributesModel, dictionary);
+            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
             List<IAdTree> results = adTreeCreator.Create("I will start with the good news .".ToLower().Split(" "));
 
             Assert.AreEqual(1, results.Count);
@@ -68,7 +68,7 @@ namespace Krino.GretaTest
         public void Sentence_2_1()
         {
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myEnglishAttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
-            AdTreeCreator adTreeCreator = new AdTreeCreator(myEnglishAttributesModel, dictionary);
+            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
             List<IAdTree> results = adTreeCreator.Create("The world as a small number of people have been saying lately will not end in 11 years".ToLower().Split(" "));
 
             //List<string> phraseElements = adTree

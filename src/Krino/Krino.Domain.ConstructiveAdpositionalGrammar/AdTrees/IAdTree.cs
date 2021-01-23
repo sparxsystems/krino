@@ -105,6 +105,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </remarks>
         bool IsDependent { get; }
 
+        /// <summary>
+        /// Returns sequence of adtrees in the adtree syntax order. (right branch is always on right)
+        /// </summary>
+        /// <returns></returns>
+        IEnumerable<IAdTree> GetAdTreesInAdTreeOrder();
+
 
         /// <summary>
         /// Returns the text phrase represented by this adtree.

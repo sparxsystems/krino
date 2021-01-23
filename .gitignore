@@ -31,3 +31,5 @@
 /src/Krino/Krino.ViewModel/obj
 /src/Krino/Krino.ViewModel/bin/Release/netstandard2.1
 /src/Krino/Krino.WebApp/bin/Release/net5.0
+/src/Krino/Krino.ViewModel.Tests/bin/Debug/netcoreapp3.1
+/src/Krino/Krino.ViewModel.Tests/obj

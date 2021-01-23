@@ -279,7 +279,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         }
 
 
-        public IEnumerator<IAdTree> GetEnumerator()
+        public IEnumerable<IAdTree> GetAdTreesInAdTreeOrder()
+        {
+            var enumerator = GetEnumeratorInternal(false);
+            while (enumerator.MoveNext())
+            {
+                yield return enumerator.Current;
+            }
+        }
+
+        public IEnumerator<IAdTree> GetEnumerator() => GetEnumeratorInternal(true);
+        
+
+        private IEnumerator<IAdTree> GetEnumeratorInternal(bool phraseOrder)
         {
             // Note: using the stack has a better performance than a recursive call.
             //       Also there is not a danger of the stack overflow.
@@ -298,7 +310,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     adPositionStack.Push(aThis);
 
                     // If left is before right.
-                    if (aThis.Pattern.IsLeftFirst)
+                    if (phraseOrder && aThis.Pattern.IsLeftFirst)
                     {
                         stack.Push(aThis.Right);
                         stack.Push(aThis.Left);

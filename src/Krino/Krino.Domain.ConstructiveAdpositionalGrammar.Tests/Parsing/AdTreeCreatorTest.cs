@@ -46,7 +46,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
 
             List<IAdTree> results = creator.Create("i", "read", ".");
 
@@ -81,7 +81,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("he", "reads");
 
             Assert.AreEqual(1, results.Count);
@@ -116,7 +116,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("he", "is", "writer");
 
             Assert.AreEqual(1, results.Count);
@@ -168,7 +168,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("i", "have", "been", "reading");
 
             Assert.AreEqual(1, results.Count);
@@ -201,7 +201,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("the", "good", "book");
 
             Assert.AreEqual(1, results.Count);
@@ -234,7 +234,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("green", "race", "car");
 
             Assert.AreEqual(1, results.Count);
@@ -266,7 +266,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("number", "of", "people", "say");
 
             Assert.AreEqual(1, results.Count);
@@ -303,7 +303,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("world", "as", "people", "say", "lately", "ends");
 
             // TODO:
@@ -335,7 +335,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("I", "will", "read");
 
             Assert.AreEqual(1, results.Count);
@@ -375,7 +375,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("I", "will", "not", "read");
 
             Assert.AreEqual(1, results.Count);
@@ -411,7 +411,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("I", "read", "the", "book");
 
             Assert.AreEqual(1, results.Count);
@@ -457,7 +457,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("the", "world", "as", "you", "know", "ends");
 
             Assert.AreEqual(1, results.Count);
@@ -505,7 +505,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("I", "read", "the", "book", "in", "the", "room");
 
             Assert.AreEqual(1, results.Count);
@@ -554,7 +554,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
 
-            AdTreeCreator creator = new AdTreeCreator(myAttributesModel, dictionary);
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("it", "is", "good", "and", "bad", "book");
 
             Assert.AreEqual(1, results.Count);
