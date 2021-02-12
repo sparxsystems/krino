@@ -39,7 +39,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern(".")
                 {
-                    MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
+                    UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
                     LeftRule = MorphemeRule.Anything,
                     RightRule = EnglishMorphemeRule.I_Lexeme,
                 },
@@ -449,7 +449,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("I-U-O")
                 {
-                    MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.Lexeme.Conjunction),
+                    UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.Lexeme.Conjunction),
                     LeftRule = EnglishMorphemeRule.I_Lexeme,
                     RightRule = EnglishMorphemeRule.O_Lexeme,
                 },
@@ -497,7 +497,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("E")
                 {
-                    MorphemeRule = EnglishMorphemeRule.E_Lexeme,
+                    UpRule = EnglishMorphemeRule.E_Lexeme,
                     LeftRule = EnglishMorphemeRule.O_Lexeme,
                     RightRule = EnglishMorphemeRule.I_Lexeme,
                 },
@@ -546,7 +546,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("A-U-A")
                 {
-                    MorphemeRule = EnglishMorphemeRule.U_Lexeme,
+                    UpRule = EnglishMorphemeRule.U_Lexeme,
                     LeftRule = EnglishMorphemeRule.A_Lexeme,
                     RightRule = EnglishMorphemeRule.A_Lexeme,
                 },

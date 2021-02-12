@@ -160,7 +160,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     // Note: in case of a grammar character transference it is expected the morpheme rule always represents
                     //       a concrete value.
-                    if (pattern.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
+                    if (pattern.UpRule.AttributesRule is IReferenceValueRule<BigInteger> isRule)
                     {
                         IAdTree adTreeCopy = adTree.MakeShallowCopy();
                         IAdTree transferenceAdTree = new AdTree(new Morpheme(myConstructiveDictionary.AttributesModel, "", isRule.ReferenceValue), pattern);
@@ -214,8 +214,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 IAdTree placeToAppend = GetPlaceToAppend(current);
 
                 // If an adposition needs to be filled.
-                if (!placeToAppend.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
-                    !placeToAppend.Pattern.MorphemeRule.Evaluate(placeToAppend.Morpheme))
+                if (!placeToAppend.Pattern.UpRule.Equals(MorphemeRule.Nothing) &&
+                    !placeToAppend.Pattern.UpRule.Evaluate(placeToAppend.Morpheme))
                 {
                     if (placeToAppend.Pattern.Equals(appendee.Pattern))
                     {
@@ -370,7 +370,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     {
                         DirectedEdge<GrammarCharacter, Pattern> edge = path[i];
 
-                        BigInteger attributes = edge.Value.MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> referenceAttributes ? referenceAttributes.ReferenceValue : myConstructiveDictionary.AttributesModel.GetAttributes(edge.Value.MorphemeRule.GrammarCharacter);
+                        BigInteger attributes = edge.Value.UpRule.AttributesRule is IReferenceValueRule<BigInteger> referenceAttributes ? referenceAttributes.ReferenceValue : myConstructiveDictionary.AttributesModel.GetAttributes(edge.Value.UpRule.GrammarCharacter);
                         IAdTree bridge = new AdTree(new Morpheme(myConstructiveDictionary.AttributesModel, "", attributes), edge.Value);
 
                         // If it is the first item on the path.
@@ -500,8 +500,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     if (adTree.Left == null && !adTree.Pattern.LeftRule.Equals(MorphemeRule.Nothing) ||
                         adTree.Right == null && !adTree.Pattern.RightRule.Equals(MorphemeRule.Nothing) ||
                         // or an adposition morpheme is still expected.
-                        !adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
-                        !adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
+                        !adTree.Pattern.UpRule.Equals(MorphemeRule.Nothing) &&
+                        !adTree.Pattern.UpRule.Evaluate(adTree.Morpheme))
                     {
                         return adTree;
                     }

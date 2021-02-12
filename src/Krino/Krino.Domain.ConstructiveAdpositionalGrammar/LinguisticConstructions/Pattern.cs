@@ -35,11 +35,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 if ((LeftRule == null || LeftRule.Equals(MorphemeRule.Nothing)) &&
                     (RightRule == null || RightRule.Equals(MorphemeRule.Nothing)))
                 {
-                    name = MorphemeRule.GrammarCharacter.ToString();
+                    name = UpRule.GrammarCharacter.ToString();
                 }
                 else
                 {
-                    name = string.Join("", LeftRule?.GrammarCharacter.ToString(), "-", MorphemeRule.GrammarCharacter, "-", RightRule?.GrammarCharacter);
+                    name = string.Join("", LeftRule?.GrammarCharacter.ToString(), "-", UpRule.GrammarCharacter, "-", RightRule?.GrammarCharacter);
                 }
 
                 return name;
@@ -51,11 +51,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         public BigInteger Attributes { get; private set; }
 
 
-        public MorphemeRule MorphemeRule { get; set; } = MorphemeRule.Nothing;
+        public MorphemeRule UpRule { get; set; } = MorphemeRule.Nothing;
+
+        public BigInteger UpAttributes { get; set; }
 
         public MorphemeRule LeftRule { get; set; } = MorphemeRule.Nothing;
 
+        public BigInteger LeftAttributes { get; set; }
+
         public MorphemeRule RightRule { get; set; } = MorphemeRule.Nothing;
+
+        public BigInteger RightAttributes { get; set; }
 
         /// <summary>
         /// The valency position required by the pattern.
@@ -98,8 +104,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         {
             get
             {
-                if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                    MorphemeRule.MorphRule.Equals(MorphRules.Something) &&
+                if (UpRule.GrammarCharacter != GrammarCharacter.e &&
+                    UpRule.MorphRule.Equals(MorphRules.Something) &&
                     LeftRule.Equals(MorphemeRule.Nothing) &&
                     RightRule.Equals(MorphemeRule.Nothing))
                 {
@@ -123,10 +129,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             get
             {
                 // AdPosition
-                if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                    MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
-                    MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                    MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
+                if (UpRule.GrammarCharacter != GrammarCharacter.e &&
+                    UpRule.GrammarCharacter != GrammarCharacter.U &&
+                    UpRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                    UpRule.MorphRule.Equals(MorphRules.EmptyString))
                 {
                     // Left.
                     if (LeftRule.GrammarCharacter != GrammarCharacter.e)
@@ -155,10 +161,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             get
             {
                 // AdPosition
-                if (MorphemeRule.GrammarCharacter != GrammarCharacter.e &&
-                    MorphemeRule.GrammarCharacter != GrammarCharacter.U &&
-                    MorphemeRule.AttributesRule is IReferenceValueRule<BigInteger> &&
-                    MorphemeRule.MorphRule.Equals(MorphRules.EmptyString))
+                if (UpRule.GrammarCharacter != GrammarCharacter.e &&
+                    UpRule.GrammarCharacter != GrammarCharacter.U &&
+                    UpRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                    UpRule.MorphRule.Equals(MorphRules.EmptyString))
                 {
                     // Left.
                     if (LeftRule.Equals(MorphemeRule.Nothing))
@@ -177,7 +183,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
         public bool IsEpsilonAdPosition()
         {
-            bool result = MorphemeRule.Equals(MorphemeRule.Epsilon) &&
+            bool result = UpRule.Equals(MorphemeRule.Epsilon) &&
                           !RightRule.Equals(MorphemeRule.Nothing) &&
                           !LeftRule.Equals(MorphemeRule.Nothing) &&
                           !RightRule.MorphRule.Evaluate(null) && !RightRule.MorphRule.Evaluate("") && !RightRule.AttributesRule.Evaluate(0) &&
@@ -196,8 +202,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         /// <returns></returns>
         public bool IsMorphematicAdPosition()
         {
-            bool result = MorphemeRule.MorphRule.Equals(MorphRules.Something) &&
-                          !MorphemeRule.AttributesRule.Evaluate(0) &&
+            bool result = UpRule.MorphRule.Equals(MorphRules.Something) &&
+                          !UpRule.AttributesRule.Evaluate(0) &&
                           !RightRule.Equals(MorphemeRule.Nothing) &&
                           !LeftRule.Equals(MorphemeRule.Nothing) &&
                           !RightRule.MorphRule.Evaluate(null) && !RightRule.MorphRule.Evaluate("") && !RightRule.AttributesRule.Evaluate(0) &&
@@ -208,7 +214,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
 
         public bool Equals(Pattern other) =>
-            MorphemeRule.Equals(other.MorphemeRule) &&
+            UpRule.Equals(other.UpRule) &&
             LeftRule.Equals(other.LeftRule) &&
             RightRule.Equals(other.RightRule) &&
             ValencyPosition == other.ValencyPosition;
@@ -218,7 +224,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         {
             int hash = 486187739;
 
-            hash = (hash * 16777619) ^ MorphemeRule.GetHashCode();
+            hash = (hash * 16777619) ^ UpRule.GetHashCode();
             hash = (hash * 16777619) ^ LeftRule.GetHashCode();
             hash = (hash * 16777619) ^ RightRule.GetHashCode();
             hash = (hash * 16777619) ^ ValencyPosition.GetHashCode();

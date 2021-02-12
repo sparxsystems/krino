@@ -483,10 +483,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         public static bool IsCorrect(this IAdTree adTree, IAttributesModel attributesModel)
         {
             // Check the morpheme belonging to the adtree.
-            if (!adTree.Pattern.MorphemeRule.Evaluate(adTree.Morpheme))
+            if (!adTree.Pattern.UpRule.Evaluate(adTree.Morpheme))
             {
-                if (!adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) ||
-                    (adTree.Pattern.MorphemeRule.Equals(MorphemeRule.Nothing) &&
+                if (!adTree.Pattern.UpRule.Equals(MorphemeRule.Nothing) ||
+                    (adTree.Pattern.UpRule.Equals(MorphemeRule.Nothing) &&
                      !string.IsNullOrEmpty(adTree.Morpheme.Morph)))
                 {
                     return false;
@@ -537,16 +537,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         {
             // Check if the morph is set.
             if (string.IsNullOrEmpty(adTree.Morpheme.Morph) &&
-                !adTree.Pattern.MorphemeRule.MorphRule.Equals(MorphRules.Nothing) &&
-                !adTree.Pattern.MorphemeRule.MorphRule.Evaluate(adTree.Morpheme.Morph))
+                !adTree.Pattern.UpRule.MorphRule.Equals(MorphRules.Nothing) &&
+                !adTree.Pattern.UpRule.MorphRule.Evaluate(adTree.Morpheme.Morph))
             {
                 return false;
             }
 
             // Check if the attribute is set.
             if (adTree.Morpheme.Attributes == 0 &&
-                !adTree.Pattern.MorphemeRule.AttributesRule.Equals(MaskRule.Nothing) &&
-                !adTree.Pattern.MorphemeRule.AttributesRule.Equals(MaskRule.Anything))
+                !adTree.Pattern.UpRule.AttributesRule.Equals(MaskRule.Nothing) &&
+                !adTree.Pattern.UpRule.AttributesRule.Equals(MaskRule.Anything))
             {
                 return false;
             }

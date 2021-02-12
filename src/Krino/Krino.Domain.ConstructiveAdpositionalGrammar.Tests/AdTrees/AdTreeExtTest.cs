@@ -188,7 +188,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme });
+                new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
 
 
@@ -200,7 +200,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme })
+                    new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme })
             };
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
 
@@ -209,7 +209,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme),
-                new Pattern() { MorphemeRule = EnglishMorphemeRule.A_Lexeme });
+                new Pattern() { UpRule = EnglishMorphemeRule.A_Lexeme });
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
         }
 
@@ -220,10 +220,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
+                new Pattern() { UpRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsTrue(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
 
@@ -233,10 +233,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { RightRule = EnglishMorphemeRule.O_Lexeme, }.SetSubstitutionForRight(SubstitutionRules.Nothing)
             );
             adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
+                new Pattern() { UpRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsFalse(adTree.CanAttachToRight(adTreeElement, myAttributesModel));
         }
@@ -322,7 +322,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme });
+                new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 
 
@@ -334,7 +334,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 EnglishPattern.MonoTransference("O>A", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme))
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme })
+                    new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme })
             };
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 
@@ -343,7 +343,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }
             );
             adTreeElement = new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme),
-                new Pattern() { MorphemeRule = EnglishMorphemeRule.A_Lexeme });
+                new Pattern() { UpRule = EnglishMorphemeRule.A_Lexeme });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
         }
 
@@ -353,7 +353,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             IAdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.U.Lexeme.Conjunction),
                  EnglishPattern.MorphematicAdPosition("O-U-O", "", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme).SetLeftFirst()
             );
-            IAdTree adTreeElement = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme });
+            IAdTree adTreeElement = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 
 
@@ -361,9 +361,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                  EnglishPattern.MorphematicAdPosition("O-U-O", "", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme)
             )
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme })
+                Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme })
             };
-            adTreeElement = new AdTree(new Morpheme(myAttributesModel, "bike", EnglishAttributes.O.Lexeme), new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme });
+            adTreeElement = new AdTree(new Morpheme(myAttributesModel, "bike", EnglishAttributes.O.Lexeme), new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme });
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 
 
@@ -372,9 +372,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                  EnglishPattern.MorphematicAdPosition("O-U-O", "", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme)
             )
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme })
+                Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme), new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme })
             };
-            adTreeElement = new AdTree(new Morpheme(myAttributesModel, "bike", EnglishAttributes.O.Lexeme), new Pattern() { MorphemeRule = EnglishMorphemeRule.O_Lexeme });
+            adTreeElement = new AdTree(new Morpheme(myAttributesModel, "bike", EnglishAttributes.O.Lexeme), new Pattern() { UpRule = EnglishMorphemeRule.O_Lexeme });
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
         }
 
@@ -385,10 +385,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }
             );
             IAdTree adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
+                new Pattern() { UpRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsTrue(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
 
@@ -398,10 +398,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, }.SetSubstitutionForLeft(SubstitutionRules.Nothing)
             );
             adTreeElement = new AdTree(Morpheme.Epsilon(myAttributesModel),
-                new Pattern() { MorphemeRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
+                new Pattern() { UpRule = MorphemeRule.Epsilon, LeftRule = EnglishMorphemeRule.A_Lexeme, RightRule = EnglishMorphemeRule.O_Lexeme })
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme),
-                    new Pattern() { MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
+                    new Pattern() { UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme) }),
             };
             Assert.IsFalse(adTree.CanAttachToLeft(adTreeElement, myAttributesModel));
         }
@@ -575,7 +575,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             // Left and right rules are anything so it should also accept if they are null.
             adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme), new Pattern("")
             {
-                MorphemeRule = EnglishMorphemeRule.U_NonLexeme,
+                UpRule = EnglishMorphemeRule.U_NonLexeme,
                 RightRule = MorphemeRule.Anything,
                 LeftRule = MorphemeRule.Anything,
             });

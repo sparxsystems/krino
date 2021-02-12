@@ -12,7 +12,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern Morpheme(BigInteger attributes, string patternName, string description) => new Pattern(patternName)
         {
             Description = description,
-            MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, attributes),
+            UpRule = EnglishMorphemeRule.Is(MorphRules.Something, attributes),
             LeftRule = MorphemeRule.Nothing,
             RightRule = MorphemeRule.Nothing,
         };
@@ -28,7 +28,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 Description = description,
-                MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
+                UpRule = EnglishMorphemeRule.Is("", morphemeAttributes),
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
                 LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
             };
@@ -37,7 +37,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 Description = description,
-                MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
+                UpRule = EnglishMorphemeRule.Is("", morphemeAttributes),
                 LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes, notLeftAttributes),
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes, notRightAttributes),
             };
@@ -46,7 +46,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 Description = description,
-                MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
+                UpRule = EnglishMorphemeRule.Is("", morphemeAttributes),
                 LeftRule = leftRule,
                 RightRule = rightRule,
             };
@@ -55,7 +55,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 Description = "Rule which changes grammar characters.",
-                MorphemeRule = EnglishMorphemeRule.Is("", morphemeAttributes),
+                UpRule = EnglishMorphemeRule.Is("", morphemeAttributes),
                 LeftRule = MorphemeRule.Nothing,
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
             };
@@ -64,7 +64,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 Description = description,
-                MorphemeRule = MorphemeRule.Epsilon,
+                UpRule = MorphemeRule.Epsilon,
                 LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
             };
@@ -72,7 +72,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern EpsilonAdPosition(string patternName, MorphemeRule leftRule, MorphemeRule rightRule)
             => new Pattern(patternName)
             {
-                MorphemeRule = MorphemeRule.Epsilon,
+                UpRule = MorphemeRule.Epsilon,
                 LeftRule = leftRule,
                 RightRule = rightRule,
             };
@@ -81,7 +81,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 Description = description,
-                MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, morphemeAttributes),
+                UpRule = EnglishMorphemeRule.Is(MorphRules.Something, morphemeAttributes),
                 LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
             };
@@ -89,7 +89,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern MorphematicAdPosition(string patternName, MorphemeRule morphemeRule, MorphemeRule leftRule, MorphemeRule rightRule)
             => new Pattern(patternName)
             {
-                MorphemeRule = morphemeRule,
+                UpRule = morphemeRule,
                 LeftRule = leftRule,
                 RightRule = rightRule,
             };
@@ -98,7 +98,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         {
             Description = $"Rule accepting stative lexeme on valency position {valencyPosition}.",
             ValencyPosition = valencyPosition,
-            MorphemeRule = MorphemeRule.Epsilon,
+            UpRule = MorphemeRule.Epsilon,
             LeftRule = EnglishMorphemeRule.O_Lexeme,
             RightRule = EnglishMorphemeRule.I_Lexeme,
         };

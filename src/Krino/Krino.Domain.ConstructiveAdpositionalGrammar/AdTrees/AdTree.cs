@@ -102,7 +102,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public GrammarCharacter RulingGrammarCharacter => Pattern.IsLikeMorpheme ? Pattern.MorphemeRule.GrammarCharacter : Pattern.RightRule.GrammarCharacter;
+        public GrammarCharacter RulingGrammarCharacter => Pattern.IsLikeMorpheme ? Pattern.UpRule.GrammarCharacter : Pattern.RightRule.GrammarCharacter;
 
         public bool IsAdPosition => Right != null || Left != null;
 
@@ -354,9 +354,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     builder.Append(": ");
                     builder.Append(Morpheme.Morph);
                 }
-                else if (!Pattern.MorphemeRule.MorphRule.Equals(MorphRules.Nothing) &&
-                         !Pattern.MorphemeRule.MorphRule.Evaluate(null) &&
-                         !Pattern.MorphemeRule.MorphRule.Evaluate(""))
+                else if (!Pattern.UpRule.MorphRule.Equals(MorphRules.Nothing) &&
+                         !Pattern.UpRule.MorphRule.Evaluate(null) &&
+                         !Pattern.UpRule.MorphRule.Evaluate(""))
                 {
                     builder.Append(": ");
                     builder.Append("?");

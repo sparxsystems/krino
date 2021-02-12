@@ -98,7 +98,7 @@ namespace Krino.GretaTest
             new Pattern("•")
             {
                 Description = "Rule for the period punctuation mark.",
-                MorphemeRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
+                UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
                 LeftRule = MorphemeRule.Anything,
                 RightRule = new MorphemeRule(GrammarCharacter.e, MorphRules.Anything, MaskRule.Something),
             },

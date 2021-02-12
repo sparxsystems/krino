@@ -21,21 +21,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             {
                 new Pattern("A")
                 {
-                    MorphemeRule = EnglishMorphemeRule.A_Lexeme,
+                    UpRule = EnglishMorphemeRule.A_Lexeme,
                     LeftRule = MorphemeRule.Nothing,
                     RightRule = MorphemeRule.Nothing,
                 },
 
                 new Pattern("O")
                 {
-                    MorphemeRule = EnglishMorphemeRule.O_Lexeme,
+                    UpRule = EnglishMorphemeRule.O_Lexeme,
                     LeftRule = MorphemeRule.Nothing,
                     RightRule = MorphemeRule.Nothing,
                 },
 
                 new Pattern("A-O")
                 {
-                    MorphemeRule = MorphemeRule.Epsilon,
+                    UpRule = MorphemeRule.Epsilon,
                     LeftRule = EnglishMorphemeRule.A_Lexeme,
                     RightRule = EnglishMorphemeRule.O_Lexeme,
                 },
