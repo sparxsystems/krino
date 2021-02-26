@@ -20,7 +20,7 @@ namespace Krino.ViewModel
             new Morpheme(AttributesModel, "as", EnglishAttributes.U.Lexeme.Conjunction),
             new Morpheme(AttributesModel, "climate", EnglishAttributes.O.Lexeme.Noun),
             new Morpheme(AttributesModel, "bad", EnglishAttributes.A.Lexeme.Adjective.Attributive),
-            new Morpheme(AttributesModel, "because", EnglishAttributes.U.Lexeme.Conjunction.Subordinating.Sememe.Cause),
+            new Morpheme(AttributesModel, "because", EnglishAttributes.U.Lexeme.Conjunction.Subordinating.Sememe.Cause.ConclusionPremise),
             new Morpheme(AttributesModel, "been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple),
             new Morpheme(AttributesModel, "eleven", EnglishAttributes.A.Lexeme.Numeral.Cardinal),
             new Morpheme(AttributesModel, "emergency", EnglishAttributes.O.Lexeme.Noun),

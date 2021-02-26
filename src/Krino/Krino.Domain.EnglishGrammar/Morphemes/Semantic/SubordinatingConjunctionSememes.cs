@@ -9,7 +9,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
     /// Semantic Categories of Subordinating Conjunctions
     /// </summary>
     /// <remarks>
-    /// https://www.thoughtco.com/subordinating-conjunction-1692154#:~:text=Subordinating%20Conjunctions,-Subordinating%20conjunctions%20can&text=They%20must%20come%20at%20the,subordinating%20conjunctions%2C%20categorized%20by%20meaning.
+    /// https://www.thoughtco.com/subordinating-conjunction-1692154
     /// </remarks>
     public class SubordinatingConjunctionSememes : EnumGroupBase
     {
@@ -18,7 +18,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
             Time = new EnumValue(this);
             Concession = new EnumValue(this);
             Comparison = new EnumValue(this);
-            Cause = new EnumValue(this);
+            Cause = new CauseConjunctionSememes(this);
             Condition = new EnumValue(this);
             Place = new EnumValue(this);
         }
@@ -53,7 +53,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
         /// <remarks>
         /// E.g. Grant dreamed about cheese because he had eaten so much of it the night before.
         /// </remarks>
-        public EnumValue Cause { get; }
+        public CauseConjunctionSememes Cause { get; }
 
         /// <summary>
         /// Condition conjunctions introduce rules under which a main clause performs.
