@@ -10,7 +10,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         public ConjunctionAttributes(EnumGroupBase parent) : base(parent)
         {
             Coordinating = new EnumValue(this);
-            Subordinating = new EnumValue(this);
+            Subordinating = new SubordinatingConjunctionAttribute(this);
             Starting = new EnumValue(this);
         }
 
@@ -22,7 +22,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         /// <summary>
         /// Connects subordinated phrase to the main phrase e.g. until, because.
         /// </summary>
-        public EnumValue Subordinating { get; }
+        public SubordinatingConjunctionAttribute Subordinating { get; }
 
         /// <summary>
         /// Conjuction which can be at the begnnig of the sentence e.g. And, But.
