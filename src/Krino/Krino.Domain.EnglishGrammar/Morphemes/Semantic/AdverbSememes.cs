@@ -13,7 +13,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
             OfManner = new EnumValue(this);
             OfPlace = new EnumValue(this);
             OfTime = new EnumValue(this);
-            OfDegree = new EnumValue(this);
+            OfDegree = new AdverbDegreeSememes(this);
         }
 
         /// <summary>
@@ -39,6 +39,9 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
         /// <summary>
         /// Degree or intensity.
         /// </summary>
-        public EnumValue OfDegree { get; }
+        /// <remarks>
+        /// https://studfile.net/preview/4083865/page:23/
+        /// </remarks>
+        public AdverbDegreeSememes OfDegree { get; }
     }
 }
