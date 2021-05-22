@@ -9,20 +9,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
     internal class Term : ITerm
     {
         private IAttributesModel myAttributesModel;
-        private IWordFactory myWordFactory;
+        private ILinguisticStructureFactory myFactory;
 
-        public Term(IAdTree adTree, IAttributesModel attributesModel, IWordFactory wordFactory)
+        public Term(IAdTree adTree, IAttributesModel attributesModel, ILinguisticStructureFactory factory)
         {
             AdTree = adTree;
             myAttributesModel = attributesModel;
-            myWordFactory = wordFactory;
+            myFactory = factory;
         }
 
         public IAdTree AdTree { get; private set; }
 
         public BigInteger StructureAttributes => 0;
 
+        public string Value => AdTree.Phrase;
+
         public IEnumerable<IWord> Words => AdTree.Where(x => myAttributesModel.IsLexeme(x.Morpheme.Attributes))
-            .Select(x => myWordFactory.Create(x));
+            .Select(x => myFactory.CreateWord(x));
     }
 }
