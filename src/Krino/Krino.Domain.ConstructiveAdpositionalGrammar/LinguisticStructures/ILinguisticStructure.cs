@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
     {
         IAdTree AdTree { get; }
 
-        BigInteger StructureAttributes { get; }
+        BigInteger Attributes { get; }
 
         string Value { get; }
     }

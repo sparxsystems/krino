@@ -23,7 +23,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
             };
 
             var factory = new LinguisticStructureFactory(myAttributesModel);
-            var term = factory.CreateTerm(adTree);
+            var term = factory.CreateTerm(adTree, 0);
             var words = term.Words.ToList();
             Assert.AreEqual(2, words.Count);
             Assert.AreEqual("I", words[0].Value);

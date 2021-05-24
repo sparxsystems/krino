@@ -11,16 +11,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         private IAttributesModel myAttributesModel;
         private ILinguisticStructureFactory myFactory;
 
-        public Term(IAdTree adTree, IAttributesModel attributesModel, ILinguisticStructureFactory factory)
+        public Term(IAdTree adTree, IAttributesModel attributesModel, ILinguisticStructureFactory factory,
+            BigInteger attributes)
         {
             AdTree = adTree;
             myAttributesModel = attributesModel;
             myFactory = factory;
+            Attributes = attributes;
         }
 
         public IAdTree AdTree { get; private set; }
 
-        public BigInteger StructureAttributes => 0;
+        public BigInteger Attributes { get; private set; }
 
         public string Value => AdTree.Phrase;
 

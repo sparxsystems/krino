@@ -19,7 +19,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public IAdTree AdTree { get; private set; }
 
-        public BigInteger StructureAttributes => 0;
+        public BigInteger Attributes => 0;
 
         public string Value => AdTree.Phrase;
 
@@ -41,7 +41,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
                     var valency1 = verb.GetSequenceToRoot().FirstOrDefault(x => x.Pattern.ValencyPosition == 1);
                     if (valency1?.Left != null)
                     {
-                        result = myFactory.CreateTerm(valency1.Left);
+                        result = myFactory.CreateTerm(valency1.Left, StructureAttributes.Subject);
                     }
                 }
             }
@@ -56,7 +56,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             var verb = AdTree.RightChildren.FirstOrDefault(x => myAttributesModel.IsVerb(x.Morpheme.Attributes));
             if (verb != null)
             {
-                result = myFactory.CreateTerm(verb);
+                var verbValencies = myAttributesModel.GetNumberOfValencies(verb.Morpheme.Attributes);
+                if (verbValencies > 0)
+                {
+                    var predicateAdTree = verb.GetSequenceToRoot().First(x =>
+                        x.AdPosition == null ||
+                        myAttributesModel.IsU(x.AdPosition.Morpheme.Attributes))?.MakeShallowCopy();
+
+                    // Remove the subject (i.e. remove the sub-adtree on the first valency)
+                    var firstValency = predicateAdTree.GetRightSequence().FirstOrDefault(x => x.Pattern.ValencyPosition == 1);
+                    if (firstValency != null)
+                    {
+                        firstValency.Left = null;
+                    }
+
+                    result = myFactory.CreateTerm(predicateAdTree, StructureAttributes.Predicate);
+                }
+                else
+                {
+                    result = myFactory.CreateTerm(verb, StructureAttributes.Predicate);
+                }
             }
 
             return result;

@@ -52,7 +52,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void RulingGrammarCharacter_E()
         {
-            // The phrase: I read book of year.
             AdTree adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U), EnglishPattern.MorphematicAdPosition("I-U-I", "", EnglishAttributes.U.NonLexeme.PunctuationMark, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme))
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E), EnglishPattern.MorphematicAdPosition("O-E-I", "", EnglishAttributes.E.Lexeme, EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme))
