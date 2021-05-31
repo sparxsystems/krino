@@ -30,7 +30,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
             };
 
             var factory = new LinguisticStructureFactory(myAttributesModel);
-            var clause = factory.CreateClause(adTree);
+            var clause = factory.CreateClause(adTree, 0);
 
             Assert.AreEqual("I", clause.Subject.Value);
             Assert.AreEqual("read the book", clause.Predicate.Value);
@@ -65,7 +65,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
             };
 
             var factory = new LinguisticStructureFactory(myAttributesModel);
-            var clause = factory.CreateClause(adTree);
+            var clause = factory.CreateClause(adTree, 0);
 
             Assert.AreEqual("I", clause.Subject.Value);
             Assert.AreEqual("read the book in the room", clause.Predicate.Value);

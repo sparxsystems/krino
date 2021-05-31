@@ -21,6 +21,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             myName = name;
         }
 
+        public Pattern(Pattern pattern)
+            : this(pattern.Name, pattern.Attributes)
+        {
+            Description = pattern.Description;
+            UpRule = new MorphemeRule(pattern.UpRule);
+            UpAttributes = pattern.UpAttributes;
+            LeftRule = new MorphemeRule(pattern.LeftRule);
+            LeftAttributes = pattern.LeftAttributes;
+            RightRule = new MorphemeRule(pattern.RightRule);
+            RightAttributes = pattern.RightAttributes;
+            ValencyPosition = pattern.ValencyPosition;
+            IsLeftFirst = pattern.IsLeftFirst;
+        }
+
         // Optional information for the debugging purposes.
         public string Name
         {

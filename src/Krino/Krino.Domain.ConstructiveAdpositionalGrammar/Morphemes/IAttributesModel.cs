@@ -30,6 +30,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         bool IsVerb(BigInteger attributes);
 
+        bool IsConjunction(BigInteger attributes);
+
         bool IsValencySpecified(BigInteger attributes);
 
         int GetNumberOfValencies(BigInteger attributes);

@@ -24,6 +24,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
             AttributesModel = attributesModel;
         }
 
+        /// <summary>
+        /// Creates the copy of the morpheme.
+        /// </summary>
+        /// <param name="morpheme"></param>
+        public Morpheme(Morpheme morpheme)
+            : this(morpheme.AttributesModel, morpheme.Morph, morpheme.Attributes)
+        {
+        }
+
         public string Morph { get; private set; }
 
         public IAttributesModel AttributesModel { get; private set; }

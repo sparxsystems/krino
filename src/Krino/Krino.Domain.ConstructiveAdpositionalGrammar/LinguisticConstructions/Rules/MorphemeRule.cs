@@ -27,6 +27,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             AttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
         }
 
+        public MorphemeRule(MorphemeRule morphemeRule)
+            : this(morphemeRule.GrammarCharacter, morphemeRule.MorphRule, morphemeRule.AttributesRule)
+        {
+            SubstitutionRule = morphemeRule.SubstitutionRule;
+        }
+
 
         /// <summary>
         /// Rule to evaluate the morph.

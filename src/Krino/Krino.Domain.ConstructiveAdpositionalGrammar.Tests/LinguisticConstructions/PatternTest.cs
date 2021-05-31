@@ -4,7 +4,9 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
+using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstructions
 {
@@ -12,6 +14,42 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
     public class PatternTest
     {
         private IAttributesModel myAttributesModel = new EnglishAttributesModel();
+
+        [Test]
+        public void CopyConstructor()
+        {
+            var pattern = new Pattern("A-U-A")
+            {
+                Description = "hello",
+                IsLeftFirst = true,
+
+                ValencyPosition = 1,
+
+                UpRule = new MorphemeRule(GrammarCharacter.A, RuleMaker.Is("bla1"), RuleMaker.Is<BigInteger>(1)),
+                UpAttributes = 100,
+
+                LeftRule = new MorphemeRule(GrammarCharacter.O, RuleMaker.Is("bla2"), RuleMaker.Is<BigInteger>(2)),
+                LeftAttributes = 200,
+
+                RightRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Is("bla3"), RuleMaker.Is<BigInteger>(3)),
+                RightAttributes = 300,
+            };
+
+            var copy = new Pattern(pattern);
+
+            Assert.AreEqual(pattern.Name, copy.Name);
+            Assert.AreEqual(pattern.Description, copy.Description);
+            Assert.AreEqual(pattern.ValencyPosition, copy.ValencyPosition);
+            Assert.AreEqual(pattern.IsLeftFirst, copy.IsLeftFirst);
+            Assert.IsTrue(pattern.UpRule.Equals(copy.UpRule));
+            Assert.AreEqual(pattern.UpAttributes, copy.UpAttributes);
+            Assert.IsTrue(pattern.LeftRule.Equals(copy.LeftRule));
+            Assert.AreEqual(pattern.LeftAttributes, copy.LeftAttributes);
+            Assert.IsTrue(pattern.RightRule.Equals(copy.RightRule));
+            Assert.AreEqual(pattern.RightAttributes, copy.RightAttributes);
+
+            Assert.IsTrue(pattern.Equals(copy));
+        }
 
         [Test]
         public void IsMorpheme()

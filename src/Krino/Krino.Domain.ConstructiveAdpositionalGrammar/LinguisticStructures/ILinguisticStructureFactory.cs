@@ -5,9 +5,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public interface ILinguisticStructureFactory
     {
-        IWord CreateWord(IAdTree wordAdTree);
+        IWord CreateWord(IAdTree wordAdTree, BigInteger attributes);
         ITerm CreateTerm(IAdTree termAdTree, BigInteger attributes);
-        IClause CreateClause(IAdTree clauseAdTree);
-        ISentence CreateSentence(IAdTree sentenceAdTree);
+        IClause CreateClause(IAdTree clauseAdTree, BigInteger attributes);
+        ISentence CreateSentence(IAdTree sentenceAdTree, BigInteger attributes);
     }
 }

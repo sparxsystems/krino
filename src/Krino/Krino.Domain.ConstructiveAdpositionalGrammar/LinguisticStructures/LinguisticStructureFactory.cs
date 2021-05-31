@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using System;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
@@ -14,20 +13,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             myAttributesModel = attributesModel;
         }
 
-        public IWord CreateWord(IAdTree wordAdTree) => new Word(wordAdTree);
+        public IWord CreateWord(IAdTree wordAdTree, BigInteger attributes) => new Word(wordAdTree, myAttributesModel, this, attributes);
 
 
         public ITerm CreateTerm(IAdTree termAdTree, BigInteger attributes) => new Term(termAdTree, myAttributesModel, this, attributes);
 
 
-        public IClause CreateClause(IAdTree clauseAdTree) => new Clause(clauseAdTree, myAttributesModel, this);
-        
+        public IClause CreateClause(IAdTree clauseAdTree, BigInteger attributes) => new Clause(clauseAdTree, myAttributesModel, this, attributes);
 
-        public ISentence CreateSentence(IAdTree sentenceAdTree)
-        {
-            throw new NotImplementedException();
-        }
 
-        
+        public ISentence CreateSentence(IAdTree sentenceAdTree, BigInteger attributes) => new Sentence(sentenceAdTree, myAttributesModel, this, attributes);
     }
 }

@@ -680,6 +680,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             Assert.IsFalse(adTree.IsComplete());
         }
 
+        [Test]
+        public void MakeDeepCopy()
+        {
+            // The phrase: I read the book.
+            var adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            {
+                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                {
+                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), new Pattern()),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), new Pattern())
+                },
+                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.U), new Pattern())
+                {
+                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme), new Pattern()),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme), new Pattern())
+                }
+            };
+
+            var copy = adTree.Right.MakeDeepCopy();
+            Assert.IsNull(copy.AdPosition);
+            Assert.IsTrue(adTree.Right.Equals(copy));
+        }
 
         [Test]
         public void MakeShallowCopy()

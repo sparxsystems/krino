@@ -92,6 +92,8 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
 
         public bool IsVerb(BigInteger attributes) => EnglishAttributes.I.Lexeme.Verb.IsIn(attributes);
 
+        public bool IsConjunction(BigInteger attributes) => EnglishAttributes.U.Lexeme.Conjunction.IsIn(attributes);
+
         /// <summary>
         /// True if the value encodes at least one valancy attribute.
         /// </summary>

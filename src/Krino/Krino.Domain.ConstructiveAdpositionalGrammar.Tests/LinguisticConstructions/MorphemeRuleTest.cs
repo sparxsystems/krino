@@ -10,6 +10,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
     public class MorphemeRuleTest
     {
         [Test]
+        public void CopyConstructor()
+        {
+            var morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection));
+            morphemeRule.SetSubstitution(SubstitutionRules.Epsilon_U_E);
+
+            var copy = new MorphemeRule(morphemeRule);
+            Assert.AreEqual(morphemeRule.GrammarCharacter, copy.GrammarCharacter);
+            Assert.IsTrue(morphemeRule.MorphRule.Equals(copy.MorphRule));
+            Assert.IsTrue(morphemeRule.AttributesRule.Equals(copy.AttributesRule));
+            Assert.IsTrue(morphemeRule.SubstitutionRule.Equals(copy.SubstitutionRule));
+
+            Assert.IsTrue(morphemeRule.Equals(copy));
+        }
+
+        [Test]
         public void Nothing()
         {
             IAttributesModel attributesModel = new EnglishAttributesModel();

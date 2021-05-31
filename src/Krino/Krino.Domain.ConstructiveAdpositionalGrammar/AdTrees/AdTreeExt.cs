@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Rules;
@@ -68,6 +69,49 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <param name="adTree"></param>
         /// <returns></returns>
         public static IEnumerable<IAdTree> GetRightSequence(this IAdTree adTree) => new IAdTree[] { adTree }.Concat(adTree.RightChildren);
+
+        /// <summary>
+        /// Returns the deep copy of the sub-adTree. (adTree will be the root of the returned adTree)
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static IAdTree MakeDeepCopy(this IAdTree adTree)
+        {
+            var root = adTree;
+
+            // <original, copy>
+            Stack<Tuple<IAdTree, IAdTree>> stack = new Stack<Tuple<IAdTree, IAdTree>>();
+
+            var rootMorpheme = new Morpheme(root.Morpheme);
+            var rootPattern = new Pattern(root.Pattern);
+            IAdTree rootCopy = new AdTree(rootMorpheme, rootPattern);
+            stack.Push(Tuple.Create(root, rootCopy));
+
+            while (stack.Count > 0)
+            {
+                Tuple<IAdTree, IAdTree> aThis = stack.Pop();
+
+                if (aThis.Item1.Left != null)
+                {
+                    var morpheme = new Morpheme(aThis.Item1.Left.Morpheme);
+                    var pattern = new Pattern(aThis.Item1.Left.Pattern);
+                    IAdTree leftCopy = new AdTree(morpheme, pattern);
+                    aThis.Item2.Left = leftCopy;
+                    stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
+                }
+
+                if (aThis.Item1.Right != null)
+                {
+                    var morpheme = new Morpheme(aThis.Item1.Right.Morpheme);
+                    var pattern = new Pattern(aThis.Item1.Right.Pattern);
+                    IAdTree rightCopy = new AdTree(morpheme, pattern);
+                    aThis.Item2.Right = rightCopy;
+                    stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
+                }
+            }
+
+            return rootCopy;
+        }
 
         /// <summary>
         /// Returns the shallow copy (Morphemes and Patterns are not duplicated) of the adtree. The returned copy is on the same path.
