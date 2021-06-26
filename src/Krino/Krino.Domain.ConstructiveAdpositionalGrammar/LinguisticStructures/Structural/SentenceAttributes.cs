@@ -8,7 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Stru
         {
             SimpleSentence = new EnumValue(this);
             ComplexSentence = new EnumValue(this);
-            CompoundSentence = new EnumValue(this);
+            CompoundSentence = new CompoundSentenceAttributes(this);
             CompoundComplexSentence = new EnumValue(this);
         }
 
@@ -25,7 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Stru
         /// <summary>
         /// Contains one independent clause and one dependent clause.
         /// </summary>
-        public EnumValue CompoundSentence { get; }
+        public CompoundSentenceAttributes CompoundSentence { get; }
 
         /// <summary>
         /// Contains at least two independent clauses and one dependent clause.

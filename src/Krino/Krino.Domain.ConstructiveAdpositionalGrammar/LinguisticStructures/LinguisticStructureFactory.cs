@@ -22,6 +22,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public IClause CreateClause(IAdTree clauseAdTree, BigInteger attributes) => new Clause(clauseAdTree, myAttributesModel, this, attributes);
 
 
-        public ISentence CreateSentence(IAdTree sentenceAdTree, BigInteger attributes) => new Sentence(sentenceAdTree, myAttributesModel, this, attributes);
+        public ISentence CreateSentence(IAdTree sentenceAdTree) => new Sentence(sentenceAdTree, myAttributesModel, this);
     }
 }

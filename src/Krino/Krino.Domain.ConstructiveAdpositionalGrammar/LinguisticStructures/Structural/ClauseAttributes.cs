@@ -8,9 +8,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Stru
         {
             Independent = new EnumValue(this);
             Dependent = new EnumValue(this);
+            Premis = new EnumValue(this);
+            Conclusion = new EnumValue(this);
         }
 
         public EnumValue Independent { get; }
         public EnumValue Dependent { get; }
+
+        public EnumValue Premis { get; }
+        public EnumValue Conclusion { get; }
     }
 }

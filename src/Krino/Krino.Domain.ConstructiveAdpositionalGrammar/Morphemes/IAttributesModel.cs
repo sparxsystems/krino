@@ -32,6 +32,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         bool IsConjunction(BigInteger attributes);
 
+        bool IsSubOrdinatingConjunction(BigInteger attributes);
+
+        bool IsCoordinatingConjunction(BigInteger attributes);
+
+        bool IsCauseConjunction(BigInteger attributes);
+
+
         bool IsValencySpecified(BigInteger attributes);
 
         int GetNumberOfValencies(BigInteger attributes);

@@ -8,6 +8,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         IWord CreateWord(IAdTree wordAdTree, BigInteger attributes);
         ITerm CreateTerm(IAdTree termAdTree, BigInteger attributes);
         IClause CreateClause(IAdTree clauseAdTree, BigInteger attributes);
-        ISentence CreateSentence(IAdTree sentenceAdTree, BigInteger attributes);
+        ISentence CreateSentence(IAdTree sentenceAdTree);
     }
 }

@@ -17,7 +17,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public IAdTree AdTree { get; private set; }
 
-        public virtual BigInteger Attributes { get; private set; }
+        public virtual BigInteger Attributes { get; protected set; }
 
         public string Value => AdTree.Phrase;
 

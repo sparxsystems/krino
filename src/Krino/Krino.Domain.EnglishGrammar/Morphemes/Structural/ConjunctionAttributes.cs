@@ -11,6 +11,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         {
             Coordinating = new EnumValue(this);
             Subordinating = new SubordinatingConjunctionAttribute(this);
+            ConjunctiveAdverb = new EnumValue(this);
             Starting = new EnumValue(this);
         }
 
@@ -30,6 +31,14 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         /// Some common subordinating conjunctions are: after, as, before, once, since, until, and while.
         /// </remarks>
         public SubordinatingConjunctionAttribute Subordinating { get; }
+
+        /// <summary>
+        /// Connects two independent clauses or sentences.
+        /// </summary>
+        /// <remarks>
+        /// E.g.: also, consequently, furthermore, however, moreover, nevertheless, therefore.
+        /// </remarks>
+        public EnumValue ConjunctiveAdverb { get; }
 
         /// <summary>
         /// Conjuction which can be at the begnnig of the sentence e.g. And, But.

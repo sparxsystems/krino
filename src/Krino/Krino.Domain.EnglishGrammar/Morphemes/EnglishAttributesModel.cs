@@ -94,6 +94,15 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
 
         public bool IsConjunction(BigInteger attributes) => EnglishAttributes.U.Lexeme.Conjunction.IsIn(attributes);
 
+        public bool IsSubOrdinatingConjunction(BigInteger attributes) => EnglishAttributes.U.Lexeme.Conjunction.Subordinating.IsIn(attributes);
+
+        public bool IsCoordinatingConjunction(BigInteger attributes) =>
+            EnglishAttributes.U.Lexeme.Conjunction.Coordinating.IsIn(attributes) ||
+            EnglishAttributes.U.Lexeme.Conjunction.ConjunctiveAdverb.IsIn(attributes) ||
+            EnglishAttributes.U.NonLexeme.PunctuationMark.Semicolon.IsIn(attributes);
+
+        public bool IsCauseConjunction(BigInteger attributes) => EnglishAttributes.U.Lexeme.Conjunction.Subordinating.Sememe.Cause.IsIn(attributes);
+
         /// <summary>
         /// True if the value encodes at least one valancy attribute.
         /// </summary>
