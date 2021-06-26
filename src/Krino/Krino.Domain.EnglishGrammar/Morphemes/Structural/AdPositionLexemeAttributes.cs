@@ -18,6 +18,9 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         /// </summary>
         public ConjunctionAttributes Conjunction { get; }
 
+        /// <summary>
+        /// AdPosition is a marker word.
+        /// </summary>
         public MarkerWord MarkerWord { get; }
     }
 }
