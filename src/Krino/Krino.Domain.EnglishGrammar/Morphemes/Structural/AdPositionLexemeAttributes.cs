@@ -10,11 +10,14 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         public AdPositionLexemeAttributes(EnumGroupBase parent) : base(parent)
         {
             Conjunction = new ConjunctionAttributes(this);
+            MarkerWord = new MarkerWord(this);
         }
 
         /// <summary>
         /// AdPosition is a conjunction.
         /// </summary>
         public ConjunctionAttributes Conjunction { get; }
+
+        public MarkerWord MarkerWord { get; }
     }
 }
