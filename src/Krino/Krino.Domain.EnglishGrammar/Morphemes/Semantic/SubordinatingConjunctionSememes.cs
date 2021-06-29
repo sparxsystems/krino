@@ -18,7 +18,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
             Time = new EnumValue(this);
             Concession = new EnumValue(this);
             Comparison = new EnumValue(this);
-            Cause = new CauseConjunctionSememes(this);
+            Cause = new EnumValue(this);
             Condition = new EnumValue(this);
             Place = new EnumValue(this);
         }
@@ -53,7 +53,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
         /// <remarks>
         /// E.g. Grant dreamed about cheese because he had eaten so much of it the night before.
         /// </remarks>
-        public CauseConjunctionSememes Cause { get; }
+        public EnumValue Cause { get; }
 
         /// <summary>
         /// Condition conjunctions introduce rules under which a main clause performs.

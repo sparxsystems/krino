@@ -33,3 +33,9 @@
 /src/Krino/Krino.WebApp/bin/Release/net5.0
 /src/Krino/Krino.ViewModel.Tests/bin/Debug/netcoreapp3.1
 /src/Krino/Krino.ViewModel.Tests/obj
+/src/Krino/Krino.Domain.ConstructiveAdpositionalArgumentation.Tests/bin/Debug/netcoreapp3.1
+/src/Krino/Krino.Domain.ConstructiveAdpositionalArgumentation.Tests/obj
+/src/Krino/Krino.Domain.EnglishDictionary/bin/Debug/netstandard2.1
+/src/Krino/Krino.Domain.EnglishDictionary/obj
+/src/Krino/Krino.Domain.EnglishDictionary.Tests/bin/Debug/netcoreapp3.1
+/src/Krino/Krino.Domain.EnglishDictionary.Tests/obj

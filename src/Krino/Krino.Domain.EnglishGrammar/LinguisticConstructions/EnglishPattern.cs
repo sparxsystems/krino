@@ -24,6 +24,9 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern O4_I => On_I("O4-I", 4);
         public static Pattern O5_I => On_I("O5-I", 5);
 
+        // E.g. Speaking is prohibited. 'prohibited' is on the 2nd valency position.
+        public static Pattern A2_I => An_I("A2-I", 2);
+
         public static Pattern PairTransference(string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
             {
@@ -100,6 +103,15 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             ValencyPosition = valencyPosition,
             UpRule = MorphemeRule.Epsilon,
             LeftRule = EnglishMorphemeRule.O_Lexeme,
+            RightRule = EnglishMorphemeRule.I_Lexeme,
+        };
+
+        private static Pattern An_I(string patternName, int valencyPosition) => new Pattern(patternName)
+        {
+            Description = $"Rule accepting adjective lexeme on valency position {valencyPosition}.",
+            ValencyPosition = valencyPosition,
+            UpRule = MorphemeRule.Epsilon,
+            LeftRule = EnglishMorphemeRule.A_Lexeme_Adjective,
             RightRule = EnglishMorphemeRule.I_Lexeme,
         };
     }

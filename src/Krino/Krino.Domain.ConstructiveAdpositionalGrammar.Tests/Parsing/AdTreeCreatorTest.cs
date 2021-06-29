@@ -565,5 +565,43 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual("bad", results[0].Left.Left.Left.Morpheme.Morph);
             Assert.AreEqual("book", results[0].Left.Right.Morpheme.Morph);
         }
+
+        [Test]
+        public void I_read_because_I_read_book()
+        {
+            List<Morpheme> morphemes = new List<Morpheme>()
+            {
+                // Lexemes.
+                new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme.Pronoun),
+                new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
+                new Morpheme(myAttributesModel, "because", EnglishAttributes.U.Lexeme.Conjunction.Subordinating),
+                new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun),
+            };
+
+            List<Pattern> patterns = new List<Pattern>()
+            {
+                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme),
+                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme),
+                EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme),
+
+                EnglishPattern.O1_I.SetLeftFirst(),
+                EnglishPattern.O2_I,
+
+                EnglishPattern.MorphematicAdPosition("I-U-I", "Complex and compund sentences.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme),
+            };
+
+            ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);
+
+            AdTreeCreator creator = new AdTreeCreator(dictionary);
+            List<IAdTree> results = creator.Create("I", "read", "because", "I", "read", "book");
+
+            Assert.AreEqual(1, results.Count);
+            Assert.AreEqual("I", results[0].Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", results[0].Right.Right.Morpheme.Morph);
+            Assert.AreEqual("because", results[0].Morpheme.Morph);
+            Assert.AreEqual("I", results[0].Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", results[0].Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("book", results[0].Left.Left.Morpheme.Morph);
+        }
     }
 }

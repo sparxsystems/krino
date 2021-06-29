@@ -130,24 +130,9 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
         /// <returns></returns>
         public int GetNumberOfValencies(BigInteger value)
         {
-            if (EnglishAttributes.I.Lexeme.Verb.Valency.Avalent.IsIn(value))
+            if (EnglishAttributes.I.Lexeme.Verb.Valency.Pentavalent.IsIn(value))
             {
-                return 0;
-            }
-
-            if (EnglishAttributes.I.Lexeme.Verb.Valency.Monovalent.IsIn(value))
-            {
-                return 1;
-            }
-
-            if (EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent.IsIn(value))
-            {
-                return 2;
-            }
-
-            if (EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent.IsIn(value))
-            {
-                return 3;
+                return 5;
             }
 
             if (EnglishAttributes.I.Lexeme.Verb.Valency.Quadrivalent.IsIn(value))
@@ -155,9 +140,24 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
                 return 4;
             }
 
-            if (EnglishAttributes.I.Lexeme.Verb.Valency.Pentavalent.IsIn(value))
+            if (EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent.IsIn(value))
             {
-                return 5;
+                return 3;
+            }
+
+            if (EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent.IsIn(value))
+            {
+                return 2;
+            }
+
+            if (EnglishAttributes.I.Lexeme.Verb.Valency.Monovalent.IsIn(value))
+            {
+                return 1;
+            }
+
+            if (EnglishAttributes.I.Lexeme.Verb.Valency.Avalent.IsIn(value))
+            {
+                return 0;
             }
 
             return -1;

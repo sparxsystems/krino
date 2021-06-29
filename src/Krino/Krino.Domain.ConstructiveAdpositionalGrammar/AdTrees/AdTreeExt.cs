@@ -331,7 +331,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                 if (morphemeAdTree != null)
                 {
-                    // If it shall be attached to the right the morpheme is a verb then check the valency.
+                    // If it shall be attached to the right and the morpheme is a verb then check the valency.
                     if (attachPosition == AttachingPosition.ChildOnRight && attributesModel.IsVerb(morphemeAdTree.Morpheme.Attributes))
                     {
                         int valency = attributesModel.GetNumberOfValencies(morphemeAdTree.Morpheme.Attributes);

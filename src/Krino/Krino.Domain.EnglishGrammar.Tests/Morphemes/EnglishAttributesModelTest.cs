@@ -1,10 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Numerics;
-using System.Text;
 
 namespace Krino.Domain.EnglishGrammar.Tests.Morphemes
 {
@@ -23,10 +20,10 @@ namespace Krino.Domain.EnglishGrammar.Tests.Morphemes
             Assert.AreEqual(4, attributesModel.GetNumberOfValencies(EnglishAttributes.I.Lexeme.Verb.Valency.Quadrivalent));
             Assert.AreEqual(5, attributesModel.GetNumberOfValencies(EnglishAttributes.I.Lexeme.Verb.Valency.Pentavalent));
 
-            // If more valencies are encoded then the lowest one should be returned.
+            // If more valencies are encoded then the highest one should be returned.
             BigInteger attributes = EnglishAttributes.I.Lexeme.Verb.Valency.Monovalent | EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent;
             int count = attributesModel.GetNumberOfValencies(attributes);
-            Assert.AreEqual(1, count);
+            Assert.AreEqual(2, count);
 
 
             // If the enum does not encode any valency then it should return -1. 

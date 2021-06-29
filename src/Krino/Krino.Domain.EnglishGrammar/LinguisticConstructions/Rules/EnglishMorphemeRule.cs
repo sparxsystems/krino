@@ -26,6 +26,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules
         public static MorphemeRule I_Lexeme => new MorphemeRule(GrammarCharacter.I, MorphRules.Something, MaskRule.Is(EnglishAttributes.I.Lexeme));
 
         public static MorphemeRule A_Lexeme => new MorphemeRule(GrammarCharacter.A, MorphRules.Something, MaskRule.Is(EnglishAttributes.A.Lexeme));
+        public static MorphemeRule A_Lexeme_Adjective => new MorphemeRule(GrammarCharacter.A, MorphRules.Something, MaskRule.Is(EnglishAttributes.A.Lexeme.Adjective));
 
         public static MorphemeRule E_Lexeme => new MorphemeRule(GrammarCharacter.E, MorphRules.Something, MaskRule.Is(EnglishAttributes.E.Lexeme));
 

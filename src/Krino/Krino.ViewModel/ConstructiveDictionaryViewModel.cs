@@ -1,12 +1,9 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
-using Krino.Domain.EnglishGrammar.Morphemes;
+using Krino.Domain.EnglishDictionary;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -21,7 +18,7 @@ namespace Krino.ViewModel
 
         public ConstructiveDictionaryViewModel()
         {
-            myConstructiveDictionary = new ConstructiveDictionary(DictionaryContent.AttributesModel, DictionaryContent.Morphemes, DictionaryContent.Patterns);
+            myConstructiveDictionary = new ConstructiveDictionary(MorphemeProvider.AttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
             myAdTreeCreator = new AdTreeCreator(myConstructiveDictionary);
         }
 
