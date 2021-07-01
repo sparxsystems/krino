@@ -8,8 +8,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
     /// <summary>
     /// Evaluates true if the value contains the required bit mask.
     /// </summary>
-    [DebuggerDisplay("{ReferenceValue}")]
-    public class MaskRule : RuleBase<BigInteger>, IReferenceValueRule<BigInteger>
+    [DebuggerDisplay("{DebugView}")]
+    public class MaskRule : RuleBase<BigInteger>, IValueRule<BigInteger>
     {
         public static IRule<BigInteger> Anything => RuleMaker.Anything<BigInteger>();
 
@@ -21,13 +21,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
         public MaskRule(BigInteger mask)
         {
-            ReferenceValue = mask;
+            Value = mask;
         }
 
-        public BigInteger ReferenceValue { get; private set; }
+        public BigInteger Value { get; private set; }
 
-        public override bool Evaluate(BigInteger value) => EnumBase.IsIn(ReferenceValue, value);
+        public override bool Evaluate(BigInteger value) => EnumBase.IsIn(Value, value);
 
-        public override bool Equals(IRule<BigInteger> other) => other is MaskRule maskRule && ReferenceValue == maskRule.ReferenceValue;
+        public override bool Equals(IRule<BigInteger> other) => other is MaskRule maskRule && Value == maskRule.Value;
+
+
+        private string DebugView => Value.ToString();
     }
 }

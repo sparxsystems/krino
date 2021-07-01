@@ -12,23 +12,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule}")]
     public class MorphemeRule : IEquatable<MorphemeRule>
     {
-        public static MorphemeRule Anything => new MorphemeRule(GrammarCharacter.e, MorphRules.Anything, MaskRule.Anything);
+        public static MorphemeRule Anything => new MorphemeRule(null, MorphRules.Anything, MaskRule.Anything);
 
-        public static MorphemeRule Nothing => new MorphemeRule(GrammarCharacter.e, MorphRules.Nothing, MaskRule.Nothing);
+        public static MorphemeRule Nothing => new MorphemeRule(null, MorphRules.Nothing, MaskRule.Nothing);
 
-        public static MorphemeRule Epsilon => new MorphemeRule(GrammarCharacter.e, MorphRules.EmptyString, MaskRule.Is(0));
+        public static MorphemeRule Epsilon => new MorphemeRule(null, MorphRules.EmptyString, MaskRule.Is(0));
 
 
+        private IAttributesModel myAttributesModel;
 
-        public MorphemeRule(GrammarCharacter grammarCharacter, IRule<string> morphRule, IRule<BigInteger> attributesRule)
+
+        public MorphemeRule(IAttributesModel attributesModel, IRule<string> morphRule, IRule<BigInteger> attributesRule)
         {
-            GrammarCharacter = grammarCharacter;
+            myAttributesModel = attributesModel;
             MorphRule = morphRule ?? throw new ArgumentNullException(nameof(morphRule));
             AttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
         }
 
         public MorphemeRule(MorphemeRule morphemeRule)
-            : this(morphemeRule.GrammarCharacter, morphemeRule.MorphRule, morphemeRule.AttributesRule)
+            : this(morphemeRule.myAttributesModel, morphemeRule.MorphRule, morphemeRule.AttributesRule)
         {
             SubstitutionRule = morphemeRule.SubstitutionRule;
         }
@@ -42,7 +44,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// <summary>
         /// Grammar character accepted by the morpheme rule.
         /// </summary>
-        public GrammarCharacter GrammarCharacter { get; private set; }
+        public GrammarCharacter GrammarCharacter
+        {
+            get
+            {
+                GrammarCharacter result = GrammarCharacter.e;
+
+                if (myAttributesModel != null && AttributesRule is IValueRule<BigInteger> valueRule)
+                {
+                    result = myAttributesModel.GetGrammarCharacter(valueRule.Value);
+                }
+
+                return result;
+            }
+        }
 
         /// <summary>
         /// Rule to evaluate morpheme attributes.
@@ -79,7 +94,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public bool Equals(MorphemeRule other)
         {
             bool result = MorphRule.Equals(other.MorphRule) &&
-                          GrammarCharacter == other.GrammarCharacter &&
                           AttributesRule.Equals(other.AttributesRule) &&
                           SubstitutionRule.Equals(other.SubstitutionRule);
             return result;
@@ -90,7 +104,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             int hash = 486187739;
 
             hash = (hash * 16777619) ^ MorphRule.GetHashCode();
-            hash = (hash * 16777619) ^ GrammarCharacter.GetHashCode();
             hash = (hash * 16777619) ^ AttributesRule.GetHashCode();
             hash = (hash * 16777619) ^ SubstitutionRule.GetHashCode();
 

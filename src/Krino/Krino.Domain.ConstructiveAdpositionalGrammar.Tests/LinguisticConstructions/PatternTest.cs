@@ -25,14 +25,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
                 ValencyPosition = 1,
 
-                UpRule = new MorphemeRule(GrammarCharacter.A, RuleMaker.Is("bla1"), RuleMaker.Is<BigInteger>(1)),
-                UpAttributes = 100,
-
-                LeftRule = new MorphemeRule(GrammarCharacter.O, RuleMaker.Is("bla2"), RuleMaker.Is<BigInteger>(2)),
-                LeftAttributes = 200,
-
-                RightRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Is("bla3"), RuleMaker.Is<BigInteger>(3)),
-                RightAttributes = 300,
+                UpRule = new MorphemeRule(myAttributesModel, RuleMaker.Is("bla1"), RuleMaker.Is<BigInteger>(1)),
+                LeftRule = new MorphemeRule(myAttributesModel, RuleMaker.Is("bla2"), RuleMaker.Is<BigInteger>(2)),
+                RightRule = new MorphemeRule(myAttributesModel, RuleMaker.Is("bla3"), RuleMaker.Is<BigInteger>(3)),
             };
 
             var copy = new Pattern(pattern);
@@ -42,11 +37,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             Assert.AreEqual(pattern.ValencyPosition, copy.ValencyPosition);
             Assert.AreEqual(pattern.IsLeftFirst, copy.IsLeftFirst);
             Assert.IsTrue(pattern.UpRule.Equals(copy.UpRule));
-            Assert.AreEqual(pattern.UpAttributes, copy.UpAttributes);
             Assert.IsTrue(pattern.LeftRule.Equals(copy.LeftRule));
-            Assert.AreEqual(pattern.LeftAttributes, copy.LeftAttributes);
             Assert.IsTrue(pattern.RightRule.Equals(copy.RightRule));
-            Assert.AreEqual(pattern.RightAttributes, copy.RightAttributes);
 
             Assert.IsTrue(pattern.Equals(copy));
         }
@@ -84,7 +76,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             {
                 UpRule = EnglishMorphemeRule.Is("", EnglishAttributes.A.Lexeme),
                 LeftRule = MorphemeRule.Nothing,
-                RightRule = EnglishMorphemeRule.O_Lexeme,
+                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
             };
             Assert.IsTrue(pattern.IsMonoTransference);
 
@@ -92,15 +84,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             {
                 UpRule = EnglishMorphemeRule.Is("", EnglishAttributes.A.Lexeme),
                 LeftRule = EnglishMorphemeRule.Is("s", EnglishAttributes.A.NonLexeme.Prefix),
-                RightRule = EnglishMorphemeRule.O_Lexeme,
+                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
             };
             Assert.IsFalse(pattern.IsMonoTransference);
 
             pattern = new Pattern()
             {
                 UpRule = MorphemeRule.Epsilon,
-                LeftRule = EnglishMorphemeRule.A_Lexeme,
-                RightRule = EnglishMorphemeRule.O_Lexeme,
+                LeftRule = EnglishMorphemeRule.A_Lexeme_Something,
+                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
             };
             Assert.IsFalse(pattern.IsMonoTransference);
         }
@@ -116,8 +108,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             {
                 // Grammar character is not epsilon -> it is not epsilon adposition.
                 UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U),
-                LeftRule = EnglishMorphemeRule.A_Lexeme,
-                RightRule = EnglishMorphemeRule.A_Lexeme,
+                LeftRule = EnglishMorphemeRule.A_Lexeme_Something,
+                RightRule = EnglishMorphemeRule.A_Lexeme_Something,
             };
             Assert.IsFalse(pattern.IsEpsilonAdPosition());
 
@@ -127,7 +119,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
                 UpRule = MorphemeRule.Epsilon,
                 // It is not epsilon adposition.
                 LeftRule = MorphemeRule.Nothing,
-                RightRule = EnglishMorphemeRule.O_Lexeme,
+                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
             };
             Assert.IsFalse(pattern.IsEpsilonAdPosition());
         }

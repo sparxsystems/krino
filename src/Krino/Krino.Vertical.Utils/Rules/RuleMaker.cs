@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Krino.Vertical.Utils.Rules
 {
@@ -50,6 +52,32 @@ namespace Krino.Vertical.Utils.Rules
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static NothingRule<T> Nothing<T>() => new NothingRule<T>();
+
+        /// <summary>
+        /// Creates the rule accepting any value from the list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="comparer"></param>
+        /// <param name="items"></param>
+        /// <returns></returns>
+        public static ContainsRule<T> Contains<T>(IEqualityComparer<T> comparer = null, params T[] items) => Contains(items, comparer);
+
+        /// <summary>
+        /// Creates the rule accepting any value from the list.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="items"></param>
+        /// <param name="comparer"></param>
+        /// <returns></returns>
+        public static ContainsRule<T> Contains<T>(IEnumerable<T> items, IEqualityComparer<T> comparer = null) => new ContainsRule<T>(items, comparer);
+
+        /// <summary>
+        /// Creates the rule which accept values for which the expression returns true.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="expression"></param>
+        /// <returns></returns>
+        public static ExpressionRule<T> Expression<T>(Expression<Func<T, bool>> expression) => new ExpressionRule<T>(expression);
 
         /// <summary>
         /// Logical operator AND.

@@ -37,16 +37,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
 
             // O2-I
-            Assert.AreEqual(GrammarCharacter.I, adTree.RulingGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.Pattern.RulingGrammarCharacter);
 
             // O: I
-            Assert.AreEqual(GrammarCharacter.O, adTree.Right.Left.RulingGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Right.Left.Pattern.RulingGrammarCharacter);
 
             // O1-I
-            Assert.AreEqual(GrammarCharacter.I, adTree.Right.RulingGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.Right.Pattern.RulingGrammarCharacter);
 
             // A-O
-            Assert.AreEqual(GrammarCharacter.O, adTree.Left.RulingGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.O, adTree.Left.Pattern.RulingGrammarCharacter);
         }
 
         [Test]
@@ -70,7 +70,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             };
 
             // Although there is E in between but the ruling grammar character is I.
-            Assert.AreEqual(GrammarCharacter.I, adTree.RulingGrammarCharacter);
+            Assert.AreEqual(GrammarCharacter.I, adTree.Pattern.RulingGrammarCharacter);
         }
 
         [Test]
@@ -346,13 +346,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
                 {
                     Right = new AdTree(new Morpheme(myAttributesModel, "", 0),
-                        new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme, IsLeftFirst = true })
+                        new Pattern() { LeftRule = EnglishMorphemeRule.O_Lexeme_Something, IsLeftFirst = true })
                     {
                         Right = new AdTree(new Morpheme(myAttributesModel, "read", 0), new Pattern()),
                         Left = new AdTree(new Morpheme(myAttributesModel, "I", 0), new Pattern())
                     },
                     Left = new AdTree(new Morpheme(myAttributesModel, "", 0),
-                        new Pattern() { LeftRule = EnglishMorphemeRule.A_Lexeme, IsLeftFirst = true })
+                        new Pattern() { LeftRule = EnglishMorphemeRule.A_Lexeme_Something, IsLeftFirst = true })
                     {
                         Right = new AdTree(new Morpheme(myAttributesModel, "book", 0), new Pattern()),
                         Left = new AdTree(new Morpheme(myAttributesModel, "the", 0), new Pattern())

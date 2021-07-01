@@ -40,6 +40,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; private set; }
 
+        public IDirectedGraph<Pattern, string> PatternGraph2 { get; private set; }
+
 
         public IEnumerable<Morpheme> FindLexemes(string word, int maxDistance)
         {
@@ -172,6 +174,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 }
             }
         }
+
+        private void InitializePatternGraph2()
+        {
+            using var _t = Trace.Entering();
+
+            PatternGraph2 = new DirectedGraph<Pattern, string>();
+            PatternGraph2.AddVertices(Patterns);
+
+            foreach (var pattern in Patterns)
+            {
+
+            }
+        }
+
+        //private IEnumerable<Pattern> GetApplicablePatterns()
 
         private void InitializePatternGraph()
         {

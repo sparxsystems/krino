@@ -121,7 +121,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         public static IAdTree MakeShallowCopy(this IAdTree adTree)
         {
             // Store the current position in the tree.
-            AttachingPosition[] path = adTree.GetPath();
+            AdTreePosition[] path = adTree.GetPath();
 
             IAdTree root = adTree.Root;
 
@@ -163,10 +163,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// </summary>
         /// <param name="adTree"></param>
         /// <returns></returns>
-        public static AttachingPosition[] GetPath(this IAdTree adTree)
+        public static AdTreePosition[] GetPath(this IAdTree adTree)
         {
             IEnumerable<IAdTree> adTreesOnPath = adTree.GetSequenceToRoot().Where(x => x.AdPosition != null);
-            AttachingPosition[] result = adTreesOnPath.Select(x => x.IsOnLeft ? AttachingPosition.ChildOnLeft : AttachingPosition.ChildOnRight).Reverse().ToArray();
+            AdTreePosition[] result = adTreesOnPath.Select(x => x.IsOnLeft ? AdTreePosition.ChildOnLeft : AdTreePosition.ChildOnRight).Reverse().ToArray();
             return result;
         }
 
@@ -176,12 +176,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <param name="rootAdTree"></param>
         /// <param name="path"></param>
         /// <returns></returns>
-        public static bool TryGetAdTree(this IAdTree rootAdTree, AttachingPosition[] path, out IAdTree result)
+        public static bool TryGetAdTree(this IAdTree rootAdTree, AdTreePosition[] path, out IAdTree result)
         {
             result = rootAdTree;
-            foreach (AttachingPosition value in path)
+            foreach (AdTreePosition value in path)
             {
-                if (value == AttachingPosition.ChildOnLeft)
+                if (value == AdTreePosition.ChildOnLeft)
                 {
                     if (result.Left == null)
                     {
@@ -190,7 +190,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     result = result.Left;
                 }
-                else if (value == AttachingPosition.ChildOnRight)
+                else if (value == AdTreePosition.ChildOnRight)
                 {
                     if (result.Right == null)
                     {
@@ -245,7 +245,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <returns></returns>
         public static bool CanAttachToRight(this IAdTree adTree, IAdTree adTreeToAttach, IAttributesModel attributesModel)
         {
-            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachingPosition.ChildOnRight, attributesModel);
+            bool result = adTree.CanAttachViaRule(adTreeToAttach, AdTreePosition.ChildOnRight, attributesModel);
             return result;
         }
 
@@ -258,14 +258,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <returns></returns>
         public static bool CanAttachToLeft(this IAdTree adTree, IAdTree adTreeToAttach, IAttributesModel attributesModel)
         {
-            bool result = adTree.CanAttachViaRule(adTreeToAttach, AttachingPosition.ChildOnLeft, attributesModel);
+            bool result = adTree.CanAttachViaRule(adTreeToAttach, AdTreePosition.ChildOnLeft, attributesModel);
             return result;
         }
 
-        private static bool CanAttachViaRule(this IAdTree adTree, IAdTree adTreeToAttach, AttachingPosition attachPosition, IAttributesModel attributesModel)
+        private static bool CanAttachViaRule(this IAdTree adTree, IAdTree adTreeToAttach, AdTreePosition attachPosition, IAttributesModel attributesModel)
         {
             // Get rule to evalute.
-            MorphemeRule rule = attachPosition == AttachingPosition.ChildOnLeft ? adTree.Pattern.LeftRule : adTree.Pattern.RightRule;
+            MorphemeRule rule = attachPosition == AdTreePosition.ChildOnLeft ? adTree.Pattern.LeftRule : adTree.Pattern.RightRule;
 
             // If the rule allows to attach and the order of attaching is correct.
             if (!rule.Equals(MorphemeRule.Nothing) && IsAttachingOrderCorrect(adTree, attachPosition))
@@ -293,7 +293,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     {
                         // If it shall be attached to the right and
                         // the valency position is specified then check correctness with regard to presence of previously filled valencies.
-                        if (attachPosition == AttachingPosition.ChildOnRight)
+                        if (attachPosition == AdTreePosition.ChildOnRight)
                         {
                             IAdTree valencyElement = adTree.GetSequenceToRoot()
                                 .TakeUntil(x => x.IsOnRight)
@@ -332,7 +332,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 if (morphemeAdTree != null)
                 {
                     // If it shall be attached to the right and the morpheme is a verb then check the valency.
-                    if (attachPosition == AttachingPosition.ChildOnRight && attributesModel.IsVerb(morphemeAdTree.Morpheme.Attributes))
+                    if (attachPosition == AdTreePosition.ChildOnRight && attributesModel.IsVerb(morphemeAdTree.Morpheme.Attributes))
                     {
                         int valency = attributesModel.GetNumberOfValencies(morphemeAdTree.Morpheme.Attributes);
 
@@ -386,12 +386,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return false;
         }
 
-        private static bool IsAttachingOrderCorrect(IAdTree adTree, AttachingPosition position)
+        private static bool IsAttachingOrderCorrect(IAdTree adTree, AdTreePosition position)
         {
             bool result = false;
 
             // If the attaching position is on the left.
-            if (position == AttachingPosition.ChildOnLeft)
+            if (position == AdTreePosition.ChildOnLeft)
             {
                 // If left is before the right
                 if (adTree.Pattern.IsLeftFirst ||
@@ -431,7 +431,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <param name="toInsert">The adtree which shall be inserted.</param>
         /// <param name="whereReattach">The adtree which shall reatach the adtree disconnected by the insertion.</param>
         /// <param name="reattachPosition">The position where the adtree shall be reattached after the insertion.</param>
-        public static void Insert(this IAdTree adTree, IAdTree toInsert, IAdTree whereReattach, AttachingPosition reattachPosition)
+        public static void Insert(this IAdTree adTree, IAdTree toInsert, IAdTree whereReattach, AdTreePosition reattachPosition)
         {
             // Insert the toInsert instead of the adTree.
             if (adTree.IsOnLeft)
@@ -475,13 +475,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <param name="adTree">The adtree into which it shall be attached.</param>
         /// <param name="toAttach">The adtree which shall be appended.</param>
         /// <param name="appendPosition">The position how it shall be appended.</param>
-        public static void Attach(this IAdTree adTree, IAdTree toAttach, AttachingPosition appendPosition)
+        public static void Attach(this IAdTree adTree, IAdTree toAttach, AdTreePosition appendPosition)
         {
-            if (appendPosition == AttachingPosition.ChildOnLeft)
+            if (appendPosition == AdTreePosition.ChildOnLeft)
             {
                 adTree.Left = toAttach;
             }
-            else if (appendPosition == AttachingPosition.ChildOnRight)
+            else if (appendPosition == AdTreePosition.ChildOnRight)
             {
                 adTree.Right = toAttach;
             }

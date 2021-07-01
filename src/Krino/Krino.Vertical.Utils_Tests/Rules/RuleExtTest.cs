@@ -19,9 +19,9 @@ namespace Krino.Vertical.Utils_Tests.Rules
             Assert.IsTrue(rules[0] is NotRule<int>);
             Assert.IsTrue(rules[1] is OrRule<int>);
             Assert.IsTrue(rules[2] is AndRule<int>);
-            Assert.IsTrue(rules[3] is IsRule<int> is1 && is1.ReferenceValue == 1);
-            Assert.IsTrue(rules[4] is IsRule<int> is2 && is2.ReferenceValue == 2);
-            Assert.IsTrue(rules[5] is IsRule<int> is3 && is3.ReferenceValue == 3);
+            Assert.IsTrue(rules[3] is IsRule<int> is1 && is1.Value == 1);
+            Assert.IsTrue(rules[4] is IsRule<int> is2 && is2.Value == 2);
+            Assert.IsTrue(rules[5] is IsRule<int> is3 && is3.Value == 3);
         }
 
         [Test]
@@ -31,7 +31,7 @@ namespace Krino.Vertical.Utils_Tests.Rules
             // it means:  Not(Or(And(1, 2), 3)) => 6 rules: Not, Or, And, 1, 2, 3.
             IRule<int> rule = RuleMaker.Is(1).And(2).Or(3).Not();
 
-            List<int> rules = rule.GetReferenceValues().ToList();
+            List<int> rules = rule.GetValues().ToList();
             Assert.AreEqual(3, rules.Count);
             Assert.AreEqual(1, rules[0]);
             Assert.AreEqual(2, rules[1]);

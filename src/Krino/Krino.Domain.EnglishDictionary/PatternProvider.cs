@@ -10,6 +10,8 @@ namespace Krino.Domain.EnglishDictionary
 {
     public static class PatternProvider
     {
+        private static EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
+
         public static List<Pattern> Patterns = new List<Pattern>()
         {
             EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes."),
@@ -115,7 +117,7 @@ namespace Krino.Domain.EnglishDictionary
                 Description = "Rule for the period punctuation mark.",
                 UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
                 LeftRule = MorphemeRule.Anything,
-                RightRule = new MorphemeRule(GrammarCharacter.e, MorphRules.Anything, MaskRule.Something),
+                RightRule = new MorphemeRule(myAttributesModel, MorphRules.Anything, MaskRule.Something),
             },
 
         };

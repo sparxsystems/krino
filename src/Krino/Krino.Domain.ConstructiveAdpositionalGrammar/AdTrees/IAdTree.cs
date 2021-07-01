@@ -36,11 +36,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         IAdTree Left { get; set; }
 
         /// <summary>
-        /// Grammar character character representing this adtree in the context of its adposition.
-        /// </summary>
-        GrammarCharacter RulingGrammarCharacter { get; }
-
-        /// <summary>
         /// Returns true if this tree element is the adpostion.
         /// </summary>
         /// <remarks>

@@ -139,12 +139,12 @@ namespace Krino.Vertical.Utils.Enums
         }
 
         /// <summary>
-        /// True if the tested value encodes the expected value.
+        /// True if inValue is encoded within bigValue.
         /// </summary>
-        /// <param name="expected"></param>
-        /// <param name="testedValue"></param>
+        /// <param name="inValue"></param>
+        /// <param name="bigValue"></param>
         /// <returns></returns>
-        public static bool IsIn(BigInteger expected, BigInteger testedValue) => (expected & testedValue) == expected;
+        public static bool IsIn(BigInteger inValue, BigInteger bigValue) => (inValue & bigValue) == inValue;
 
 
         /// <summary>

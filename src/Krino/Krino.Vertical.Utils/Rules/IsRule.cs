@@ -7,31 +7,31 @@ namespace Krino.Vertical.Utils.Rules
     /// Simple rule evaluation.
     /// </summary>
     /// <typeparam name="T"></typeparam>
-    [DebuggerDisplay("{ReferenceValue}")]
-    public class IsRule<T> : RuleBase<T>, IReferenceValueRule<T>
+    [DebuggerDisplay("{DebugView}")]
+    public class IsRule<T> : RuleBase<T>, IValueRule<T>
     {
         private IEqualityComparer<T> myComparer;
 
         public IsRule(T requiredValue)
         {
             myComparer = EqualityComparer<T>.Default;
-            ReferenceValue = requiredValue;
+            Value = requiredValue;
         }
 
         /// <summary>
         /// The value which is accepted by the rule.
         /// </summary>
-        public T ReferenceValue { get; private set; }
+        public T Value { get; private set; }
 
         /// <summary>
         /// Returns true if the value is equal to the reference value.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
-        public override bool Evaluate(T value) => ReferenceValue.Equals(value);
+        public override bool Evaluate(T value) => Value.Equals(value);
 
 
-        public override bool Equals(IRule<T> other) => other is IsRule<T> isRule && myComparer.Equals(ReferenceValue, isRule.ReferenceValue);
+        public override bool Equals(IRule<T> other) => other is IsRule<T> isRule && myComparer.Equals(Value, isRule.Value);
 
 
         /// <summary>
@@ -39,5 +39,8 @@ namespace Krino.Vertical.Utils.Rules
         /// </summary>
         /// <param name="value"></param>
         public static implicit operator IsRule<T>(T value) => new IsRule<T>(value);
+
+
+        private string DebugView => Value.ToString();
     }
 }

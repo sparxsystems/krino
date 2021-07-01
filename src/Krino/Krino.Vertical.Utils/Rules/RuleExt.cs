@@ -18,8 +18,9 @@ namespace Krino.Vertical.Utils.Rules
         /// <typeparam name="T"></typeparam>
         /// <param name="rule"></param>
         /// <param name="parentRule"></param>
+        /// <param name="comparer"></param>
         /// <returns></returns>
-        public static bool IsSubruleOf<T>(this IRule<T> rule, IRule<T> parentRule)
+        public static bool IsSubruleOf<T>(this IRule<T> rule, IRule<T> parentRule, IEqualityComparer<T> comparer = null)
         {
             if (rule.Equals(parentRule))
             {
@@ -36,8 +37,8 @@ namespace Krino.Vertical.Utils.Rules
                 return false;
             }
             
-            // Check that all values accepted by the rule are alco accepted by the parentRule.
-            IEnumerable<T> ruleValues = rule.GetReferenceValues();
+            // Check that all values accepted by the rule are also accepted by the parentRule.
+            IEnumerable<T> ruleValues = rule.GetValues(comparer);
             foreach (T value in ruleValues)
             {
                 bool ruleResult = rule.Evaluate(value);
@@ -48,7 +49,7 @@ namespace Krino.Vertical.Utils.Rules
             }
 
             // Check that all values not accepted by the parentRule are also not accepted by the rule.
-            IEnumerable<T> parentRuleValues = parentRule.GetReferenceValues();
+            IEnumerable<T> parentRuleValues = parentRule.GetValues(comparer);
             foreach (T value in parentRuleValues)
             {
                 bool parentRuleResult = parentRule.Evaluate(value);
@@ -66,10 +67,15 @@ namespace Krino.Vertical.Utils.Rules
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="rule"></param>
+        /// <param name="comparer"></param>
         /// <returns></returns>
-        public static IEnumerable<T> GetReferenceValues<T>(this IRule<T> rule)
+        public static IEnumerable<T> GetValues<T>(this IRule<T> rule, IEqualityComparer<T> comparer = null)
         {
-            IEnumerable<T> result = rule.GetRules().OfType<IReferenceValueRule<T>>().Select(x => x.ReferenceValue);
+            var valueRulesResult = rule.GetRules().OfType<IValueRule<T>>().Select(x => x.Value);
+            var setRulesResult = rule.GetRules().OfType<ISetRule<T>>().SelectMany(x => x.Items);
+
+            var result = valueRulesResult.Concat(setRulesResult).Distinct(comparer);
+
             return result;
         }
 

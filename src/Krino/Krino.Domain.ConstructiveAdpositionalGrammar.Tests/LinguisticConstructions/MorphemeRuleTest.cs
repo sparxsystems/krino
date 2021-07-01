@@ -9,10 +9,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
     [TestFixture]
     public class MorphemeRuleTest
     {
+        private EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
+
         [Test]
         public void CopyConstructor()
         {
-            var morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection));
+            var morphemeRule = new MorphemeRule(myAttributesModel, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection));
             morphemeRule.SetSubstitution(SubstitutionRules.Epsilon_U_E);
 
             var copy = new MorphemeRule(morphemeRule);
@@ -41,14 +43,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             IAttributesModel attributesModel = new EnglishAttributesModel();
 
             // Or
-            MorphemeRule morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection).Or(MaskRule.Is(EnglishAttributes.I.Lexeme.Verb)));
+            MorphemeRule morphemeRule = new MorphemeRule(myAttributesModel, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection).Or(MaskRule.Is(EnglishAttributes.I.Lexeme.Verb)));
             Assert.IsTrue(morphemeRule.Evaluate(new Morpheme(attributesModel, "", EnglishAttributes.I.Lexeme.Verb)));
             Assert.IsTrue(morphemeRule.Evaluate(new Morpheme(attributesModel, "", EnglishAttributes.I.Lexeme.Interjection)));
             Assert.IsTrue(morphemeRule.Evaluate(new Morpheme(attributesModel, "", EnglishAttributes.I.Lexeme.Verb | EnglishAttributes.I.Lexeme.Interjection)));
             Assert.IsFalse(morphemeRule.Evaluate(new Morpheme(attributesModel, "", EnglishAttributes.O)));
 
             // And
-            morphemeRule = new MorphemeRule(GrammarCharacter.I, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection).And(MaskRule.Is(EnglishAttributes.I.Lexeme.Verb)));
+            morphemeRule = new MorphemeRule(myAttributesModel, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection).And(MaskRule.Is(EnglishAttributes.I.Lexeme.Verb)));
             Assert.IsFalse(morphemeRule.Evaluate(new Morpheme(attributesModel, "", EnglishAttributes.I.Lexeme.Verb)));
             Assert.IsFalse(morphemeRule.Evaluate(new Morpheme(attributesModel, "", EnglishAttributes.I.Lexeme.Interjection)));
             Assert.IsTrue(morphemeRule.Evaluate(new Morpheme(attributesModel, "", EnglishAttributes.I.Lexeme.Verb | EnglishAttributes.I.Lexeme.Interjection)));

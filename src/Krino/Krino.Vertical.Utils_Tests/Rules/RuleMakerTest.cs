@@ -54,12 +54,43 @@ namespace Krino.Vertical.Utils_Tests.Rules
         [Test]
         public void ImplicitRuleOperators()
         {
-            IRule<string> rule = !RuleMaker.IsNull<string>() & !RuleMaker.Is("") & RuleMaker.Is("hi") | RuleMaker.Is("hello");
+            var rule = !RuleMaker.IsNull<string>() & !RuleMaker.Is("") & RuleMaker.Is("hi") | RuleMaker.Is("hello");
             Assert.IsTrue(rule.Evaluate("hi"));
             Assert.IsTrue(rule.Evaluate("hello"));
             Assert.IsFalse(rule.Evaluate("bla"));
             Assert.IsFalse(rule.Evaluate(null));
             Assert.IsFalse(rule.Evaluate(""));
+
+            rule = !(RuleMaker.IsNull<string>() | RuleMaker.Is("")) & RuleMaker.Is("hi") | RuleMaker.Is("hello");
+            Assert.IsTrue(rule.Evaluate("hi"));
+            Assert.IsTrue(rule.Evaluate("hello"));
+            Assert.IsFalse(rule.Evaluate("bla"));
+            Assert.IsFalse(rule.Evaluate(null));
+            Assert.IsFalse(rule.Evaluate(""));
+        }
+
+        [Test]
+        public void Contains()
+        {
+            var rule1 = RuleMaker.Contains(null, "a", "b", "c");
+            Assert.IsTrue(rule1.Evaluate("a"));
+            Assert.IsTrue(rule1.Evaluate("b"));
+            Assert.IsTrue(rule1.Evaluate("c"));
+            Assert.IsFalse(rule1.Evaluate("d"));
+
+            var rule2 = !RuleMaker.Contains(null, "a", "b", "c");
+            Assert.IsFalse(rule2.Evaluate("a"));
+            Assert.IsFalse(rule2.Evaluate("b"));
+            Assert.IsFalse(rule2.Evaluate("c"));
+            Assert.IsTrue(rule2.Evaluate("d"));
+        }
+
+        [Test]
+        public void Expression()
+        {
+            var rule = RuleMaker.Expression<string>(x => x.StartsWith("h"));
+            Assert.IsTrue(rule.Evaluate("hello"));
+            Assert.IsFalse(rule.Evaluate("bla"));
         }
 
         [Test]

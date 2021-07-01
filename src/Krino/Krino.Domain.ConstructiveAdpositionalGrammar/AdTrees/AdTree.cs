@@ -102,8 +102,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public GrammarCharacter RulingGrammarCharacter => Pattern.IsLikeMorpheme ? Pattern.UpRule.GrammarCharacter : Pattern.RightRule.GrammarCharacter;
-
         public bool IsAdPosition => Right != null || Left != null;
 
         public IEnumerable<IAdTree> AdPositions

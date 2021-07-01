@@ -41,7 +41,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 {
                     UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
                     LeftRule = MorphemeRule.Anything,
-                    RightRule = EnglishMorphemeRule.I_Lexeme,
+                    RightRule = EnglishMorphemeRule.I_Lexeme_Something,
                 },
             };
 
@@ -450,8 +450,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Pattern("I-U-O")
                 {
                     UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U.Lexeme.Conjunction),
-                    LeftRule = EnglishMorphemeRule.I_Lexeme,
-                    RightRule = EnglishMorphemeRule.O_Lexeme,
+                    LeftRule = EnglishMorphemeRule.I_Lexeme_Something,
+                    RightRule = EnglishMorphemeRule.O_Lexeme_Something,
                 },
             };
 
@@ -497,9 +497,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("E")
                 {
-                    UpRule = EnglishMorphemeRule.E_Lexeme,
-                    LeftRule = EnglishMorphemeRule.O_Lexeme,
-                    RightRule = EnglishMorphemeRule.I_Lexeme,
+                    UpRule = EnglishMorphemeRule.E_Lexeme_Something,
+                    LeftRule = EnglishMorphemeRule.O_Lexeme_Something,
+                    RightRule = EnglishMorphemeRule.I_Lexeme_Something,
                 },
             };
 
@@ -546,9 +546,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 new Pattern("A-U-A")
                 {
-                    UpRule = EnglishMorphemeRule.U_Lexeme,
-                    LeftRule = EnglishMorphemeRule.A_Lexeme,
-                    RightRule = EnglishMorphemeRule.A_Lexeme,
+                    UpRule = EnglishMorphemeRule.U_Lexeme_Something,
+                    LeftRule = EnglishMorphemeRule.A_Lexeme_Something,
+                    RightRule = EnglishMorphemeRule.A_Lexeme_Something,
                 },
             };
 

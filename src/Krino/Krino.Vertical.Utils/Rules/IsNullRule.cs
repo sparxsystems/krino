@@ -7,10 +7,10 @@ namespace Krino.Vertical.Utils.Rules
     /// </summary>
     /// <typeparam name="T"></typeparam>
     [DebuggerDisplay("null")]
-    public class IsNullRule<T> : RuleBase<T>, IReferenceValueRule<T>
+    public class IsNullRule<T> : RuleBase<T>, IValueRule<T>
         where T : class
     {
-        public T ReferenceValue => null;
+        public T Value => null;
 
         /// <summary>
         /// Returns true if the value is null.

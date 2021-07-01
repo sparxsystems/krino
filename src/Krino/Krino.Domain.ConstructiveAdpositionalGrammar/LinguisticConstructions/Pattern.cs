@@ -15,24 +15,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
     {
         private string myName;
 
-        public Pattern(string name = null, BigInteger attributes = default(BigInteger))
+        public Pattern(string name = null)
         {
-            Attributes = attributes;
             myName = name;
         }
 
         public Pattern(Pattern pattern)
-            : this(pattern.Name, pattern.Attributes)
+            : this(pattern.Name)
         {
             Description = pattern.Description;
             UpRule = new MorphemeRule(pattern.UpRule);
-            UpAttributes = pattern.UpAttributes;
             LeftRule = new MorphemeRule(pattern.LeftRule);
-            LeftAttributes = pattern.LeftAttributes;
             RightRule = new MorphemeRule(pattern.RightRule);
-            RightAttributes = pattern.RightAttributes;
             ValencyPosition = pattern.ValencyPosition;
             IsLeftFirst = pattern.IsLeftFirst;
+
+            LeftPatternRule = PatternRules.ByLeftMorphemeRule(this);
+            RightPatternRule = PatternRules.ByRightMorphemeRule(this);
         }
 
         // Optional information for the debugging purposes.
@@ -62,20 +61,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
         public string Description { get; set; }
 
-        public BigInteger Attributes { get; private set; }
-
 
         public MorphemeRule UpRule { get; set; } = MorphemeRule.Nothing;
 
-        public BigInteger UpAttributes { get; set; }
-
         public MorphemeRule LeftRule { get; set; } = MorphemeRule.Nothing;
-
-        public BigInteger LeftAttributes { get; set; }
 
         public MorphemeRule RightRule { get; set; } = MorphemeRule.Nothing;
 
-        public BigInteger RightAttributes { get; set; }
+
+
+        public IRule<Pattern> LeftPatternRule { get; set; }
+
+        public IRule<Pattern> RightPatternRule { get; set; }
+
+
+        public GrammarCharacter RulingGrammarCharacter => IsLikeMorpheme ? UpRule.GrammarCharacter : RightRule.GrammarCharacter;
 
         /// <summary>
         /// The valency position required by the pattern.
@@ -119,7 +119,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             get
             {
                 if (UpRule.GrammarCharacter != GrammarCharacter.e &&
-                    UpRule.MorphRule.Equals(MorphRules.Something) &&
+                    (UpRule.MorphRule.Equals(MorphRules.Something) || UpRule.MorphRule is IValueRule<string>) &&
+                    UpRule.AttributesRule is IValueRule<BigInteger> &&
                     LeftRule.Equals(MorphemeRule.Nothing) &&
                     RightRule.Equals(MorphemeRule.Nothing))
                 {
@@ -145,7 +146,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 // AdPosition
                 if (UpRule.GrammarCharacter != GrammarCharacter.e &&
                     UpRule.GrammarCharacter != GrammarCharacter.U &&
-                    UpRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                    UpRule.AttributesRule is IValueRule<BigInteger> &&
                     UpRule.MorphRule.Equals(MorphRules.EmptyString))
                 {
                     // Left.
@@ -177,7 +178,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 // AdPosition
                 if (UpRule.GrammarCharacter != GrammarCharacter.e &&
                     UpRule.GrammarCharacter != GrammarCharacter.U &&
-                    UpRule.AttributesRule is IReferenceValueRule<BigInteger> &&
+                    UpRule.AttributesRule is IValueRule<BigInteger> &&
                     UpRule.MorphRule.Equals(MorphRules.EmptyString))
                 {
                     // Left.
