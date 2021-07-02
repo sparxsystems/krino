@@ -10,6 +10,10 @@
 
         public abstract bool Evaluate(T value);
 
+        public override bool Equals(object obj) => obj is IRule<T> objRule && Equals(objRule);
+
+        public override int GetHashCode() => -1;
+
 
         public static AndRule<T> operator &(RuleBase<T> rule1, IRule<T> rule2) => rule1.And(rule2);
 

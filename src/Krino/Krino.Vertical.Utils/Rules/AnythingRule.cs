@@ -12,5 +12,8 @@ namespace Krino.Vertical.Utils.Rules
         public override bool Evaluate(T value) => true;
 
         public override bool Equals(IRule<T> other) => other is AnythingRule<T>;
+
+        public override int GetHashCode() => true.GetHashCode();
+        
     }
 }

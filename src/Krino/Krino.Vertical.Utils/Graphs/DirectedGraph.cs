@@ -8,8 +8,8 @@ namespace Krino.Vertical.Utils.Graphs
 {
     public class DirectedGraph<V, E> : IDirectedGraph<V, E>
     {
-        private HashSet<V> myVertices = new HashSet<V>();
-        private DoubleKeyMultiDictionary<V, V, DirectedEdge<V, E>> myEdges = new DoubleKeyMultiDictionary<V, V, DirectedEdge<V, E>>();
+        private HashSet<V> myVertices;
+        private DoubleKeyMultiDictionary<V, V, DirectedEdge<V, E>> myEdges;
         private DirectedEdgeEqualityComparer<V, E> myEdgeComparer;
         private IEqualityComparer<V> myVertexComparer;
 
@@ -18,6 +18,8 @@ namespace Krino.Vertical.Utils.Graphs
         {
             myVertexComparer = vertexEqualityComparer ?? EqualityComparer<V>.Default;
             myEdgeComparer = new DirectedEdgeEqualityComparer<V, E>(myVertexComparer, edgeEqualityComparer ?? EqualityComparer<E>.Default);
+            myVertices = new HashSet<V>(myVertexComparer);
+            myEdges = new DoubleKeyMultiDictionary<V, V, DirectedEdge<V, E>>(myVertexComparer, myVertexComparer, myEdgeComparer);
         }
 
         public IEnumerable<DirectedEdge<V, E>> Edges => myEdges.Select(x => x.Item3);

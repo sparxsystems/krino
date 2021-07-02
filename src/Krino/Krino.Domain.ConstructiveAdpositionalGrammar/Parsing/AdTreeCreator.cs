@@ -246,7 +246,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     if (canAppendIndirectly)
                     {
                         // Try to attach the new element indirectly.
-                        TryToAppendIndirectly(AdTreePosition.ParrentForLeft, placeToAppend, appendee, expectedSignature, results);
+                        TryToAppendIndirectly(AdTreePosition.ParrentForChildOnLeft, placeToAppend, appendee, expectedSignature, results);
                     }
                 }
 
@@ -264,7 +264,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     if (canAppendIndirectly)
                     {
                         // Try to attach the new element indirectly.
-                        TryToAppendIndirectly(AdTreePosition.ParrentForRight, placeToAppend, appendee, expectedSignature, results);
+                        TryToAppendIndirectly(AdTreePosition.ParrentForChildOnRight, placeToAppend, appendee, expectedSignature, results);
                     }
                 }
 
@@ -285,7 +285,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         // Try to attach the adtree indirectly via new element's left.
                         else if (canAppendIndirectly)
                         {
-                            TryToAppendIndirectly(AdTreePosition.ParrentForLeft, appendee, placeToAppend, expectedSignature, results);
+                            TryToAppendIndirectly(AdTreePosition.ParrentForChildOnLeft, appendee, placeToAppend, expectedSignature, results);
                         }
                     }
 
@@ -302,7 +302,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         // Try to attach the adtree indirectly via new element's right.
                         else if (canAppendIndirectly)
                         {
-                            TryToAppendIndirectly(AdTreePosition.ParrentForRight, appendee, placeToAppend, expectedSignature, results);
+                            TryToAppendIndirectly(AdTreePosition.ParrentForChildOnRight, appendee, placeToAppend, expectedSignature, results);
                         }
                     }
 
@@ -329,13 +329,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 GrammarCharacter endGrammarCharacter = GrammarCharacter.e;
 
                 // If start adTree connects the bridge on its left.
-                if (appendingPositionOfStartElement == AdTreePosition.ParrentForLeft)
+                if (appendingPositionOfStartElement == AdTreePosition.ParrentForChildOnLeft)
                 {
                     startGrammarCharacter = start.Pattern.LeftRule.GrammarCharacter;
                     endGrammarCharacter = end.Pattern.RulingGrammarCharacter;
                 }
                 // If start adTree connects the bridge on its right.
-                else if (appendingPositionOfStartElement == AdTreePosition.ParrentForRight)
+                else if (appendingPositionOfStartElement == AdTreePosition.ParrentForChildOnRight)
                 {
                     startGrammarCharacter = start.Pattern.RightRule.GrammarCharacter;
                     endGrammarCharacter = end.Pattern.RulingGrammarCharacter;
@@ -376,7 +376,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         // If it is the first item on the path.
                         if (i == 0)
                         {
-                            if (appendingPositionOfStartElement == AdTreePosition.ParrentForLeft)
+                            if (appendingPositionOfStartElement == AdTreePosition.ParrentForChildOnLeft)
                             {
                                 if (startCopy.Left == null && startCopy.CanAttachToLeft(bridge, myConstructiveDictionary.AttributesModel))
                                 {
@@ -387,7 +387,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                                     break;
                                 }
                             }
-                            else if (appendingPositionOfStartElement == AdTreePosition.ParrentForRight)
+                            else if (appendingPositionOfStartElement == AdTreePosition.ParrentForChildOnRight)
                             {
                                 if (startCopy.Right == null && startCopy.CanAttachToRight(bridge, myConstructiveDictionary.AttributesModel))
                                 {

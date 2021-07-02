@@ -18,11 +18,11 @@
         /// <summary>
         /// Parent for a child on left.
         /// </summary>
-        ParrentForLeft,
+        ParrentForChildOnLeft,
 
         /// <summary>
         /// Parent for child on right.
         /// </summary>
-        ParrentForRight,
+        ParrentForChildOnRight,
     }
 }

@@ -18,6 +18,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         public Pattern(string name = null)
         {
             myName = name;
+
+            LeftPatternRule = PatternRules.ByLeftMorphemeRule(this);
+            RightPatternRule = PatternRules.ByRightMorphemeRule(this);
         }
 
         public Pattern(Pattern pattern)
@@ -30,8 +33,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             ValencyPosition = pattern.ValencyPosition;
             IsLeftFirst = pattern.IsLeftFirst;
 
-            LeftPatternRule = PatternRules.ByLeftMorphemeRule(this);
-            RightPatternRule = PatternRules.ByRightMorphemeRule(this);
+            LeftPatternRule = pattern.LeftPatternRule;
+            RightPatternRule = pattern.RightPatternRule;
         }
 
         // Optional information for the debugging purposes.
@@ -232,7 +235,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             UpRule.Equals(other.UpRule) &&
             LeftRule.Equals(other.LeftRule) &&
             RightRule.Equals(other.RightRule) &&
+
+            RightPatternRule.Equals(other.RightPatternRule) &&
+            LeftPatternRule.Equals(other.LeftPatternRule) &&
+
             ValencyPosition == other.ValencyPosition;
+
+        public override bool Equals(object obj) => obj is Pattern otherPattern && Equals(otherPattern);
 
 
         public override int GetHashCode()
@@ -242,6 +251,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             hash = (hash * 16777619) ^ UpRule.GetHashCode();
             hash = (hash * 16777619) ^ LeftRule.GetHashCode();
             hash = (hash * 16777619) ^ RightRule.GetHashCode();
+
+            hash = (hash * 16777619) ^ RightPatternRule.GetHashCode();
+            hash = (hash * 16777619) ^ LeftPatternRule.GetHashCode();
+
             hash = (hash * 16777619) ^ ValencyPosition.GetHashCode();
 
             return hash;

@@ -17,8 +17,8 @@ namespace Krino.Vertical.Utils.Collections
         private IEqualityComparer<K2> myK2Comparer;
         private IEqualityComparer<V> myValueComparer;
 
-        private Dictionary<K1, List<KeyValuePair<K2, V>>> myK1Values = new Dictionary<K1, List<KeyValuePair<K2, V>>>();
-        private Dictionary<K2, List<KeyValuePair<K1, V>>> myK2Values = new Dictionary<K2, List<KeyValuePair<K1, V>>>();
+        private Dictionary<K1, List<KeyValuePair<K2, V>>> myK1Values;
+        private Dictionary<K2, List<KeyValuePair<K1, V>>> myK2Values;
 
         public IEnumerable<K1> Keys1 { get { return myK1Values.Keys; } }
         public IEnumerable<K2> Keys2 { get { return myK2Values.Keys; } }

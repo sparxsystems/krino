@@ -33,6 +33,18 @@ namespace Krino.Vertical.Utils.Rules
 
         public override bool Equals(IRule<T> other) => other is IsRule<T> isRule && myComparer.Equals(Value, isRule.Value);
 
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            if (Value != null)
+            {
+                hash = (hash * 16777619) ^ Value.GetHashCode();
+            }
+
+            return hash;
+        }
+
 
         /// <summary>
         /// Implicitly converts the value into the rule.

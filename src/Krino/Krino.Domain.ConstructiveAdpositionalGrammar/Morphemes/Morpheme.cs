@@ -33,11 +33,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         {
         }
 
-        public string Morph { get; private set; }
-
         public IAttributesModel AttributesModel { get; private set; }
 
-        public BigInteger Attributes { get; private set; }
+        public string Morph { get; set; }
+
+        public BigInteger Attributes { get; set; }
 
         public IEnumerable<EnumBase> AttributeItems => AttributesModel.FindParticularAttributes(Attributes);
 
@@ -64,6 +64,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         public bool IsSuffix => AttributesModel.IsSuffix(Attributes);
 
         public bool Equals(Morpheme other) => Morph == other.Morph && Attributes == other.Attributes;
+
+        public override bool Equals(object obj) => obj is Morpheme otherMorpheme && Equals(otherMorpheme);
 
         public override int GetHashCode()
         {

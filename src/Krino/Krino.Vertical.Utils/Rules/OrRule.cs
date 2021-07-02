@@ -31,5 +31,15 @@ namespace Krino.Vertical.Utils.Rules
 
             return result;
         }
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ Subrule1.GetHashCode();
+            hash = (hash * 16777619) ^ Subrule2.GetHashCode();
+
+            return hash;
+        }
     }
 }

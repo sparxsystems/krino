@@ -15,5 +15,14 @@ namespace Krino.Vertical.Utils.Rules
 
 
         public override bool Equals(IRule<T> other) => other is ContainsRule<T> otherSet && Items.SetEquals(otherSet.Items);
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ Items.GetHashCode();
+
+            return hash;
+        }
     }
 }

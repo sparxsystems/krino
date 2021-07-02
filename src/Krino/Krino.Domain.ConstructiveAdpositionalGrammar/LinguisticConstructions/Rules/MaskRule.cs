@@ -30,6 +30,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
         public override bool Equals(IRule<BigInteger> other) => other is MaskRule maskRule && Value == maskRule.Value;
 
+        public override int GetHashCode() => Value.GetHashCode();
+        
 
         private string DebugView => Value.ToString();
     }

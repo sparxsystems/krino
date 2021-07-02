@@ -40,6 +40,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             {
                 result = true;
             }
+            else if (parent.RightRule.Equals(MorphemeRule.Nothing))
+            {
+                return false;
+            }
             else if (parent.ValencyPosition == 0 || parent.ValencyPosition == child.ValencyPosition + 1)
             {
                 if (parent.RightRule.AttributesRule is IValueRule<BigInteger> parentAttributesValueRule)
@@ -87,6 +91,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             {
                 result = true;
             }
+            else if (parent.LeftRule.Equals(MorphemeRule.Nothing))
+            {
+                return false;
+            }
             else if (parent.LeftRule.AttributesRule is IValueRule<BigInteger> parentAttributesValueRule)
             {
                 if (child.IsLikeMorpheme)
@@ -110,12 +118,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                         }
                     }
                 }
-                else if (child.LeftRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                // Note: get the driving grammar character of the child from the right branch.
+                else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                 {
                     result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
                 }
             }
-            else if (parent.LeftRule.GrammarCharacter == child.LeftRule.GrammarCharacter)
+            // Note: get the driving grammar character of the child from the right branch.
+            else if (parent.LeftRule.GrammarCharacter == child.RightRule.GrammarCharacter)
             {
                 result = true;
             }

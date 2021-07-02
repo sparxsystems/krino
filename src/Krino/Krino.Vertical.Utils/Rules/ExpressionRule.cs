@@ -19,6 +19,14 @@ namespace Krino.Vertical.Utils.Rules
 
 
         public override bool Equals(IRule<T> other) => other is ExpressionRule<T> expressionRule && Expression.ToString() == expressionRule.Expression.ToString();
-        
+
+        public override int GetHashCode()
+        {
+            int hash = 486187739;
+
+            hash = (hash * 16777619) ^ Expression.GetHashCode();
+
+            return hash;
+        }
     }
 }
