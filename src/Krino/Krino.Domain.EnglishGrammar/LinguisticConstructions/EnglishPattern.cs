@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using System.Numerics;
 
@@ -49,12 +48,6 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
 
         public static Pattern MorphematicAdPosition(string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
-            => new Pattern(patternName)
-            {
-                Description = description,
-                UpRule = EnglishMorphemeRule.Is(MorphRules.Something, morphemeAttributes),
-                LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, leftAttributes),
-                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, rightAttributes),
-            };
+            => Pattern.MorphematicAdPosition(myAttributesModel, patternName, description, morphemeAttributes, leftAttributes, rightAttributes);
     }
 }
