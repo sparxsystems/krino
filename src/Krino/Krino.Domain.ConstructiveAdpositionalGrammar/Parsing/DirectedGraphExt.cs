@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Graphs;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public static IEnumerable<IAdTree> GetPossibleAdTreesIntern(DirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes, int maxRecursion)
         {
+            using var _t = Trace.Entering();
+
             if (start.IsLikeMorpheme)
             {
                 var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);

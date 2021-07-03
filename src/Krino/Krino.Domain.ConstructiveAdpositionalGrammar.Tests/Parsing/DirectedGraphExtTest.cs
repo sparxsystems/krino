@@ -1,8 +1,11 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+using Krino.Domain.EnglishDictionary;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
+using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -31,12 +34,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             var result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 2).ToList();
             Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("IO", result[0].GetPatternSignature());
+            Assert.AreEqual("IO", result[0].PatternSignature);
 
             result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 3).ToList();
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("IO", result[0].GetPatternSignature());
-            Assert.AreEqual("IOA", result[1].GetPatternSignature());
+            Assert.AreEqual("IO", result[0].PatternSignature);
+            Assert.AreEqual("IOA", result[1].PatternSignature);
 
 
             patterns = new List<Pattern>()
@@ -49,10 +52,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             graph = patterns.CreatePatternGraph();
 
             result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 4).ToList();
-            var k1 = result[0].GetPatternSignature();
-            var k2 = result[1].GetPatternSignature();
-            var k3 = result[2].GetPatternSignature();
-            var k4 = result[3].GetPatternSignature();
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("IO", result[0].PatternSignature);
+            Assert.AreEqual("IOUO", result[1].PatternSignature);
+
+
+
+            patterns = new List<Pattern>()
+            {
+                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes."),
+                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme, "Rule accepting verbant lexemes."),
+                EnglishPattern.O1_I,
+                EnglishPattern.PairTransference("O>O_s", "Rule to make a noun plural.",
+                    EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
+                    EnglishMorphemeRule.Is("s", EnglishAttributes.O.NonLexeme.Suffix).SetSubstitution(SubstitutionRules.Nothing),
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme.Noun)),
+            };
+            graph = patterns.CreatePatternGraph();
+
+            result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 3).ToList();
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("IO", result[0].PatternSignature);
+            Assert.AreEqual("IO", result[1].PatternSignature);
         }
     }
 }

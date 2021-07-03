@@ -8,14 +8,21 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
     public class EnglishAttributesModel : IAttributesModel
     {
         public BigInteger O => EnglishAttributes.O;
+        public BigInteger O_Lexeme => EnglishAttributes.O.Lexeme;
 
         public BigInteger I => EnglishAttributes.I;
+        public BigInteger I_Lexeme => EnglishAttributes.I.Lexeme;
 
         public BigInteger A => EnglishAttributes.A;
+        public BigInteger A_Lexeme => EnglishAttributes.A.Lexeme;
+        public BigInteger A_Lexeme_Adjective => EnglishAttributes.A.Lexeme.Adjective;
 
         public BigInteger E => EnglishAttributes.E;
+        public BigInteger E_Lexeme => EnglishAttributes.E.Lexeme;
 
         public BigInteger U => EnglishAttributes.U;
+        public BigInteger U_Lexeme => EnglishAttributes.U.Lexeme;
+        public BigInteger U_NonLexeme => EnglishAttributes.U.NonLexeme;
 
         public BigInteger Epsilon => EnglishAttributes.Epsilon;
 

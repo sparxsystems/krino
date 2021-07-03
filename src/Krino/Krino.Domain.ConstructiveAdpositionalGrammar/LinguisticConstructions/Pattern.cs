@@ -16,6 +16,108 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
     [DebuggerDisplay("{Name}")]
     public class Pattern : IEquatable<Pattern>
     {
+        public static Pattern Morpheme(IAttributesModel attributesModel, BigInteger attributes, string description = null)
+            => Morpheme(attributesModel, null, attributes, null, description);
+
+        public static Pattern Morpheme(IAttributesModel attributesModel, string morph, BigInteger attributes, string description = null)
+            => Morpheme(attributesModel, morph, attributes, null, description);
+
+        public static Pattern Morpheme(IAttributesModel attributesModel, BigInteger attributes, string patternName, string description)
+            => Morpheme(attributesModel, null, attributes, patternName, description);
+
+        public static Pattern Morpheme(IAttributesModel attributesModel, string morph, BigInteger attributes, string patternName, string description) => new Pattern(patternName)
+        {
+            Description = description,
+            // Note: attribute rule must be IValue<BigInteger> rule.
+            UpRule = new MorphemeRule(attributesModel, string.IsNullOrEmpty(morph) ? MorphRules.Something : MorphRules.Is(morph), MaskRule.Is(attributes)),
+            LeftRule = MorphemeRule.Nothing,
+            RightRule = MorphemeRule.Nothing,
+        };
+
+        public static Pattern MonoTransference(IAttributesModel attributesModel, string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
+            => new Pattern(patternName)
+            {
+                Description = "Rule which changes grammar characters.",
+                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
+                LeftRule = MorphemeRule.Nothing,
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
+            };
+
+        public static Pattern PairTransference(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
+            => new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes),
+            };
+
+        public static Pattern PairTransference(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger notLeftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes)
+            => new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes, notLeftAttributes),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes, notRightAttributes),
+            };
+
+        public static Pattern PairTransference(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
+            => new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
+                LeftRule = leftRule,
+                RightRule = rightRule,
+            };
+
+        public static Pattern EpsilonAdPosition(IAttributesModel attributesModel, string patternName, string description, BigInteger leftAttributes, BigInteger rightAttributes)
+            => new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Epsilon,
+                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Anything, leftAttributes),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Anything, rightAttributes),
+            };
+
+        public static Pattern MorphematicAdPosition(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
+            => new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, MorphRules.Something, morphemeAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
+            };
+
+        public static Pattern O1_I(IAttributesModel attributesModel) => On_I(attributesModel, "O1-I", 1);
+
+        public static Pattern O2_I(IAttributesModel attributesModel) => On_I(attributesModel, "O2-I", 2);
+        public static Pattern O3_I(IAttributesModel attributesModel) => On_I(attributesModel, "O3-I", 3);
+        public static Pattern O4_I(IAttributesModel attributesModel) => On_I(attributesModel, "O4-I", 4);
+        public static Pattern O5_I(IAttributesModel attributesModel) => On_I(attributesModel, "O5-I", 5);
+
+        // E.g. Speaking is prohibited. 'prohibited' is on the 2nd valency position.
+        public static Pattern A2_I(IAttributesModel attributesModel) => An_I(attributesModel, "A2-I", 2);
+
+        private static Pattern On_I(IAttributesModel attributesModel, string patternName, int valencyPosition) => new Pattern(patternName)
+        {
+            Description = $"Rule accepting stative lexeme on valency position {valencyPosition}.",
+            ValencyPosition = valencyPosition,
+            UpRule = MorphemeRule.Epsilon,
+            LeftRule = MorphemeRule.O_Lexeme_Anything(attributesModel),
+            RightRule = MorphemeRule.I_Lexeme_Anything(attributesModel),
+        };
+
+        private static Pattern An_I(IAttributesModel attributesModel, string patternName, int valencyPosition) => new Pattern(patternName)
+        {
+            Description = $"Rule accepting adjective lexeme on valency position {valencyPosition}.",
+            ValencyPosition = valencyPosition,
+            UpRule = MorphemeRule.Epsilon,
+            LeftRule = MorphemeRule.A_Lexeme_Adjective_Anything(attributesModel),
+            RightRule = MorphemeRule.I_Lexeme_Anything(attributesModel),
+        };
+
+
+
         private string myName;
 
         public Pattern(string name = null)

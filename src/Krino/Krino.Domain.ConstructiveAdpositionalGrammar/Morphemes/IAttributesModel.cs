@@ -7,14 +7,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
     public interface IAttributesModel
     {
         BigInteger O { get; }
+        BigInteger O_Lexeme { get; }
 
         BigInteger I { get; }
+        BigInteger I_Lexeme { get; }
 
         BigInteger A { get; }
+        BigInteger A_Lexeme { get; }
+        BigInteger A_Lexeme_Adjective { get; }
 
         BigInteger E { get; }
+        BigInteger E_Lexeme { get; }
 
         BigInteger U { get; }
+        BigInteger U_Lexeme { get; }
+        BigInteger U_NonLexeme { get; }
 
         BigInteger Epsilon { get; }
 

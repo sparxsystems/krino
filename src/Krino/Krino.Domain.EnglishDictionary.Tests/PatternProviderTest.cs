@@ -1,6 +1,9 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+using Krino.Domain.EnglishGrammar.LinguisticConstructions;
+using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
+using System;
 using System.Linq;
 
 namespace Krino.Domain.EnglishDictionary.Tests
@@ -39,6 +42,25 @@ namespace Krino.Domain.EnglishDictionary.Tests
             
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("I>A_ed", results[0].Pattern.Name);
+        }
+
+        //[Test]
+        public void GetPossibleAdTrees_EnglishPattern()
+        {
+            var complexSentenceRule = EnglishPattern.MorphematicAdPosition("I-U-I", "Complex and compund sentences.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme);
+
+            var graph = PatternProvider.Patterns.CreatePatternGraph();
+
+            var count = 0;
+            var result = graph.GetPossibleAdTrees(complexSentenceRule, MorphemeProvider.AttributesModel, 3)
+                .Select(x =>
+                {
+                    ++count;
+                    Console.WriteLine(count);
+
+                    return x;
+                })
+                .ToList();
         }
     }
 }

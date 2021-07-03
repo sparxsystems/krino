@@ -229,6 +229,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        public string PatternSignature
+        {
+            get
+            {
+                var result = new StringBuilder();
+
+                foreach (var item in this)
+                {
+                    if (item.Pattern.IsLikeMorpheme || item.Pattern.IsMorphematicAdPosition())
+                    {
+                        result.Append(item.Pattern.UpRule.GrammarCharacter);
+                    }
+                }
+
+                return result.ToString();
+            }
+        }
+
         public bool Equals(IAdTree other)
         {
             // Note: to avoid the recursion use the enumeration.

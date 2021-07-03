@@ -18,6 +18,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
         public static MorphemeRule Epsilon => new MorphemeRule(null, MorphRules.EmptyString, MaskRule.Is(0));
 
+        public static MorphemeRule Is(IAttributesModel attributesModel, string morph, BigInteger attributes) => Is(attributesModel, MorphRules.Is(morph), attributes, 0);
+        public static MorphemeRule Is(IAttributesModel attributesModel, IRule<string> morphRule, BigInteger attributes) => Is(attributesModel, morphRule, attributes, 0);
+        public static MorphemeRule Is(IAttributesModel attributesModel, IRule<string> morphRule, BigInteger attributes, BigInteger notAttributes) =>
+            notAttributes != 0 ?
+                new MorphemeRule(attributesModel, morphRule, MaskRule.Is(attributes) & !MaskRule.Is(notAttributes)) :
+                new MorphemeRule(attributesModel, morphRule, MaskRule.Is(attributes));
+
+        public static MorphemeRule O_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.O_Lexeme));
+
+        public static MorphemeRule O_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.O_Lexeme));
+
+
+        public static MorphemeRule I_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.I_Lexeme));
+
+        public static MorphemeRule I_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.I_Lexeme));
+
+        public static MorphemeRule A_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.A_Lexeme));
+        public static MorphemeRule A_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.A_Lexeme));
+        public static MorphemeRule A_Lexeme_Adjective_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.A_Lexeme_Adjective));
+        public static MorphemeRule A_Lexeme_Adjective_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.A_Lexeme_Adjective));
+
+        public static MorphemeRule E_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.E_Lexeme));
+        public static MorphemeRule E_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.E_Lexeme));
+
+
+        public static MorphemeRule U_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.U_Lexeme));
+        public static MorphemeRule U_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.U_Lexeme));
+        public static MorphemeRule U_NonLexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.U_NonLexeme));
+        public static MorphemeRule U_NonLexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.U_NonLexeme));
+
+
 
         private IAttributesModel myAttributesModel;
 

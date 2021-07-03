@@ -56,21 +56,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return result.ToString();
         }
 
-        public static string GetPatternSignature(this IAdTree adTree)
-        {
-            var result = new StringBuilder();
-
-            foreach (var item in adTree)
-            {
-                if (item.Pattern.IsLikeMorpheme || item.Pattern.IsMorphematicAdPosition())
-                {
-                    result.Append(item.Pattern.UpRule.GrammarCharacter);
-                }
-            }
-
-            return result.ToString();
-        }
-
         /// <summary>
         /// Returns the sequence from the specified adtree to the root.
         /// </summary>

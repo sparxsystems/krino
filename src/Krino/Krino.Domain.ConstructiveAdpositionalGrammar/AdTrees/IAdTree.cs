@@ -111,5 +111,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Returns the text phrase represented by this adtree.
         /// </summary>
         string Phrase { get; }
+
+        /// <summary>
+        /// Returns sequence of grammar characters specifying patterns the adtree is built from.
+        /// </summary>
+        string PatternSignature { get; }
     }
 }
