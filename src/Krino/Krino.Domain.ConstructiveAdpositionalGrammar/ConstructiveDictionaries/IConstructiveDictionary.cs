@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Graphs;
 using System.Collections.Generic;
@@ -87,5 +88,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// GrammarCharacters are nodes and patterns are edges of the graph.
         /// </remarks>
         IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; }
+
+        /// <summary>
+        /// Returns adtree constructions matching the pattern signature.
+        /// </summary>
+        /// <param name="patternSignature"></param>
+        /// <returns></returns>
+        IEnumerable<IAdTree> FindAdTreeConstructions(string patternSignature);
     }
 }

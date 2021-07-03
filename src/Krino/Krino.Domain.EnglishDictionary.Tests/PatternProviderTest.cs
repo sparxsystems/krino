@@ -52,7 +52,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
             var graph = PatternProvider.Patterns.CreatePatternGraph();
 
             var count = 0;
-            var result = graph.GetPossibleAdTrees(complexSentenceRule, MorphemeProvider.AttributesModel, 3)
+            var result = graph.GetPossibleAdTrees(complexSentenceRule, MorphemeProvider.AttributesModel, 5)
                 .Select(x =>
                 {
                     ++count;

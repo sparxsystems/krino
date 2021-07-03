@@ -237,9 +237,42 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                 foreach (var item in this)
                 {
-                    if (item.Pattern.IsLikeMorpheme || item.Pattern.IsMorphematicAdPosition())
+                    if (item.Pattern.IsLikeMorpheme)
                     {
                         result.Append(item.Pattern.UpRule.GrammarCharacter);
+                    }
+                    else
+                    {
+                        if (item.Pattern.IsLeftFirst)
+                        {
+                            if (item.Left == null)
+                            {
+                                result.Append(item.Pattern.LeftRule.GrammarCharacter);
+                            }
+                            if (item.Pattern.IsMorphematicAdPosition())
+                            {
+                                result.Append(item.Pattern.UpRule.GrammarCharacter);
+                            }
+                            if (item.Right == null)
+                            {
+                                result.Append(item.Pattern.RightRule.GrammarCharacter);
+                            }
+                        }
+                        else
+                        {
+                            if (item.Right == null)
+                            {
+                                result.Append(item.Pattern.RightRule.GrammarCharacter);
+                            }
+                            if (item.Pattern.IsMorphematicAdPosition())
+                            {
+                                result.Append(item.Pattern.UpRule.GrammarCharacter);
+                            }
+                            if (item.Left == null)
+                            {
+                                result.Append(item.Pattern.LeftRule.GrammarCharacter);
+                            }
+                        }
                     }
                 }
 
