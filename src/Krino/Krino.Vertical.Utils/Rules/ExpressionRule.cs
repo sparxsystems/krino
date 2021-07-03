@@ -5,6 +5,7 @@ namespace Krino.Vertical.Utils.Rules
 {
     public class ExpressionRule<T> : RuleBase<T>, IExpressionRule<T>
     {
+        private int myHashCode;
         private Func<T, bool> myCompiledExpression;
 
         public ExpressionRule(Expression<Func<T, bool>> expression)
@@ -22,11 +23,13 @@ namespace Krino.Vertical.Utils.Rules
 
         public override int GetHashCode()
         {
-            int hash = 486187739;
+            if (myHashCode == 0)
+            {
+                myHashCode = 486187739;
+                myHashCode = (myHashCode * 16777619) ^ Expression.ToString().GetHashCode();
+            }
 
-            hash = (hash * 16777619) ^ Expression.GetHashCode();
-
-            return hash;
+            return myHashCode;
         }
     }
 }

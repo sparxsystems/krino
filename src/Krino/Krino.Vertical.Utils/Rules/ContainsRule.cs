@@ -1,12 +1,15 @@
-﻿using System.Collections.Generic;
+﻿using Krino.Vertical.Utils.Collections;
+using System.Collections.Generic;
 
 namespace Krino.Vertical.Utils.Rules
 {
     public class ContainsRule<T> : RuleBase<T>, ISetRule<T>
     {
+        private int myHashCode;
+
         public ContainsRule(IEnumerable<T> items, IEqualityComparer<T> comparer = null)
         {
-            Items = new HashSet<T>(items, comparer);
+            Items = new ReadOnlySet<T>(new HashSet<T>(items, comparer));
         }
 
         public ISet<T> Items { get; private set; }
@@ -18,11 +21,19 @@ namespace Krino.Vertical.Utils.Rules
 
         public override int GetHashCode()
         {
-            int hash = 486187739;
+            if (myHashCode == 0)
+            {
+                int hash = 486187739;
 
-            hash = (hash * 16777619) ^ Items.GetHashCode();
+                foreach (var item in Items)
+                {
+                    hash = (hash * 16777619) ^ item.GetHashCode();
+                }
 
-            return hash;
+                myHashCode = hash;
+            }
+
+            return myHashCode;
         }
     }
 }

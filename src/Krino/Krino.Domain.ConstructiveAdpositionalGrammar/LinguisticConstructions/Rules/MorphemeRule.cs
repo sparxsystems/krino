@@ -10,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
     /// Rule evaluating morphemes.
     /// </summary>
     [DebuggerDisplay("{GrammarCharacter}: {MorphRule}")]
-    public class MorphemeRule : IEquatable<MorphemeRule>
+    public class MorphemeRule : RuleBase<Morpheme>, IRule<Morpheme>
     {
         public static MorphemeRule Anything => new MorphemeRule(null, MorphRules.Anything, MaskRule.Anything);
 
@@ -85,19 +85,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// </summary>
         /// <param name="morpheme"></param>
         /// <returns></returns>
-        public bool Evaluate(Morpheme morpheme)
+        public override bool Evaluate(Morpheme morpheme)
         {
             bool result = MorphRule.Evaluate(morpheme.Morph) && AttributesRule.Evaluate(morpheme.Attributes);
             return result;
         }
 
-        public bool Equals(MorphemeRule other)
-        {
-            bool result = MorphRule.Equals(other.MorphRule) &&
-                          AttributesRule.Equals(other.AttributesRule) &&
-                          SubstitutionRule.Equals(other.SubstitutionRule);
-            return result;
-        }
+        public override bool Equals(IRule<Morpheme> other) => other is MorphemeRule otherMorphemeRule &&
+            MorphRule.Equals(otherMorphemeRule.MorphRule) &&
+            AttributesRule.Equals(otherMorphemeRule.AttributesRule) &&
+            SubstitutionRule.Equals(otherMorphemeRule.SubstitutionRule);
+
 
         public override int GetHashCode()
         {

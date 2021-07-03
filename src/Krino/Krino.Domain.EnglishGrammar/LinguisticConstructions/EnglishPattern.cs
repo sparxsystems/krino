@@ -86,7 +86,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             => new Pattern(patternName)
             {
                 Description = description,
-                UpRule = EnglishMorphemeRule.Is(MorphRules.Anything, morphemeAttributes),
+                UpRule = EnglishMorphemeRule.Is(MorphRules.Something, morphemeAttributes),
                 LeftRule = EnglishMorphemeRule.Is(MorphRules.Anything, leftAttributes),
                 RightRule = EnglishMorphemeRule.Is(MorphRules.Anything, rightAttributes),
             };

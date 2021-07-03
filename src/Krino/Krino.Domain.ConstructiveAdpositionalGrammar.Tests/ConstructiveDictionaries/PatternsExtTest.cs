@@ -36,10 +36,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             Assert.AreEqual(4, graph.Count);
             Assert.AreEqual(4, graph.Edges.Count());
 
-            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)));
-            Assert.AreEqual(2, graph.GetEdgesGoingTo(EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)));
-            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.O1_I));
-            Assert.AreEqual(0, graph.GetEdgesGoingTo(EnglishPattern.O2_I));
+            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)).Count());
+            Assert.AreEqual(2, graph.GetEdgesGoingTo(EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)).Count());
+            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.O1_I).Count());
+            Assert.AreEqual(0, graph.GetEdgesGoingTo(EnglishPattern.O2_I).Count());
         }
     }
 }

@@ -11,27 +11,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
     {
         public static IEnumerable<IAdTree> GetPossibleAdTrees(this DirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes)
         {
+            var result = GetPossibleAdTreesIntern(patternGraph, start, attributesModel, maxMorphemes, maxMorphemes);
+            return result;
+        }
+
+        public static IEnumerable<IAdTree> GetPossibleAdTreesIntern(DirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes, int maxRecursion)
+        {
             if (start.IsLikeMorpheme)
             {
                 var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
                 yield return adTree;
             }
-            else
+            else if (maxRecursion > 0)
             {
                 var rightChildPatterns = patternGraph.GetEdgesGoingFrom(start)
                 .Where(x => x.Value == AdTreePosition.ParrentForChildOnRight)
                 .Select(x => x.To);
 
                 var leftChildPatterns = patternGraph.GetEdgesGoingFrom(start)
-                    .Where(x => x.Value == AdTreePosition.ParrentForChildOnRight)
+                    .Where(x => x.Value == AdTreePosition.ParrentForChildOnLeft)
                     .Select(x => x.To);
 
                 var rightSubAdTrees = rightChildPatterns
-                    .SelectMany(x => GetPossibleAdTrees(patternGraph, x, attributesModel, maxMorphemes))
+                    .SelectMany(x => GetPossibleAdTreesIntern(patternGraph, x, attributesModel, maxMorphemes, maxRecursion - 1))
                     .ToList();
 
                 var leftSubAdTrees = leftChildPatterns
-                    .SelectMany(x => GetPossibleAdTrees(patternGraph, x, attributesModel, maxMorphemes))
+                    .SelectMany(x => GetPossibleAdTreesIntern(patternGraph, x, attributesModel, maxMorphemes, maxRecursion - 1))
                     .ToList();
 
                 if (rightSubAdTrees.Any() && leftSubAdTrees.Any())
@@ -85,23 +91,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         private static int GetMorphemesCount(IAdTree adTree)
         {
-            var result = adTree.Root.Count(x => x.Pattern.IsLikeMorpheme || x.Left == null || x.Right == null);
+            var result = adTree.Root.Count(x => x.Pattern.IsLikeMorpheme || x.Pattern.IsMorphematicAdPosition());
             return result;
         }
 
-
-        private static bool IsAdTreeCompleted(IAdTree adTree)
-        {
-            var root = adTree.Root;
-            foreach (var adTreeItem in root)
-            {
-                if ((adTreeItem.Left == null || adTreeItem.Right == null) && !adTreeItem.Pattern.IsLikeMorpheme)
-                {
-                    return false;
-                }
-            }
-
-            return true;
-        }
     }
 }

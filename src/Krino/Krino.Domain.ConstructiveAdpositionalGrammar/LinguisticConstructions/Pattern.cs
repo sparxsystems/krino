@@ -10,6 +10,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
     /// <summary>
     /// Defines the pattern which contains rules how adtrees can be connected to each other.
     /// </summary>
+    /// <remarks>
+    /// Inspite of the fact there are property setters this object shall stay immutable!!!
+    /// </remarks>
     [DebuggerDisplay("{Name}")]
     public class Pattern : IEquatable<Pattern>
     {
@@ -259,5 +262,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
             return hash;
         }
+
+        public static bool operator ==(Pattern pattern1, Pattern pattern2) => Equals(pattern1, pattern2);
+        public static bool operator !=(Pattern pattern1, Pattern pattern2) => !Equals(pattern1, pattern2);
     }
 }

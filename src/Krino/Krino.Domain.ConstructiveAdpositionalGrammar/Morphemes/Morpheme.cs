@@ -1,5 +1,4 @@
 ﻿using Krino.Vertical.Utils.Enums;
-using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
@@ -7,7 +6,7 @@ using System.Numerics;
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 {
     [DebuggerDisplay("{DebuggerDisplay}")]
-    public class Morpheme : IEquatable<Morpheme>
+    public class Morpheme
     {
         /// <summary>
         /// Indicates there is no morpheme.
@@ -63,19 +62,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
 
         public bool IsSuffix => AttributesModel.IsSuffix(Attributes);
 
-        public bool Equals(Morpheme other) => Morph == other.Morph && Attributes == other.Attributes;
-
-        public override bool Equals(object obj) => obj is Morpheme otherMorpheme && Equals(otherMorpheme);
-
-        public override int GetHashCode()
-        {
-            int hash = 486187739;
-
-            hash = (hash * 16777619) ^ Morph.GetHashCode();
-            hash = (hash * 16777619) ^ Attributes.GetHashCode();
-
-            return hash;
-        }
 
         private string DebuggerDisplay => string.Join("", GrammarCharacter, ": ", Morph);
     }
