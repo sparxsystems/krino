@@ -14,6 +14,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
     [TestFixture]
     public class ConstructiveDictionaryTest
     {
+        private EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
+
         [Test]
         public void PatternGraph_Basic()
         {
@@ -57,7 +59,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.EpsilonAdPosition("A-A", "", EnglishAttributes.A.Lexeme, EnglishAttributes.A.Lexeme),
+                Pattern.EpsilonAdPosition(myAttributesModel, "A-A", "", EnglishAttributes.A.Lexeme, EnglishAttributes.A.Lexeme),
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, new Morpheme[0], patterns);

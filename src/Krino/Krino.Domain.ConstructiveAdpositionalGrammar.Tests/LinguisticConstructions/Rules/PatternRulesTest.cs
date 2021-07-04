@@ -1,6 +1,6 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
 
@@ -9,6 +9,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
     [TestFixture]
     public class PatternRulesTest
     {
+        private static EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
+
         [Test]
         public void ByRightMorphemeRule()
         {
@@ -22,26 +24,38 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
 
-            parent = EnglishPattern.EpsilonAdPosition("E-I", "Rule to add a circumstantial adverb after verb valencies.", EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme);
+            parent = EnglishPattern.E_I;
             child = EnglishPattern.O2_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
-            parent = EnglishPattern.MorphematicAdPosition("O-E-I", "Circumstantial prepostion.", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme);
+            parent = EnglishPattern.O_E_I;
             child = EnglishPattern.O2_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
             parent = EnglishPattern.O1_I;
-            child = EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme, "Rule accepting verbant lexemes.");
+            child = EnglishPattern.I_Lexeme;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
             parent = EnglishPattern.O1_I;
-            child = EnglishPattern.PairTransference("I>will_I", "Rule for simple future of a lexeme verbant.",
-                    EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
-                    EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetSubstitution(SubstitutionRules.Nothing),
-                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive));
+            child = EnglishPattern.Will_I;
+            rule = PatternRules.ByRightMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+
+            // Not allowed morphematic adposition.
+            parent = EnglishPattern.E_I
+                .SetMorphematicAdPositionRuleForRight(MorphematicAdPositionRules.Nothing);
+            child = EnglishPattern.I_U_I;
+            rule = PatternRules.ByRightMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
+
+            // Morphematic adposition allowed.
+            parent = EnglishPattern.E_I
+                .SetMorphematicAdPositionRuleForRight(MorphematicAdPositionRules.Epsilon_U_E);
+            child = EnglishPattern.I_U_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
         }
@@ -51,39 +65,45 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         public void ByLeftMorphemeRule()
         {
             var parent = EnglishPattern.O2_I;
-            var child = EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes.");
+            var child = EnglishPattern.O_Lexeme;
             var rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
             parent = EnglishPattern.O2_I;
-            child = EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme, "Rule accepting adjunctive lexemes.");
+            child = EnglishPattern.A_Lexeme;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
 
             parent = EnglishPattern.O2_I;
-            child = EnglishPattern.PairTransference("O>O_s", "Rule to make a noun plural.",
-                EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
-                EnglishMorphemeRule.Is("s", EnglishAttributes.O.NonLexeme.Suffix),
-                EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme.Noun));
+            child = EnglishPattern.O_s;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
 
-            parent = EnglishPattern.PairTransference("O>O_s", "Rule to make a noun plural.",
-                EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
-                EnglishMorphemeRule.Is("s", EnglishAttributes.O.NonLexeme.Suffix),
-                EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme.Noun));
-            child = EnglishPattern.Morpheme("s", EnglishAttributes.O.NonLexeme.Suffix, "Os");
+            parent = EnglishPattern.O_s;
+            child = Pattern.Morpheme(myAttributesModel, "s", EnglishAttributes.O.NonLexeme.Suffix, "Os");
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
-            parent = EnglishPattern.PairTransference("O>O_s", "Rule to make a noun plural.",
-                EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
-                EnglishMorphemeRule.Is("s", EnglishAttributes.O.NonLexeme.Suffix),
-                EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme.Noun));
-            child = EnglishPattern.Morpheme(EnglishAttributes.O.NonLexeme.Suffix, "O+", "Rule accepting stative suffix.");
+            parent = EnglishPattern.O_s;
+            child = EnglishPattern.O_s;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
+
+
+            // Morphematic adposition NOT allowed.
+            parent = EnglishPattern.E_I
+                .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Nothing);
+            child = Pattern.MorphematicAdPosition(myAttributesModel, "E-U-E", "", EnglishAttributes.U.Lexeme, EnglishAttributes.E.Lexeme, EnglishAttributes.E.Lexeme);
+            rule = PatternRules.ByLeftMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
+
+            // Morphematic adposition allowed.
+            parent = EnglishPattern.E_I
+                .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Epsilon_U_E);
+            child = Pattern.MorphematicAdPosition(myAttributesModel, "E-U-E", "", EnglishAttributes.U.Lexeme, EnglishAttributes.E.Lexeme, EnglishAttributes.E.Lexeme.Adverb);
+            rule = PatternRules.ByLeftMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
         }
     }
 }

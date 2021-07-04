@@ -289,7 +289,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                          adTreeToAttach.Pattern.IsMorphematicAdPosition())
                 {
                     // If a substitution (because adTreeToAttach is adposition) can be attached.
-                    if (rule.SubstitutionRule.Evaluate(adTreeToAttach.Morpheme.GrammarCharacter))
+                    if (rule.MorphematicAdPositionRule.Evaluate(adTreeToAttach.Morpheme.GrammarCharacter))
                     {
                         // If it shall be attached to the right and
                         // the valency position is specified then check correctness with regard to presence of previously filled valencies.

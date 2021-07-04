@@ -18,8 +18,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         {
             var adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.O1_I.SetLeftFirst())
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.I)),
-                Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O)),
+                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme), EnglishPattern.I_Lexeme),
+                Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.O_Lexeme),
             };
 
             var factory = new LinguisticStructureFactory(myAttributesModel);

@@ -44,20 +44,19 @@ namespace Krino.Domain.EnglishDictionary.Tests
             Assert.AreEqual("I>A_ed", results[0].Pattern.Name);
         }
 
-        //[Test]
+        [Test]
         public void GetPossibleAdTrees_EnglishPattern()
         {
-            var complexSentenceRule = EnglishPattern.MorphematicAdPosition("I-U-I", "Complex and compund sentences.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme);
+            var complexSentenceRule = EnglishPattern.I_U_I;
 
             var graph = PatternProvider.Patterns.CreatePatternGraph();
 
             var count = 0;
-            var result = graph.GetPossibleAdTrees(complexSentenceRule, MorphemeProvider.AttributesModel, 5)
+            var result = graph.GetPossibleAdTrees(complexSentenceRule, MorphemeProvider.AttributesModel, 7)
                 .Select(x =>
                 {
+                    var signature = x.PatternSignature;
                     ++count;
-                    Console.WriteLine(count);
-
                     return x;
                 })
                 .ToList();

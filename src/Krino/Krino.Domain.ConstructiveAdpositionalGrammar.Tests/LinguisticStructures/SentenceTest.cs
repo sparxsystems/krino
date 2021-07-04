@@ -19,8 +19,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         {
             var adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.O1_I.SetLeftFirst())
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.Morpheme(EnglishAttributes.I)),
-                Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O)),
+                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme),
+                Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.O_Lexeme),
             };
 
             var factory = new LinguisticStructureFactory(myAttributesModel);
@@ -39,19 +39,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         [Test]
         public void CompoundSentence()
         {
-            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.MorphematicAdPosition(".", "", EnglishAttributes.U.NonLexeme.PunctuationMark, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme))
+            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.I_Period_I)
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "and", EnglishAttributes.U.Lexeme.Conjunction.Coordinating), EnglishPattern.MorphematicAdPosition("I-U-I", "", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme))
+                Right = new AdTree(new Morpheme(myAttributesModel, "and", EnglishAttributes.U.Lexeme.Conjunction.Coordinating), EnglishPattern.I_U_I)
                 {
                     Right = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.O1_I.SetLeftFirst())
                     {
-                        Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)),
-                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme))
+                        Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme),
+                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.O_Lexeme)
                     },
                     Left = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.O1_I.SetLeftFirst())
                     {
-                        Right = new AdTree(new Morpheme(myAttributesModel, "learn", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)),
-                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme))
+                        Right = new AdTree(new Morpheme(myAttributesModel, "learn", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme),
+                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.O_Lexeme)
                     }
                 }
             };
@@ -75,19 +75,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         [Test]
         public void ComplexSentence_Argument()
         {
-            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.MorphematicAdPosition(".", "", EnglishAttributes.U.NonLexeme.PunctuationMark, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme))
+            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.I_Period_I)
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "because", EnglishAttributes.U.Lexeme.Conjunction.Subordinating.Sememe.Cause), EnglishPattern.MorphematicAdPosition("I-U-I", "", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme))
+                Right = new AdTree(new Morpheme(myAttributesModel, "because", EnglishAttributes.U.Lexeme.Conjunction.Subordinating.Sememe.Cause), EnglishPattern.I_U_I)
                 {
                     Right = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.O1_I.SetLeftFirst())
                     {
-                        Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)),
-                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme))
+                        Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme),
+                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.O_Lexeme)
                     },
                     Left = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.O1_I.SetLeftFirst())
                     {
-                        Right = new AdTree(new Morpheme(myAttributesModel, "learn", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)),
-                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme))
+                        Right = new AdTree(new Morpheme(myAttributesModel, "learn", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme),
+                        Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O), EnglishPattern.O_Lexeme)
                     }
                 }
             };

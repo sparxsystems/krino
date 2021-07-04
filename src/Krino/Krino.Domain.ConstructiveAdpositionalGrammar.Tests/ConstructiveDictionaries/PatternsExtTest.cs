@@ -16,7 +16,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             var patterns = new List<Pattern>()
             {
-                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes."),
+                EnglishPattern.O_Lexeme,
             };
 
             var graph = patterns.CreatePatternGraph();
@@ -26,8 +26,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             patterns = new List<Pattern>()
             {
-                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes."),
-                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme, "Rule accepting verbant lexemes."),
+                EnglishPattern.O_Lexeme,
+                EnglishPattern.I_Lexeme,
                 EnglishPattern.O1_I,
                 EnglishPattern.O2_I,
             };
@@ -36,8 +36,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             Assert.AreEqual(4, graph.Count);
             Assert.AreEqual(4, graph.Edges.Count());
 
-            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)).Count());
-            Assert.AreEqual(2, graph.GetEdgesGoingTo(EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)).Count());
+            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.I_Lexeme).Count());
+            Assert.AreEqual(2, graph.GetEdgesGoingTo(EnglishPattern.O_Lexeme).Count());
             Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.O1_I).Count());
             Assert.AreEqual(0, graph.GetEdgesGoingTo(EnglishPattern.O2_I).Count());
         }

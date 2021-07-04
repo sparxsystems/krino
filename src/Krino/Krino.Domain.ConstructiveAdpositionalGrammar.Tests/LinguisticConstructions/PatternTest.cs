@@ -46,7 +46,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         [Test]
         public void IsMorpheme()
         {
-            Pattern pattern = EnglishPattern.Morpheme(EnglishAttributes.A);
+            Pattern pattern = EnglishPattern.A_Lexeme;
             Assert.IsTrue(pattern.IsMorpheme);
 
             // Empty string rule causes it is not the morpheme pattern.
@@ -100,7 +100,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         [Test]
         public void IsEpsilonAdPosition()
         {
-            Pattern pattern = EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A, EnglishAttributes.O);
+            Pattern pattern = EnglishPattern.A_O;
             Assert.IsTrue(pattern.IsEpsilonAdPosition());
 
 
@@ -127,10 +127,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         [Test]
         public void IsMorphematicAdPosition()
         {
-            Pattern pattern = EnglishPattern.MorphematicAdPosition("O-E-I", "", EnglishAttributes.E, EnglishAttributes.O, EnglishAttributes.I);
+            Pattern pattern = EnglishPattern.O_E_I;
             Assert.IsTrue(pattern.IsMorphematicAdPosition());
 
-            pattern = EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A, EnglishAttributes.O);
+            pattern = EnglishPattern.A_O;
             Assert.IsFalse(pattern.IsMorphematicAdPosition());
         }
     }

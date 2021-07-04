@@ -20,11 +20,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             var patterns = new List<Pattern>()
             {
-                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes."),
-                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme, "Rule accepting verbant lexemes."),
-                EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme, "Rule accepting adjunctive lexemes."),
+                EnglishPattern.O_Lexeme,
+                EnglishPattern.I_Lexeme,
+                EnglishPattern.A_Lexeme,
                 EnglishPattern.O1_I,
-                EnglishPattern.EpsilonAdPosition("A-O", "Rule to add an adjunctive before a stative.", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme),
+                EnglishPattern.A_O,
             };
 
             var graph = patterns.CreatePatternGraph();
@@ -36,16 +36,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 3).ToList();
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("IO", result[0].PatternSignature);
-            Assert.AreEqual("IOA", result[1].PatternSignature);
+            Assert.AreEqual("IAO", result[1].PatternSignature);
             
 
 
             patterns = new List<Pattern>()
             {
-                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes."),
-                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme, "Rule accepting verbant lexemes."),
+                EnglishPattern.O_Lexeme,
+                EnglishPattern.I_Lexeme,
                 EnglishPattern.O1_I,
-                EnglishPattern.MorphematicAdPosition("O-U-O", "Connecting statives with a conjunction.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme),
+                EnglishPattern.O_U_O,
             };
             graph = patterns.CreatePatternGraph();
 
@@ -58,13 +58,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             patterns = new List<Pattern>()
             {
-                EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes."),
-                EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme, "Rule accepting verbant lexemes."),
+                EnglishPattern.O_Lexeme,
+                EnglishPattern.I_Lexeme,
                 EnglishPattern.O1_I,
-                EnglishPattern.PairTransference("O>O_s", "Rule to make a noun plural.",
-                    EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
-                    EnglishMorphemeRule.Is("s", EnglishAttributes.O.NonLexeme.Suffix).SetSubstitution(SubstitutionRules.Nothing),
-                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme.Noun)),
+                EnglishPattern.O_s,
             };
             graph = patterns.CreatePatternGraph();
 

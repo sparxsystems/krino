@@ -15,17 +15,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         [Test]
         public void Value()
         {
-            var adTree = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme));
+            var adTree = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O), EnglishPattern.O_Lexeme);
             var word = new Word(adTree, myAttributesModel, null, 0);
             Assert.AreEqual("book", word.Value);
 
 
             // AdTree for the word containing a suffix.
             adTree = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.O.Lexeme),
-                EnglishPattern.PairTransference("I>O_ing", "", EnglishAttributes.O.Lexeme, EnglishAttributes.I.NonLexeme.Suffix, EnglishAttributes.I.Lexeme.Verb))
+                EnglishPattern.I_to_O_ing)
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme.Verb)),
-                Left = new AdTree(new Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix), EnglishPattern.Morpheme(EnglishAttributes.I.NonLexeme.Suffix)),
+                Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme), EnglishPattern.I_Lexeme),
+                Left = new AdTree(new Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix), EnglishPattern.I_Suffix),
             };
 
             word = new Word(adTree, myAttributesModel, null, 0);

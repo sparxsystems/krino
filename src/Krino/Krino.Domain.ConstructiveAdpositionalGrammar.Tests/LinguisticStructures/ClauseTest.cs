@@ -19,13 +19,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.O1_I.SetLeftFirst())
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), EnglishPattern.Morpheme(EnglishAttributes.I)),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O)),
+                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), EnglishPattern.I_Lexeme),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.O_Lexeme),
                 },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.EpsilonAdPosition("", "", EnglishAttributes.A, EnglishAttributes.O).SetLeftFirst())
+                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.A_O)
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O)),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.A))
+                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme), EnglishPattern.O_Lexeme),
+                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme), EnglishPattern.A_Lexeme)
                 }
             };
 
@@ -39,27 +39,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         [Test]
         public void SubjectAndPredicate_with_circumstantial()
         {
-            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period), EnglishPattern.MorphematicAdPosition("I-U-I", "", EnglishAttributes.U.NonLexeme.PunctuationMark, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme))
+            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period), EnglishPattern.I_U_I)
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition), EnglishPattern.MorphematicAdPosition("O-E-I", "", EnglishAttributes.E.Lexeme, EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme))
+                Right = new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition), EnglishPattern.O_E_I)
                 {
                     Right = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.O2_I)
                     {
                         Right = new AdTree(Morpheme.Epsilon(myAttributesModel), EnglishPattern.O1_I.SetLeftFirst())
                         {
-                            Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), EnglishPattern.Morpheme(EnglishAttributes.I.Lexeme)),
-                            Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme))
+                            Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), EnglishPattern.I_Lexeme),
+                            Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), EnglishPattern.O_Lexeme)
                         },
-                        Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A, EnglishAttributes.O).SetLeftFirst())
+                        Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.A_O)
                         {
-                            Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.O)),
-                            Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme), EnglishPattern.Morpheme(EnglishAttributes.A))
+                            Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme), EnglishPattern.O_Lexeme),
+                            Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme), EnglishPattern.A_Lexeme)
                         }
                     },
-                    Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.EpsilonAdPosition("A-O", "", EnglishAttributes.A, EnglishAttributes.O).SetLeftFirst())
+                    Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.Epsilon), EnglishPattern.A_O)
                     {
-                        Right = new AdTree(new Morpheme(myAttributesModel, "room", EnglishAttributes.O), EnglishPattern.Morpheme(EnglishAttributes.O.Lexeme)),
-                        Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A), EnglishPattern.Morpheme(EnglishAttributes.A.Lexeme))
+                        Right = new AdTree(new Morpheme(myAttributesModel, "room", EnglishAttributes.O), EnglishPattern.O_Lexeme),
+                        Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A), EnglishPattern.A_Lexeme)
                     }
                 }
             };

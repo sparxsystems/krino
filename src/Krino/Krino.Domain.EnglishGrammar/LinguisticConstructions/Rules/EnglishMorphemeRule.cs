@@ -19,25 +19,15 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules
 
         public static MorphemeRule O_Lexeme_Something => MorphemeRule.O_Lexeme_Something(myAttributesModel);
 
-        public static MorphemeRule O_Lexeme_Anything => MorphemeRule.O_Lexeme_Anything(myAttributesModel);
-
-
         public static MorphemeRule I_Lexeme_Something => MorphemeRule.I_Lexeme_Something(myAttributesModel);
 
-        public static MorphemeRule I_Lexeme_Anything => MorphemeRule.I_Lexeme_Anything(myAttributesModel);
-
         public static MorphemeRule A_Lexeme_Something => MorphemeRule.A_Lexeme_Something(myAttributesModel);
-        public static MorphemeRule A_Lexeme_Anything => MorphemeRule.A_Lexeme_Anything(myAttributesModel);
         public static MorphemeRule A_Lexeme_Adjective_Something => MorphemeRule.A_Lexeme_Adjective_Something(myAttributesModel);
-        public static MorphemeRule A_Lexeme_Adjective_Anything => MorphemeRule.A_Lexeme_Adjective_Anything(myAttributesModel);
 
         public static MorphemeRule E_Lexeme_Something => MorphemeRule.E_Lexeme_Something(myAttributesModel);
-        public static MorphemeRule E_Lexeme_Anything => MorphemeRule.E_Lexeme_Anything(myAttributesModel);
 
 
         public static MorphemeRule U_Lexeme_Something => MorphemeRule.U_Lexeme_Something(myAttributesModel);
-        public static MorphemeRule U_Lexeme_Anything => MorphemeRule.U_Lexeme_Anything(myAttributesModel);
         public static MorphemeRule U_NonLexeme_Something => MorphemeRule.U_NonLexeme_Something(myAttributesModel);
-        public static MorphemeRule U_NonLexeme_Anything => MorphemeRule.U_NonLexeme_Anything(myAttributesModel);
     }
 }

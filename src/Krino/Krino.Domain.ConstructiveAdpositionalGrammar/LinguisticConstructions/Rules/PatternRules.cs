@@ -44,14 +44,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             {
                 return false;
             }
+            // If valency order is ok.
             else if (parent.ValencyPosition == 0 || parent.ValencyPosition == child.ValencyPosition + 1)
             {
                 if (parent.RightRule.AttributesRule is IValueRule<BigInteger> parentAttributesValueRule)
                 {
+                    // If the connecting child is a morpheme.
                     if (child.IsLikeMorpheme)
                     {
                         if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                         {
+                            // If the parent attribute value is within the child attribute value.
+                            // E.g. parent accepts I.Verb.Lexeme and the child accepts I.Verb.Lexeme.Modal.
                             result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
 
                             if (result)
@@ -66,6 +70,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                                     // Therefore child may accept also morphe strings which are not accepted byt the parent.
                                     result = false;
                                 }
+                            }
+                        }
+                    }
+                    else if (child.IsMorphematicAdPosition())
+                    {
+                        if (parent.RightRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
+                        {
+                            if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                            {
+                                result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
                             }
                         }
                     }
@@ -115,6 +129,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                                 // Therefore child may accept also morphe strings which are not accepted byt the parent.
                                 result = false;
                             }
+                        }
+                    }
+                }
+                else if (child.IsMorphematicAdPosition())
+                {
+                    if (parent.LeftRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
+                    {
+                        // Note: get the driving grammar character of the child from the right branch.
+                        if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                        {
+                            result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
                         }
                     }
                 }
