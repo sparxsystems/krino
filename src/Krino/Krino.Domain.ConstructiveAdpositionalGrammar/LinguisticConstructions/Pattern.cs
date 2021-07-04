@@ -90,6 +90,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes),
                 RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
             };
+        public static Pattern MorphematicAdPosition(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
+            => new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, MorphRules.Something, morphemeAttributes),
+                LeftRule = leftRule,
+                RightRule = rightRule,
+            };
 
 
         public static Pattern O1_I(IAttributesModel attributesModel) => On_I(attributesModel, "O1-I", 1)
@@ -238,7 +246,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             get
             {
                 if (UpRule.GrammarCharacter != GrammarCharacter.e &&
-                    (UpRule.MorphRule.Equals(MorphRules.Something) || UpRule.MorphRule is IValueRule<string>) &&
+                    (UpRule.MorphRule.Equals(MorphRules.Something) || UpRule.MorphRule is IValueRule<string> upMorphValueRule && !string.IsNullOrEmpty(upMorphValueRule.Value)) &&
                     UpRule.AttributesRule is IValueRule<BigInteger> &&
                     LeftRule.Equals(MorphemeRule.Nothing) &&
                     RightRule.Equals(MorphemeRule.Nothing))
@@ -320,8 +328,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             bool result = UpRule.Equals(MorphemeRule.Epsilon) &&
                           !RightRule.Equals(MorphemeRule.Nothing) &&
                           !LeftRule.Equals(MorphemeRule.Nothing) &&
-                          !RightRule.MorphRule.Evaluate(null) && !RightRule.MorphRule.Evaluate("") && !RightRule.AttributesRule.Evaluate(0) &&
-                          !LeftRule.MorphRule.Evaluate(null) && !LeftRule.MorphRule.Evaluate("") && !LeftRule.AttributesRule.Evaluate(0);
+                          RightRule.MorphRule.Equals(MorphRules.Anything) && !RightRule.AttributesRule.Evaluate(0) &&
+                          LeftRule.MorphRule.Equals(MorphRules.Anything) && !LeftRule.AttributesRule.Evaluate(0);
 
             return result;
         }
@@ -336,12 +344,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         /// <returns></returns>
         public bool IsMorphematicAdPosition()
         {
-            bool result = UpRule.MorphRule.Equals(MorphRules.Something) &&
-                          !UpRule.AttributesRule.Evaluate(0) &&
-                          !RightRule.Equals(MorphemeRule.Nothing) &&
-                          !LeftRule.Equals(MorphemeRule.Nothing) &&
-                          !RightRule.MorphRule.Evaluate(null) && !RightRule.MorphRule.Evaluate("") && !RightRule.AttributesRule.Evaluate(0) &&
-                          !LeftRule.MorphRule.Evaluate(null) && !LeftRule.MorphRule.Evaluate("") && !LeftRule.AttributesRule.Evaluate(0);
+            bool result = UpRule.GrammarCharacter != GrammarCharacter.e &&
+                          UpRule.MorphRule.Equals(MorphRules.Something) &&
+                          (!RightRule.Equals(MorphemeRule.Nothing) || !LeftRule.Equals(MorphemeRule.Nothing));
 
             return result;
         }

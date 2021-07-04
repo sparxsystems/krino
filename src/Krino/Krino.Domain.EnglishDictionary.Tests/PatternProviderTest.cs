@@ -47,12 +47,10 @@ namespace Krino.Domain.EnglishDictionary.Tests
         [Test]
         public void GetPossibleAdTrees_EnglishPattern()
         {
-            var complexSentenceRule = EnglishPattern.I_U_I;
-
             var graph = PatternProvider.Patterns.CreatePatternGraph();
 
             var count = 0;
-            var result = graph.GetPossibleAdTrees(complexSentenceRule, MorphemeProvider.AttributesModel, 7)
+            var result = graph.GetPossibleAdTrees(EnglishPattern.I_Period_I, MorphemeProvider.AttributesModel, 9)
                 .Select(x =>
                 {
                     var signature = x.PatternSignature;

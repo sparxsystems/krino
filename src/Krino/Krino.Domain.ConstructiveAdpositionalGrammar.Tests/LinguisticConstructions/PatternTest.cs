@@ -133,5 +133,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             pattern = EnglishPattern.A_O;
             Assert.IsFalse(pattern.IsMorphematicAdPosition());
         }
+
+        [Test]
+        public void Equals_Patterns()
+        {
+            var pattern1 = EnglishPattern.O_E_I;
+            var pattern2 = new Pattern(EnglishPattern.O_E_I);
+
+            Assert.IsTrue(pattern1 == pattern2);
+        }
     }
 }

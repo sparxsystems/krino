@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
@@ -120,10 +121,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <returns></returns>
         public static IAdTree MakeShallowCopy(this IAdTree adTree)
         {
-            // Store the current position in the tree.
-            AdTreePosition[] path = adTree.GetPath();
-
             IAdTree root = adTree.Root;
+
+            // Store the current position in the tree.
+            AdTreePosition[] path = root != adTree ? adTree.GetPath() : null;
 
             // <original, copy>
             Stack<Tuple<IAdTree, IAdTree>> stack = new Stack<Tuple<IAdTree, IAdTree>>();
@@ -134,26 +135,49 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 Tuple<IAdTree, IAdTree> aThis = stack.Pop();
 
-                if (aThis.Item1.Left != null)
+                var leftTask = Task.Run(() =>
                 {
-                    IAdTree leftCopy = new AdTree(aThis.Item1.Left.Morpheme, aThis.Item1.Left.Pattern);
-                    aThis.Item2.Left = leftCopy;
-                    stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
-                }
+                    if (aThis.Item1.Left != null)
+                    {
+                        IAdTree leftCopy = new AdTree(aThis.Item1.Left.Morpheme, aThis.Item1.Left.Pattern);
+                        aThis.Item2.Left = leftCopy;
+                        lock (stack)
+                        {
+                            stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
+                        }
+                    }
+                });
 
-                if (aThis.Item1.Right != null)
+                var rightTask = Task.Run(() =>
                 {
-                    IAdTree rightCopy = new AdTree(aThis.Item1.Right.Morpheme, aThis.Item1.Right.Pattern);
-                    aThis.Item2.Right = rightCopy;
-                    stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
-                }
+                    if (aThis.Item1.Right != null)
+                    {
+                        IAdTree rightCopy = new AdTree(aThis.Item1.Right.Morpheme, aThis.Item1.Right.Pattern);
+                        aThis.Item2.Right = rightCopy;
+                        lock (stack)
+                        {
+                            stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
+                        }
+                    }
+                });
+
+                leftTask.Wait();
+                rightTask.Wait();
             }
 
-            // Return the tree element in the copy which is on the same path as the input parameter.
-            if (rootCopy.TryGetAdTree(path, out IAdTree result))
+            if (path != null)
             {
-                return result;
+                // Return the tree element in the copy which is on the same path as the input parameter.
+                if (rootCopy.TryGetAdTree(path, out IAdTree result))
+                {
+                    return result;
+                }
             }
+            else
+            {
+                return rootCopy;
+            }
+            
 
             throw new InvalidOperationException("Failed to properly copy the adtree.");
         }

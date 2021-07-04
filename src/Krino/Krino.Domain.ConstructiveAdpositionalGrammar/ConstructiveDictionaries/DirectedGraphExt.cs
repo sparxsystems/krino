@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Graphs;
 using System.Collections.Generic;
@@ -13,7 +14,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     {
         public static IEnumerable<IAdTree> GetPossibleAdTrees(this IDirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes)
         {
-            var result = GetPossibleAdTreesParallelIntern(patternGraph, start, attributesModel, maxMorphemes);
+            var buffer = new DoubleKeyDictionary<int, Pattern, IEnumerable<IAdTree>>();
+            var result = GetPossibleAdTreesParallel(patternGraph, start, attributesModel, maxMorphemes, buffer);
             return result;
         }
 
@@ -126,7 +128,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             }
         }
 
-        private static IEnumerable<IAdTree> GetPossibleAdTreesParallelIntern(IDirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes)
+        private static IEnumerable<IAdTree> GetPossibleAdTreesParallel(IDirectedGraph<Pattern, AdTreePosition> patternGraph,
+            Pattern start, IAttributesModel attributesModel, int maxMorphemes,
+            DoubleKeyDictionary<int, Pattern, IEnumerable<IAdTree>> buffer)
         {
             using var _t = Trace.Entering();
 
@@ -140,6 +144,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             // If non-morpheme pattern is still possible - it connects two morphemes, left and right.
             else if (maxMorphemes >= 2)
             {
+                var parallelOptions = new ParallelOptions();
+                if (maxMorphemes < 5)
+                {
+                    parallelOptions.MaxDegreeOfParallelism = 1;
+                }
+
                 // Get connecting non-morpheme patterns + 1 morpheme pattern.
                 // Note: only one morpheme pattern is needed, otherwise the final result would be many same adtrees.
                 var patternsOnRight = patternGraph.GetEdgesGoingFrom(start)
@@ -167,9 +177,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
                 if (relevantPatternsOnRight.Any() && relevantPatternsOnLeft.Any())
                 {
-                    Parallel.ForEach(relevantPatternsOnRight, rightPattern =>
+                    Parallel.ForEach(relevantPatternsOnRight, parallelOptions, rightPattern =>
                     {
-                        var rightSubAdTrees = GetPossibleAdTreesIntern(patternGraph, rightPattern, attributesModel, maxMorphemes - 1);
+                        var rightSubAdTrees = GetAdTreesFromBuffer(buffer, patternGraph, rightPattern, attributesModel, maxMorphemes - 1);
+
                         foreach (var rightSubAdTree in rightSubAdTrees)
                         {
                             // Note: if rightPattern is a morpheme then the rightSubAdTree is null.
@@ -178,10 +189,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
                             if (morphemesOnRight < maxMorphemes)
                             {
-                                Parallel.ForEach(relevantPatternsOnLeft, leftPattern =>
+                                Parallel.ForEach(relevantPatternsOnLeft, parallelOptions, leftPattern =>
                                 {
                                     var newMaxMorphemesOnLeft = maxMorphemes - morphemesOnRight;
-                                    var leftSubAdTrees = GetPossibleAdTreesIntern(patternGraph, leftPattern, attributesModel, newMaxMorphemesOnLeft);
+                                    var leftSubAdTrees = GetAdTreesFromBuffer(buffer, patternGraph, leftPattern, attributesModel, newMaxMorphemesOnLeft);
+                                    
                                     foreach (var leftSubAdTree in leftSubAdTrees)
                                     {
                                         var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
@@ -206,9 +218,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 }
                 else if (relevantPatternsOnRight.Any())
                 {
-                    Parallel.ForEach(relevantPatternsOnRight, rightPattern =>
+                    Parallel.ForEach(relevantPatternsOnRight, parallelOptions, rightPattern =>
                     {
-                        var rightSubAdTrees = GetPossibleAdTreesIntern(patternGraph, rightPattern, attributesModel, maxMorphemes - 1);
+                        var rightSubAdTrees = GetAdTreesFromBuffer(buffer, patternGraph, rightPattern, attributesModel, maxMorphemes - 1);
                         foreach (var rightSubAdTree in rightSubAdTrees)
                         {
                             var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
@@ -227,9 +239,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 }
                 else if (relevantPatternsOnLeft.Any())
                 {
-                    Parallel.ForEach(relevantPatternsOnLeft, leftPattern =>
+                    Parallel.ForEach(relevantPatternsOnLeft, parallelOptions, leftPattern =>
                     {
-                        var leftSubAdTrees = GetPossibleAdTreesIntern(patternGraph, leftPattern, attributesModel, maxMorphemes - 1);
+                        var leftSubAdTrees = GetAdTreesFromBuffer(buffer, patternGraph, leftPattern, attributesModel, maxMorphemes - 1);
                         foreach (var leftSubAdTree in leftSubAdTrees)
                         {
                             var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
@@ -249,6 +261,34 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             }
 
             return result;
+        }
+
+        private static IEnumerable<IAdTree> GetAdTreesFromBuffer(DoubleKeyDictionary<int, Pattern, IEnumerable<IAdTree>> buffer,
+            IDirectedGraph<Pattern, AdTreePosition> patternGraph,
+            Pattern pattern,
+            IAttributesModel attributesModel, int maxMorphemes)
+        {
+            IEnumerable<IAdTree> result = null;
+            lock (buffer)
+            {
+                if (buffer.TryGetValue(maxMorphemes, pattern, out var adTrees))
+                {
+                    result = adTrees.ToList();
+                }
+            }
+
+            if (result == null)
+            {
+                var adTrees = GetPossibleAdTreesParallel(patternGraph, pattern, attributesModel, maxMorphemes, buffer);
+
+                lock (buffer)
+                {
+                    buffer[maxMorphemes, pattern] = adTrees;
+                    result = adTrees.ToList();
+                }
+            }
+
+            return result.Select(x => x?.MakeShallowCopy());
         }
 
         private static int GetMorphemesCount(IAdTree adTree)

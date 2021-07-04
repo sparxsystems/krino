@@ -106,7 +106,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern I_U_I { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "I-U-I", "Complex and compound sentences.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme);
 
-        public static Pattern I_Period_I { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "•", "Rule for the period punctuation mark.", EnglishAttributes.U.NonLexeme.PunctuationMark.Period, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme);
+        public static Pattern I_Period_I { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "•", "Rule for the period punctuation mark.", EnglishAttributes.U.NonLexeme.PunctuationMark.Period, MorphemeRule.Nothing, MorphemeRule.I_Lexeme_Something(myAttributesModel));
 
     }
 }
