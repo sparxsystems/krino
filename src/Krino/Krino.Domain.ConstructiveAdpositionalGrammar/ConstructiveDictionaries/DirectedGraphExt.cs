@@ -12,11 +12,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     {
         public static IEnumerable<IAdTree> GetPossibleAdTrees(this IDirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes)
         {
-            var result = GetPossibleAdTreesIntern(patternGraph, start, attributesModel, maxMorphemes, maxMorphemes);
+            var result = GetPossibleAdTreesIntern(patternGraph, start, attributesModel, maxMorphemes);
             return result;
         }
 
-        public static IEnumerable<IAdTree> GetPossibleAdTreesIntern(IDirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes, int maxRecursion)
+        public static IEnumerable<IAdTree> GetPossibleAdTreesIntern(IDirectedGraph<Pattern, AdTreePosition> patternGraph, Pattern start, IAttributesModel attributesModel, int maxMorphemes)
         {
             using var _t = Trace.Entering();
 
@@ -24,50 +24,76 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             {
                 yield return null;
             }
-            else if (maxRecursion > 0)
+            else if (maxMorphemes >= 2)
             {
-                // Get connecting patterns which are not morphemes.
-                // Note: only one morpheme pattern is needed, othrwise the final result would be many same adtrees.
-                var rightChildPatterns = patternGraph.GetEdgesGoingFrom(start)
+                // Get connecting non-morpheme patterns + 1 morpheme pattern.
+                // Note: only one morpheme pattern is needed, otherwise the final result would be many same adtrees.
+                var patternsOnRight = patternGraph.GetEdgesGoingFrom(start)
                     .Where(x => x.Value == AdTreePosition.ParrentForChildOnRight)
                     .Select(x => x.To);
-                var rightChildNonMorphemes = rightChildPatterns.Where(x => !x.IsLikeMorpheme);
-                var rightChildMorpheme = rightChildPatterns.FirstOrDefault(x => x.IsLikeMorpheme);
-                var rightChildRelevantPatterns = rightChildNonMorphemes;
-                if (rightChildMorpheme != null)
+                var nonMorphemePatternsOnRight = patternsOnRight.Where(x => !x.IsLikeMorpheme);
+                var morphemePatternOnRight = patternsOnRight.FirstOrDefault(x => x.IsLikeMorpheme);
+                var relevantPatternsOnRight = nonMorphemePatternsOnRight;
+                if (morphemePatternOnRight != null)
                 {
-                    rightChildRelevantPatterns = rightChildNonMorphemes.Concat(new Pattern[] { rightChildMorpheme });
+                    relevantPatternsOnRight = new Pattern[] { morphemePatternOnRight }.Concat(nonMorphemePatternsOnRight);
                 }
 
 
-                var leftChildPatterns = patternGraph.GetEdgesGoingFrom(start)
+                var patternsOnLeft = patternGraph.GetEdgesGoingFrom(start)
                     .Where(x => x.Value == AdTreePosition.ParrentForChildOnLeft)
                     .Select(x => x.To);
-                var leftChildNonMorphemes = leftChildPatterns.Where(x => !x.IsLikeMorpheme);
-                var leftChildMorpheme = leftChildPatterns.FirstOrDefault(x => x.IsLikeMorpheme);
-                var leftChildRelevantPatterns = leftChildNonMorphemes;
-                if (leftChildMorpheme != null)
+                var nonMorphemePatternsOnLeft = patternsOnLeft.Where(x => !x.IsLikeMorpheme);
+                var morphemePatternOnLeft = patternsOnLeft.FirstOrDefault(x => x.IsLikeMorpheme);
+                var relevantPatternsOnLeft = nonMorphemePatternsOnLeft;
+                if (morphemePatternOnLeft != null)
                 {
-                    leftChildRelevantPatterns = leftChildRelevantPatterns.Concat(new Pattern[] { leftChildMorpheme });
+                    relevantPatternsOnLeft = new Pattern[] { morphemePatternOnLeft }.Concat(nonMorphemePatternsOnLeft);
                 }
 
-                var rightSubAdTrees = rightChildRelevantPatterns
-                    .SelectMany(x => GetPossibleAdTreesIntern(patternGraph, x, attributesModel, maxMorphemes, maxRecursion - 1))
-                    .ToList();
-
-                var leftSubAdTrees = leftChildRelevantPatterns
-                    .SelectMany(x => GetPossibleAdTreesIntern(patternGraph, x, attributesModel, maxMorphemes, maxRecursion - 1))
-                    .ToList();
-
-                if (rightSubAdTrees.Any() && leftSubAdTrees.Any())
+                if (relevantPatternsOnRight.Any() && relevantPatternsOnLeft.Any())
                 {
-                    foreach (var rightSubAdTree in rightSubAdTrees)
+                    foreach (var rightPattern in relevantPatternsOnRight)
                     {
-                        foreach (var leftSubAdTree in leftSubAdTrees)
+                        var rightSubAdTrees = GetPossibleAdTreesIntern(patternGraph, rightPattern, attributesModel, maxMorphemes - 1);
+                        foreach (var rightSubAdTree in rightSubAdTrees)
+                        {
+                            // Note: if rightPattern is a morpheme then the rightSubAdTree is null.
+
+                            var morphemesOnRight = rightSubAdTree != null ? GetMorphemesCount(rightSubAdTree) : 1;
+
+                            if (morphemesOnRight < maxMorphemes)
+                            {
+                                foreach (var leftPattern in relevantPatternsOnLeft)
+                                {
+                                    var newMaxMorphemesOnLeft = maxMorphemes - morphemesOnRight;
+                                    var leftSubAdTrees = GetPossibleAdTreesIntern(patternGraph, leftPattern, attributesModel, newMaxMorphemesOnLeft);
+                                    foreach (var leftSubAdTree in leftSubAdTrees)
+                                    {
+                                        var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
+                                        adTree.Right = rightSubAdTree;
+                                        adTree.Left = leftSubAdTree;
+
+                                        var morphemesCount = GetMorphemesCount(adTree);
+                                        if (morphemesCount <= maxMorphemes)
+                                        {
+                                            yield return adTree;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else if (relevantPatternsOnRight.Any())
+                {
+                    foreach (var rightPattern in relevantPatternsOnRight)
+                    {
+                        var rightSubAdTrees = GetPossibleAdTreesIntern(patternGraph, rightPattern, attributesModel, maxMorphemes - 1);
+                        foreach (var rightSubAdTree in rightSubAdTrees)
                         {
                             var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
                             adTree.Right = rightSubAdTree;
-                            adTree.Left = leftSubAdTree;
 
                             var morphemesCount = GetMorphemesCount(adTree);
                             if (morphemesCount <= maxMorphemes)
@@ -77,31 +103,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                         }
                     }
                 }
-                else if (rightSubAdTrees.Any())
+                else if (relevantPatternsOnLeft.Any())
                 {
-                    foreach (var rightSubAdTree in rightSubAdTrees)
+                    foreach (var leftPattern in relevantPatternsOnLeft)
                     {
-                        var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
-                        adTree.Right = rightSubAdTree;
-
-                        var morphemesCount = GetMorphemesCount(adTree);
-                        if (morphemesCount <= maxMorphemes)
+                        var leftSubAdTrees = GetPossibleAdTreesIntern(patternGraph, leftPattern, attributesModel, maxMorphemes - 1);
+                        foreach (var leftSubAdTree in leftSubAdTrees)
                         {
-                            yield return adTree;
-                        }
-                    }
-                }
-                else if (leftSubAdTrees.Any())
-                {
-                    foreach (var leftSubAdTree in leftSubAdTrees)
-                    {
-                        var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
-                        adTree.Left = leftSubAdTree;
+                            var adTree = new AdTree(Morpheme.Epsilon(attributesModel), start);
+                            adTree.Left = leftSubAdTree;
 
-                        var morphemesCount = GetMorphemesCount(adTree);
-                        if (morphemesCount <= maxMorphemes)
-                        {
-                            yield return adTree;
+                            var morphemesCount = GetMorphemesCount(adTree);
+                            if (morphemesCount <= maxMorphemes)
+                            {
+                                yield return adTree;
+                            }
                         }
                     }
                 }

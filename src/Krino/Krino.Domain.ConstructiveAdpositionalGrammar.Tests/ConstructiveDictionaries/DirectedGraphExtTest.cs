@@ -35,8 +35,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 3).ToList();
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("IOA", result[0].PatternSignature);
-            Assert.AreEqual("IO", result[1].PatternSignature);
+            Assert.AreEqual("IO", result[0].PatternSignature);
+            Assert.AreEqual("IOA", result[1].PatternSignature);
+            
 
 
             patterns = new List<Pattern>()
@@ -50,8 +51,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 4).ToList();
             Assert.AreEqual(2, result.Count);
-            Assert.AreEqual("IOUO", result[0].PatternSignature);
-            Assert.AreEqual("IO", result[1].PatternSignature);
+            Assert.AreEqual("IO", result[0].PatternSignature);
+            Assert.AreEqual("IOUO", result[1].PatternSignature);
+            
 
 
             patterns = new List<Pattern>()
