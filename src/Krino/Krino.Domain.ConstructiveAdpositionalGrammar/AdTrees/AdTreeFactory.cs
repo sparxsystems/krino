@@ -8,7 +8,7 @@ using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
-    internal class AdTreeFactory : IEnumerable<AdTreeFactory>
+    public class AdTreeFactory : IEnumerable<AdTreeFactory>
     {
         public AdTreeFactory(Pattern patter)
         {

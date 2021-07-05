@@ -2,8 +2,10 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
 using Krino.Domain.EnglishGrammar.Morphemes;
+using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System;
+using System.IO;
 using System.Linq;
 
 namespace Krino.Domain.EnglishDictionary.Tests
@@ -49,15 +51,18 @@ namespace Krino.Domain.EnglishDictionary.Tests
         {
             var graph = PatternProvider.Patterns.CreatePatternGraph();
 
-            var count = 0;
-            var result = graph.GetPossibleAdTrees(EnglishPattern.e_Period_I, MorphemeProvider.AttributesModel, 9)
-                .Select(x =>
-                {
-                    var signature = x.PatternSignature;
-                    ++count;
-                    return x;
-                })
-                .ToList();
+            Trace.Logger = new TextWriterLogger(new StreamWriter("/Ondrej/tmp/tracefile.txt"));
+
+            try
+            {
+                Trace.StartProfiler();
+
+                var result = graph.GetPossibleAdTrees(EnglishPattern.e_Period_I, 8).ToList();
+            }
+            finally
+            {
+                Trace.StopProfiler();
+            }
         }
     }
 }

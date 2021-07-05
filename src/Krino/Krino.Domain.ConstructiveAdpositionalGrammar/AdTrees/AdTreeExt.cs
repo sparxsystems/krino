@@ -135,34 +135,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 Tuple<IAdTree, IAdTree> aThis = stack.Pop();
 
-                var leftTask = Task.Run(() =>
+                if (aThis.Item1.Left != null)
                 {
-                    if (aThis.Item1.Left != null)
+                    IAdTree leftCopy = new AdTree(aThis.Item1.Left.Morpheme, aThis.Item1.Left.Pattern);
+                    aThis.Item2.Left = leftCopy;
+                    lock (stack)
                     {
-                        IAdTree leftCopy = new AdTree(aThis.Item1.Left.Morpheme, aThis.Item1.Left.Pattern);
-                        aThis.Item2.Left = leftCopy;
-                        lock (stack)
-                        {
-                            stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
-                        }
+                        stack.Push(Tuple.Create(aThis.Item1.Left, leftCopy));
                     }
-                });
+                }
 
-                var rightTask = Task.Run(() =>
+                if (aThis.Item1.Right != null)
                 {
-                    if (aThis.Item1.Right != null)
+                    IAdTree rightCopy = new AdTree(aThis.Item1.Right.Morpheme, aThis.Item1.Right.Pattern);
+                    aThis.Item2.Right = rightCopy;
+                    lock (stack)
                     {
-                        IAdTree rightCopy = new AdTree(aThis.Item1.Right.Morpheme, aThis.Item1.Right.Pattern);
-                        aThis.Item2.Right = rightCopy;
-                        lock (stack)
-                        {
-                            stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
-                        }
+                        stack.Push(Tuple.Create(aThis.Item1.Right, rightCopy));
                     }
-                });
-
-                leftTask.Wait();
-                rightTask.Wait();
+                }
             }
 
             if (path != null)

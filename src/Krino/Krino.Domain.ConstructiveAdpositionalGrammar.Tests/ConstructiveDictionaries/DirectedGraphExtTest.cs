@@ -1,8 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -29,11 +27,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
 
             var graph = patterns.CreatePatternGraph();
 
-            var result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 2).ToList();
+            var result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, 2).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("IO", result[0].PatternSignature);
 
-            result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 3).ToList();
+            result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, 3).ToList();
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("IO", result[0].PatternSignature);
             Assert.AreEqual("IAO", result[1].PatternSignature);
@@ -49,7 +47,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             };
             graph = patterns.CreatePatternGraph();
 
-            result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 4).ToList();
+            result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, 4).ToList();
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("IO", result[0].PatternSignature);
             Assert.AreEqual("IOUO", result[1].PatternSignature);
@@ -65,7 +63,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
             };
             graph = patterns.CreatePatternGraph();
 
-            result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, myAttributesModel, 3).ToList();
+            result = graph.GetPossibleAdTrees(EnglishPattern.O1_I, 3).ToList();
 
             // Note: only one of morpheme rules ("O" and "O>O_s") shall be taken into account.
             Assert.AreEqual(1, result.Count);

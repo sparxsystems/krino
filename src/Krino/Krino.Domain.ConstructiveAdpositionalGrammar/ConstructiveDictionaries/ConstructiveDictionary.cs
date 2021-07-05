@@ -17,7 +17,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     {
         private MultiKeyDistinctValueDictionary<string, Morpheme> myLexemes;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myNonLexemes;
-        private Dictionary<string, List<IAdTree>> myAdTreeConstructions;
+        private Dictionary<string, List<AdTreeFactory>> myAdTreeConstructions;
 
         public ConstructiveDictionary(IAttributesModel attributesModel, IEnumerable<Morpheme> morphemes, IEnumerable<Pattern> patterns)
         {
@@ -159,11 +159,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             }
         }
 
-        public IEnumerable<IAdTree> FindAdTreeConstructions(string patternSignature)
+        public IEnumerable<AdTreeFactory> FindAdTreeConstructions(string patternSignature)
         {
             myAdTreeConstructions.TryGetValue(patternSignature, out var adTreeConstructions);
 
-            var result = adTreeConstructions ?? Enumerable.Empty<IAdTree>();
+            var result = adTreeConstructions ?? Enumerable.Empty<AdTreeFactory>();
             return result;
         }
 
@@ -218,15 +218,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         private void InitializeAdTreeConstructions()
         {
-            myAdTreeConstructions = new Dictionary<string, List<IAdTree>>();
+            myAdTreeConstructions = new Dictionary<string, List<AdTreeFactory>>();
             
-            var adTrees = PatternGraph2.GetPossibleAdTrees(Pattern.O1_I(AttributesModel), AttributesModel, 5);
+            var adTrees = PatternGraph2.GetPossibleAdTrees(Pattern.O1_I(AttributesModel), 5);
             foreach (var adTreeItem in adTrees)
             {
                 var patternSignature = adTreeItem.PatternSignature;
                 if (!myAdTreeConstructions.TryGetValue(patternSignature, out var adTreeConstructions))
                 {
-                    adTreeConstructions = new List<IAdTree>();
+                    adTreeConstructions = new List<AdTreeFactory>();
                     myAdTreeConstructions[patternSignature] = adTreeConstructions;
                 }
 

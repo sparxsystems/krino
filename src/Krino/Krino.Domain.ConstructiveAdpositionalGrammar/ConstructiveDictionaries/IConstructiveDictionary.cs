@@ -94,6 +94,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         /// </summary>
         /// <param name="patternSignature"></param>
         /// <returns></returns>
-        IEnumerable<IAdTree> FindAdTreeConstructions(string patternSignature);
+        IEnumerable<AdTreeFactory> FindAdTreeConstructions(string patternSignature);
     }
 }
