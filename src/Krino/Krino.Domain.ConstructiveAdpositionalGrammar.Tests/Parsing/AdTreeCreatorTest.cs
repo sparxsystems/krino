@@ -35,7 +35,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O_Lexeme,
                 EnglishPattern.I_Lexeme,
                 EnglishPattern.O1_I.SetLeftFirst(),
-                EnglishPattern.I_Period_I,
+                EnglishPattern.e_Period_I,
             };
 
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, morphemes, patterns);

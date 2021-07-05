@@ -39,7 +39,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         [Test]
         public void CompoundSentence()
         {
-            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.I_Period_I)
+            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.e_Period_I)
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "and", EnglishAttributes.U.Lexeme.Conjunction.Coordinating), EnglishPattern.I_U_I)
                 {
@@ -75,7 +75,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         [Test]
         public void ComplexSentence_Argument()
         {
-            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.I_Period_I)
+            var adTree = new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark), EnglishPattern.e_Period_I)
             {
                 Right = new AdTree(new Morpheme(myAttributesModel, "because", EnglishAttributes.U.Lexeme.Conjunction.Subordinating.Sememe.Cause), EnglishPattern.I_U_I)
                 {

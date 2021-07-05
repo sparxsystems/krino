@@ -77,7 +77,7 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.I_U_I,
 
 
-            EnglishPattern.I_Period_I,
+            EnglishPattern.e_Period_I,
         };
     }
 }

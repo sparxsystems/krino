@@ -15,6 +15,11 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern A_Lexeme { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme, "Rule accepting adjunctive lexemes.");
         public static Pattern E_Lexeme_Adverb { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Adverb, "Rule accepting circumstantial adverb lexemes.");
 
+        public static Pattern E_Lexeme_Preposition { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Preposition, "Rule accepting circumstantial preposition lexemes.");
+        public static Pattern U_Lexeme_Conjunction { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.Lexeme.Conjunction, "Rule accepting conjunction lexemes.");
+        public static Pattern U_NonLexeme_Punctuation { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.NonLexeme.PunctuationMark, "Rule accepting punctuation marks.");
+
+
         public static Pattern O_Suffix = Pattern.Morpheme(myAttributesModel, EnglishAttributes.O.NonLexeme.Suffix, "O+", "Rule accepting stative suffix.");
         public static Pattern I_Suffix = Pattern.Morpheme(myAttributesModel, EnglishAttributes.I.NonLexeme.Suffix, "I+", "Rule accepting verbant suffix.");
 
@@ -106,7 +111,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern I_U_I { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "I-U-I", "Complex and compound sentences.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme);
 
-        public static Pattern I_Period_I { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "•", "Rule for the period punctuation mark.", EnglishAttributes.U.NonLexeme.PunctuationMark.Period, MorphemeRule.Nothing, MorphemeRule.I_Lexeme_Something(myAttributesModel));
+        public static Pattern e_Period_I { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "•", "Rule for the period punctuation mark.", EnglishAttributes.U.NonLexeme.PunctuationMark.Period, MorphemeRule.Nothing, MorphemeRule.I_Lexeme_Something(myAttributesModel));
 
     }
 }

@@ -50,7 +50,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
             var graph = PatternProvider.Patterns.CreatePatternGraph();
 
             var count = 0;
-            var result = graph.GetPossibleAdTrees(EnglishPattern.I_Period_I, MorphemeProvider.AttributesModel, 9)
+            var result = graph.GetPossibleAdTrees(EnglishPattern.e_Period_I, MorphemeProvider.AttributesModel, 9)
                 .Select(x =>
                 {
                     var signature = x.PatternSignature;
