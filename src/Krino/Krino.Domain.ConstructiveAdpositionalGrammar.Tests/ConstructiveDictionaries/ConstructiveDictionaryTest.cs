@@ -1,9 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
 using System.Collections.Generic;
@@ -21,8 +19,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.A_Lexeme,
-                EnglishPattern.O_Lexeme,
+                EnglishPattern.A_Lexeme_Adjective,
+                EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.A_O,
             };
 

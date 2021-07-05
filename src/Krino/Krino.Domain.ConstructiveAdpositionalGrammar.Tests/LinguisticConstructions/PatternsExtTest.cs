@@ -14,7 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         {
             var patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
+                EnglishPattern.O_Lexeme_Noun,
             };
 
             var graph = patterns.CreatePatternGraph();
@@ -24,8 +24,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.O1_I,
                 EnglishPattern.O2_I,
             };
@@ -34,8 +34,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             Assert.AreEqual(4, graph.Count);
             Assert.AreEqual(4, graph.Edges.Count());
 
-            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.I_Lexeme).Count());
-            Assert.AreEqual(2, graph.GetEdgesGoingTo(EnglishPattern.O_Lexeme).Count());
+            Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.I_Lexeme_Verb).Count());
+            Assert.AreEqual(2, graph.GetEdgesGoingTo(EnglishPattern.O_Lexeme_Noun).Count());
             Assert.AreEqual(1, graph.GetEdgesGoingTo(EnglishPattern.O1_I).Count());
             Assert.AreEqual(0, graph.GetEdgesGoingTo(EnglishPattern.O2_I).Count());
         }

@@ -3,7 +3,7 @@
 namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
 {
     /// <summary>
-    /// Attributes of mood.
+    /// Refers to the attitude of the action.
     /// </summary>
     public class VerbMoodSememes : EnumGroupBase
     {

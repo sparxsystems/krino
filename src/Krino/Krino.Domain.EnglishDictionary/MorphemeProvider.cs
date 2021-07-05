@@ -65,7 +65,7 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme(AttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
             new Morpheme(AttributesModel, ",", EnglishAttributes.U.NonLexeme.PunctuationMark.Comma),
             new Morpheme(AttributesModel, "ed", EnglishAttributes.I.NonLexeme.Suffix),
-            new Morpheme(AttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous),
+            new Morpheme(AttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix),
             new Morpheme(AttributesModel, "s", EnglishAttributes.O.NonLexeme.Suffix),
         };
     }

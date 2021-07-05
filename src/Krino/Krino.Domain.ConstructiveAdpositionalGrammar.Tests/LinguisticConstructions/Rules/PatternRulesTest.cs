@@ -35,12 +35,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             Assert.IsTrue(rule.Evaluate(child));
 
             parent = EnglishPattern.O1_I;
-            child = EnglishPattern.I_Lexeme;
+            child = EnglishPattern.I_Lexeme_Verb;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
             parent = EnglishPattern.O1_I;
-            child = EnglishPattern.Will_I;
+            child = EnglishPattern.I_to_I_will;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
@@ -58,6 +58,29 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             child = EnglishPattern.I_U_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
+
+
+            parent = EnglishPattern.I_to_A_ed;
+            child = EnglishPattern.I_Lexeme_Verb;
+            rule = PatternRules.ByRightMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            // This shall be false because we try to attach the non-lexeme suffix to the right, where a lexeme is expected.
+            parent = EnglishPattern.I_to_A_ed;
+            child = EnglishPattern.I_Suffix_ed;
+            rule = PatternRules.ByRightMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
+
+            parent = EnglishPattern.O_to_O_s;
+            child = EnglishPattern.O_Lexeme_Noun;
+            rule = PatternRules.ByRightMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+
+            parent = EnglishPattern.e_Period_I;
+            child = EnglishPattern.I_U_I;
+            rule = PatternRules.ByRightMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
         }
 
 
@@ -65,28 +88,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         public void ByLeftMorphemeRule()
         {
             var parent = EnglishPattern.O2_I;
-            var child = EnglishPattern.O_Lexeme;
+            var child = EnglishPattern.O_Lexeme_Noun;
             var rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
             parent = EnglishPattern.O2_I;
-            child = EnglishPattern.A_Lexeme;
+            child = EnglishPattern.A_Lexeme_Adjective;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
 
             parent = EnglishPattern.O2_I;
-            child = EnglishPattern.O_s;
+            child = EnglishPattern.O_to_O_s;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
 
-            parent = EnglishPattern.O_s;
+            parent = EnglishPattern.O_to_O_s;
             child = Pattern.Morpheme(myAttributesModel, "s", EnglishAttributes.O.NonLexeme.Suffix, "Os");
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
-            parent = EnglishPattern.O_s;
-            child = EnglishPattern.O_s;
+            parent = EnglishPattern.O_to_O_s;
+            child = EnglishPattern.O_to_O_s;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
 
@@ -104,6 +127,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             child = Pattern.MorphematicAdPosition(myAttributesModel, "E-U-E", "", EnglishAttributes.U.Lexeme, EnglishAttributes.E.Lexeme, EnglishAttributes.E.Lexeme.Adverb);
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
+
+
+            parent = EnglishPattern.I_to_A_ed;
+            child = EnglishPattern.I_Suffix_ed;
+            rule = PatternRules.ByLeftMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            parent = EnglishPattern.I_to_A_ed;
+            child = EnglishPattern.I_Suffix_ing;
+            rule = PatternRules.ByLeftMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
         }
     }
 }

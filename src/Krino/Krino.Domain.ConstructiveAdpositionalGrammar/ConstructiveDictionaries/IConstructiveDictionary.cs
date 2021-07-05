@@ -81,15 +81,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         IEnumerable<Pattern> Patterns { get; }
 
         /// <summary>
-        /// Pattern graph.
-        /// </summary>
-        /// <remarks>
-        /// How GrammarCharacters are interconnected via patterns.
-        /// GrammarCharacters are nodes and patterns are edges of the graph.
-        /// </remarks>
-        IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; }
-
-        /// <summary>
         /// Returns adtree constructions matching the pattern signature.
         /// </summary>
         /// <param name="patternSignature"></param>

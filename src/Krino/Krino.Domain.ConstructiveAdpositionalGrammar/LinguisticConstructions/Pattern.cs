@@ -69,9 +69,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
                 LeftRule = leftRule,
                 RightRule = rightRule,
-            }
-            .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Nothing)
-            .SetMorphematicAdPositionRuleForRight(MorphematicAdPositionRules.Nothing);
+            };
 
         public static Pattern EpsilonAdPosition(IAttributesModel attributesModel, string patternName, string description, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)

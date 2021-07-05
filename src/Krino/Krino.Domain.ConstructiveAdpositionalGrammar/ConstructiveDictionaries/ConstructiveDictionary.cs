@@ -29,7 +29,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 Patterns = patternConstructions.AllPatterns ?? Enumerable.Empty<Pattern>();
 
                 InitializeMorphemes(morphemes);
-                InitializePatternGraph();
             }
         }
 
@@ -184,31 +183,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             }
         }
 
-
-        private void InitializePatternGraph()
-        {
-            using (Trace.Entering())
-            {
-                // Defines how patterns connect grammar characters.
-                PatternGraph = new DirectedGraph<GrammarCharacter, Pattern>();
-                PatternGraph.AddVertices(GrammarCharacterExt.GetValues());
-
-                foreach (Pattern pattern in Patterns)
-                {
-                    // If the pattern connects two grammar characters.
-                    bool isEdge = pattern.LeftRule.GrammarCharacter != GrammarCharacter.e && pattern.RightRule.GrammarCharacter != GrammarCharacter.e;
-                    if (isEdge)
-                    {
-                        PatternGraph.AddEdge(pattern.LeftRule.GrammarCharacter, pattern.RightRule.GrammarCharacter, pattern);
-
-                        if (pattern.LeftRule.GrammarCharacter != pattern.RightRule.GrammarCharacter)
-                        {
-                            PatternGraph.AddEdge(pattern.RightRule.GrammarCharacter, pattern.LeftRule.GrammarCharacter, pattern);
-                        }
-                    }
-                }
-            }
-        }
 
         private IEnumerable<WordConstruct> FindPossibleWordConstructions(
             string word,

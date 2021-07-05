@@ -32,13 +32,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.e_Period_I,
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.e_Period_I });
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
             AdTreeCreator creator = new AdTreeCreator(dictionary);
 
@@ -63,14 +63,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.I_Lexeme_Verb,
 
-                EnglishPattern.I_Suffix,
+                EnglishPattern.I_Suffix_s,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.I_s,
+                EnglishPattern.I_to_I_s,
             };
 
             var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
@@ -93,15 +93,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "he", EnglishAttributes.O.Lexeme.Pronoun),
                 new Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
                 new Morpheme(myAttributesModel, "writ", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
-                new Morpheme(myAttributesModel, "er", EnglishAttributes.O.NonLexeme.Suffix),
+                new Morpheme(myAttributesModel, "er", EnglishAttributes.I.NonLexeme.Suffix),
             };
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.I_Lexeme_Verb,
 
-                EnglishPattern.O_Suffix,
+                EnglishPattern.I_Suffix_er,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
@@ -137,16 +137,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.I_Lexeme_Verb,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.I_Suffix,
+                EnglishPattern.I_Suffix_ing,
 
-                EnglishPattern.Have_I,
-                EnglishPattern.Been_I_ing,
-                EnglishPattern.I_ing,
+                EnglishPattern.I_to_I_have,
+                EnglishPattern.I_to_been_I_ing,
+                EnglishPattern.I_to_I_ing,
             };
 
             var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
@@ -176,8 +176,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.A_Lexeme,
-                EnglishPattern.O_Lexeme,
+                EnglishPattern.A_Lexeme_Determiner,
+                EnglishPattern.A_Lexeme_Adjective,
+                EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.A_O,
             };
 
@@ -198,8 +199,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.A_Lexeme,
-                EnglishPattern.O_Lexeme,
+                EnglishPattern.A_Lexeme_Adjective,
+                EnglishPattern.O_Lexeme_Noun,
 
                 EnglishPattern.A_O,
 
@@ -231,8 +232,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.O_Lexeme,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.O_Lexeme_Noun,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O_E_O,
@@ -267,8 +268,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.O_Lexeme,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.E_Lexeme_Adverb,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
@@ -302,12 +303,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.I_Lexeme_Verb,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.Will_I,
+                EnglishPattern.I_to_I_will,
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -315,7 +316,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Lexemes.
                 new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme.Pronoun),
                 new Morpheme(myAttributesModel, "will", EnglishAttributes.I.Lexeme.Verb.Modal),
-                new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Form.Infinitive | EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
+                new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
             };
 
             var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
@@ -335,14 +336,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.E_Lexeme_Adverb,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.Will_I,
-                EnglishPattern.Not_I,
+                EnglishPattern.I_to_I_will,
+                EnglishPattern.I_to_not_I,
 
                 EnglishPattern.E_I,
             };
@@ -383,9 +384,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.A_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.A_Lexeme_Determiner,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
@@ -422,9 +424,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.A_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.A_Lexeme_Determiner,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
@@ -465,9 +468,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.A_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.A_Lexeme_Determiner,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
@@ -476,7 +480,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O_E_I,
             };
 
-            var patternConstructions = new PatternConstructions(6, patterns, new Pattern[] { EnglishPattern.O_E_I });
+            var patternConstructions = new PatternConstructions(7, patterns, new Pattern[] { EnglishPattern.O_E_I });
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -500,17 +504,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 // Lexemes.
                 new Morpheme(myAttributesModel, "it", EnglishAttributes.O.Lexeme.Pronoun),
                 new Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
-                new Morpheme(myAttributesModel, "good", EnglishAttributes.A.Lexeme.Adjective.Attributive),
+                new Morpheme(myAttributesModel, "good", EnglishAttributes.A.Lexeme.Adjective),
                 new Morpheme(myAttributesModel, "and", EnglishAttributes.U.Lexeme.Conjunction),
-                new Morpheme(myAttributesModel, "bad", EnglishAttributes.A.Lexeme.Adjective.Attributive),
+                new Morpheme(myAttributesModel, "bad", EnglishAttributes.A.Lexeme.Adjective),
                 new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun),
             };
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.A_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.A_Lexeme_Adjective,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
@@ -548,9 +553,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.A_Lexeme,
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
@@ -558,7 +563,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.I_U_I,
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.I_U_I });
+            var patternConstructions = new PatternConstructions(6, patterns, new Pattern[] { EnglishPattern.I_U_I });
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);

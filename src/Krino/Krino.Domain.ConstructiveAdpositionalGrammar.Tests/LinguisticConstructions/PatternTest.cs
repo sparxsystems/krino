@@ -46,7 +46,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         [Test]
         public void IsMorpheme()
         {
-            Pattern pattern = EnglishPattern.A_Lexeme;
+            Pattern pattern = EnglishPattern.A_Lexeme_Adjective;
             Assert.IsTrue(pattern.IsMorpheme);
 
             // Empty string rule causes it is not the morpheme pattern.
@@ -133,6 +133,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             pattern = EnglishPattern.A_O;
             Assert.IsFalse(pattern.IsMorphematicAdPosition());
         }
+
+
 
         [Test]
         public void Equals_Patterns()

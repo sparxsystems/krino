@@ -38,7 +38,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         }
 
         [Test]
-        public void IsMatch()
+        public void Evaluate()
         {
             IAttributesModel attributesModel = new EnglishAttributesModel();
 

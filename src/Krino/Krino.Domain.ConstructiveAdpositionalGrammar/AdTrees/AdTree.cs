@@ -300,7 +300,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     while (moveNext())
                     {
-                        if (!thisEnumerator.Current.Morpheme.Equals(otherEnumerator.Current.Morpheme) ||
+                        if (thisEnumerator.Current.Morpheme.Morph != otherEnumerator.Current.Morpheme.Morph ||
+                            thisEnumerator.Current.Morpheme.Attributes != otherEnumerator.Current.Morpheme.Attributes ||
                             !thisEnumerator.Current.Pattern.Equals(otherEnumerator.Current.Pattern))
                         {
                             return false;
@@ -398,10 +399,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 StringBuilder builder = new StringBuilder();
                 builder.Append(Pattern.Name);
 
-                if (!string.IsNullOrEmpty(Morpheme.Morph))
+                var phrase = Phrase;
+
+                if (!string.IsNullOrEmpty(phrase))
                 {
                     builder.Append(": ");
-                    builder.Append(Morpheme.Morph);
+                    builder.Append(phrase);
                 }
                 else if (!Pattern.UpRule.MorphRule.Equals(MorphRules.Nothing) &&
                          !Pattern.UpRule.MorphRule.Evaluate(null) &&

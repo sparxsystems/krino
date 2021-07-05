@@ -3,7 +3,7 @@
 namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
 {
     /// <summary>
-    /// Tense attributes.
+    /// Refers to when the action occurred.
     /// </summary>
     public class VerbTenseSememes : EnumGroupBase
     {

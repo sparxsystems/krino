@@ -2,7 +2,6 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
-using System.Numerics;
 
 namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 {
@@ -10,21 +9,30 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
     {
         private static EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
 
-        public static Pattern O_Lexeme { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.O.Lexeme, "Rule accepting stative lexemes.");
-        public static Pattern I_Lexeme { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.I.Lexeme, "Rule accepting verbant lexemes.");
-        public static Pattern A_Lexeme { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme, "Rule accepting adjunctive lexemes.");
-        public static Pattern E_Lexeme_Adverb { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Adverb, "Rule accepting circumstantial adverb lexemes.");
+        public static Pattern O_Lexeme_Noun { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.O.Lexeme.Noun, "O.Noun", "Rule accepting nouns.");
+        public static Pattern O_Lexeme_Pronoun { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.O.Lexeme.Pronoun, "O.Pronoun", "Rule accepting pronouns.");
 
-        public static Pattern E_Lexeme_Preposition { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Preposition, "Rule accepting circumstantial preposition lexemes.");
-        public static Pattern U_Lexeme_Conjunction { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.Lexeme.Conjunction, "Rule accepting conjunction lexemes.");
-        public static Pattern U_NonLexeme_Punctuation { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.NonLexeme.PunctuationMark, "Rule accepting punctuation marks.");
+        public static Pattern I_Lexeme_Verb { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.I.Lexeme.Verb, "I.Verb", "Rule accepting verbant lexemes.");
+
+        public static Pattern A_Lexeme_Adjective { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Adjective, "A.Adjective", "Rule accepting adjective lexemes.");
+        public static Pattern A_Lexeme_Determiner { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Determiner, "A.Determiner", "Rule accepting determiner lexemes.");
+
+        public static Pattern E_Lexeme_Adverb { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Adverb, "E.Adverb", "Rule accepting circumstantial adverb lexemes.");
+        public static Pattern E_Lexeme_Preposition { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Preposition, "E.Preposition", "Rule accepting circumstantial preposition lexemes.");
+
+        public static Pattern U_Lexeme_Conjunction { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.Lexeme.Conjunction, "U.Connjunction", "Rule accepting conjunction lexemes.");
+        public static Pattern U_NonLexeme_Punctuation { get; } = Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.NonLexeme.PunctuationMark, "U.Punctuation", "Rule accepting punctuation marks.");
 
 
-        public static Pattern O_Suffix = Pattern.Morpheme(myAttributesModel, EnglishAttributes.O.NonLexeme.Suffix, "O+", "Rule accepting stative suffix.");
-        public static Pattern I_Suffix = Pattern.Morpheme(myAttributesModel, EnglishAttributes.I.NonLexeme.Suffix, "I+", "Rule accepting verbant suffix.");
+        public static Pattern O_Suffix_s = Pattern.Morpheme(myAttributesModel, "s", EnglishAttributes.O.NonLexeme.Suffix, "O-s", "Rule accepting stative suffix s.");
+
+        public static Pattern I_Suffix_s = Pattern.Morpheme(myAttributesModel, "s", EnglishAttributes.I.NonLexeme.Suffix, "I-er", "Rule accepting verb suffix er.");
+        public static Pattern I_Suffix_er = Pattern.Morpheme(myAttributesModel, "er", EnglishAttributes.I.NonLexeme.Suffix, "I-er", "Rule accepting verb suffix er.");
+        public static Pattern I_Suffix_ing = Pattern.Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix, "I-ing", "Rule accepting verb suffix ing.");
+        public static Pattern I_Suffix_ed = Pattern.Morpheme(myAttributesModel, "ed", EnglishAttributes.I.NonLexeme.Suffix, "I-ed", "Rule accepting verb suffix ed.");
 
 
-        public static Pattern O1_I { get; } = Pattern.O1_I(myAttributesModel);
+        public static Pattern O1_I => Pattern.O1_I(myAttributesModel);
         public static Pattern O2_I { get; } = Pattern.O2_I(myAttributesModel);
         public static Pattern O3_I { get; } = Pattern.O3_I(myAttributesModel);
         public static Pattern O4_I { get; } = Pattern.O4_I(myAttributesModel);
@@ -36,37 +44,37 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern O_to_A { get; } = Pattern.MonoTransference(myAttributesModel, "O>A", EnglishAttributes.A.Lexeme.Adjective, EnglishAttributes.O.Lexeme.Noun);
 
 
-        public static Pattern I_s { get; } = Pattern.PairTransference(myAttributesModel, "I>I_s", "Rule to transform verb to 3rd person.",
+        public static Pattern I_to_I_s { get; } = Pattern.PairTransference(myAttributesModel, "I>I_s", "Rule to transform verb to 3rd person.",
                 EnglishAttributes.I.Lexeme.Verb | EnglishAttributes.I.Lexeme.Verb.Sememe.Person.Third,
                 EnglishMorphemeRule.Is("s", EnglishAttributes.I.NonLexeme.Suffix).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
                 EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb));
 
         // negation: TODO: negation should appear in sememe attributes ??
-        public static Pattern Not_I { get; } = Pattern.PairTransference(myAttributesModel, "I>not_I", "Rule negating a lexeme verbant.",
+        public static Pattern I_to_not_I { get; } = Pattern.PairTransference(myAttributesModel, "I>not_I", "Rule negating a lexeme verbant.",
             EnglishAttributes.I.Lexeme.Verb.Form.Infinitive,
             EnglishMorphemeRule.Is(MorphRules.Is("not"), EnglishAttributes.E.Lexeme.Adverb).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
-            EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive))
+            EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb))
             .SetLeftFirst();
 
-        public static Pattern Will_I { get; } = Pattern.PairTransference(myAttributesModel, "I>will_I", "Rule for simple future of a lexeme verbant.",
+        public static Pattern I_to_I_will { get; } = Pattern.PairTransference(myAttributesModel, "I>I_will", "Rule for simple future of a lexeme verbant.",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
                     EnglishMorphemeRule.Is(MorphRules.Is("will"), EnglishAttributes.I.Lexeme.Verb.Modal).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
-                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.Infinitive))
+                    EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb))
                     .SetLeftFirst();
 
-        public static Pattern Have_I { get; } = Pattern.PairTransference(myAttributesModel, "I>have_I", "Rule for present perfect.",
+        public static Pattern I_to_I_have { get; } = Pattern.PairTransference(myAttributesModel, "I>I_have", "Rule for present perfect.",
                     EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                     EnglishMorphemeRule.Is(MorphRules.Is("have"), EnglishAttributes.I.Lexeme.Verb).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple))
                     .SetLeftFirst();
 
-        public static Pattern Been_I_ing { get; } = Pattern.PairTransference(myAttributesModel, "been-I_ing", "Rule for continuous present perfect.",
-                    EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
+        public static Pattern I_to_been_I_ing { get; } = Pattern.PairTransference(myAttributesModel, "I>been_I_ing", "Rule for continuous present perfect.",
+                    EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.ContinousPerfect,
                     EnglishMorphemeRule.Is("been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
                     EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous))
                     .SetLeftFirst();
 
-        public static Pattern I_ing { get; } = Pattern.PairTransference(myAttributesModel, "I>I_ing", "Rule for continuous verb.",
+        public static Pattern I_to_I_ing { get; } = Pattern.PairTransference(myAttributesModel, "I>I_ing", "Rule for continuous verb.",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
                 EnglishMorphemeRule.Is("ing", EnglishAttributes.I.NonLexeme.Suffix).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
                 EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb.Modal));
@@ -86,15 +94,14 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 EnglishMorphemeRule.Is("er", EnglishAttributes.I.NonLexeme.Suffix).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
                 EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb.Modal));
 
-        public static Pattern O_s { get; } = Pattern.PairTransference(myAttributesModel, "O>O_s", "Rule to make a noun plural.",
-                EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
+        public static Pattern O_to_O_s { get; } = Pattern.PairTransference(myAttributesModel, "O>O_s", "Rule to make a noun plural.",
+                EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural,
                 EnglishMorphemeRule.Is("s", EnglishAttributes.O.NonLexeme.Suffix).SetMorphematicAdPositionRule(MorphematicAdPositionRules.Nothing),
                 EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme.Noun));
 
 
         public static Pattern A_O { get; } = Pattern.EpsilonAdPosition(myAttributesModel, "A-O", "Rule to add an adjunctive before a stative.", EnglishAttributes.A.Lexeme, EnglishAttributes.O.Lexeme)
-                .SetLeftFirst()
-                .SetMorphematicAdPositionRuleForRight(MorphematicAdPositionRules.Epsilon);
+                .SetLeftFirst();
 
         public static Pattern E_I { get; } = Pattern.EpsilonAdPosition(myAttributesModel, "E-I", "Rule to add a circumstantial adverb after verb valencies.", EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme)
                 .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Nothing);

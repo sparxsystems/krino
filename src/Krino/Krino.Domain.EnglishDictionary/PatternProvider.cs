@@ -8,10 +8,22 @@ namespace Krino.Domain.EnglishDictionary
     {
         public static List<Pattern> Patterns = new List<Pattern>()
         {
-            EnglishPattern.O_Lexeme,
-            EnglishPattern.I_Lexeme,
-            EnglishPattern.A_Lexeme,
+            EnglishPattern.O_Lexeme_Noun,
+            EnglishPattern.O_Lexeme_Pronoun,
+            EnglishPattern.I_Lexeme_Verb,
+            EnglishPattern.A_Lexeme_Adjective,
+            EnglishPattern.A_Lexeme_Determiner,
             EnglishPattern.E_Lexeme_Adverb,
+            EnglishPattern.E_Lexeme_Preposition,
+            EnglishPattern.U_Lexeme_Conjunction,
+            EnglishPattern.U_NonLexeme_Punctuation,
+
+            EnglishPattern.O_Suffix_s,
+
+            EnglishPattern.I_Suffix_ed,
+            EnglishPattern.I_Suffix_er,
+            EnglishPattern.I_Suffix_ing,
+            EnglishPattern.I_Suffix_s,
 
             EnglishPattern.O1_I.SetLeftFirst(),
             EnglishPattern.O1_I,
@@ -25,23 +37,20 @@ namespace Krino.Domain.EnglishDictionary
 
             EnglishPattern.O_to_A,
 
-            EnglishPattern.O_Suffix,
-            EnglishPattern.I_Suffix,
-
-            
-            EnglishPattern.Not_I,
+            EnglishPattern.I_to_I_s,
+            EnglishPattern.I_to_not_I,
 
             // simple future
-            EnglishPattern.Will_I,
+            EnglishPattern.I_to_I_will,
 
             // present perfect
-            EnglishPattern.Have_I,
+            EnglishPattern.I_to_I_have,
 
             // Continuouse present perfect.
-            EnglishPattern.Been_I_ing,
+            EnglishPattern.I_to_been_I_ing,
 
             // Continouse
-            EnglishPattern.I_ing,
+            EnglishPattern.I_to_I_ing,
 
             // Making adjective from verb.
             EnglishPattern.I_to_A_ed,
@@ -49,8 +58,10 @@ namespace Krino.Domain.EnglishDictionary
             // Making noun from verb.
             EnglishPattern.I_to_O_ing,
 
+            EnglishPattern.I_to_O_er,
+
             // Plural noun.
-            EnglishPattern.O_s,
+            EnglishPattern.O_to_O_s,
 
             
             // Adjuncrive before stative.
@@ -66,6 +77,7 @@ namespace Krino.Domain.EnglishDictionary
             // E.g. speed of light
             EnglishPattern.O_E_O,
 
+            EnglishPattern.A_U_A,
 
             // E.g. O and O
             EnglishPattern.O_U_O,

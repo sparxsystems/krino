@@ -1,13 +1,10 @@
-using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
-using Krino.Domain.EnglishGrammar.Morphemes;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
-using System;
 using System.IO;
 using System.Linq;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 
 namespace Krino.Domain.EnglishDictionary.Tests
 {
@@ -32,8 +29,9 @@ namespace Krino.Domain.EnglishDictionary.Tests
             var adTreeCreator = new AdTreeCreator(dictionary);
             var results = adTreeCreator.Create("walking");
 
-            Assert.IsTrue(results.Count > 0);
+            Assert.AreEqual(2, results.Count);
             Assert.AreEqual(1, results.Count(x => x.Pattern.Name == "I>O_ing"));
+            Assert.AreEqual(1, results.Count(x => x.Pattern.Name == "I>I_ing"));
         }
 
         [Test]

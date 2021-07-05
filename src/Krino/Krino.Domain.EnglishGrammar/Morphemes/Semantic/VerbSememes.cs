@@ -22,12 +22,24 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Semantic
 
         public NumberSememes Number { get; }
 
+        /// <summary>
+        /// Refers to when the action occurred.
+        /// </summary>
         public VerbTenseSememes Tense { get; }
 
+        /// <summary>
+        /// Refers to the flow of time.
+        /// </summary>
         public VerbAspectSememes Aspect { get; }
 
+        /// <summary>
+        /// Refers to the attitude of the action.
+        /// </summary>
         public VerbMoodSememes Mood { get; }
 
+        /// <summary>
+        /// Refers who does the verb (active vs passive).
+        /// </summary>
         public VerbVoiceSememes Voice { get; }
     }
 }

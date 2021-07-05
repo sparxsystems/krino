@@ -47,50 +47,46 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             // If valency order is ok.
             else if (parent.ValencyPosition == 0 || parent.ValencyPosition == child.ValencyPosition + 1)
             {
-                if (parent.RightRule.AttributesRule is IValueRule<BigInteger> parentAttributesValueRule)
+                // If the connecting child is a morpheme.
+                if (child.IsLikeMorpheme)
                 {
-                    // If the connecting child is a morpheme.
-                    if (child.IsLikeMorpheme)
+                    if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                     {
-                        if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
-                        {
-                            // If the parent attribute value is within the child attribute value.
-                            // E.g. parent accepts I.Verb.Lexeme and the child accepts I.Verb.Lexeme.Modal.
-                            result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
+                        result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
 
-                            if (result)
-                            {
-                                if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule)
-                                {
-                                    result = parent.RightRule.MorphRule.Evaluate(childMorphValueRule.Value);
-                                }
-                                else if (parent.RightRule.MorphRule is IValueRule<string>)
-                                {
-                                    // Prent is a rule for a particular morph string, but the child is a generic rule.
-                                    // Therefore child may accept also morphe strings which are not accepted byt the parent.
-                                    result = false;
-                                }
-                            }
-                        }
-                    }
-                    else if (child.IsMorphematicAdPosition())
-                    {
-                        if (parent.RightRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
+                        if (result)
                         {
-                            if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                            if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule)
                             {
-                                result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
+                                result = parent.RightRule.MorphRule.Evaluate(childMorphValueRule.Value);
+                            }
+                            else if (parent.RightRule.MorphRule is IValueRule<string>)
+                            {
+                                // Prent is a rule for a particular morph string, but the child is a generic rule.
+                                // Therefore child may accept also morphe strings which are not accepted byt the parent.
+                                result = false;
                             }
                         }
-                    }
-                    else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
-                    {
-                        result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
                     }
                 }
-                else if (parent.RightRule.GrammarCharacter == child.RightRule.GrammarCharacter)
+                else if (child.IsMorphematicAdPosition())
                 {
-                    result = true;
+                    // If the parent can accept such morphematic adposition.
+                    if (parent.RightRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
+                    {
+                        if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                        {
+                            result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
+                        }
+                    }
+                }
+                else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                {
+                    result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
+                }
+                else
+                {
+                    result = parent.RightRule.GrammarCharacter == child.RightRule.GrammarCharacter;
                 }
             }
             
@@ -109,45 +105,42 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             {
                 return false;
             }
-            else if (parent.LeftRule.AttributesRule is IValueRule<BigInteger> parentAttributesValueRule)
+            else if (child.IsLikeMorpheme)
             {
-                if (child.IsLikeMorpheme)
+                if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                 {
-                    if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
-                    {
-                        result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
+                    result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
 
-                        if (result)
-                        {
-                            if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule)
-                            {
-                                result = parent.LeftRule.MorphRule.Evaluate(childMorphValueRule.Value);
-                            }
-                            else if (parent.LeftRule.MorphRule is IValueRule<string>)
-                            {
-                                // Prent is a rule for a particular morph string, but the child is a generic rule.
-                                // Therefore child may accept also morphe strings which are not accepted byt the parent.
-                                result = false;
-                            }
-                        }
-                    }
-                }
-                else if (child.IsMorphematicAdPosition())
-                {
-                    if (parent.LeftRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
+                    if (result)
                     {
-                        // Note: get the driving grammar character of the child from the right branch.
-                        if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                        if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule)
                         {
-                            result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
+                            result = parent.LeftRule.MorphRule.Evaluate(childMorphValueRule.Value);
+                        }
+                        else if (parent.LeftRule.MorphRule is IValueRule<string>)
+                        {
+                            // Prent is a rule for a particular morph string, but the child is a generic rule.
+                            // Therefore child may accept also morph strings which are not accepted byt the parent.
+                            result = false;
                         }
                     }
                 }
-                // Note: get the driving grammar character of the child from the right branch.
-                else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+            }
+            else if (child.IsMorphematicAdPosition())
+            {
+                if (parent.LeftRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
                 {
-                    result = EnumBase.IsIn(parentAttributesValueRule.Value, childAttributesValueRule.Value);
+                    // Note: get the driving grammar character of the child from the right branch.
+                    if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                    {
+                        result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
+                    }
                 }
+            }
+            // Note: get the driving grammar character of the child from the right branch.
+            else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+            {
+                result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
             }
             // Note: get the driving grammar character of the child from the right branch.
             else if (parent.LeftRule.GrammarCharacter == child.RightRule.GrammarCharacter)

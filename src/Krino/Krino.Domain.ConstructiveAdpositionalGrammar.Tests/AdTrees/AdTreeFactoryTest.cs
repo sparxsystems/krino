@@ -16,8 +16,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             var morphemeAdTrees = new IAdTree[]
             {
-                new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), EnglishPattern.A_Lexeme),
-                new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), EnglishPattern.O_Lexeme)
+                new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), EnglishPattern.A_Lexeme_Adjective),
+                new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), EnglishPattern.O_Lexeme_Noun)
             };
 
             var adTreeFactory = new AdTreeFactory(EnglishPattern.A_O);
@@ -28,9 +28,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             
             morphemeAdTrees = new IAdTree[]
             {
-                new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), EnglishPattern.A_Lexeme),
-                new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), EnglishPattern.A_Lexeme),
-                new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), EnglishPattern.O_Lexeme)
+                new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), EnglishPattern.A_Lexeme_Determiner),
+                new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), EnglishPattern.A_Lexeme_Adjective),
+                new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), EnglishPattern.O_Lexeme_Noun)
             };
 
             adTreeFactory = new AdTreeFactory(EnglishPattern.A_O)
@@ -45,10 +45,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             morphemeAdTrees = new IAdTree[]
             {
-                new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), EnglishPattern.O_Lexeme),
+                new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), EnglishPattern.O_Lexeme_Pronoun),
                 new AdTree(new Morpheme(myAttributesModel, "and", EnglishAttributes.U.Lexeme.Conjunction), EnglishPattern.U_Lexeme_Conjunction),
-                new AdTree(new Morpheme(myAttributesModel, "you", EnglishAttributes.O.Lexeme.Pronoun), EnglishPattern.O_Lexeme),
-                new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme),
+                new AdTree(new Morpheme(myAttributesModel, "you", EnglishAttributes.O.Lexeme.Pronoun), EnglishPattern.O_Lexeme_Pronoun),
+                new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme_Verb),
                 new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period), EnglishPattern.U_NonLexeme_Punctuation)
             };
 
@@ -70,10 +70,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
 
             morphemeAdTrees = new IAdTree[]
             {
-                new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), EnglishPattern.O_Lexeme),
-                new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme),
+                new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), EnglishPattern.O_Lexeme_Pronoun),
+                new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme_Verb),
                 new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition), EnglishPattern.E_Lexeme_Preposition),
-                new AdTree(new Morpheme(myAttributesModel, "room", EnglishAttributes.O.Lexeme.Noun), EnglishPattern.O_Lexeme)
+                new AdTree(new Morpheme(myAttributesModel, "room", EnglishAttributes.O.Lexeme.Noun), EnglishPattern.O_Lexeme_Noun)
             };
 
             adTreeFactory = new AdTreeFactory(EnglishPattern.O_E_I)
@@ -92,8 +92,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         {
             var morphemeAdTrees = new IAdTree[]
             {
-                new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), EnglishPattern.A_Lexeme),
-                new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), EnglishPattern.A_Lexeme)
+                new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), EnglishPattern.A_Lexeme_Determiner),
+                new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), EnglishPattern.A_Lexeme_Adjective)
                 
                 // missing book here
             };

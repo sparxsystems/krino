@@ -2,6 +2,7 @@
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules
@@ -51,6 +52,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
 
         private IAttributesModel myAttributesModel;
+        private GrammarCharacter? myGrammarCharacter;
 
 
         public MorphemeRule(IAttributesModel attributesModel, IRule<string> morphRule, IRule<BigInteger> attributesRule,
@@ -80,14 +82,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         {
             get
             {
-                GrammarCharacter result = GrammarCharacter.e;
-
-                if (myAttributesModel != null && AttributesRule is IValueRule<BigInteger> valueRule)
+                if (myGrammarCharacter == null)
                 {
-                    result = myAttributesModel.GetGrammarCharacter(valueRule.Value);
+                    GrammarCharacter result = GrammarCharacter.e;
+
+                    if (myAttributesModel != null)
+                    {
+                        var attributesValues = AttributesRule.GetValues();
+                        if (attributesValues.Any())
+                        {
+                            result = myAttributesModel.GetGrammarCharacter(attributesValues.First());
+                            if (attributesValues.Any(x => myAttributesModel.GetGrammarCharacter(x) != result))
+                            {
+                                result = GrammarCharacter.e;
+                            }
+                        }
+                    }
+
+                    myGrammarCharacter = result;
                 }
 
-                return result;
+                return myGrammarCharacter.Value;
             }
         }
 

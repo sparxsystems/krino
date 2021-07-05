@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
+using Krino.Domain.EnglishDictionary;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
@@ -17,9 +18,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         {
             var patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
-                EnglishPattern.A_Lexeme,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.A_Lexeme_Adjective,
                 EnglishPattern.O1_I,
                 EnglishPattern.A_O,
             };
@@ -39,8 +40,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.O1_I,
                 EnglishPattern.O_U_O,
             };
@@ -55,10 +56,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme,
-                EnglishPattern.I_Lexeme,
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.O1_I,
-                EnglishPattern.O_s,
+                EnglishPattern.O_to_O_s,
             };
             graph = patterns.CreatePatternGraph();
 
@@ -67,6 +68,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             // Note: only one of morpheme rules ("O" and "O>O_s") shall be taken into account.
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual("IO", result[0].PatternSignature);
+
+
+
+            patterns = new List<Pattern>()
+            {
+                EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.O1_I.SetLeftFirst(),
+                EnglishPattern.O2_I,
+                EnglishPattern.I_U_I,
+            };
+            graph = patterns.CreatePatternGraph();
+
+            //graph = PatternProvider.Patterns.CreatePatternGraph();
+            
+            var signatures = graph.GetAdTreeFactories(EnglishPattern.I_U_I, 7)
+                .Select(x => x.PatternSignature)
+                .ToList();
+
+            Assert.IsTrue(signatures.Contains("OIOUOIO"));
         }
     }
 }
