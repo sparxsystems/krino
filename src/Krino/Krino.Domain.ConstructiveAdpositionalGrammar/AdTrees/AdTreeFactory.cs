@@ -35,7 +35,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     {
                         if (item.Pattern.IsLeftFirst)
                         {
-                            if (item.Left == null)
+                            if (item.Left == null && item.Pattern.LeftRule.GrammarCharacter != GrammarCharacter.e)
                             {
                                 result.Append(item.Pattern.LeftRule.GrammarCharacter);
                             }
@@ -43,14 +43,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                             {
                                 result.Append(item.Pattern.UpRule.GrammarCharacter);
                             }
-                            if (item.Right == null)
+                            if (item.Right == null && item.Pattern.LeftRule.GrammarCharacter != GrammarCharacter.e)
                             {
                                 result.Append(item.Pattern.RightRule.GrammarCharacter);
                             }
                         }
                         else
                         {
-                            if (item.Right == null)
+                            if (item.Right == null && item.Pattern.LeftRule.GrammarCharacter != GrammarCharacter.e)
                             {
                                 result.Append(item.Pattern.RightRule.GrammarCharacter);
                             }
@@ -58,7 +58,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                             {
                                 result.Append(item.Pattern.UpRule.GrammarCharacter);
                             }
-                            if (item.Left == null)
+                            if (item.Left == null && item.Pattern.LeftRule.GrammarCharacter != GrammarCharacter.e)
                             {
                                 result.Append(item.Pattern.LeftRule.GrammarCharacter);
                             }

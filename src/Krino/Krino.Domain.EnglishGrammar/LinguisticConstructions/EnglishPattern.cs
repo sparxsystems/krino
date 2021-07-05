@@ -105,6 +105,8 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         // E.g. speed of light
         public static Pattern O_E_O { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "O-E-O", "Circumstantial prepostion.", EnglishAttributes.E.Lexeme.Preposition, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme);
 
+
+        public static Pattern A_U_A { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "A-U-A", "Connecting adjectives with a conjunction.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.A.Lexeme.Adjective, EnglishAttributes.A.Lexeme.Adjective);
         public static Pattern O_U_O { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "O-U-O", "Connecting statives with a conjunction.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme);
 
         public static Pattern I_U_O { get; } = Pattern.MorphematicAdPosition(myAttributesModel, "I-U-O", "Connecting verbant and stative with a conjunction.", EnglishAttributes.U.Lexeme.Conjunction, EnglishAttributes.I.Lexeme, EnglishAttributes.O.Lexeme);

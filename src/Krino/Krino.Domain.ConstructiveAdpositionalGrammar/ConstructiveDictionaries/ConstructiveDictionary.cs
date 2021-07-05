@@ -17,21 +17,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
     {
         private MultiKeyDistinctValueDictionary<string, Morpheme> myLexemes;
         private MultiKeyDistinctValueDictionary<string, Morpheme> myNonLexemes;
-        private Dictionary<string, List<AdTreeFactory>> myAdTreeConstructions;
+        private PatternConstructions myPatternConstructions;
 
-        public ConstructiveDictionary(IAttributesModel attributesModel, IEnumerable<Morpheme> morphemes, IEnumerable<Pattern> patterns)
+        public ConstructiveDictionary(IAttributesModel attributesModel, PatternConstructions patternConstructions, IEnumerable<Morpheme> morphemes)
         {
             using (Trace.Entering())
             {
                 AttributesModel = attributesModel;
+                myPatternConstructions = patternConstructions;
                 morphemes = morphemes ?? Enumerable.Empty<Morpheme>();
-                Patterns = patterns ?? Enumerable.Empty<Pattern>();
+                Patterns = patternConstructions.AllPatterns ?? Enumerable.Empty<Pattern>();
 
                 InitializeMorphemes(morphemes);
                 InitializePatternGraph();
-                
-                PatternGraph2 = Patterns.CreatePatternGraph();
-                InitializeAdTreeConstructions();
             }
         }
 
@@ -44,8 +42,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         public IEnumerable<Pattern> Patterns { get; private set; }
 
         public IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; private set; }
-
-        public IDirectedGraph<Pattern, AdTreePosition> PatternGraph2 { get; private set; }
 
 
         public IEnumerable<Morpheme> FindLexemes(string word, int maxDistance)
@@ -161,7 +157,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IEnumerable<AdTreeFactory> FindAdTreeConstructions(string patternSignature)
         {
-            myAdTreeConstructions.TryGetValue(patternSignature, out var adTreeConstructions);
+            myPatternConstructions.PatternFactories.TryGetValue(patternSignature, out var adTreeConstructions);
 
             var result = adTreeConstructions ?? Enumerable.Empty<AdTreeFactory>();
             return result;
@@ -189,8 +185,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         }
 
 
-        //private IEnumerable<Pattern> GetApplicablePatterns()
-
         private void InitializePatternGraph()
         {
             using (Trace.Entering())
@@ -215,25 +209,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 }
             }
         }
-
-        private void InitializeAdTreeConstructions()
-        {
-            myAdTreeConstructions = new Dictionary<string, List<AdTreeFactory>>();
-            
-            var adTrees = PatternGraph2.GetPossibleAdTrees(Pattern.O1_I(AttributesModel), 5);
-            foreach (var adTreeItem in adTrees)
-            {
-                var patternSignature = adTreeItem.PatternSignature;
-                if (!myAdTreeConstructions.TryGetValue(patternSignature, out var adTreeConstructions))
-                {
-                    adTreeConstructions = new List<AdTreeFactory>();
-                    myAdTreeConstructions[patternSignature] = adTreeConstructions;
-                }
-
-                adTreeConstructions.Add(adTreeItem);
-            }
-        }
-
 
         private IEnumerable<WordConstruct> FindPossibleWordConstructions(
             string word,

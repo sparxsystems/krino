@@ -56,10 +56,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                 foreach (List<IAdTree> wordsVariation in wordsVariations)
                 {
-                    List<IAdTree> phraseAdTree = ComposeAdTree(wordsVariation);
+                    var patternSignature = string.Join("", wordsVariation.Select(x => x.Morpheme.GrammarCharacter));
 
-                    // Add only adtrees without errors.
-                    results.AddRange(phraseAdTree.Where(x => !x.GetNonconformities(myConstructiveDictionary.AttributesModel).Any()));
+                    var adTreeFactories = myConstructiveDictionary.FindAdTreeConstructions(patternSignature);
+                    if (adTreeFactories != null)
+                    {
+                        foreach (var factory in adTreeFactories)
+                        {
+                            var adTree = factory.CreateAdTree(myConstructiveDictionary.AttributesModel, wordsVariation);
+                            results.Add(adTree);
+                        }
+                    }
                 }
 
                 return results;

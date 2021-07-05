@@ -18,7 +18,7 @@ namespace Krino.ViewModel
 
         public ConstructiveDictionaryViewModel()
         {
-            myConstructiveDictionary = new ConstructiveDictionary(MorphemeProvider.AttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            myConstructiveDictionary = new EnglishConstructiveDictionaryFactory().Create();
             myAdTreeCreator = new AdTreeCreator(myConstructiveDictionary);
         }
 

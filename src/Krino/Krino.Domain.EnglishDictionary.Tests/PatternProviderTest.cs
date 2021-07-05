@@ -7,6 +7,7 @@ using NUnit.Framework;
 using System;
 using System.IO;
 using System.Linq;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 
 namespace Krino.Domain.EnglishDictionary.Tests
 {
@@ -16,7 +17,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
         [Test]
         public void PluralNoun()
         {
-            var dictionary = new ConstructiveDictionary(MorphemeProvider.AttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
             var adTreeCreator = new AdTreeCreator(dictionary);
             var results = adTreeCreator.Create("climates");
 
@@ -27,7 +28,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
         [Test]
         public void NounFromVerb()
         {
-            var dictionary = new ConstructiveDictionary(MorphemeProvider.AttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
             var adTreeCreator = new AdTreeCreator(dictionary);
             var results = adTreeCreator.Create("walking");
 
@@ -38,7 +39,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
         [Test]
         public void AdjectiveFromVerb()
         {
-            var dictionary = new ConstructiveDictionary(MorphemeProvider.AttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
             var adTreeCreator = new AdTreeCreator(dictionary);
             var results = adTreeCreator.Create("prohibited");
             
@@ -46,7 +47,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
             Assert.AreEqual("I>A_ed", results[0].Pattern.Name);
         }
 
-        [Test]
+        //[Test]
         public void GetPossibleAdTrees_EnglishPattern()
         {
             var graph = PatternProvider.Patterns.CreatePatternGraph();
@@ -57,7 +58,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
             {
                 Trace.StartProfiler();
 
-                var result = graph.GetPossibleAdTrees(EnglishPattern.e_Period_I, 8).ToList();
+                var result = graph.GetAdTreeFactories(EnglishPattern.e_Period_I, 8).ToList();
             }
             finally
             {

@@ -1,13 +1,6 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
-using Krino.Domain.EnglishGrammar.Morphemes;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 {
@@ -17,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void Parse_SimpleSentence()
         {
-            var dictionary = new ConstructiveDictionary(MorphemeProvider.AttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
             var parser = new Parser(dictionary);
 
             var sentences = parser.Parse("I read book.");
@@ -29,7 +22,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void Parse_Argument()
         {
-            var dictionary = new ConstructiveDictionary(MorphemeProvider.AttributesModel, MorphemeProvider.Morphemes, PatternProvider.Patterns);
+            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
             var parser = new Parser(dictionary);
 
             var sentences = parser.Parse("Book is book because book is book");
