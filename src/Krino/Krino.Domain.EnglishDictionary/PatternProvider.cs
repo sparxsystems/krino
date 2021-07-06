@@ -13,6 +13,7 @@ namespace Krino.Domain.EnglishDictionary
 
             EnglishPattern.I_Lexeme_Verb,
             EnglishPattern.I_Lexeme_Verb_Modal,
+            EnglishPattern.I_Lexeme_Verb_Have,
             EnglishPattern.I_Lexeme_Verb_Been,
 
             EnglishPattern.A_Lexeme_Adjective,
@@ -53,7 +54,8 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.Have_I,
 
             // Continuouse present perfect.
-            EnglishPattern.Been_I_ing,
+            EnglishPattern.Have_Been_Auxiliary,
+            EnglishPattern.Have_Been_I_ing,
 
             // Continouse
             EnglishPattern.I_to_I_ing,

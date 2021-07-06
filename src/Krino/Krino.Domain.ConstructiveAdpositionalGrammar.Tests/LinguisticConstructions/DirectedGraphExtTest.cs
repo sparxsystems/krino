@@ -104,24 +104,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             Assert.IsTrue(signatures.Contains("OII"));
 
 
-            patterns = new List<Pattern>()
-            {
-                EnglishPattern.O_Lexeme_Pronoun, // I
-                //EnglishPattern.I_Lexeme_Verb, // have
-                EnglishPattern.I_Lexeme_Verb_Been, // been
-                EnglishPattern.O1_I.SetLeftFirst(),
-                EnglishPattern.I_Suffix_ing, //-ing
-                EnglishPattern.Have_I, // have + (been + (read + ing))
-                EnglishPattern.Been_I_ing, // been + (read + ing)
-                EnglishPattern.I_to_I_ing, // read + ing
-            };
-            graph = patterns.CreatePatternGraph();
+            //patterns = new List<Pattern>()
+            //{
+            //    EnglishPattern.O_Lexeme_Pronoun, // I
+            //    //EnglishPattern.I_Lexeme_Verb, // have
+            //    EnglishPattern.I_Lexeme_Verb_Been, // been
+            //    EnglishPattern.O1_I.SetLeftFirst(),
+            //    EnglishPattern.I_Suffix_ing, //-ing
+            //    EnglishPattern.Have_I, // have + (been + (read + ing))
+            //    EnglishPattern.Been_I_ing, // been + (read + ing)
+            //    EnglishPattern.I_to_I_ing, // read + ing
+            //};
+            //graph = patterns.CreatePatternGraph();
 
-            signatures = graph.GetAdTreeFactories(EnglishPattern.O1_I.SetLeftFirst(), 5)
-                .Select(x => x.PatternSignature)
-                .ToList();
+            //signatures = graph.GetAdTreeFactories(EnglishPattern.O1_I.SetLeftFirst(), 5)
+            //    .Select(x => x.PatternSignature)
+            //    .ToList();
 
-            Assert.IsTrue(signatures.Contains("OIII"));
+            //Assert.IsTrue(signatures.Contains("OIII"));
         }
     }
 }

@@ -201,7 +201,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             }
             if (string.IsNullOrEmpty(leftMorph))
             {
-                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because {leftMorph} was set to null or empty string.");
+                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because {nameof(leftMorph)} was set to null or empty string.");
             }
 
             var result = new Pattern(patternName)
@@ -210,6 +210,34 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 UpRule = MorphemeRule.Is(attributesModel, MorphRules.EmptyString, upAttributes),
                 LeftRule = MorphemeRule.Is(attributesModel, leftMorph, leftAttributes),
                 RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
+            };
+
+            return result;
+        }
+
+        public static Pattern GrammarAdPosition(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes, string leftMorph, BigInteger leftAttributes, string rightMorph, BigInteger rightAttributes)
+        {
+            var upGrammarCharacter = attributesModel.GetGrammarCharacter(upAttributes);
+            if (upGrammarCharacter == GrammarCharacter.e)
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because up-grammar character was 'e'.");
+            }
+            if (string.IsNullOrEmpty(leftMorph))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because {nameof(leftMorph)} was set to null or empty string.");
+            }
+            if (string.IsNullOrEmpty(rightMorph))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because {nameof(rightMorph)} was set to null or empty string.");
+            }
+
+            var result = new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, MorphRules.EmptyString, upAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, leftMorph, leftAttributes),
+                RightRule = MorphemeRule.Is(attributesModel, rightMorph, rightAttributes),
             };
 
             return result;

@@ -14,6 +14,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern I_Lexeme_Verb => Pattern.Morpheme(myAttributesModel, EnglishAttributes.I.Lexeme.Verb, "I.Verb", "Rule accepting verbant lexemes.");
         public static Pattern I_Lexeme_Verb_Modal => Pattern.Morpheme(myAttributesModel, "will", EnglishAttributes.I.Lexeme.Verb.Modal, "I.Verb.Modal", "Rule accepting modal verbant lexemes.");
         public static Pattern I_Lexeme_Verb_Been => Pattern.Morpheme(myAttributesModel, "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple, "I.Verb.Been", "Rule accepting verb been.");
+        public static Pattern I_Lexeme_Verb_Have => Pattern.Morpheme(myAttributesModel, "have", EnglishAttributes.I.Lexeme.Verb, "I.Verb.Have", "Rule accepting verb have.");
 
         public static Pattern A_Lexeme_Adjective => Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Adjective, "A.Adjective", "Rule accepting adjective lexemes.");
         public static Pattern A_Lexeme_Determiner => Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Determiner, "A.Determiner", "Rule accepting determiner lexemes.");
@@ -99,18 +100,23 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 EnglishAttributes.I.Lexeme.Verb)
                 .SetLeftFirst();
 
+        public static Pattern Have_Been_I_ing => Pattern.GrammarAdPosition(myAttributesModel, "have_been", "Rule for auxiliary verbs in present perfect continuous.",
+                EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.ContinousPerfect,
+                EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
+                EnglishAttributes.I.Lexeme.Verb.Form.PresentParticiple)
+                .SetLeftFirst();
+
+        public static Pattern Have_Been_Auxiliary => Pattern.GrammarAdPosition(myAttributesModel, "have_been", "Rule for auxiliary verbs in present perfect continuous.",
+                EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
+                "have", EnglishAttributes.I.Lexeme.Verb,
+                "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)
+                .SetLeftFirst();
+
         public static Pattern Have_I => Pattern.GrammarAdPosition(myAttributesModel, "have_I", "Rule for present perfect.",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                 "have", EnglishAttributes.I.Lexeme.Verb,
                 EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)
                 .SetLeftFirst();
-
-        public static Pattern Been_I_ing => Pattern.GrammarAdPosition(myAttributesModel, "been_I_ing", "Rule for continuous present perfect.",
-                EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple | EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.ContinousPerfect,
-                "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
-                EnglishAttributes.I.Lexeme.Verb.Form.PresentParticiple)
-                .SetLeftFirst();
-
 
 
 

@@ -90,16 +90,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
 
             parent = EnglishPattern.O1_I;
-            child = EnglishPattern.Have_I;
+            child = EnglishPattern.Have_Been_I_ing;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
-            parent = EnglishPattern.Have_I;
-            child = EnglishPattern.Been_I_ing;
-            rule = PatternRules.ByRightMorphemeRule(parent);
-            Assert.IsTrue(rule.Evaluate(child));
-
-            parent = EnglishPattern.Been_I_ing;
+            parent = EnglishPattern.Have_Been_I_ing;
             child = EnglishPattern.I_to_I_ing;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
@@ -178,11 +173,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
 
-
-            parent = EnglishPattern.Have_I;
-            child = EnglishPattern.Been_I_ing;
+            parent = EnglishPattern.Have_Been_I_ing;
+            child = EnglishPattern.Have_Been_Auxiliary;
             rule = PatternRules.ByLeftMorphemeRule(parent);
-            Assert.IsFalse(rule.Evaluate(child));
+            Assert.IsTrue(rule.Evaluate(child));
         }
     }
 }

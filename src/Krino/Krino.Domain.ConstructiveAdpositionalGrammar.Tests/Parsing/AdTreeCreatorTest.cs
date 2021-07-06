@@ -138,15 +138,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             List<Pattern> patterns = new List<Pattern>()
             {
                 EnglishPattern.O_Lexeme_Pronoun, // I
-                EnglishPattern.I_Lexeme_Verb, // have
+                EnglishPattern.I_Lexeme_Verb_Have, // have
                 EnglishPattern.I_Lexeme_Verb_Been, // been
+                EnglishPattern.I_Lexeme_Verb, // read
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
                 EnglishPattern.I_Suffix_ing, //-ing
 
-                EnglishPattern.Have_I, // have + (been + (read + ing))
-                EnglishPattern.Been_I_ing, // been + (read + ing)
+                EnglishPattern.Have_Been_I_ing, // (have + been) + (read + ing))
+                EnglishPattern.Have_Been_Auxiliary, // have been
                 EnglishPattern.I_to_I_ing, // read + ing
             };
 
@@ -159,10 +160,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual(1, results.Count);
 
             Assert.AreEqual("i", results[0].Left.Morpheme.Morph);
-            Assert.AreEqual("have", results[0].Right.Left.Morpheme.Morph);
-            Assert.AreEqual("been", results[0].Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("ing", results[0].Right.Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("read", results[0].Right.Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("have", results[0].Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("been", results[0].Right.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("ing", results[0].Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", results[0].Right.Right.Right.Morpheme.Morph);
         }
 
         [Test]
