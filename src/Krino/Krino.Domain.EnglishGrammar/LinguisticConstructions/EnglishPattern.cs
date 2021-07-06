@@ -13,6 +13,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern I_Lexeme_Verb => Pattern.Morpheme(myAttributesModel, EnglishAttributes.I.Lexeme.Verb, "I.Verb", "Rule accepting verbant lexemes.");
         public static Pattern I_Lexeme_Verb_Modal => Pattern.Morpheme(myAttributesModel, "will", EnglishAttributes.I.Lexeme.Verb.Modal, "I.Verb.Modal", "Rule accepting modal verbant lexemes.");
+        public static Pattern I_Lexeme_Verb_Been => Pattern.Morpheme(myAttributesModel, "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple, "I.Verb.Been", "Rule accepting verb been.");
 
         public static Pattern A_Lexeme_Adjective => Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Adjective, "A.Adjective", "Rule accepting adjective lexemes.");
         public static Pattern A_Lexeme_Determiner => Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Determiner, "A.Determiner", "Rule accepting determiner lexemes.");
@@ -50,7 +51,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 EnglishAttributes.I.Lexeme.Verb);
 
         public static Pattern I_to_I_ing => Pattern.BipolarMorphemeTransference(myAttributesModel, "I>I_ing", "Rule for continuous verb.",
-                EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous,
+                EnglishAttributes.I.Lexeme.Verb.Form.PresentParticiple,
                 "ing", EnglishAttributes.I.NonLexeme.Suffix,
                 EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb.Modal);
 
@@ -81,13 +82,13 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 .SetLeftFirst();
 
         public static Pattern E_I => Pattern.EpsilonAdPosition(myAttributesModel, "E-I", "Rule to add a circumstantial adverb after verb valencies.",
-                EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme)
+                EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme.Verb)
                 .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Nothing);
 
 
         // negation: TODO: negation should appear in sememe attributes ??
         public static Pattern Not_I => Pattern.GrammarAdPosition(myAttributesModel, "not_I", "Rule negating a lexeme verbant.",
-                EnglishAttributes.I.Lexeme.Verb.Form.Infinitive,
+                EnglishAttributes.I.Lexeme.Verb.Form.Base,
                 "not", EnglishAttributes.E.Lexeme.Adverb,
                 EnglishAttributes.I.Lexeme.Verb)
                 .SetLeftFirst();
@@ -105,9 +106,9 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 .SetLeftFirst();
 
         public static Pattern Been_I_ing => Pattern.GrammarAdPosition(myAttributesModel, "been_I_ing", "Rule for continuous present perfect.",
-                EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.ContinousPerfect,
-                "been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
-                EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Continuous)
+                EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple | EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.ContinousPerfect,
+                "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple,
+                EnglishAttributes.I.Lexeme.Verb.Form.PresentParticiple)
                 .SetLeftFirst();
 
 
@@ -115,7 +116,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern O_E_I => Pattern.MorphematicAdPosition(myAttributesModel, "O-E-I", "Circumstantial prepostion.",
             EnglishAttributes.E.Lexeme.Preposition,
-            EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme);
+            EnglishAttributes.O.Lexeme, EnglishAttributes.I.Lexeme.Verb);
 
         // E.g. speed of light
         public static Pattern O_E_O => Pattern.MorphematicAdPosition(myAttributesModel, "O-E-O", "Circumstantial prepostion.",
@@ -133,15 +134,15 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern I_U_O => Pattern.MorphematicAdPosition(myAttributesModel, "I-U-O", "Connecting verbant and stative with a conjunction.",
             EnglishAttributes.U.Lexeme.Conjunction,
-            EnglishAttributes.I.Lexeme, EnglishAttributes.O.Lexeme);
+            EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.O.Lexeme);
 
         public static Pattern I_U_I => Pattern.MorphematicAdPosition(myAttributesModel, "I-U-I", "Complex and compound sentences.",
             EnglishAttributes.U.Lexeme.Conjunction,
-            EnglishAttributes.I.Lexeme, EnglishAttributes.I.Lexeme);
+            EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.I.Lexeme.Verb);
 
         public static Pattern e_Period_I => Pattern.MorphematicAdPosition(myAttributesModel, "•", "Rule for the period punctuation mark.",
             EnglishAttributes.U.NonLexeme.PunctuationMark.Period,
-            MorphemeRule.Nothing, MorphemeRule.I_Lexeme_Something(myAttributesModel));
+            MorphemeRule.Nothing, MorphemeRule.I_Lexeme_Verb_Something(myAttributesModel));
 
     }
 }

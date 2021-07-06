@@ -11,7 +11,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
         public BigInteger O_Lexeme => EnglishAttributes.O.Lexeme;
 
         public BigInteger I => EnglishAttributes.I;
-        public BigInteger I_Lexeme => EnglishAttributes.I.Lexeme;
+        public BigInteger I_Lexeme_Verb => EnglishAttributes.I.Lexeme.Verb;
 
         public BigInteger A => EnglishAttributes.A;
         public BigInteger A_Lexeme => EnglishAttributes.A.Lexeme;

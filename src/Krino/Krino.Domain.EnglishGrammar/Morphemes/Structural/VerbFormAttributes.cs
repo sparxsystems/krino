@@ -6,26 +6,40 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
     {
         public VerbFormAttributes(EnumGroupBase parent) : base(parent)
         {
-            Infinitive = new EnumValue(this);
+            Base = new EnumValue(this);
+            ThirdPersonSingular = new EnumValue(this);
             PresentParticiple = new EnumValue(this);
+            Past = new EnumValue(this);
             PastParticiple = new EnumValue(this);
             Gerund = new EnumValue(this);
         }
 
         /// <summary>
         /// Infinitive form of the verb.
+        /// (First form of the verb.)
         /// </summary>
-        public EnumValue Infinitive { get; }
+        public EnumValue Base { get; }
 
         /// <summary>
-        /// A verb form which can be part of the continous verb construction, can act as an adjective or can be positioned after the verb.
+        /// Third person singular form of a verb..
+        /// </summary>
+        public EnumBase ThirdPersonSingular { get; }
+
+        /// <summary>
+        /// The present participle verb form is created by adding -ing to the root word.
+        /// It can also act as an adjective.
         /// </summary>
         /// <remarks>
-        /// After the verb example:
-        /// We saw him swimming across the pond.
-        /// She sat looking at the sea.
+        /// The present participle verb form is created by adding -ing to the root word.
+        /// It’s used in the past, present, and future progressive verb tenses. 
         /// </remarks>
         public EnumValue PresentParticiple { get; }
+
+        /// <summary>
+        /// Past form of a verb.
+        /// (Second form of the verb.)
+        /// </summary>
+        public EnumBase Past { get; }
 
         /// <summary>
         /// A verb form which is used in forming perfect and passive tenses and sometimes as an adjective.
@@ -36,6 +50,10 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         /// <summary>
         /// A verb form which acts as a noun. In English ending with -ing.
         /// </summary>
+        /// <remarks>
+        /// Gerunds are same as PresentParticiple - it differs only in their using.
+        /// Gerunds are used as nouns.
+        /// </remarks>
         public EnumValue Gerund { get; }
     }
 }

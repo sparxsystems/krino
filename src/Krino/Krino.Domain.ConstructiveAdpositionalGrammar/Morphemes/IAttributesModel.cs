@@ -10,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
         BigInteger O_Lexeme { get; }
 
         BigInteger I { get; }
-        BigInteger I_Lexeme { get; }
+        BigInteger I_Lexeme_Verb { get; }
 
         BigInteger A { get; }
         BigInteger A_Lexeme { get; }

@@ -47,8 +47,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             // If valency order is ok.
             else if (parent.ValencyPosition == 0 || parent.ValencyPosition == child.ValencyPosition + 1)
             {
-                // If the connecting child is a morpheme.
-                if (child.IsLikeMorpheme)
+                if (child.IsLikeMorpheme || child.IsGrammarAdPosition)
                 {
                     if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                     {
@@ -56,7 +55,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
                         if (result)
                         {
-                            if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule)
+                            if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule && childMorphValueRule.Value != "")
                             {
                                 result = parent.RightRule.MorphRule.Evaluate(childMorphValueRule.Value);
                             }
@@ -78,13 +77,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                         {
                             result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                         }
-                    }
-                }
-                else if (child.IsGrammarAdPosition)
-                {
-                    if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
-                    {
-                        result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                     }
                 }
                 else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
@@ -112,7 +104,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             {
                 return false;
             }
-            else if (child.IsLikeMorpheme)
+            else if (child.IsLikeMorpheme || child.IsGrammarAdPosition)
             {
                 if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                 {
@@ -120,7 +112,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
                     if (result)
                     {
-                        if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule)
+                        // Note: in case of GrammarAdPosition the morph is "".
+                        if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule && childMorphValueRule.Value != "")
                         {
                             result = parent.LeftRule.MorphRule.Evaluate(childMorphValueRule.Value);
                         }
@@ -142,13 +135,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                     {
                         result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                     }
-                }
-            }
-            else if (child.IsGrammarAdPosition)
-            {
-                if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
-                {
-                    result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                 }
             }
             // Note: get the driving grammar character of the child from the right branch.

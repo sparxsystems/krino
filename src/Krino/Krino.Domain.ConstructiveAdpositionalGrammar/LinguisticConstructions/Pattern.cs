@@ -248,7 +248,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             ValencyPosition = valencyPosition,
             UpRule = MorphemeRule.Epsilon,
             LeftRule = MorphemeRule.O_Lexeme_Anything(attributesModel),
-            RightRule = MorphemeRule.I_Lexeme_Anything(attributesModel),
+            RightRule = MorphemeRule.I_Lexeme_Verb_Anything(attributesModel),
         };
 
         private static Pattern An_I(IAttributesModel attributesModel, string patternName, int valencyPosition)
@@ -258,7 +258,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             ValencyPosition = valencyPosition,
             UpRule = MorphemeRule.Epsilon,
             LeftRule = MorphemeRule.A_Lexeme_Adjective_Anything(attributesModel),
-            RightRule = MorphemeRule.I_Lexeme_Anything(attributesModel),
+            RightRule = MorphemeRule.I_Lexeme_Verb_Anything(attributesModel),
         };
 
 

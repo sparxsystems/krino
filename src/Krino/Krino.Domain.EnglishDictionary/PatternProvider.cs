@@ -10,12 +10,17 @@ namespace Krino.Domain.EnglishDictionary
         {
             EnglishPattern.O_Lexeme_Noun,
             EnglishPattern.O_Lexeme_Pronoun,
+
             EnglishPattern.I_Lexeme_Verb,
             EnglishPattern.I_Lexeme_Verb_Modal,
+            EnglishPattern.I_Lexeme_Verb_Been,
+
             EnglishPattern.A_Lexeme_Adjective,
             EnglishPattern.A_Lexeme_Determiner,
+
             EnglishPattern.E_Lexeme_Adverb,
             EnglishPattern.E_Lexeme_Preposition,
+            
             EnglishPattern.U_Lexeme_Conjunction,
             EnglishPattern.U_NonLexeme_Punctuation,
 

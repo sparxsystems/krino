@@ -19,7 +19,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules
 
         public static MorphemeRule O_Lexeme_Something => MorphemeRule.O_Lexeme_Something(myAttributesModel);
 
-        public static MorphemeRule I_Lexeme_Something => MorphemeRule.I_Lexeme_Something(myAttributesModel);
+        public static MorphemeRule I_Lexeme_Something => MorphemeRule.I_Lexeme_Verb_Something(myAttributesModel);
 
         public static MorphemeRule A_Lexeme_Something => MorphemeRule.A_Lexeme_Something(myAttributesModel);
         public static MorphemeRule A_Lexeme_Adjective_Something => MorphemeRule.A_Lexeme_Adjective_Something(myAttributesModel);

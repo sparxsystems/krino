@@ -31,9 +31,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public static MorphemeRule O_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.O_Lexeme));
 
 
-        public static MorphemeRule I_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.I_Lexeme));
+        public static MorphemeRule I_Lexeme_Verb_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.I_Lexeme_Verb));
 
-        public static MorphemeRule I_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.I_Lexeme));
+        public static MorphemeRule I_Lexeme_Verb_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.I_Lexeme_Verb));
 
         public static MorphemeRule A_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.A_Lexeme));
         public static MorphemeRule A_Lexeme_Anything(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Anything, MaskRule.Is(attributesModel.A_Lexeme));

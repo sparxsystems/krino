@@ -130,23 +130,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun),
                 new Morpheme(myAttributesModel, "have", EnglishAttributes.I.Lexeme.Verb),
-                new Morpheme(myAttributesModel, "been", EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Past | EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple),
+                new Morpheme(myAttributesModel, "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple),
                 new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
-                new Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix.Sememe.Aspect.Continuous),
+                new Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix),
             };
 
             List<Pattern> patterns = new List<Pattern>()
             {
-                EnglishPattern.O_Lexeme_Pronoun,
-                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.O_Lexeme_Pronoun, // I
+                EnglishPattern.I_Lexeme_Verb, // have
+                EnglishPattern.I_Lexeme_Verb_Been, // been
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.I_Suffix_ing,
+                EnglishPattern.I_Suffix_ing, //-ing
 
-                EnglishPattern.Have_I,
-                EnglishPattern.Been_I_ing,
-                EnglishPattern.I_to_I_ing,
+                EnglishPattern.Have_I, // have + (been + (read + ing))
+                EnglishPattern.Been_I_ing, // been + (read + ing)
+                EnglishPattern.I_to_I_ing, // read + ing
             };
 
             var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });

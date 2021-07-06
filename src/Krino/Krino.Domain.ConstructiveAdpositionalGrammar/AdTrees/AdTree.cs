@@ -239,7 +239,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 {
                     if (item.Pattern.IsLikeMorpheme)
                     {
-                        result.Append(item.Pattern.UpRule.GrammarCharacter);
+                        // If we are not inside a morpheme transference.
+                        if (!item.AdPositions.Any(x => x.Pattern.IsLikeMorpheme))
+                        {
+                            result.Append(item.Pattern.UpRule.GrammarCharacter);
+                        }
                     }
                     else
                     {
