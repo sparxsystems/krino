@@ -249,7 +249,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                             {
                                 result.Append(item.Pattern.LeftRule.GrammarCharacter);
                             }
-                            if (item.Pattern.IsMorphematicAdPosition())
+                            if (item.Pattern.IsMorphematicAdPosition)
                             {
                                 result.Append(item.Pattern.UpRule.GrammarCharacter);
                             }
@@ -264,7 +264,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                             {
                                 result.Append(item.Pattern.RightRule.GrammarCharacter);
                             }
-                            if (item.Pattern.IsMorphematicAdPosition())
+                            if (item.Pattern.IsMorphematicAdPosition)
                             {
                                 result.Append(item.Pattern.UpRule.GrammarCharacter);
                             }

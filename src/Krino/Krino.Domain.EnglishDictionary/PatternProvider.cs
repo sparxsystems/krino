@@ -11,6 +11,7 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.O_Lexeme_Noun,
             EnglishPattern.O_Lexeme_Pronoun,
             EnglishPattern.I_Lexeme_Verb,
+            EnglishPattern.I_Lexeme_Verb_Modal,
             EnglishPattern.A_Lexeme_Adjective,
             EnglishPattern.A_Lexeme_Determiner,
             EnglishPattern.E_Lexeme_Adverb,
@@ -38,16 +39,16 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.O_to_A,
 
             EnglishPattern.I_to_I_s,
-            EnglishPattern.I_to_not_I,
+            EnglishPattern.Not_I,
 
             // simple future
-            EnglishPattern.I_to_I_will,
+            EnglishPattern.Will_I,
 
             // present perfect
-            EnglishPattern.I_to_I_have,
+            EnglishPattern.Have_I,
 
             // Continuouse present perfect.
-            EnglishPattern.I_to_been_I_ing,
+            EnglishPattern.Been_I_ing,
 
             // Continouse
             EnglishPattern.I_to_I_ing,

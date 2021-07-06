@@ -26,7 +26,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// <summary>
         /// All morphs which are not null or empty string are accepted.
         /// </summary>
-        public static IRule<string> Something => RuleMaker.IsNotNull<string>().And(RuleMaker.Is("").Not());
+        public static IRule<string> Something => RuleMaker.IsNotNull<string>() & !RuleMaker.Is("");
 
         /// <summary>
         /// Morph with the specified value is accepted.

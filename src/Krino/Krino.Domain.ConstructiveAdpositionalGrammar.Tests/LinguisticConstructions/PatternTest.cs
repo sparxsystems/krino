@@ -2,7 +2,6 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using Krino.Vertical.Utils.Rules;
 using NUnit.Framework;
@@ -46,92 +45,61 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         [Test]
         public void IsMorpheme()
         {
-            Pattern pattern = EnglishPattern.A_Lexeme_Adjective;
-            Assert.IsTrue(pattern.IsMorpheme);
+            Assert.IsTrue(EnglishPattern.A_Lexeme_Adjective.IsMorpheme);
+            Assert.IsTrue(EnglishPattern.O_Lexeme_Noun.IsMorpheme);
 
-            // Empty string rule causes it is not the morpheme pattern.
-            pattern = new Pattern()
-            {
-                UpRule = EnglishMorphemeRule.Is("", EnglishAttributes.A.Lexeme),
-                LeftRule = MorphemeRule.Nothing,
-                RightRule = MorphemeRule.Nothing,
-            };
-            Assert.IsFalse(pattern.IsMorpheme);
-
-
-            // Right and left rule is not Nothing - it is not the morpheme rule.
-            pattern = new Pattern()
-            {
-                UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.E.Lexeme),
-                LeftRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.I.Lexeme),
-                RightRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.O.Lexeme),
-            };
-            Assert.IsFalse(pattern.IsMorpheme);
+            Assert.IsFalse(EnglishPattern.A_O.IsMorpheme);
+            Assert.IsFalse(EnglishPattern.Will_I.IsMorpheme);
+            Assert.IsFalse(EnglishPattern.O_to_O_s.IsMorpheme);
+            Assert.IsFalse(EnglishPattern.O_to_A.IsMorpheme);
         }
 
         [Test]
-        public void IsPrimitiveTransference()
+        public void IsUnipolarMorphemeTransference()
         {
-            Pattern pattern = new Pattern()
-            {
-                UpRule = EnglishMorphemeRule.Is("", EnglishAttributes.A.Lexeme),
-                LeftRule = MorphemeRule.Nothing,
-                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
-            };
-            Assert.IsTrue(pattern.IsMonoTransference);
+            Assert.IsTrue(EnglishPattern.O_to_A.IsUnipolarMorphemeTransference);
 
-            pattern = new Pattern()
-            {
-                UpRule = EnglishMorphemeRule.Is("", EnglishAttributes.A.Lexeme),
-                LeftRule = EnglishMorphemeRule.Is("s", EnglishAttributes.A.NonLexeme.Prefix),
-                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
-            };
-            Assert.IsFalse(pattern.IsMonoTransference);
+            Assert.IsFalse(EnglishPattern.I_Lexeme_Verb.IsUnipolarMorphemeTransference);
+            Assert.IsFalse(EnglishPattern.O_E_I.IsUnipolarMorphemeTransference);
+            Assert.IsFalse(EnglishPattern.A_O.IsUnipolarMorphemeTransference);
+            Assert.IsFalse(EnglishPattern.O_to_O_s.IsUnipolarMorphemeTransference);
+        }
 
-            pattern = new Pattern()
-            {
-                UpRule = MorphemeRule.Epsilon,
-                LeftRule = EnglishMorphemeRule.A_Lexeme_Something,
-                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
-            };
-            Assert.IsFalse(pattern.IsMonoTransference);
+        [Test]
+        public void IsBipolarMorphemeTransference()
+        {
+            Assert.IsTrue(EnglishPattern.O_to_O_s.IsBipolarMorphemeTransference);
+            Assert.IsTrue(EnglishPattern.I_to_A_ed.IsBipolarMorphemeTransference);
+
+            Assert.IsFalse(EnglishPattern.O_to_A.IsBipolarMorphemeTransference);
+            Assert.IsFalse(EnglishPattern.I_Lexeme_Verb.IsUnipolarMorphemeTransference);
+            Assert.IsFalse(EnglishPattern.O_E_I.IsUnipolarMorphemeTransference);
+
+            Assert.IsFalse(EnglishPattern.Will_I.IsUnipolarMorphemeTransference);
         }
 
         [Test]
         public void IsEpsilonAdPosition()
         {
-            Pattern pattern = EnglishPattern.A_O;
-            Assert.IsTrue(pattern.IsEpsilonAdPosition());
-
-
-            pattern = new Pattern("A-U-A")
-            {
-                // Grammar character is not epsilon -> it is not epsilon adposition.
-                UpRule = EnglishMorphemeRule.Is(MorphRules.Something, EnglishAttributes.U),
-                LeftRule = EnglishMorphemeRule.A_Lexeme_Something,
-                RightRule = EnglishMorphemeRule.A_Lexeme_Something,
-            };
-            Assert.IsFalse(pattern.IsEpsilonAdPosition());
-
-
-            pattern = new Pattern("A-O")
-            {
-                UpRule = MorphemeRule.Epsilon,
-                // It is not epsilon adposition.
-                LeftRule = MorphemeRule.Nothing,
-                RightRule = EnglishMorphemeRule.O_Lexeme_Something,
-            };
-            Assert.IsFalse(pattern.IsEpsilonAdPosition());
+            Assert.IsTrue(EnglishPattern.A_O.IsEpsilonAdPosition);
+            
+            Assert.IsFalse(EnglishPattern.I_Lexeme_Verb.IsEpsilonAdPosition);
+            Assert.IsFalse(EnglishPattern.O_E_I.IsEpsilonAdPosition);
+            Assert.IsFalse(EnglishPattern.O_to_O_s.IsEpsilonAdPosition);
+            Assert.IsFalse(EnglishPattern.O_to_A.IsEpsilonAdPosition);
         }
 
         [Test]
         public void IsMorphematicAdPosition()
         {
-            Pattern pattern = EnglishPattern.O_E_I;
-            Assert.IsTrue(pattern.IsMorphematicAdPosition());
+            Assert.IsTrue(EnglishPattern.O_E_I.IsMorphematicAdPosition);
+            Assert.IsTrue(EnglishPattern.e_Period_I.IsMorphematicAdPosition);
 
-            pattern = EnglishPattern.A_O;
-            Assert.IsFalse(pattern.IsMorphematicAdPosition());
+            Assert.IsFalse(EnglishPattern.O_Lexeme_Noun.IsMorphematicAdPosition);
+            Assert.IsFalse(EnglishPattern.O_Suffix_s.IsMorphematicAdPosition);
+            Assert.IsFalse(EnglishPattern.O_to_O_s.IsMorphematicAdPosition);
+            Assert.IsFalse(EnglishPattern.O_to_A.IsMorphematicAdPosition);
+            Assert.IsFalse(EnglishPattern.A_O.IsMorphematicAdPosition);
         }
 
 

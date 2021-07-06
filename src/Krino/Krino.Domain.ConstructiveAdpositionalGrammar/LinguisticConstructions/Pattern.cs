@@ -35,41 +35,185 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 RightRule = MorphemeRule.Nothing,
             };
 
-        public static Pattern MonoTransference(IAttributesModel attributesModel, string patternName, BigInteger morphemeAttributes, BigInteger rightAttributes)
-            => new Pattern(patternName)
+        public static Pattern UnipolarMorphemeTransference(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes, BigInteger rightAttributes)
+        {
+            var upGrammarCharacter = attributesModel.GetGrammarCharacter(upAttributes);
+            if (upGrammarCharacter == GrammarCharacter.e)
             {
-                Description = "Rule which changes grammar characters.",
-                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
+                throw new InvalidOperationException($"Failed to create {nameof(UnipolarMorphemeTransference)} because up grammar character was 'e'.");
+            }
+            var rightGrammarCharacter = attributesModel.GetGrammarCharacter(rightAttributes);
+            if (rightGrammarCharacter == GrammarCharacter.e)
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(UnipolarMorphemeTransference)} because right child grammar character was 'e'.");
+            }
+
+            var result = new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, "", upAttributes),
                 LeftRule = MorphemeRule.Nothing,
                 RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes, MorphematicAdPositionRules.Nothing),
             };
 
-        public static Pattern PairTransference(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
-            => new Pattern(patternName)
+            return result;
+        }
+
+
+        public static Pattern BipolarMorphemeTransference(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes,
+            BigInteger leftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes = default)
+        {
+            var upGrammarCharacter = attributesModel.GetGrammarCharacter(upAttributes);
+            if (upGrammarCharacter == GrammarCharacter.e || upGrammarCharacter == GrammarCharacter.U)
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(BipolarMorphemeTransference)} because up grammar character was '{upGrammarCharacter}'. One of A, E, I is expected.");
+            }
+            if (!attributesModel.IsNonLexeme(leftAttributes))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(BipolarMorphemeTransference)} because left child is not NonLexeme.");
+            }
+            if (!attributesModel.IsLexeme(rightAttributes))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(BipolarMorphemeTransference)} because right child is not Lexeme.");
+            }
+
+            var result = new Pattern(patternName)
             {
                 Description = description,
-                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
-                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes, MorphematicAdPositionRules.Nothing),
-                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes, MorphematicAdPositionRules.Nothing),
+                UpRule = MorphemeRule.Is(attributesModel, "", upAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes, notRightAttributes, MorphematicAdPositionRules.Nothing),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes, MorphematicAdPositionRules.Epsilon),
             };
 
-        public static Pattern PairTransference(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger notLeftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes)
-            => new Pattern(patternName)
+            return result;
+        }
+
+
+        public static Pattern BipolarMorphemeTransference(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes, 
+            string leftMorph, BigInteger leftAttributes, BigInteger rightAttributes, BigInteger notRightAttributes = default)
+        {
+            var upGrammarCharacter = attributesModel.GetGrammarCharacter(upAttributes);
+            if (upGrammarCharacter == GrammarCharacter.e || upGrammarCharacter == GrammarCharacter.U)
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(BipolarMorphemeTransference)} because up grammar character was '{upGrammarCharacter}'. One of A, E, I is expected.");
+            }
+            if (!attributesModel.IsNonLexeme(leftAttributes))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(BipolarMorphemeTransference)} because left child is not NonLexeme.");
+            }
+            if (!attributesModel.IsLexeme(rightAttributes))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(BipolarMorphemeTransference)} because right child is not Lexeme.");
+            }
+
+            var result = new Pattern(patternName)
             {
                 Description = description,
-                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
-                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes, notLeftAttributes, MorphematicAdPositionRules.Nothing),
-                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes, notRightAttributes, MorphematicAdPositionRules.Nothing),
+                UpRule = MorphemeRule.Is(attributesModel, "", upAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, !string.IsNullOrEmpty(leftMorph) ? MorphRules.Is(leftMorph) : MorphRules.Something, leftAttributes, MorphematicAdPositionRules.Nothing),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes, notRightAttributes, MorphematicAdPositionRules.Epsilon),
             };
 
-        public static Pattern PairTransference(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
-            => new Pattern(patternName)
+            return result;
+        }
+            
+
+        public static Pattern MorphematicAdPosition(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
+            => MorphematicAdPosition(patternName, description,
+                MorphemeRule.Is(attributesModel, MorphRules.Something, upAttributes),
+                MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes),
+                MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes));
+
+        public static Pattern MorphematicAdPosition(IAttributesModel attributesModel, string patternName, string description,
+            string upMorph, BigInteger upAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
+            => MorphematicAdPosition(patternName, description,
+                MorphemeRule.Is(attributesModel, upMorph, upAttributes),
+                MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes),
+                MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes));
+
+        public static Pattern MorphematicAdPosition(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
+            => MorphematicAdPosition(patternName, description,
+                MorphemeRule.Is(attributesModel, MorphRules.Something, upAttributes),
+                leftRule,
+                rightRule);
+
+        public static Pattern MorphematicAdPosition(string patternName, string description,
+            MorphemeRule upRule, MorphemeRule leftRule, MorphemeRule rightRule)
+        {
+            var upGrammarCharacter = upRule.GrammarCharacter;
+            if (upRule.MorphRule.Equals(MorphRules.EmptyString))
+            {
+                // Note: this is how it differs from GrammaticalAdPosition.
+                throw new InvalidOperationException($"Failed to create {nameof(MorphematicAdPosition)} because up-morpheme rule accepts empty string.");
+            }
+            if (upGrammarCharacter != GrammarCharacter.E && upGrammarCharacter != GrammarCharacter.U)
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(MorphematicAdPosition)} because up-grammar character was '{upGrammarCharacter}'. But 'U' or 'E' is expected.");
+            }
+            if (upGrammarCharacter == GrammarCharacter.E && (leftRule == MorphemeRule.Nothing || rightRule == MorphemeRule.Nothing))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(MorphematicAdPosition)} because left or right child has 'MorphemeRule.Nothing'.");
+            }
+
+            var result = new Pattern(patternName)
             {
                 Description = description,
-                UpRule = MorphemeRule.Is(attributesModel, "", morphemeAttributes),
+                UpRule = upRule,
                 LeftRule = leftRule,
                 RightRule = rightRule,
             };
+
+            return result;
+        }
+
+        public static Pattern GrammarAdPosition(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
+        {
+            var upGrammarCharacter = attributesModel.GetGrammarCharacter(upAttributes);
+            if (upGrammarCharacter == GrammarCharacter.e)
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because up-grammar character was 'e'.");
+            }
+
+            var result = new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, MorphRules.EmptyString, upAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
+            };
+
+            return result;
+        }
+
+        public static Pattern GrammarAdPosition(IAttributesModel attributesModel, string patternName, string description,
+            BigInteger upAttributes, string leftMorph, BigInteger leftAttributes, BigInteger rightAttributes)
+        {
+            var upGrammarCharacter = attributesModel.GetGrammarCharacter(upAttributes);
+            if (upGrammarCharacter == GrammarCharacter.e)
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because up-grammar character was 'e'.");
+            }
+            if (string.IsNullOrEmpty(leftMorph))
+            {
+                throw new InvalidOperationException($"Failed to create {nameof(GrammarAdPosition)} because {leftMorph} was set to null or empty string.");
+            }
+
+            var result = new Pattern(patternName)
+            {
+                Description = description,
+                UpRule = MorphemeRule.Is(attributesModel, MorphRules.EmptyString, upAttributes),
+                LeftRule = MorphemeRule.Is(attributesModel, leftMorph, leftAttributes),
+                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
+            };
+
+            return result;
+        }
 
         public static Pattern EpsilonAdPosition(IAttributesModel attributesModel, string patternName, string description, BigInteger leftAttributes, BigInteger rightAttributes)
             => new Pattern(patternName)
@@ -80,22 +224,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 RightRule = MorphemeRule.Is(attributesModel, MorphRules.Anything, rightAttributes),
             };
 
-        public static Pattern MorphematicAdPosition(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, BigInteger leftAttributes, BigInteger rightAttributes)
-            => new Pattern(patternName)
-            {
-                Description = description,
-                UpRule = MorphemeRule.Is(attributesModel, MorphRules.Something, morphemeAttributes),
-                LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes),
-                RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
-            };
-        public static Pattern MorphematicAdPosition(IAttributesModel attributesModel, string patternName, string description, BigInteger morphemeAttributes, MorphemeRule leftRule, MorphemeRule rightRule)
-            => new Pattern(patternName)
-            {
-                Description = description,
-                UpRule = MorphemeRule.Is(attributesModel, MorphRules.Something, morphemeAttributes),
-                LeftRule = leftRule,
-                RightRule = rightRule,
-            };
 
 
         public static Pattern O1_I(IAttributesModel attributesModel) => On_I(attributesModel, "O1-I", 1)
@@ -233,7 +361,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return this;
         }
 
-        public bool IsLikeMorpheme => IsMorpheme || IsMonoTransference | IsPairTransference;
+        public bool IsLikeMorpheme => IsMorpheme || IsUnipolarMorphemeTransference | IsBipolarMorphemeTransference;
 
         /// <summary>
         /// Returns true if the pattern represents a morpheme.
@@ -256,97 +384,138 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             }
         }
 
-        /// <summary>
-        /// Returns true if the pattern uses both positions (left and right) to set the grammar character. 
-        /// </summary>
-        /// <remarks>
-        /// The adtree driven by the pair transference acts as morpheme.
-        /// E.g. this pattern can be used to create noun from a verb by the -ing suffix.
-        /// </remarks>
-        /// <returns></returns>
-        public bool IsPairTransference
-        {
-            get
-            {
-                // AdPosition
-                if (UpRule.GrammarCharacter != GrammarCharacter.e &&
-                    UpRule.GrammarCharacter != GrammarCharacter.U &&
-                    UpRule.AttributesRule is IValueRule<BigInteger> &&
-                    UpRule.MorphRule.Equals(MorphRules.EmptyString))
-                {
-                    // Left.
-                    if (LeftRule.GrammarCharacter != GrammarCharacter.e)
-                    {
-                        // Right - inheriting site.
-                        if (RightRule.GrammarCharacter != GrammarCharacter.e)
-                        {
-                            return true;
-                        }
-                    }
-                }
-
-                return false;
-            }
-        }
 
         /// <summary>
-        /// Returs true if the pattern just changes the grammar character of the right position (the left position stays empty).
+        /// Returns true if the pattern transforms a lexeme on right without using the left.
         /// </summary>
         /// <remarks>
         /// E.g. english nouns can be used as adjectives.
         /// </remarks>
         /// <returns></returns>
-        public bool IsMonoTransference
+        public bool IsUnipolarMorphemeTransference
         {
             get
             {
-                // AdPosition
-                if (UpRule.GrammarCharacter != GrammarCharacter.e &&
-                    UpRule.GrammarCharacter != GrammarCharacter.U &&
-                    UpRule.AttributesRule is IValueRule<BigInteger> &&
-                    UpRule.MorphRule.Equals(MorphRules.EmptyString))
-                {
-                    // Left.
-                    if (LeftRule.Equals(MorphemeRule.Nothing))
-                    {
-                        // Right - inheriting site.
-                        if (RightRule.GrammarCharacter != GrammarCharacter.e)
-                        {
-                            return true;
-                        }
-                    }
-                }
+                // Up grammar character cannot be e and U.
+                // Up morph rule must be empty string.
+                // Up attributes rule must be a value - like a morpheme.
+                // Left rule must attach nothing.
+                // Right rule grammar character cannot be e.
 
-                return false;
+                var result =
+                    UpRule.GrammarCharacter != GrammarCharacter.e && UpRule.GrammarCharacter != GrammarCharacter.U &&
+                    UpRule.AttributesRule is IValueRule<BigInteger> &&
+
+                    // Note: operator == does not work here. I do not know why!
+                    UpRule.MorphRule.Equals(MorphRules.EmptyString) &&
+                    
+                    LeftRule == MorphemeRule.Nothing &&
+                    RightRule.GrammarCharacter != GrammarCharacter.e;
+
+                return result;
             }
         }
 
-        public bool IsEpsilonAdPosition()
+        /// <summary>
+        /// Returns true if the pattern uses a non-lexeme on the left to transform the lexem on right.
+        /// </summary>
+        /// <remarks>
+        /// E.g. this pattern can be used to create noun from a verb by adding the -ing suffix.
+        /// </remarks>
+        /// <returns></returns>
+        public bool IsBipolarMorphemeTransference
         {
-            bool result = UpRule.Equals(MorphemeRule.Epsilon) &&
-                          !RightRule.Equals(MorphemeRule.Nothing) &&
-                          !LeftRule.Equals(MorphemeRule.Nothing) &&
-                          RightRule.MorphRule.Equals(MorphRules.Anything) && !RightRule.AttributesRule.Evaluate(0) &&
-                          LeftRule.MorphRule.Equals(MorphRules.Anything) && !LeftRule.AttributesRule.Evaluate(0);
+            get
+            {
+                // Up grammar character cannot be e and U.
+                // Up morph rule must be empty string.
+                // Up attributes rule must be a value - like a morpheme.
+                // Left rule accepts non-lexemes.
+                // Right rule accepts lexemes.
 
-            return result;
+                var result =
+                    UpRule.GrammarCharacter != GrammarCharacter.e && UpRule.GrammarCharacter != GrammarCharacter.U &&
+                    UpRule.AttributesRule is IValueRule<BigInteger> &&
+
+                    // Note: operator == does not work here. I do not know why!
+                    UpRule.MorphRule.Equals(MorphRules.EmptyString) &&
+
+                    LeftRule.IsNonLexeme &&
+                    RightRule.IsLexeme;
+
+                return result;
+            }
         }
 
         /// <summary>
-        /// Returns true if the pattern represents an adposition with a morpheme.
+        /// Returns true if the pattern represents an adposition with the grammar character U or E
+        /// and has a morpheme (conjunction or preposition).
         /// </summary>
         /// <remarks>
         /// E.g. an adposition with the U grammar character containing a conjunction.
         /// Or an adposition with the E grammar character containing a preposition.
         /// </remarks>
         /// <returns></returns>
-        public bool IsMorphematicAdPosition()
+        public bool IsMorphematicAdPosition
         {
-            bool result = UpRule.GrammarCharacter != GrammarCharacter.e &&
-                          UpRule.MorphRule.Equals(MorphRules.Something) &&
-                          (!RightRule.Equals(MorphemeRule.Nothing) || !LeftRule.Equals(MorphemeRule.Nothing));
+            get
+            {
+                // Up grammar character is U or E.
+                // Up morph is a non-empty string.
+                // If E then both (Left and Right) must attach something.
+                // If U then at least one (Left or Right) must attach something.
 
-            return result;
+                var result =
+                    UpRule.GrammarCharacter == GrammarCharacter.E && LeftRule != MorphemeRule.Nothing && RightRule != MorphemeRule.Nothing ||
+                    UpRule.GrammarCharacter == GrammarCharacter.U && (LeftRule != MorphemeRule.Nothing || RightRule != MorphemeRule.Nothing) &&
+                    
+                    // Note: operator == does not work here. I do not know why!
+                    !UpRule.MorphRule.Equals(MorphRules.EmptyString);
+
+                return result;
+            }
+        }
+
+        /// <summary>
+        /// Returns true if the pattern represents a grammatical construction of words and a new grammar character or attributes are set.
+        /// </summary>
+        /// <remarks>
+        /// E.g. future tense of verbs ins sentence: I (will read) book.
+        /// </remarks>
+        public bool IsGrammarAdPosition
+        {
+            get
+            {
+                // Up grammar character is not e.
+                // Up morph is the EMPTY string - this is a difference from the morphematic adposition.
+                // Left and right must attach something.
+
+                var result =
+                    UpRule.GrammarCharacter != GrammarCharacter.e &&
+                    // Note: operator == does not work here. I do not know why!
+                    UpRule.MorphRule.Equals(MorphRules.EmptyString) &&
+
+                    LeftRule != MorphemeRule.Nothing && RightRule != MorphemeRule.Nothing;
+
+                return result;
+            }
+        }
+
+
+        /// <summary>
+        /// Returns true if the pattern represents an adposition with the grammar character e.
+        /// </summary>
+        /// <returns></returns>
+        public bool IsEpsilonAdPosition
+        {
+            get
+            {
+                // Up grammar character is e.
+                // Both (Left and Right) must attach something.
+
+                var result = UpRule.GrammarCharacter == GrammarCharacter.e && LeftRule != MorphemeRule.Nothing && RightRule != MorphemeRule.Nothing;
+                return result;
+            }
         }
 
 

@@ -53,6 +53,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
         private IAttributesModel myAttributesModel;
         private GrammarCharacter? myGrammarCharacter;
+        private bool? myIsLexeme;
+        private bool? myIsNonLexeme;
 
 
         public MorphemeRule(IAttributesModel attributesModel, IRule<string> morphRule, IRule<BigInteger> attributesRule,
@@ -76,6 +78,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public IRule<string> MorphRule { get; private set; }
 
         /// <summary>
+        /// Rule to evaluate morpheme attributes.
+        /// </summary>
+        public IRule<BigInteger> AttributesRule { get; private set; }
+
+        /// <summary>
+        /// Rule to evaluate if themorpheme can be provided via the substitution.
+        /// </summary>
+        /// <remarks>
+        /// E.g. O can be provided via the A-O pattern.
+        /// </remarks>
+        public IRule<GrammarCharacter> MorphematicAdPositionRule { get; private set; }
+
+        public MorphemeRule SetMorphematicAdPositionRule(IRule<GrammarCharacter> inheritanceRule)
+        {
+            MorphematicAdPositionRule = inheritanceRule;
+            return this;
+        }
+
+
+        /// <summary>
         /// Grammar character accepted by the morpheme rule.
         /// </summary>
         public GrammarCharacter GrammarCharacter
@@ -84,7 +106,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             {
                 if (myGrammarCharacter == null)
                 {
-                    GrammarCharacter result = GrammarCharacter.e;
+                    var result = GrammarCharacter.e;
 
                     if (myAttributesModel != null)
                     {
@@ -106,26 +128,62 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             }
         }
 
-        /// <summary>
-        /// Rule to evaluate morpheme attributes.
-        /// </summary>
-        public IRule<BigInteger> AttributesRule { get; private set; }
-
-        /// <summary>
-        /// Rule to evaluate if themorpheme can be provided via the substitution.
-        /// </summary>
-        /// <remarks>
-        /// E.g. O can be provided via the A-O pattern.
-        /// </remarks>
-        public IRule<GrammarCharacter> MorphematicAdPositionRule { get; private set; }
-
-        public MorphemeRule SetMorphematicAdPositionRule(IRule<GrammarCharacter> inheritanceRule)
+        public bool IsLexeme
         {
-            MorphematicAdPositionRule = inheritanceRule;
-            return this;
+            get
+            {
+                if (myIsLexeme == null)
+                {
+                    var result = false;
+
+                    if (myAttributesModel != null)
+                    {
+                        var attributesValues = AttributesRule.GetValues();
+                        if (attributesValues.Any())
+                        {
+                            result = myAttributesModel.IsLexeme(attributesValues.First());
+                            if (attributesValues.Any(x => myAttributesModel.IsLexeme(x) != result))
+                            {
+                                result = false;
+                            }
+                        }
+                    }
+
+                    myIsLexeme = result;
+                }
+
+                return myIsLexeme.Value;
+            }
         }
 
-        
+        public bool IsNonLexeme
+        {
+            get
+            {
+                if (myIsNonLexeme == null)
+                {
+                    var result = false;
+
+                    if (myAttributesModel != null)
+                    {
+                        var attributesValues = AttributesRule.GetValues();
+                        if (attributesValues.Any())
+                        {
+                            result = myAttributesModel.IsNonLexeme(attributesValues.First());
+                            if (attributesValues.Any(x => myAttributesModel.IsNonLexeme(x) != result))
+                            {
+                                result = false;
+                            }
+                        }
+                    }
+
+                    myIsNonLexeme = result;
+                }
+
+                return myIsNonLexeme.Value;
+            }
+        }
+
 
         /// <summary>
         /// Checks if the morpheme matches the rule.

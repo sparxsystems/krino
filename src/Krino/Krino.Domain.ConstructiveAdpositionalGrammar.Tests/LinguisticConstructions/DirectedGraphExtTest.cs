@@ -81,13 +81,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             };
             graph = patterns.CreatePatternGraph();
 
-            //graph = PatternProvider.Patterns.CreatePatternGraph();
-            
             var signatures = graph.GetAdTreeFactories(EnglishPattern.I_U_I, 7)
                 .Select(x => x.PatternSignature)
                 .ToList();
 
             Assert.IsTrue(signatures.Contains("OIOUOIO"));
+
+
+            patterns = new List<Pattern>()
+            {
+                EnglishPattern.O_Lexeme_Pronoun,
+                EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.I_Lexeme_Verb_Modal,
+                EnglishPattern.O1_I.SetLeftFirst(),
+                EnglishPattern.Will_I,
+            };
+            graph = patterns.CreatePatternGraph();
+
+            signatures = graph.GetAdTreeFactories(EnglishPattern.O1_I.SetLeftFirst(), 3)
+                .Select(x => x.PatternSignature)
+                .ToList();
+
+            Assert.IsTrue(signatures.Contains("OII"));
         }
     }
 }

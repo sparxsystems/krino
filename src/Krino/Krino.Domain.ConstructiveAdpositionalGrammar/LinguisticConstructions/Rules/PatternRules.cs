@@ -69,7 +69,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                         }
                     }
                 }
-                else if (child.IsMorphematicAdPosition())
+                else if (child.IsMorphematicAdPosition)
                 {
                     // If the parent can accept such morphematic adposition.
                     if (parent.RightRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
@@ -78,6 +78,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                         {
                             result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                         }
+                    }
+                }
+                else if (child.IsGrammarAdPosition)
+                {
+                    if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                    {
+                        result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                     }
                 }
                 else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
@@ -126,7 +133,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                     }
                 }
             }
-            else if (child.IsMorphematicAdPosition())
+            else if (child.IsMorphematicAdPosition)
             {
                 if (parent.LeftRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
                 {
@@ -135,6 +142,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                     {
                         result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                     }
+                }
+            }
+            else if (child.IsGrammarAdPosition)
+            {
+                if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+                {
+                    result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                 }
             }
             // Note: get the driving grammar character of the child from the right branch.

@@ -144,8 +144,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.I_Suffix_ing,
 
-                EnglishPattern.I_to_I_have,
-                EnglishPattern.I_to_been_I_ing,
+                EnglishPattern.Have_I,
+                EnglishPattern.Been_I_ing,
                 EnglishPattern.I_to_I_ing,
             };
 
@@ -308,7 +308,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.I_to_I_will,
+                EnglishPattern.Will_I,
             };
 
             List<Morpheme> morphemes = new List<Morpheme>()
@@ -342,8 +342,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
-                EnglishPattern.I_to_I_will,
-                EnglishPattern.I_to_not_I,
+                EnglishPattern.Will_I,
+                EnglishPattern.Not_I,
 
                 EnglishPattern.E_I,
             };

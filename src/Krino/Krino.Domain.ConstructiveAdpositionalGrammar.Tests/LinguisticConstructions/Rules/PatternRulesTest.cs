@@ -40,7 +40,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             Assert.IsTrue(rule.Evaluate(child));
 
             parent = EnglishPattern.O1_I;
-            child = EnglishPattern.I_to_I_will;
+            child = EnglishPattern.Will_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
@@ -79,6 +79,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             parent = EnglishPattern.e_Period_I;
             child = EnglishPattern.I_U_I;
+            rule = PatternRules.ByRightMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            // Grammar transference.
+            parent = EnglishPattern.O1_I;
+            child = EnglishPattern.Will_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
         }
@@ -136,6 +142,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             parent = EnglishPattern.I_to_A_ed;
             child = EnglishPattern.I_Suffix_ing;
+            rule = PatternRules.ByLeftMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
+
+
+            // Grammar transference.
+            parent = EnglishPattern.I_U_I;
+            child = EnglishPattern.Will_I;
+            rule = PatternRules.ByLeftMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            parent = EnglishPattern.Will_I;
+            child = EnglishPattern.I_Lexeme_Verb_Modal;
+            rule = PatternRules.ByLeftMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            parent = EnglishPattern.Will_I;
+            child = EnglishPattern.I_Lexeme_Verb;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
         }

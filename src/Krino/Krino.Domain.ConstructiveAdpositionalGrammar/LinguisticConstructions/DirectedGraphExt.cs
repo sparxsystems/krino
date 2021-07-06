@@ -196,7 +196,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 {
                     ++count;
                 }
-                if (x.Pattern.IsMorphematicAdPosition())
+                if (x.Pattern.IsMorphematicAdPosition)
                 {
                     ++count;
                 }

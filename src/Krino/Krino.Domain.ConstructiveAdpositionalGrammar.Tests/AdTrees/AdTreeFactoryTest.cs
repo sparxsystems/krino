@@ -12,6 +12,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         private EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
 
         [Test]
+        public void PatternSignature()
+        {
+            var adTreeFactory = new AdTreeFactory(EnglishPattern.e_Period_I)
+            {
+                Right = new AdTreeFactory(EnglishPattern.O1_I.SetLeftFirst())
+                {
+                    Left = new AdTreeFactory(EnglishPattern.O_U_O)
+                }
+            };
+            Assert.AreEqual("OUOIU", adTreeFactory.PatternSignature);
+
+            adTreeFactory = new AdTreeFactory(EnglishPattern.O1_I.SetLeftFirst())
+            {
+                Right = new AdTreeFactory(EnglishPattern.Will_I)
+            };
+            Assert.AreEqual("OII", adTreeFactory.PatternSignature);
+        }
+
+        [Test]
         public void CreateAdTree()
         {
             var morphemeAdTrees = new IAdTree[]

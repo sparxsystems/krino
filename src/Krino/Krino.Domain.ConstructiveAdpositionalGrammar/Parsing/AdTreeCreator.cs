@@ -189,7 +189,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
-            var relevantPatterns = myConstructiveDictionary.Patterns.Where(x => x.IsPairTransference).ToList();
+            var relevantPatterns = myConstructiveDictionary.Patterns.Where(x => x.IsBipolarMorphemeTransference).ToList();
 
             List<IAdTree> activeAdTrees = new List<IAdTree>();
 

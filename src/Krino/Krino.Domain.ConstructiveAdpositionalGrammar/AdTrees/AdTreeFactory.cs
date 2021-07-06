@@ -39,7 +39,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                             {
                                 result.Append(item.Pattern.LeftRule.GrammarCharacter);
                             }
-                            if (item.Pattern.IsMorphematicAdPosition())
+                            if (item.Pattern.IsMorphematicAdPosition)
                             {
                                 result.Append(item.Pattern.UpRule.GrammarCharacter);
                             }
@@ -54,7 +54,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                             {
                                 result.Append(item.Pattern.RightRule.GrammarCharacter);
                             }
-                            if (item.Pattern.IsMorphematicAdPosition())
+                            if (item.Pattern.IsMorphematicAdPosition)
                             {
                                 result.Append(item.Pattern.UpRule.GrammarCharacter);
                             }
@@ -88,7 +88,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 leftAdTree = Left != null ? Left.CreateAdTreeIntern(attributesModel, morphemeAdTrees) : TryPop(morphemeAdTrees);
 
 
-                if (Pattern.IsMorphematicAdPosition())
+                if (Pattern.IsMorphematicAdPosition)
                 {
                     var adPositionMorphemeAdTree = TryPop(morphemeAdTrees);
                     thisAdTree = new AdTree(adPositionMorphemeAdTree.Morpheme, Pattern);
@@ -104,7 +104,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             {
                 rightAdTree = Right != null ? Right.CreateAdTreeIntern(attributesModel, morphemeAdTrees) : TryPop(morphemeAdTrees);
 
-                if (Pattern.IsMorphematicAdPosition())
+                if (Pattern.IsMorphematicAdPosition)
                 {
                     var adPositionMorphemeAdTree = TryPop(morphemeAdTrees);
                     var adPositionMorpheme = adPositionMorphemeAdTree?.Morpheme ?? Morpheme.Epsilon(attributesModel);

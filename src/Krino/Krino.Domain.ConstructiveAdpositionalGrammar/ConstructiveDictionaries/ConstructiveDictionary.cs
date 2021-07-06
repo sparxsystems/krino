@@ -3,7 +3,6 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Diagnostic;
-using Krino.Vertical.Utils.Graphs;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -39,8 +38,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         public IEnumerable<Morpheme> NonLexemes => myNonLexemes.Select(x => x.Value);
 
         public IEnumerable<Pattern> Patterns { get; private set; }
-
-        public IDirectedGraph<GrammarCharacter, Pattern> PatternGraph { get; private set; }
 
 
         public IEnumerable<Morpheme> FindLexemes(string word, int maxDistance)
@@ -139,7 +136,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             {
                 IEnumerable<Pattern> result = Patterns
                 .Where(x => x.UpRule.GrammarCharacter != GrammarCharacter.e &&
-                            !x.IsMonoTransference &&
+                            !x.IsUnipolarMorphemeTransference &&
                             x.UpRule.Evaluate(morpheme));
                 return result;
             }
@@ -149,7 +146,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         {
             using (Trace.Entering())
             {
-                IEnumerable<Pattern> result = Patterns.Where(x => x.IsMonoTransference && x.RightRule.Evaluate(morpheme));
+                IEnumerable<Pattern> result = Patterns.Where(x => x.IsUnipolarMorphemeTransference && x.RightRule.Evaluate(morpheme));
                 return result;
             }
         }

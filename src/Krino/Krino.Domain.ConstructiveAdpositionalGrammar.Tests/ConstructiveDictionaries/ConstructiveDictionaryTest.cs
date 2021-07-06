@@ -14,43 +14,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
     {
         private EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
 
-        [Test]
-        public void PatternGraph_Basic()
-        {
-            List<Pattern> patterns = new List<Pattern>()
-            {
-                EnglishPattern.A_Lexeme_Adjective,
-                EnglishPattern.O_Lexeme_Noun,
-                EnglishPattern.A_O,
-            };
-
-            IAttributesModel attributesModel = new EnglishAttributesModel();
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[0]);
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, patternConstructions, new Morpheme[0]);
-
-            Assert.AreEqual(6, dictionary.PatternGraph.Count);
-            Assert.AreEqual(2, dictionary.PatternGraph.Edges.Count());
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.O && x.Value.Name == "A-O"));
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.O && x.To == GrammarCharacter.A && x.Value.Name == "A-O"));
-        }
-
-        [Test]
-        public void PatternGraph_Itself()
-        {
-            IAttributesModel attributesModel = new EnglishAttributesModel();
-
-            List<Pattern> patterns = new List<Pattern>()
-            {
-                Pattern.EpsilonAdPosition(myAttributesModel, "A-A", "", EnglishAttributes.A.Lexeme, EnglishAttributes.A.Lexeme),
-            };
-
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[0]);
-            ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, patternConstructions, new Morpheme[0]);
-
-            Assert.AreEqual(1, dictionary.PatternGraph.Edges.Count());
-            Assert.IsTrue(dictionary.PatternGraph.Edges.Any(x => x.From == GrammarCharacter.A && x.To == GrammarCharacter.A && x.Value.Name == "A-A"));
-        }
-
 
         [Test]
         public void FindLexemes_Similar()
