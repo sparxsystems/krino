@@ -79,7 +79,6 @@ namespace Krino.Domain.EnglishDictionary
             // Circumstantial adverb after verb valencies.
             EnglishPattern.E_I,
 
-
             // Verbant circumstantial with a preposition.
             EnglishPattern.O_E_I,
             

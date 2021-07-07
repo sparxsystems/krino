@@ -146,7 +146,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             EnglishAttributes.U.Lexeme.Conjunction,
             EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme);
 
-        public static Pattern I_U_O => Pattern.MorphematicAdPosition(myAttributesModel, "I-U-O", "Connecting verbant and stative with a conjunction.",
+        public static Pattern I_U_O => Pattern.MorphematicAdPosition(myAttributesModel, "I-U-O", "Digretion after subject.",
             EnglishAttributes.U.Lexeme.Conjunction,
             EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.O.Lexeme);
 

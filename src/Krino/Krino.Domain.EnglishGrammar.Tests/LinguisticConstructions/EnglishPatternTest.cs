@@ -7,6 +7,14 @@ namespace Krino.Domain.EnglishGrammar.Tests.LinguisticConstructions
     public class EnglishPatternTest
     {
         [Test]
+        public void CompoundSubject()
+        {
+            var parent = EnglishPattern.O1_I;
+            var child = EnglishPattern.O_E_O;
+            Assert.IsTrue(parent.LeftPatternRule.Evaluate(child));
+        }
+
+        [Test]
         public void SimpleFuture()
         {
             var parent = EnglishPattern.O1_I;

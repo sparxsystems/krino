@@ -251,7 +251,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "of", EnglishAttributes.E.Lexeme.Preposition),
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O_E_O });
+            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -286,7 +286,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "world", EnglishAttributes.O.Lexeme.Noun),
                 new Morpheme(myAttributesModel, "as", EnglishAttributes.U.Lexeme.Conjunction),
                 new Morpheme(myAttributesModel, "people", EnglishAttributes.O.Lexeme.Noun),
-                new Morpheme(myAttributesModel, "say", EnglishAttributes.I.Lexeme.Verb),
+                new Morpheme(myAttributesModel, "said", EnglishAttributes.I.Lexeme.Verb),
                 new Morpheme(myAttributesModel, "lately", EnglishAttributes.E.Lexeme.Adverb),
                 new Morpheme(myAttributesModel, "ends", EnglishAttributes.I.Lexeme.Verb),
             };
@@ -295,10 +295,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
-            List<IAdTree> results = creator.Create("world", "as", "people", "say", "lately", "ends");
+            List<IAdTree> results = creator.Create("world", "as", "people", "said", "lately", "ends");
 
-            // TODO:
-            Assert.AreEqual(1, results.Count);
+            var bestResult = results.GetBest();
+
         }
 
         [Test]
