@@ -29,17 +29,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         {
             ITerm result = null;
 
-            var verb = AdTree.RightChildren?.FirstOrDefault(x => AttributesModel.IsVerb(x.Morpheme.Attributes));
-            if (verb != null)
+            var startingAdTree = AdTree.Right != null ?
+                AdTree :
+                AdTree.Left;
+
+            if (startingAdTree != null)
             {
-                var valencies = AttributesModel.GetNumberOfValencies(verb.Morpheme.Attributes);
-                if (valencies >= 1)
+                var verb = startingAdTree.GetRightSequence().FirstOrDefault(x => AttributesModel.IsVerb(x.Morpheme.Attributes));
+                if (verb != null)
                 {
-                    var valency1 = verb.GetSequenceToRoot().FirstOrDefault(x => x.Pattern.ValencyPosition == 1);
-                    if (valency1?.Left != null)
+                    var valencies = AttributesModel.GetNumberOfValencies(verb.Morpheme.Attributes);
+                    if (valencies >= 1)
                     {
-                        var subjectAdTree = valency1.Left.MakeDeepCopy();
-                        result = Factory.CreateTerm(subjectAdTree, StructureAttributes.Term.Subject);
+                        var valency1 = verb.GetSequenceToRoot().FirstOrDefault(x => x.Pattern.ValencyPosition == 1);
+                        if (valency1?.Left != null)
+                        {
+                            var subjectAdTree = valency1.Left.MakeDeepCopy();
+                            result = Factory.CreateTerm(subjectAdTree, StructureAttributes.Term.Subject);
+                        }
                     }
                 }
             }
@@ -51,33 +58,41 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         {
             ITerm result = null;
 
-            var verb = AdTree.GetRightSequence().FirstOrDefault(x => AttributesModel.IsVerb(x.Morpheme.Attributes));
-            if (verb != null)
+            var startingAdTree = AdTree.Right != null ?
+                AdTree :
+                AdTree.Left;
+
+            if (startingAdTree != null)
             {
-                IAdTree predicateAdTree;
-
-                var verbValencies = AttributesModel.GetNumberOfValencies(verb.Morpheme.Attributes);
-                if (verbValencies > 0)
+                var verb = startingAdTree.GetRightSequence().FirstOrDefault(x => AttributesModel.IsVerb(x.Morpheme.Attributes));
+                if (verb != null)
                 {
-                    predicateAdTree = verb.GetSequenceToRoot()
-                        .First(x => x.AdPosition == null || AttributesModel.IsU(x.AdPosition.Morpheme.Attributes))
-                        .MakeDeepCopy();
+                    IAdTree predicateAdTree;
 
-                    // Remove the subject (i.e. remove the sub-adtree on the first valency)
-                    var firstValency = predicateAdTree.GetRightSequence().FirstOrDefault(x => x.Pattern.ValencyPosition == 1);
-                    if (firstValency != null)
+                    var verbValencies = AttributesModel.GetNumberOfValencies(verb.Morpheme.Attributes);
+                    if (verbValencies > 0)
                     {
-                        firstValency.Left = null;
-                    }
-                }
-                else
-                {
-                    predicateAdTree = verb.MakeDeepCopy();
-                    result = Factory.CreateTerm(verb, StructureAttributes.Term.Predicate);
-                }
+                        predicateAdTree = verb.GetSequenceToRoot()
+                            .First(x => x.AdPosition == null || AttributesModel.IsU(x.AdPosition.Morpheme.Attributes))
+                            .MakeDeepCopy();
 
-                result = Factory.CreateTerm(predicateAdTree, StructureAttributes.Term.Predicate);
+                        // Remove the subject (i.e. remove the sub-adtree on the first valency)
+                        var firstValency = predicateAdTree.GetRightSequence().FirstOrDefault(x => x.Pattern.ValencyPosition == 1);
+                        if (firstValency != null)
+                        {
+                            firstValency.Left = null;
+                        }
+                    }
+                    else
+                    {
+                        predicateAdTree = verb.MakeDeepCopy();
+                        result = Factory.CreateTerm(verb, StructureAttributes.Term.Predicate);
+                    }
+
+                    result = Factory.CreateTerm(predicateAdTree, StructureAttributes.Term.Predicate);
+                }
             }
+            
 
             return result;
         }

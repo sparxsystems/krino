@@ -12,7 +12,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         private static EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
 
         [Test]
-        public void ByRightMorphemeRule()
+        public void RightPatternRule()
         {
             var parent = EnglishPattern.O2_I;
             var child = EnglishPattern.O1_I;
@@ -87,22 +87,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             child = EnglishPattern.Will_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
-
-
-            parent = EnglishPattern.O1_I;
-            child = EnglishPattern.Have_Been_I_ing;
-            rule = PatternRules.ByRightMorphemeRule(parent);
-            Assert.IsTrue(rule.Evaluate(child));
-
-            parent = EnglishPattern.Have_Been_I_ing;
-            child = EnglishPattern.I_to_I_ing;
-            rule = PatternRules.ByRightMorphemeRule(parent);
-            Assert.IsTrue(rule.Evaluate(child));
         }
 
 
         [Test]
-        public void ByLeftMorphemeRule()
+        public void LeftPatternRule()
         {
             var parent = EnglishPattern.O2_I;
             var child = EnglishPattern.O_Lexeme_Noun;
@@ -162,21 +151,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             child = EnglishPattern.Will_I;
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
-
-            parent = EnglishPattern.Will_I;
-            child = EnglishPattern.I_Lexeme_Verb_Modal;
-            rule = PatternRules.ByLeftMorphemeRule(parent);
-            Assert.IsTrue(rule.Evaluate(child));
-
-            parent = EnglishPattern.Will_I;
-            child = EnglishPattern.I_Lexeme_Verb;
-            rule = PatternRules.ByLeftMorphemeRule(parent);
-            Assert.IsFalse(rule.Evaluate(child));
-
-            parent = EnglishPattern.Have_Been_I_ing;
-            child = EnglishPattern.Have_Been_Auxiliary;
-            rule = PatternRules.ByLeftMorphemeRule(parent);
-            Assert.IsTrue(rule.Evaluate(child));
         }
+
     }
 }

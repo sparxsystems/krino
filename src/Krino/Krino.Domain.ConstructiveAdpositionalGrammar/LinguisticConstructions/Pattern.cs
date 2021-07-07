@@ -371,6 +371,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         /// </summary>
         public bool IsLeftFirst { get; set; }
 
+
         public Pattern SetLeftFirst()
         {
             IsLeftFirst = true;
@@ -386,6 +387,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         public Pattern SetMorphematicAdPositionRuleForRight(IRule<GrammarCharacter> inheritanceRule)
         {
             RightRule.SetMorphematicAdPositionRule(inheritanceRule);
+            return this;
+        }
+
+        public Pattern SetLeftPatternRule(IRule<Pattern> patternRule)
+        {
+            LeftPatternRule = patternRule;
+            return this;
+        }
+
+        public Pattern SetRightPatternRule(IRule<Pattern> patternRule)
+        {
+            RightPatternRule = patternRule;
             return this;
         }
 

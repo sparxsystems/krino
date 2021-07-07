@@ -188,5 +188,43 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// <param name="adTree"></param>
         /// <returns></returns>
         public static IAdTree GetFirstAdPositionOnLeft(this IAdTree adTree) => adTree.GetSequenceToRoot().FirstOrDefault(x => x.IsOnLeft);
+
+        public static IAdTree GetBest(this IEnumerable<IAdTree> source)
+        {
+            var nonConformities = source.Select(x => Tuple.Create(x.GetNonConformities().Count(), x))
+                   .OrderBy(x => x.Item1);
+            var bestResult = nonConformities.FirstOrDefault();
+
+            return bestResult?.Item2;
+        }
+
+        /// <summary>
+        /// Returns adtrees which do not match pattern of their parents.
+        /// </summary>
+        /// <param name="adTree"></param>
+        /// <returns></returns>
+        public static IEnumerable<IAdTree> GetNonConformities(this IAdTree adTree)
+        {
+            foreach (var subAdTree in adTree)
+            {
+                if (subAdTree.AdPosition != null)
+                {
+                    if (subAdTree.IsOnLeft)
+                    {
+                        if (!subAdTree.AdPosition.Pattern.LeftPatternRule.Evaluate(subAdTree.Pattern))
+                        {
+                            yield return subAdTree;
+                        }
+                    }
+                    else if (subAdTree.IsOnRight)
+                    {
+                        if (!subAdTree.AdPosition.Pattern.RightPatternRule.Evaluate(subAdTree.Pattern))
+                        {
+                            yield return subAdTree;
+                        }
+                    }
+                }
+            }
+        }
     }
 }

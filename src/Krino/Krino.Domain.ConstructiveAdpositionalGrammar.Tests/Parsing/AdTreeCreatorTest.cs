@@ -155,15 +155,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
-            List<IAdTree> results = creator.Create("i", "have", "been", "reading");
+            var results = creator.Create("i", "have", "been", "reading");
+            var bestResult = results.GetBest();
 
-            Assert.AreEqual(1, results.Count);
+            Assert.IsNotNull(bestResult);
 
-            Assert.AreEqual("i", results[0].Left.Morpheme.Morph);
-            Assert.AreEqual("have", results[0].Right.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("been", results[0].Right.Left.Right.Morpheme.Morph);
-            Assert.AreEqual("ing", results[0].Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("read", results[0].Right.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("i", bestResult.Left.Morpheme.Morph);
+            Assert.AreEqual("have", bestResult.Right.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("been", bestResult.Right.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("ing", bestResult.Right.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", bestResult.Right.Right.Right.Morpheme.Morph);
         }
 
         [Test]
@@ -307,6 +308,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 EnglishPattern.O_Lexeme_Pronoun,
                 EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.I_Lexeme_Verb_Will,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
@@ -327,10 +329,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             AdTreeCreator creator = new AdTreeCreator(dictionary);
             List<IAdTree> results = creator.Create("I", "will", "read");
 
-            Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("I", results[0].Left.Morpheme.Morph);
-            Assert.AreEqual("will", results[0].Right.Left.Morpheme.Morph);
-            Assert.AreEqual("read", results[0].Right.Right.Morpheme.Morph);
+            var bestResult = results.GetBest();
+
+            Assert.AreEqual("I", bestResult.Left.Morpheme.Morph);
+            Assert.AreEqual("will", bestResult.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("read", bestResult.Right.Right.Morpheme.Morph);
         }
 
         [Test]

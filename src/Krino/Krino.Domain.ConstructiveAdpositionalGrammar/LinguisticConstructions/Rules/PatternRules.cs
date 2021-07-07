@@ -31,6 +31,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// <returns></returns>
         public static IExpressionRule<Pattern> ByLeftMorphemeRule(Pattern parent) => RuleMaker.Expression<Pattern>(x => CanConnectPatternToLeft(parent, x));
 
+        /// <summary>
+        /// Accepts a particular pattern.
+        /// </summary>
+        /// <param name="pattern"></param>
+        /// <returns></returns>
+        public static IValueRule<Pattern> Is(Pattern pattern) => RuleMaker.Is(pattern);
+
 
         private static bool CanConnectPatternToRight(Pattern parent, Pattern child)
         {

@@ -12,14 +12,15 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern O_Lexeme_Pronoun => Pattern.Morpheme(myAttributesModel, EnglishAttributes.O.Lexeme.Pronoun, "O.Pronoun", "Rule accepting pronouns.");
 
         public static Pattern I_Lexeme_Verb => Pattern.Morpheme(myAttributesModel, EnglishAttributes.I.Lexeme.Verb, "I.Verb", "Rule accepting verbant lexemes.");
-        public static Pattern I_Lexeme_Verb_Modal => Pattern.Morpheme(myAttributesModel, "will", EnglishAttributes.I.Lexeme.Verb.Modal, "I.Verb.Modal", "Rule accepting modal verbant lexemes.");
         public static Pattern I_Lexeme_Verb_Been => Pattern.Morpheme(myAttributesModel, "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple, "I.Verb.Been", "Rule accepting verb been.");
         public static Pattern I_Lexeme_Verb_Have => Pattern.Morpheme(myAttributesModel, "have", EnglishAttributes.I.Lexeme.Verb, "I.Verb.Have", "Rule accepting verb have.");
+        public static Pattern I_Lexeme_Verb_Will => Pattern.Morpheme(myAttributesModel, "will", EnglishAttributes.I.Lexeme.Verb.Modal, "I.Verb.Will", "Rule accepting modal verb will.");
 
         public static Pattern A_Lexeme_Adjective => Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Adjective, "A.Adjective", "Rule accepting adjective lexemes.");
         public static Pattern A_Lexeme_Determiner => Pattern.Morpheme(myAttributesModel, EnglishAttributes.A.Lexeme.Determiner, "A.Determiner", "Rule accepting determiner lexemes.");
 
         public static Pattern E_Lexeme_Adverb => Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Adverb, "E.Adverb", "Rule accepting circumstantial adverb lexemes.");
+        public static Pattern E_Lexeme_Adverb_Not => Pattern.Morpheme(myAttributesModel, "not", EnglishAttributes.E.Lexeme.Adverb, "E.Adverb.Not", "Rule accepting circumstantial adverb lexemes.");
         public static Pattern E_Lexeme_Preposition => Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Preposition, "E.Preposition", "Rule accepting circumstantial preposition lexemes.");
 
         public static Pattern U_Lexeme_Conjunction => Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.Lexeme.Conjunction, "U.Connjunction", "Rule accepting conjunction lexemes.");
@@ -92,31 +93,38 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
                 EnglishAttributes.I.Lexeme.Verb.Form.Base,
                 "not", EnglishAttributes.E.Lexeme.Adverb,
                 EnglishAttributes.I.Lexeme.Verb)
-                .SetLeftFirst();
+                .SetLeftFirst()
+                .SetLeftPatternRule(PatternRules.Is(E_Lexeme_Adverb_Not));
 
-        public static Pattern Will_I => Pattern.GrammarAdPosition(myAttributesModel, "I_will", "Rule for simple future of a lexeme verbant.",
+        public static Pattern Will_I => Pattern.GrammarAdPosition(myAttributesModel, "will_I", "Rule for simple future of a lexeme verbant.",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Future,
                 "will", EnglishAttributes.I.Lexeme.Verb.Modal,
                 EnglishAttributes.I.Lexeme.Verb)
-                .SetLeftFirst();
+                .SetLeftFirst()
+                .SetLeftPatternRule(PatternRules.Is(I_Lexeme_Verb_Will));
 
-        public static Pattern Have_Been_I_ing => Pattern.GrammarAdPosition(myAttributesModel, "have_been", "Rule for auxiliary verbs in present perfect continuous.",
+        public static Pattern Have_Been_I_ing => Pattern.GrammarAdPosition(myAttributesModel, "have_been_I_ing", "Rule for 'have been' followed by verb in present participle form.",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.ContinousPerfect,
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                 EnglishAttributes.I.Lexeme.Verb.Form.PresentParticiple)
-                .SetLeftFirst();
+                .SetLeftFirst()
+                .SetLeftPatternRule(PatternRules.Is(Have_Been_Auxiliary))
+                .SetRightPatternRule(PatternRules.Is(I_to_I_ing));
 
         public static Pattern Have_Been_Auxiliary => Pattern.GrammarAdPosition(myAttributesModel, "have_been", "Rule for auxiliary verbs in present perfect continuous.",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                 "have", EnglishAttributes.I.Lexeme.Verb,
                 "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)
-                .SetLeftFirst();
+                .SetLeftFirst()
+                .SetLeftPatternRule(PatternRules.Is(I_Lexeme_Verb_Have))
+                .SetRightPatternRule(PatternRules.Is(I_Lexeme_Verb_Been));
 
         public static Pattern Have_I => Pattern.GrammarAdPosition(myAttributesModel, "have_I", "Rule for present perfect.",
                 EnglishAttributes.I.Lexeme.Verb.Sememe.Tense.Present | EnglishAttributes.I.Lexeme.Verb.Sememe.Aspect.Perfect,
                 "have", EnglishAttributes.I.Lexeme.Verb,
                 EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple)
-                .SetLeftFirst();
+                .SetLeftFirst()
+                .SetLeftPatternRule(PatternRules.Is(I_Lexeme_Verb_Have));
 
 
 

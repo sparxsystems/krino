@@ -51,7 +51,7 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme(AttributesModel, "say", EnglishAttributes.I.Lexeme.Verb.Form.Base | EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
             new Morpheme(AttributesModel, "small", EnglishAttributes.A.Lexeme.Adjective),
             new Morpheme(AttributesModel, "some", EnglishAttributes.A.Lexeme.Determiner),
-            new Morpheme(AttributesModel, "start", EnglishAttributes.I.Lexeme.Verb.Form.Base | EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
+            new Morpheme(AttributesModel, "start", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
             new Morpheme(AttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner.DefiniteArticle),
 
             new Morpheme(AttributesModel, "walk", EnglishAttributes.I.Lexeme.Verb.Valency.Monovalent),

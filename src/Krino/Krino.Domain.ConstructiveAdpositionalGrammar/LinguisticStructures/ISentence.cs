@@ -4,6 +4,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public interface ISentence : ILinguisticStructure
     {
-        IEnumerable<IClause> Clauses { get; }
+        IReadOnlyList<IClause> Clauses { get; }
     }
 }

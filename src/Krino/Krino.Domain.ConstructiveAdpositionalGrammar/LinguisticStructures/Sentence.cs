@@ -14,7 +14,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             InitSentenceAttributes();
         }
 
-        public IEnumerable<IClause> Clauses => TryFindClauses();
+        public IReadOnlyList<IClause> Clauses => TryFindClauses().ToList();
 
         private IEnumerable<IClause> TryFindClauses()
         {

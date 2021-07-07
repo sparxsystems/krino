@@ -12,14 +12,15 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.O_Lexeme_Pronoun,
 
             EnglishPattern.I_Lexeme_Verb,
-            EnglishPattern.I_Lexeme_Verb_Modal,
             EnglishPattern.I_Lexeme_Verb_Have,
             EnglishPattern.I_Lexeme_Verb_Been,
+            EnglishPattern.I_Lexeme_Verb_Will,
 
             EnglishPattern.A_Lexeme_Adjective,
             EnglishPattern.A_Lexeme_Determiner,
 
             EnglishPattern.E_Lexeme_Adverb,
+            EnglishPattern.E_Lexeme_Adverb_Not,
             EnglishPattern.E_Lexeme_Preposition,
             
             EnglishPattern.U_Lexeme_Conjunction,
@@ -57,7 +58,7 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.Have_Been_Auxiliary,
             EnglishPattern.Have_Been_I_ing,
 
-            // Continouse
+            // Continuouse
             EnglishPattern.I_to_I_ing,
 
             // Making adjective from verb.

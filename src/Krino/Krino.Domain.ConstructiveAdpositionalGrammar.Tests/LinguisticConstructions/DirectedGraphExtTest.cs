@@ -91,7 +91,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             {
                 EnglishPattern.O_Lexeme_Pronoun,
                 EnglishPattern.I_Lexeme_Verb,
-                EnglishPattern.I_Lexeme_Verb_Modal,
+                EnglishPattern.I_Lexeme_Verb_Will,
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.Will_I,
             };

@@ -9,7 +9,7 @@ namespace Krino.ViewModel.Tests
         public void GetAdTreeVisualization()
         {
             var viewModel = new ConstructiveDictionaryViewModel();
-            var adTrees = viewModel.GetAdTree("I will start");
+            var adTrees = viewModel.GetAdTree("I will start .");
             var results = viewModel.GetAdTreeVisualization(adTrees[0]);
         }
     }
