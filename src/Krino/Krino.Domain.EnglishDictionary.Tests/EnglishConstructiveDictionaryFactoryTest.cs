@@ -17,8 +17,8 @@ namespace Krino.Domain.EnglishDictionary.Tests
         [Test]
         public void Performance()
         {
-            var traceStream = new StreamWriter("/Ondrej/tmp/tracefile.txt");
-            Trace.Logger = new TextWriterLogger(traceStream);
+            //var traceStream = new StreamWriter("/Ondrej/tmp/tracefile.txt");
+            //Trace.Logger = new TextWriterLogger(traceStream);
 
             var factory = new EnglishConstructiveDictionaryFactory()
             {
