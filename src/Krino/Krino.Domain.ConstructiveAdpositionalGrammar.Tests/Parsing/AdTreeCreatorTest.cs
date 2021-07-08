@@ -299,6 +299,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             var bestResult = results.GetBest();
 
+            Assert.AreEqual("world", bestResult.Left.Right.Morpheme.Morph);
+            Assert.AreEqual("as", bestResult.Left.Morpheme.Morph);
+            Assert.AreEqual("people", bestResult.Left.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("said", bestResult.Left.Left.Right.Right.Morpheme.Morph);
+            Assert.AreEqual("lately", bestResult.Left.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("ends", bestResult.Right.Morpheme.Morph);
         }
 
         [Test]
