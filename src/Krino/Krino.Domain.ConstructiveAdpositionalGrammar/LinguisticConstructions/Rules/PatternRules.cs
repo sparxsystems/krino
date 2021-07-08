@@ -17,6 +17,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public static NothingRule<Pattern> Nothing => RuleMaker.Nothing<Pattern>();
 
         /// <summary>
+        /// 
+        /// </summary>
+        public static IExpressionRule<Pattern> ByUpMorphemeRule(Pattern parent) => RuleMaker.Expression<Pattern>(x => CanConnectPatternToAdPosition(parent, x));
+
+        /// <summary>
         /// Accepts pattern which morpheme would be accepted on right.
         /// </summary>
         /// <param name="parent"></param>
@@ -38,6 +43,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// <returns></returns>
         public static IValueRule<Pattern> Is(Pattern pattern) => RuleMaker.Is(pattern);
 
+
+        private static bool CanConnectPatternToAdPosition(Pattern parent, Pattern child)
+        {
+            bool result = false;
+
+            if (child.UpRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
+            {
+                result = parent.UpRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
+
+                if (result)
+                {
+                    if (child.UpRule.MorphRule is IValueRule<string> childMorphValueRule && childMorphValueRule.Value != "")
+                    {
+                        result = parent.UpRule.MorphRule.Evaluate(childMorphValueRule.Value);
+                    }
+                    else if (parent.UpRule.MorphRule is IValueRule<string>)
+                    {
+                        // Prent is a rule for a particular morph string, but the child is a generic rule.
+                        result = false;
+                    }
+                }
+            }
+
+            return result;
+        }
 
         private static bool CanConnectPatternToRight(Pattern parent, Pattern child)
         {

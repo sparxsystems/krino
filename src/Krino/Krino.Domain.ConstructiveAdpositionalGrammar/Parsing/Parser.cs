@@ -34,7 +34,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                 if (adTrees.Count > 0)
                 {
-                    var sentence = linguisticStructureFactory.CreateSentence(adTrees[0]);
+                    var bestAdTree = adTrees.GetBest();
+
+                    var sentence = linguisticStructureFactory.CreateSentence(bestAdTree);
                     result.Add(sentence);
                 }
             }

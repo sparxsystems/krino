@@ -1,8 +1,10 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
 using NUnit.Framework;
+using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 {
@@ -40,6 +42,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var sentences = parser.Parse("Book is book because book is book");
 
             Assert.AreEqual(1, sentences.Count);
+
             Assert.IsTrue(StructureAttributes.Sentence.ComplexSentence.IsIn(sentences[0].Attributes));
 
             Assert.IsTrue(StructureAttributes.Clause.Independent.IsIn(sentences[0].Clauses[0].Attributes));

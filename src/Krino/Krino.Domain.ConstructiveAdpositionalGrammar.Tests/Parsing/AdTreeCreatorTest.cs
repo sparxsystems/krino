@@ -34,6 +34,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 EnglishPattern.O_Lexeme_Pronoun,
                 EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.U_NonLexeme_Punctuation_Period,
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.e_Period_I,
             };
@@ -237,6 +238,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             {
                 EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.O_Lexeme_Noun,
+                EnglishPattern.E_Lexeme_Preposition,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O_E_O,
@@ -274,9 +276,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.E_Lexeme_Adverb,
+                EnglishPattern.U_Lexeme_Conjunction_As,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
-                EnglishPattern.I_U_O,
+                EnglishPattern.I_as_O,
                 EnglishPattern.E_I,
             };
 
@@ -439,13 +442,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.A_Lexeme_Determiner,
+                EnglishPattern.U_Lexeme_Conjunction_As,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
 
                 EnglishPattern.A_O
                     .SetMorphematicAdPositionRuleForRight(MorphematicAdPositionRules.Epsilon),
 
-                EnglishPattern.I_U_O,
+                EnglishPattern.I_as_O,
             };
 
             var patternConstructions = new PatternConstructions(6, patterns);
@@ -483,6 +487,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.A_Lexeme_Determiner,
+                EnglishPattern.E_Lexeme_Preposition,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
@@ -527,6 +532,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.I_Lexeme_Verb,
                 EnglishPattern.A_Lexeme_Adjective,
+                EnglishPattern.U_Lexeme_Conjunction,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,
@@ -567,6 +573,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O_Lexeme_Pronoun,
                 EnglishPattern.O_Lexeme_Noun,
                 EnglishPattern.I_Lexeme_Verb,
+                EnglishPattern.U_Lexeme_Conjunction,
 
                 EnglishPattern.O1_I.SetLeftFirst(),
                 EnglishPattern.O2_I,

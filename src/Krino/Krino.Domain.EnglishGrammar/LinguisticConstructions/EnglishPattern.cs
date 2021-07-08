@@ -24,7 +24,8 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern E_Lexeme_Preposition => Pattern.Morpheme(myAttributesModel, EnglishAttributes.E.Lexeme.Preposition, "E.Preposition", "Rule accepting circumstantial preposition lexemes.");
 
         public static Pattern U_Lexeme_Conjunction => Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.Lexeme.Conjunction, "U.Connjunction", "Rule accepting conjunction lexemes.");
-        public static Pattern U_NonLexeme_Punctuation => Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.NonLexeme.PunctuationMark, "U.Punctuation", "Rule accepting punctuation marks.");
+        public static Pattern U_Lexeme_Conjunction_As => Pattern.Morpheme(myAttributesModel, "as", EnglishAttributes.U.Lexeme.Conjunction, "U.Connjunction.As", "Rule accepting conjunction lexeme 'as'.");
+        public static Pattern U_NonLexeme_Punctuation_Period => Pattern.Morpheme(myAttributesModel, EnglishAttributes.U.NonLexeme.PunctuationMark, "U.Punctuation.Period", "Rule accepting punctuation mark '.' .");
 
 
         public static Pattern O_Suffix_s => Pattern.Morpheme(myAttributesModel, "s", EnglishAttributes.O.NonLexeme.Suffix, "O-s", "Rule accepting stative suffix s.");
@@ -146,8 +147,8 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             EnglishAttributes.U.Lexeme.Conjunction,
             EnglishAttributes.O.Lexeme, EnglishAttributes.O.Lexeme);
 
-        public static Pattern I_U_O => Pattern.MorphematicAdPosition(myAttributesModel, "I-U-O", "Digretion after subject.",
-            EnglishAttributes.U.Lexeme.Conjunction,
+        public static Pattern I_as_O => Pattern.MorphematicAdPosition(myAttributesModel, "I-as-O", "Digretion after subject.",
+            "as", EnglishAttributes.U.Lexeme.Conjunction,
             EnglishAttributes.I.Lexeme.Verb, EnglishAttributes.O.Lexeme);
 
         public static Pattern I_U_I => Pattern.MorphematicAdPosition(myAttributesModel, "I-U-I", "Complex and compound sentences.",

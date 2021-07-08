@@ -126,7 +126,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return thisAdTree;
         }
 
-        private IAdTree TryPop(Stack<IAdTree> stack) => stack.Count > 0 ? stack.Pop() : null;
+        private IAdTree TryPop(Stack<IAdTree> stack) => stack.Count > 0 ? stack.Pop().MakeShallowCopy() : null;
 
         public IEnumerator<AdTreeFactory> GetEnumerator()
         {

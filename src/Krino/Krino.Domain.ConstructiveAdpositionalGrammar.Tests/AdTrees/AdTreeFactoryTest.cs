@@ -68,7 +68,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
                 new AdTree(new Morpheme(myAttributesModel, "and", EnglishAttributes.U.Lexeme.Conjunction), EnglishPattern.U_Lexeme_Conjunction),
                 new AdTree(new Morpheme(myAttributesModel, "you", EnglishAttributes.O.Lexeme.Pronoun), EnglishPattern.O_Lexeme_Pronoun),
                 new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), EnglishPattern.I_Lexeme_Verb),
-                new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period), EnglishPattern.U_NonLexeme_Punctuation)
+                new AdTree(new Morpheme(myAttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period), EnglishPattern.U_NonLexeme_Punctuation_Period)
             };
 
             adTreeFactory = new AdTreeFactory(EnglishPattern.e_Period_I)

@@ -12,6 +12,36 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         private static EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
 
         [Test]
+        public void UpPatternRule()
+        {
+            var parent = EnglishPattern.O_U_O;
+            var child = EnglishPattern.U_Lexeme_Conjunction;
+            var rule = PatternRules.ByUpMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            parent = EnglishPattern.O_U_O;
+            child = EnglishPattern.U_NonLexeme_Punctuation_Period;
+            rule = PatternRules.ByUpMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
+
+            parent = EnglishPattern.O_U_O;
+            child = EnglishPattern.I_Lexeme_Verb;
+            rule = PatternRules.ByUpMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
+
+
+            parent = EnglishPattern.I_as_O;
+            child = EnglishPattern.U_Lexeme_Conjunction_As;
+            rule = PatternRules.ByUpMorphemeRule(parent);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            parent = EnglishPattern.I_as_O;
+            child = EnglishPattern.U_Lexeme_Conjunction;
+            rule = PatternRules.ByUpMorphemeRule(parent);
+            Assert.IsFalse(rule.Evaluate(child));
+        }
+
+        [Test]
         public void RightPatternRule()
         {
             var parent = EnglishPattern.O2_I;

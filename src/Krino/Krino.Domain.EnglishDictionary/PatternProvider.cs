@@ -24,7 +24,8 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.E_Lexeme_Preposition,
             
             EnglishPattern.U_Lexeme_Conjunction,
-            EnglishPattern.U_NonLexeme_Punctuation,
+            EnglishPattern.U_Lexeme_Conjunction_As,
+            EnglishPattern.U_NonLexeme_Punctuation_Period,
 
             EnglishPattern.O_Suffix_s,
 
@@ -91,7 +92,7 @@ namespace Krino.Domain.EnglishDictionary
             EnglishPattern.O_U_O,
 
             // E.g. I as O ('the world' as 'people were saying')
-            EnglishPattern.I_U_O,
+            EnglishPattern.I_as_O,
 
             // Complex and compund sentences.
             EnglishPattern.I_U_I,

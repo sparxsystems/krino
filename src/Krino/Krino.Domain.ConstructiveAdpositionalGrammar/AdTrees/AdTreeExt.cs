@@ -224,6 +224,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                         }
                     }
                 }
+
+                if (subAdTree.Pattern.IsMorphematicAdPosition)
+                {
+                    if (!subAdTree.Pattern.UpRule.Evaluate(subAdTree.Morpheme))
+                    {
+                        yield return subAdTree;
+                    }
+                }
             }
         }
     }

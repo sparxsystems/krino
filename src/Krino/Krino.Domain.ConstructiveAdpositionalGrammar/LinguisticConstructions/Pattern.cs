@@ -167,6 +167,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 LeftRule = leftRule,
                 RightRule = rightRule,
             };
+            result.UpPatternRule = PatternRules.ByUpMorphemeRule(result);
 
             return result;
         }
@@ -238,6 +239,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 UpRule = MorphemeRule.Is(attributesModel, MorphRules.EmptyString, upAttributes),
                 LeftRule = MorphemeRule.Is(attributesModel, leftMorph, leftAttributes),
                 RightRule = MorphemeRule.Is(attributesModel, rightMorph, rightAttributes),
+
+                UpPatternRule = PatternRules.Anything
             };
 
             return result;
@@ -297,6 +300,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         {
             myName = name;
 
+            UpPatternRule = PatternRules.Nothing;
             LeftPatternRule = PatternRules.ByLeftMorphemeRule(this);
             RightPatternRule = PatternRules.ByRightMorphemeRule(this);
         }
@@ -311,6 +315,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             ValencyPosition = pattern.ValencyPosition;
             IsLeftFirst = pattern.IsLeftFirst;
 
+            UpPatternRule = PatternRules.Nothing;
             LeftPatternRule = pattern.LeftPatternRule;
             RightPatternRule = pattern.RightPatternRule;
         }
@@ -350,6 +355,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         public MorphemeRule RightRule { get; set; } = MorphemeRule.Nothing;
 
 
+        public IRule<Pattern> UpPatternRule { get; set; }
 
         public IRule<Pattern> LeftPatternRule { get; set; }
 
