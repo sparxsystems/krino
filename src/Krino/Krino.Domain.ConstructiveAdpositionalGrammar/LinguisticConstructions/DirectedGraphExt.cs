@@ -161,22 +161,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             using var _t = Trace.Entering();
 
             IEnumerable<AdTreeFactory> result = null;
-            lock (buffer)
+            buffer.ReaderWriterLock.EnterReadLock();
+            try
             {
                 if (buffer.TryGetValue(maxMorphemes, pattern, out var adTrees))
                 {
                     result = adTrees.ToList();
                 }
             }
+            finally
+            {
+                buffer.ReaderWriterLock.ExitReadLock();
+            }
 
             if (result == null)
             {
                 var adTrees = GetPossibleAdTreesParallel(patternGraph, pattern, maxMorphemes, buffer);
 
-                lock (buffer)
+                buffer.ReaderWriterLock.EnterWriteLock();
+                try
                 {
                     buffer[maxMorphemes, pattern] = adTrees;
                     result = adTrees.ToList();
+                }
+                finally
+                {
+                    buffer.ReaderWriterLock.ExitWriteLock();
                 }
             }
 

@@ -3,7 +3,6 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
 using Krino.Domain.EnglishGrammar.LinguisticConstructions;
 using NUnit.Framework;
-using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 {

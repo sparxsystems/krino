@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
 
 namespace Krino.Vertical.Utils.Collections
 {
     public class DoubleKeyDictionary<K1, K2, V> : IEnumerable<Tuple<K1, K2, V>>
     {
         private Dictionary<K1, Dictionary<K2, V>> myDictionary = new Dictionary<K1, Dictionary<K2, V>>();
+
+        public ReaderWriterLockSlim ReaderWriterLock { get; } = new ReaderWriterLockSlim();
 
         public IEnumerable<K1> Keys1 { get { return myDictionary.Keys; } }
 
