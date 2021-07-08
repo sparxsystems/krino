@@ -44,24 +44,5 @@ namespace Krino.Domain.EnglishDictionary.Tests
             Assert.AreEqual(1, results.Count);
             Assert.AreEqual("I>A_ed", results[0].Pattern.Name);
         }
-
-        //[Test]
-        public void GetPossibleAdTrees_EnglishPattern()
-        {
-            var graph = PatternProvider.Patterns.CreatePatternGraph();
-
-            Trace.Logger = new TextWriterLogger(new StreamWriter("/Ondrej/tmp/tracefile.txt"));
-
-            try
-            {
-                Trace.StartProfiler();
-
-                var result = graph.GetAdTreeFactories(EnglishPattern.e_Period_I, 8).ToList();
-            }
-            finally
-            {
-                Trace.StopProfiler();
-            }
-        }
     }
 }

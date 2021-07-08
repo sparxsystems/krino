@@ -26,7 +26,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Morpheme(attributesModel, "book", EnglishAttributes.O.Lexeme.Noun),
             };
 
-            var patternConstructions = new PatternConstructions(5, new Pattern[0], new Pattern[0]);
+            var patternConstructions = new PatternConstructions(5, new Pattern[0]);
             ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, patternConstructions, morphemes);
 
             List<Morpheme> result = dictionary.FindLexemes("writ", 1).ToList();
@@ -57,7 +57,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Morpheme(attributesModel, "read", EnglishAttributes.I.Lexeme),
             };
 
-            var patternConstructions = new PatternConstructions(5, new Pattern[0], new Pattern[0]);
+            var patternConstructions = new PatternConstructions(5, new Pattern[0]);
             ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, patternConstructions, morphemes);
 
             // prefix 're'
@@ -101,7 +101,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
                 new Morpheme(attributesModel, "er", EnglishAttributes.O.NonLexeme.Suffix),
             };
 
-            var patternConstructions = new PatternConstructions(5, new Pattern[0], new Pattern[0]);
+            var patternConstructions = new PatternConstructions(5, new Pattern[0]);
             ConstructiveDictionary dictionary = new ConstructiveDictionary(attributesModel, patternConstructions, morphemes);
 
             var morphemeSequences = dictionary.DecomposeWord("writer", 1);

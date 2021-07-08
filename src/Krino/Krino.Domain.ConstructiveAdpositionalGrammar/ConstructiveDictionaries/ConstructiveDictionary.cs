@@ -39,6 +39,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IEnumerable<Pattern> Patterns { get; private set; }
 
+        public int PatternConstructions => myPatternConstructions.PatternFactories.Count;
+
 
         public IEnumerable<Morpheme> FindLexemes(string word, int maxDistance)
         {

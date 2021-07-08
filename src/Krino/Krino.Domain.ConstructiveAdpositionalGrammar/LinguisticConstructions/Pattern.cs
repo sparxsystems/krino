@@ -378,6 +378,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return this;
         }
 
+        public Pattern SetRightFirst()
+        {
+            IsLeftFirst = false;
+            return this;
+        }
+
         public Pattern SetMorphematicAdPositionRuleForLeft(IRule<GrammarCharacter> inheritanceRule)
         {
             LeftRule.SetMorphematicAdPositionRule(inheritanceRule);
@@ -568,7 +574,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             RightPatternRule.Equals(other.RightPatternRule) &&
             LeftPatternRule.Equals(other.LeftPatternRule) &&
 
-            ValencyPosition == other.ValencyPosition;
+            ValencyPosition == other.ValencyPosition &&
+            IsLeftFirst == other.IsLeftFirst;
 
         public override bool Equals(object obj) => obj is Pattern otherPattern && Equals(otherPattern);
 
@@ -585,6 +592,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             hash = (hash * 16777619) ^ LeftPatternRule.GetHashCode();
 
             hash = (hash * 16777619) ^ ValencyPosition.GetHashCode();
+
+            hash = (hash * 16777619) ^ IsLeftFirst.GetHashCode();
 
             return hash;
         }

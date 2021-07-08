@@ -38,7 +38,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.e_Period_I,
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.e_Period_I });
+            var patternConstructions = new PatternConstructions(5, patterns);
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
             AdTreeCreator creator = new AdTreeCreator(dictionary);
 
@@ -73,7 +73,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.I_to_I_s,
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(5, patterns);
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -109,7 +109,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.I_to_O_er,
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O2_I });
+            var patternConstructions = new PatternConstructions(5, patterns);
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -151,7 +151,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.I_to_I_ing, // read + ing
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(5, patterns);
             ConstructiveDictionary dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -185,7 +185,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.A_O,
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.A_O });
+            var patternConstructions = new PatternConstructions(5, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -218,7 +218,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "car", EnglishAttributes.O.Lexeme.Noun),
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.A_O });
+            var patternConstructions = new PatternConstructions(5, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -251,7 +251,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "of", EnglishAttributes.E.Lexeme.Preposition),
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(5, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -291,7 +291,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "ends", EnglishAttributes.I.Lexeme.Verb),
             };
 
-            var patternConstructions = new PatternConstructions(6, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(6, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -301,9 +301,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             Assert.AreEqual("world", bestResult.Left.Right.Morpheme.Morph);
             Assert.AreEqual("as", bestResult.Left.Morpheme.Morph);
-            Assert.AreEqual("people", bestResult.Left.Left.Right.Left.Morpheme.Morph);
+            Assert.AreEqual("people", bestResult.Left.Left.Left.Morpheme.Morph);
             Assert.AreEqual("said", bestResult.Left.Left.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("lately", bestResult.Left.Left.Left.Morpheme.Morph);
+            Assert.AreEqual("lately", bestResult.Left.Left.Right.Left.Morpheme.Morph);
             Assert.AreEqual("ends", bestResult.Right.Morpheme.Morph);
         }
 
@@ -329,7 +329,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(5, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -368,7 +368,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 new Morpheme(myAttributesModel, "not", EnglishAttributes.E.Lexeme.Adverb),
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(5, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -406,7 +406,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.A_O,
             };
 
-            var patternConstructions = new PatternConstructions(5, patterns, new Pattern[] { EnglishPattern.O2_I });
+            var patternConstructions = new PatternConstructions(5, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -448,7 +448,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.I_U_O,
             };
 
-            var patternConstructions = new PatternConstructions(6, patterns, new Pattern[] { EnglishPattern.O1_I.SetLeftFirst() });
+            var patternConstructions = new PatternConstructions(6, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -491,7 +491,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O_E_I,
             };
 
-            var patternConstructions = new PatternConstructions(7, patterns, new Pattern[] { EnglishPattern.O_E_I });
+            var patternConstructions = new PatternConstructions(7, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -535,7 +535,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.A_U_A,
             };
 
-            var patternConstructions = new PatternConstructions(6, patterns, new Pattern[] { EnglishPattern.O2_I });
+            var patternConstructions = new PatternConstructions(6, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);
@@ -574,7 +574,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.I_U_I,
             };
 
-            var patternConstructions = new PatternConstructions(6, patterns, new Pattern[] { EnglishPattern.I_U_I });
+            var patternConstructions = new PatternConstructions(6, patterns);
             var dictionary = new ConstructiveDictionary(myAttributesModel, patternConstructions, morphemes);
 
             AdTreeCreator creator = new AdTreeCreator(dictionary);

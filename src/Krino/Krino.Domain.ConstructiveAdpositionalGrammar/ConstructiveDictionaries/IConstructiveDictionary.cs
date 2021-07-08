@@ -81,6 +81,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
         IEnumerable<Pattern> Patterns { get; }
 
         /// <summary>
+        /// Number of pattern constructions available in the dictionary.
+        /// </summary>
+        int PatternConstructions { get; }
+
+        /// <summary>
         /// Returns adtree constructions matching the pattern signature.
         /// </summary>
         /// <param name="patternSignature"></param>

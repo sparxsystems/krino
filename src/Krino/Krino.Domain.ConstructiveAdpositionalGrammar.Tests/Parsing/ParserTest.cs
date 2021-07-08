@@ -27,7 +27,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var dictionary = new EnglishConstructiveDictionaryFactory()
             {
                 MaxWords = 7,
-                RootPattern = EnglishPattern.I_U_I,
             }.Create();
             var parser = new Parser(dictionary);
 

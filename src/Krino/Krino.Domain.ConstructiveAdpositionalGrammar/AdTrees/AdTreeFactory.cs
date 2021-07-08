@@ -3,11 +3,13 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 {
+    [DebuggerDisplay("{Pattern} : {PatternSignature}")]
     public class AdTreeFactory : IEnumerable<AdTreeFactory>
     {
         public AdTreeFactory(Pattern patter)
