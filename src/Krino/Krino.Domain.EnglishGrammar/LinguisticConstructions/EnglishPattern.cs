@@ -86,7 +86,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern E_I => Pattern.EpsilonAdPosition(myAttributesModel, "E-I", "Rule to add a circumstantial adverb after verb valencies.",
                 EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme.Verb)
-                .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Nothing);
+                .SetLeftSubstitutionRule(PatternSubstitutionRules.Nothing);
 
 
         // negation: TODO: negation should appear in sememe attributes ??

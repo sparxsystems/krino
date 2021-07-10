@@ -77,14 +77,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             // Not allowed morphematic adposition.
             parent = EnglishPattern.E_I
-                .SetMorphematicAdPositionRuleForRight(MorphematicAdPositionRules.Nothing);
+                .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
             child = EnglishPattern.I_U_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
 
             // Morphematic adposition allowed.
             parent = EnglishPattern.E_I
-                .SetMorphematicAdPositionRuleForRight(MorphematicAdPositionRules.Epsilon_U_E);
+                .SetRightSubstitutionRule(PatternSubstitutionRules.Epsilon_U_E);
             child = EnglishPattern.I_U_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
@@ -152,14 +152,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             // Morphematic adposition NOT allowed.
             parent = EnglishPattern.E_I
-                .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Nothing);
+                .SetLeftSubstitutionRule(PatternSubstitutionRules.Nothing);
             child = Pattern.MorphematicAdPosition(myAttributesModel, "E-U-E", "", EnglishAttributes.U.Lexeme, EnglishAttributes.E.Lexeme, EnglishAttributes.E.Lexeme);
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsFalse(rule.Evaluate(child));
 
             // Morphematic adposition allowed.
             parent = EnglishPattern.E_I
-                .SetMorphematicAdPositionRuleForLeft(MorphematicAdPositionRules.Epsilon_U_E);
+                .SetLeftSubstitutionRule(PatternSubstitutionRules.Epsilon_U_E);
             child = Pattern.MorphematicAdPosition(myAttributesModel, "E-U-E", "", EnglishAttributes.U.Lexeme, EnglishAttributes.E.Lexeme, EnglishAttributes.E.Lexeme.Adverb);
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));

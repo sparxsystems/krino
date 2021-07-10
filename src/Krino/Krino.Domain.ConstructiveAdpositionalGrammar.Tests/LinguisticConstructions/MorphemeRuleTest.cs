@@ -15,13 +15,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         public void CopyConstructor()
         {
             var morphemeRule = new MorphemeRule(myAttributesModel, RuleMaker.Anything<string>(), MaskRule.Is(EnglishAttributes.I.Lexeme.Interjection));
-            morphemeRule.SetMorphematicAdPositionRule(MorphematicAdPositionRules.Epsilon_U_E);
 
             var copy = new MorphemeRule(morphemeRule);
             Assert.AreEqual(morphemeRule.GrammarCharacter, copy.GrammarCharacter);
             Assert.IsTrue(morphemeRule.MorphRule.Equals(copy.MorphRule));
             Assert.IsTrue(morphemeRule.AttributesRule.Equals(copy.AttributesRule));
-            Assert.IsTrue(morphemeRule.MorphematicAdPositionRule.Equals(copy.MorphematicAdPositionRule));
 
             Assert.IsTrue(morphemeRule.Equals(copy));
         }

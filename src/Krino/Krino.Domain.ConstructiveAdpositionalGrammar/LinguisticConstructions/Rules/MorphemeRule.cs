@@ -19,12 +19,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
         public static MorphemeRule Epsilon => new MorphemeRule(null, MorphRules.EmptyString, MaskRule.Is(0));
 
-        public static MorphemeRule Is(IAttributesModel attributesModel, string morph, BigInteger attributes, IRule<GrammarCharacter> morphematicAdPositionRule = null) => Is(attributesModel, MorphRules.Is(morph), attributes, 0, morphematicAdPositionRule);
-        public static MorphemeRule Is(IAttributesModel attributesModel, IRule<string> morphRule, BigInteger attributes, IRule<GrammarCharacter> morphematicAdPositionRule = null) => Is(attributesModel, morphRule, attributes, 0, morphematicAdPositionRule);
-        public static MorphemeRule Is(IAttributesModel attributesModel, IRule<string> morphRule, BigInteger attributes, BigInteger notAttributes, IRule<GrammarCharacter> morphematicAdPositionRule = null)
+        public static MorphemeRule Is(IAttributesModel attributesModel, string morph, BigInteger attributes) => Is(attributesModel, MorphRules.Is(morph), attributes, 0);
+        public static MorphemeRule Is(IAttributesModel attributesModel, IRule<string> morphRule, BigInteger attributes) => Is(attributesModel, morphRule, attributes, 0);
+        public static MorphemeRule Is(IAttributesModel attributesModel, IRule<string> morphRule, BigInteger attributes, BigInteger notAttributes)
             => notAttributes != 0 ?
-                new MorphemeRule(attributesModel, morphRule, MaskRule.Is(attributes) & !MaskRule.Is(notAttributes), morphematicAdPositionRule) :
-                new MorphemeRule(attributesModel, morphRule, MaskRule.Is(attributes), morphematicAdPositionRule);
+                new MorphemeRule(attributesModel, morphRule, MaskRule.Is(attributes) & !MaskRule.Is(notAttributes)) :
+                new MorphemeRule(attributesModel, morphRule, MaskRule.Is(attributes));
 
         public static MorphemeRule O_Lexeme_Something(IAttributesModel attributesModel) => new MorphemeRule(attributesModel, MorphRules.Something, MaskRule.Is(attributesModel.O_Lexeme));
 
@@ -57,17 +57,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         private bool? myIsNonLexeme;
 
 
-        public MorphemeRule(IAttributesModel attributesModel, IRule<string> morphRule, IRule<BigInteger> attributesRule,
-            IRule<GrammarCharacter> morphematicAdPositionRule = null)
+        public MorphemeRule(IAttributesModel attributesModel, IRule<string> morphRule, IRule<BigInteger> attributesRule)
         {
             myAttributesModel = attributesModel;
             MorphRule = morphRule ?? throw new ArgumentNullException(nameof(morphRule));
             AttributesRule = attributesRule ?? throw new ArgumentNullException(nameof(attributesRule));
-            MorphematicAdPositionRule = morphematicAdPositionRule ?? MorphematicAdPositionRules.Epsilon_U_E;
         }
 
         public MorphemeRule(MorphemeRule morphemeRule)
-            : this(morphemeRule.myAttributesModel, morphemeRule.MorphRule, morphemeRule.AttributesRule, morphemeRule.MorphematicAdPositionRule)
+            : this(morphemeRule.myAttributesModel, morphemeRule.MorphRule, morphemeRule.AttributesRule)
         {
         }
 
@@ -82,19 +80,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// </summary>
         public IRule<BigInteger> AttributesRule { get; private set; }
 
-        /// <summary>
-        /// Rule to evaluate if themorpheme can be provided via the substitution.
-        /// </summary>
-        /// <remarks>
-        /// E.g. O can be provided via the A-O pattern.
-        /// </remarks>
-        public IRule<GrammarCharacter> MorphematicAdPositionRule { get; private set; }
-
-        public MorphemeRule SetMorphematicAdPositionRule(IRule<GrammarCharacter> inheritanceRule)
-        {
-            MorphematicAdPositionRule = inheritanceRule;
-            return this;
-        }
 
 
         /// <summary>
@@ -198,8 +183,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
         public override bool Equals(IRule<Morpheme> other) => other is MorphemeRule otherMorphemeRule &&
             MorphRule.Equals(otherMorphemeRule.MorphRule) &&
-            AttributesRule.Equals(otherMorphemeRule.AttributesRule) &&
-            MorphematicAdPositionRule.Equals(otherMorphemeRule.MorphematicAdPositionRule);
+            AttributesRule.Equals(otherMorphemeRule.AttributesRule);
 
 
         public override int GetHashCode()
@@ -208,7 +192,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
 
             hash = (hash * 16777619) ^ MorphRule.GetHashCode();
             hash = (hash * 16777619) ^ AttributesRule.GetHashCode();
-            hash = (hash * 16777619) ^ MorphematicAdPositionRule.GetHashCode();
 
             return hash;
         }

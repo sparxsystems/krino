@@ -108,7 +108,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                 else if (child.IsMorphematicAdPosition)
                 {
                     // If the parent can accept such morphematic adposition.
-                    if (parent.RightRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
+                    if (parent.RightSubstitutionRule.Evaluate(child.UpRule.GrammarCharacter))
                     {
                         if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                         {
@@ -165,7 +165,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             }
             else if (child.IsMorphematicAdPosition)
             {
-                if (parent.LeftRule.MorphematicAdPositionRule.Evaluate(child.UpRule.GrammarCharacter))
+                if (parent.LeftSubstitutionRule.Evaluate(child.UpRule.GrammarCharacter))
                 {
                     // Note: get the driving grammar character of the child from the right branch.
                     if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
