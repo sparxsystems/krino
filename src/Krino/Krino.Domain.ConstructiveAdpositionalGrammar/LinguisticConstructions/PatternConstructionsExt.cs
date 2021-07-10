@@ -99,7 +99,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             
             foreach (var pattern in rootPatterns)
             {
-                var possibleAdTreePatterns = GetFactoriesForPatternSignature(patternGraph, pattern, patternSignature, patternSignature.Length, buffer);
+                var possibleAdTreePatterns = GetFactoriesForPatternSignature(patternGraph, pattern, patternSignature, patternSignature.Length, true, buffer);
 
                 if (possibleAdTreePatterns != null && possibleAdTreePatterns.Any())
                 {
@@ -117,6 +117,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
         private static IEnumerable<AdTreeFactory> GetFactoriesForPatternSignature(
             IDirectedGraph<Pattern, AdTreePosition> patternGraph,
             Pattern start, string patternSignature, int requiredMorphemesCount,
+            bool morphemeCountExact,
             PatternConstructionsBuffer buffer)
         {
             using var _t = Trace.Entering();
@@ -140,14 +141,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 }
                 else
                 {
+                    //var parallelOptions = new ParallelOptions();
+                    //if (requiredMorphemesCount < 5)
+                    //{
+                    //    parallelOptions.MaxDegreeOfParallelism = 1;
+                    //}
+
                     result = new List<AdTreeFactory>();
 
                     if (start.IsLeftFirst)
                     {
                         var leftPatterns = GetRelevantPatterns(patternGraph, start, AdTreePosition.ParrentForChildOnLeft);
-                        foreach (var leftPattern in leftPatterns)
+                        //foreach (var leftPattern in leftPatterns)
+                        Parallel.ForEach(leftPatterns, leftPattern =>
                         {
-                            var leftAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, leftPattern, patternSignature, requiredMorphemesCount - 1, buffer);
+                            var leftAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, leftPattern, patternSignature, requiredMorphemesCount - 1, false, buffer);
                             foreach (var leftAdTreeFactory in leftAdTreeFactories)
                             {
                                 // If it is a morpheme then check the grammar character.
@@ -156,7 +164,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                     var leftGrammarCharacter = Enum.Parse<GrammarCharacter>(patternSignature[0].ToString());
                                     if (start.LeftRule.GrammarCharacter != leftGrammarCharacter)
                                     {
-                                        break;
+                                        continue;
                                     }
                                 }
 
@@ -169,7 +177,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                     var adPositionGrammarCharacter = Enum.Parse<GrammarCharacter>(patternSignature[leftMorphemesCount].ToString());
                                     if (start.UpRule.GrammarCharacter != adPositionGrammarCharacter)
                                     {
-                                        break;
+                                        continue;
                                     }
 
                                     morphematicAdPositionCount = 1;
@@ -183,20 +191,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                         adTreeFactory.Left = leftAdTreeFactory;
 
                                         var morphemesCount = GetMorphemesCount(adTreeFactory);
-                                        if (morphemesCount == requiredMorphemesCount)
+                                        if (morphemesCount == requiredMorphemesCount ||
+                                            morphemesCount < requiredMorphemesCount && !morphemeCountExact)
                                         {
                                             lock (result)
                                             {
                                                 result.Add(adTreeFactory);
-                                                break;
                                             }
+                                            continue;
                                         }
                                     }
                                 }
 
                                 if (leftMorphemesCount + morphematicAdPositionCount >= patternSignature.Length)
                                 {
-                                    break;
+                                    continue;
                                 }
 
                                 var newRightMaxMorphemes = requiredMorphemesCount - leftMorphemesCount - morphematicAdPositionCount;
@@ -205,7 +214,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                 var rightPatterns = GetRelevantPatterns(patternGraph, start, AdTreePosition.ParrentForChildOnRight);
                                 foreach (var rightPattern in rightPatterns)
                                 {
-                                    var rightAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, rightPattern, newLeftPatternSignature, newRightMaxMorphemes, buffer);
+                                    var rightAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, rightPattern, newLeftPatternSignature, newRightMaxMorphemes, true, buffer);
                                     foreach (var rightAdTreeFactory in rightAdTreeFactories)
                                     {
                                         // If it is a morpheme then check the grammar character.
@@ -214,7 +223,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                             var rightGrammarCharacter = Enum.Parse<GrammarCharacter>(patternSignature[leftMorphemesCount + morphematicAdPositionCount].ToString());
                                             if (start.RightRule.GrammarCharacter != rightGrammarCharacter)
                                             {
-                                                break;
+                                                continue;
                                             }
                                         }
 
@@ -223,7 +232,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                         adTreeFactory.Left = leftAdTreeFactory;
 
                                         var morphemesCount = GetMorphemesCount(adTreeFactory);
-                                        if (morphemesCount == requiredMorphemesCount)
+                                        if (morphemesCount == requiredMorphemesCount ||
+                                            morphemesCount < requiredMorphemesCount && !morphemeCountExact)
                                         {
                                             lock (result)
                                             {
@@ -233,14 +243,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                     }
                                 }
                             }
-                        }
+                        });
                     }
                     else
                     {
                         var rightPatterns = GetRelevantPatterns(patternGraph, start, AdTreePosition.ParrentForChildOnRight);
-                        foreach (var rightPattern in rightPatterns)
+
+                        //foreach (var rightPattern in rightPatterns)
+                        Parallel.ForEach(rightPatterns, rightPattern =>
                         {
-                            var rightAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, rightPattern, patternSignature, requiredMorphemesCount - 1, buffer);
+                            var rightAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, rightPattern, patternSignature, requiredMorphemesCount - 1, false, buffer);
                             foreach (var rightAdTreeFactory in rightAdTreeFactories)
                             {
                                 // If it is a morpheme then check the grammar character.
@@ -249,7 +261,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                     var rightGrammarCharacter = Enum.Parse<GrammarCharacter>(patternSignature[0].ToString());
                                     if (start.RightRule.GrammarCharacter != rightGrammarCharacter)
                                     {
-                                        break;
+                                        continue;
                                     }
                                 }
 
@@ -262,7 +274,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                     var adPositionGrammarCharacter = Enum.Parse<GrammarCharacter>(patternSignature[rightMorphemesCount].ToString());
                                     if (start.UpRule.GrammarCharacter != adPositionGrammarCharacter)
                                     {
-                                        break;
+                                        continue;
                                     }
 
                                     morphematicAdPositionCount = 1;
@@ -276,20 +288,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                         adTreeFactory.Left = null;
 
                                         var morphemesCount = GetMorphemesCount(adTreeFactory);
-                                        if (morphemesCount == requiredMorphemesCount)
+                                        if (morphemesCount == requiredMorphemesCount ||
+                                            morphemesCount < requiredMorphemesCount && !morphemeCountExact)
                                         {
                                             lock (result)
                                             {
                                                 result.Add(adTreeFactory);
-                                                break;
                                             }
+                                            continue;
                                         }
                                     }
                                 }
 
                                 if (rightMorphemesCount + morphematicAdPositionCount >= patternSignature.Length)
                                 {
-                                    break;
+                                    continue;
                                 }
 
                                 var newLeftMaxMorphemes = requiredMorphemesCount - rightMorphemesCount - morphematicAdPositionCount;
@@ -298,7 +311,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                 var leftPatterns = GetRelevantPatterns(patternGraph, start, AdTreePosition.ParrentForChildOnLeft);
                                 foreach (var leftPattern in leftPatterns)
                                 {
-                                    var leftAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, leftPattern, newLeftPatternSignature, newLeftMaxMorphemes, buffer);
+                                    var leftAdTreeFactories = GetFactoriesForPatternSignature(patternGraph, leftPattern, newLeftPatternSignature, newLeftMaxMorphemes, true, buffer);
                                     foreach (var leftAdTreeFactory in leftAdTreeFactories)
                                     {
                                         // If it is a morpheme then check the grammar character.
@@ -307,7 +320,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                             var leftGrammarCharacter = Enum.Parse<GrammarCharacter>(patternSignature[rightMorphemesCount + morphematicAdPositionCount].ToString());
                                             if (start.LeftRule.GrammarCharacter != leftGrammarCharacter)
                                             {
-                                                break;
+                                                continue;
                                             }
                                         }
 
@@ -316,7 +329,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                         adTreeFactory.Left = leftAdTreeFactory;
 
                                         var morphemesCount = GetMorphemesCount(adTreeFactory);
-                                        if (morphemesCount == requiredMorphemesCount)
+                                        if (morphemesCount == requiredMorphemesCount ||
+                                            morphemesCount < requiredMorphemesCount && !morphemeCountExact)
                                         {
                                             lock (result)
                                             {
@@ -326,7 +340,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                                     }
                                 }
                             }
-                        }
+                        });
                     }
                 }
             }

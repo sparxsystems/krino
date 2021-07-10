@@ -22,40 +22,22 @@ namespace Krino.GretaTest
 
             //Trace.StartProfiler();
 
-            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
-            List<IAdTree> results = adTreeCreator.Create("I have some good news and some bad news regarding the climate emergency .".ToLower().Split(" "));
+            var dictionary = new EnglishConstructiveDictionaryFactory() { MaxWords = 8 }.Create();
+            var parser = new Parser(dictionary);
+            //var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
+            var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
 
-            //Trace.StopProfiler();
-
-            Assert.AreEqual(2, results.Count);
-            Assert.AreEqual("i", results[0].Right.Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("have", results[0].Right.Right.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("some", results[0].Right.Right.Left.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("good", results[0].Right.Right.Left.Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("news", results[0].Right.Right.Left.Right.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("and", results[0].Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("some", results[0].Right.Right.Left.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("bad", results[0].Right.Right.Left.Left.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("news", results[0].Right.Right.Left.Left.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("regarding", results[0].Right.Morpheme.Morph);
-            Assert.AreEqual("the", results[0].Right.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("climate", results[0].Right.Left.Right.Left.Right.Morpheme.Morph);
-            Assert.AreEqual("emergency", results[0].Right.Left.Right.Right.Morpheme.Morph);
-            Assert.AreEqual(".", results[0].Morpheme.Morph);
+            Assert.AreEqual(1, results.Count);
         }
 
         // I will start with the good news.
         [Test]
         public void Sentence_1_2()
         {
-            var dictionary = new EnglishConstructiveDictionaryFactory()
-            {
-                MaxWords = 7,
-            }.Create();
+            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
             var parser = new Parser(dictionary);
 
-            var results = parser.Parse("I will start with the good news .");
+            var results = parser.Parse("I will start with the good news.");
 
             Assert.AreEqual(1, results.Count);
         }
