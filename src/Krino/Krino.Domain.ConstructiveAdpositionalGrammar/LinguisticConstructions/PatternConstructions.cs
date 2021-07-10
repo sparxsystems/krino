@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
+using Krino.Vertical.Utils.Graphs;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -6,69 +7,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 {
     public class PatternConstructions
     {
-        //public PatternConstructions(int maxMorphemes, IEnumerable<Pattern> allPatterns, IEnumerable<Pattern> rootPatterns)
-        //{
-        //    AllPatterns = allPatterns;
-
-        //    var patternFactories = new Dictionary<string, IReadOnlyList<AdTreeFactory>>();
-
-        //    var patternGraph = allPatterns.CreatePatternGraph();
-
-        //    foreach (var pattern in rootPatterns)
-        //    {
-        //        var factories = patternGraph.GetAdTreeFactories(pattern, maxMorphemes);
-
-        //        foreach (var factory in factories)
-        //        {
-        //            var patternSignature = factory.PatternSignature;
-
-        //            patternFactories.TryGetValue(patternSignature, out var storedFactories);
-        //            if (storedFactories == null)
-        //            {
-        //                storedFactories = new List<AdTreeFactory>();
-        //                patternFactories[patternSignature] = storedFactories;
-        //            }
-
-        //            ((List<AdTreeFactory>)storedFactories).Add(factory);
-        //            ++Count;
-        //        }
-        //    }
-
-        //    PatternFactories = patternFactories;
-        //}
+        private DirectedGraph<Pattern, AdTreePosition> myPatternGraph;
+        private PatternConstructionsBuffer myConstructionsBuffer;
 
         public PatternConstructions(int maxMorphemes, IEnumerable<Pattern> allPatterns)
         {
-            AllPatterns = allPatterns;
-
-            var patternFactories = new Dictionary<string, IReadOnlyList<AdTreeFactory>>();
-
-            var patternGraph = allPatterns.CreatePatternGraph();
-
-            var factories = patternGraph.GetAdTreeFactories(allPatterns, maxMorphemes);
-
-            foreach (var factory in factories)
-            {
-                var patternSignature = factory.PatternSignature;
-
-                patternFactories.TryGetValue(patternSignature, out var storedFactories);
-                if (storedFactories == null)
-                {
-                    storedFactories = new List<AdTreeFactory>();
-                    patternFactories[patternSignature] = storedFactories;
-                }
-
-                ((List<AdTreeFactory>)storedFactories).Add(factory);
-                ++Count;
-            }
-
-            PatternFactories = patternFactories;
+            myPatternGraph = allPatterns.CreatePatternGraph();
+            myConstructionsBuffer = new PatternConstructionsBuffer(myPatternGraph, maxMorphemes);
         }
 
-        public int Count { get; private set; }
+        public int Count => myConstructionsBuffer.Count;
 
-        public IReadOnlyDictionary<string, IReadOnlyList<AdTreeFactory>> PatternFactories { get; private set; }
+        public IEnumerable<Pattern> AllPatterns => myPatternGraph;
 
-        public IEnumerable<Pattern> AllPatterns { get; private set; }
+        public IReadOnlyList<AdTreeFactory> GetPatternFactories(string patternSignature)
+            => myPatternGraph.GetAdTreeFactoriesForPatternSignature(patternSignature, myConstructionsBuffer);
     }
 }

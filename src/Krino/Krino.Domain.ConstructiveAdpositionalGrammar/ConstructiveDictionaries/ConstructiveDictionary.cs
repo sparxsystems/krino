@@ -39,7 +39,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IEnumerable<Pattern> Patterns { get; private set; }
 
-        public int PatternConstructions => myPatternConstructions.PatternFactories.Count;
+        public int PatternConstructions => myPatternConstructions.Count;
 
 
         public IEnumerable<Morpheme> FindLexemes(string word, int maxDistance)
@@ -152,11 +152,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
         public IEnumerable<AdTreeFactory> FindAdTreeConstructions(string patternSignature)
         {
-            myPatternConstructions.PatternFactories.TryGetValue(patternSignature, out var adTreeConstructions);
-
-            var result = adTreeConstructions ?? Enumerable.Empty<AdTreeFactory>();
+            var result = myPatternConstructions.GetPatternFactories(patternSignature);
             return result;
         }
+
 
         private void InitializeMorphemes(IEnumerable<Morpheme> morphemes)
         {

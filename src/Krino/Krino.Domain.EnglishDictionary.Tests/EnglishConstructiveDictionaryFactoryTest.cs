@@ -37,7 +37,7 @@ namespace Krino.Domain.EnglishDictionary.Tests
             finally
             {
                 Trace.StopProfiler();
-                Trace.Logger.LogInformation($"Writings: {DirectedGraphExt.Writings}");
+                Trace.Logger.LogInformation($"Writings: {PatternConstructionsExt.Writings}");
                 //Trace.Logger.LogInformation($"Constructions: {dictionary.PatternConstructions}");
             }
        }

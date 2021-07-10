@@ -7,7 +7,14 @@ namespace Krino.Vertical.Utils.Collections
 {
     public class DoubleKeyDictionary<K1, K2, V> : IEnumerable<Tuple<K1, K2, V>>
     {
-        private Dictionary<K1, Dictionary<K2, V>> myDictionary = new Dictionary<K1, Dictionary<K2, V>>();
+        private Dictionary<K1, Dictionary<K2, V>> myDictionary;
+        private IEqualityComparer<K2> myK2Comparer;
+
+        public DoubleKeyDictionary(IEqualityComparer<K1> k1Comparer = null, IEqualityComparer<K2> k2Comparer = null)
+        {
+            myDictionary = new Dictionary<K1, Dictionary<K2, V>>(k1Comparer);
+            myK2Comparer = k2Comparer;
+        }
 
         public ReaderWriterLockSlim ReaderWriterLock { get; } = new ReaderWriterLockSlim();
 
@@ -17,7 +24,7 @@ namespace Krino.Vertical.Utils.Collections
         {
             if (!myDictionary.TryGetValue(key1, out Dictionary<K2, V> dictionary2))
             {
-                dictionary2 = new Dictionary<K2, V>();
+                dictionary2 = new Dictionary<K2, V>(myK2Comparer);
                 myDictionary.Add(key1, dictionary2);
             }
 

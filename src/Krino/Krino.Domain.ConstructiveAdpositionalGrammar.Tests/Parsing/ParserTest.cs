@@ -32,13 +32,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             }.Create();
             var parser = new Parser(dictionary);
 
-            //var graph = dictionary.Patterns.CreatePatternGraph();
-            //var signatures = graph.GetAdTreeFactories(EnglishPattern.I_U_I, 7)
-            //    .Select(x => x.PatternSignature)
-            //    .ToList();
-
-            //Assert.IsTrue(signatures.Contains("OIOUOIO"));
-
             var sentences = parser.Parse("Book is book because book is book");
 
             Assert.AreEqual(1, sentences.Count);
