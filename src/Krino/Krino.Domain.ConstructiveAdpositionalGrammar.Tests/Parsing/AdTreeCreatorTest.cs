@@ -447,7 +447,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
                 EnglishPattern.O1_I.SetLeftFirst(),
 
                 EnglishPattern.A_O
-                    .SetRightSubstitutionRule(PatternSubstitutionRules.Epsilon),
+                    .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Epsilon)),
 
                 EnglishPattern.I_as_O,
             };

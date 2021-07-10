@@ -55,8 +55,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 UpRule = MorphemeRule.Is(attributesModel, "", upAttributes),
                 LeftRule = MorphemeRule.Nothing,
                 RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
-                RightSubstitutionRule = PatternSubstitutionRules.Nothing,
-            };
+            }
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
 
             return result;
         }
@@ -86,10 +86,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 UpRule = MorphemeRule.Is(attributesModel, "", upAttributes),
                 LeftRule = MorphemeRule.Is(attributesModel, MorphRules.Something, leftAttributes, notRightAttributes),
                 RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes),
-
-                LeftSubstitutionRule = PatternSubstitutionRules.Nothing,
-                RightSubstitutionRule = PatternSubstitutionRules.Epsilon,
-            };
+            }
+            .AndLeftPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing))
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Epsilon));
 
             return result;
         }
@@ -119,10 +118,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
                 UpRule = MorphemeRule.Is(attributesModel, "", upAttributes),
                 LeftRule = MorphemeRule.Is(attributesModel, !string.IsNullOrEmpty(leftMorph) ? MorphRules.Is(leftMorph) : MorphRules.Something, leftAttributes),
                 RightRule = MorphemeRule.Is(attributesModel, MorphRules.Something, rightAttributes, notRightAttributes),
-
-                LeftSubstitutionRule = PatternSubstitutionRules.Nothing,
-                RightSubstitutionRule = PatternSubstitutionRules.Epsilon,
-            };
+            }
+            .AndLeftPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing))
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Epsilon));
 
             return result;
         }
@@ -265,19 +263,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
 
         public static Pattern O1_I(IAttributesModel attributesModel) => On_I(attributesModel, "O1-I", 1)
-            .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
         public static Pattern O2_I(IAttributesModel attributesModel) => On_I(attributesModel, "O2-I", 2)
-            .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
         public static Pattern O3_I(IAttributesModel attributesModel) => On_I(attributesModel, "O3-I", 3)
-            .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
         public static Pattern O4_I(IAttributesModel attributesModel) => On_I(attributesModel, "O4-I", 4)
-            .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
         public static Pattern O5_I(IAttributesModel attributesModel) => On_I(attributesModel, "O5-I", 5)
-            .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
 
         // E.g. Speaking is prohibited. 'prohibited' is on the 2nd valency position.
         public static Pattern A2_I(IAttributesModel attributesModel) => An_I(attributesModel, "A2-I", 2)
-            .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
+            .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
 
         private static Pattern On_I(IAttributesModel attributesModel, string patternName, int valencyPosition)
             => new Pattern(patternName)
@@ -369,22 +367,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 
         public IRule<Pattern> RightPatternRule { get; set; }
 
-        /// <summary>
-        /// Rule to evaluate when a grammar character is provided via an adposition.
-        /// </summary>
-        /// <remarks>
-        /// E.g. O can be provided via the A-O pattern.
-        /// </remarks>
-        public IRule<GrammarCharacter> LeftSubstitutionRule { get; set; } = PatternSubstitutionRules.Epsilon_U_E;
-
-        /// <summary>
-        /// Rule to evaluate when a grammar character is provided via an adposition.
-        /// </summary>
-        /// <remarks>
-        /// E.g. O can be provided via the A-O pattern.
-        /// </remarks>
-        public IRule<GrammarCharacter> RightSubstitutionRule { get; set; } = PatternSubstitutionRules.Epsilon_U_E;
-
 
         public GrammarCharacter RulingGrammarCharacter => IsLikeMorpheme ? UpRule.GrammarCharacter : RightRule.GrammarCharacter;
 
@@ -414,15 +396,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
             return this;
         }
 
-        public Pattern SetLeftSubstitutionRule(IRule<GrammarCharacter> substitutionRule)
+        public Pattern AndLeftPatternRule(IRule<Pattern> ruleToAdd)
         {
-            LeftSubstitutionRule = substitutionRule;
+            LeftPatternRule = LeftPatternRule.And(ruleToAdd);
             return this;
         }
 
-        public Pattern SetRightSubstitutionRule(IRule<GrammarCharacter> substitutionRule)
+        public Pattern AndRightPatternRule(IRule<Pattern> ruleToAdd)
         {
-            RightSubstitutionRule = substitutionRule;
+            RightPatternRule = RightPatternRule.And(ruleToAdd);
             return this;
         }
 

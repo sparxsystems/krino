@@ -12,6 +12,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
         private static EnglishAttributesModel myAttributesModel = new EnglishAttributesModel();
 
         [Test]
+        public void MorphenaticAdPosition()
+        {
+            var child = EnglishPattern.O_U_O;
+            var rule = PatternRules.MorphematicAdPosition(GrammarCharacterRules.Epsilon_U);
+            Assert.IsTrue(rule.Evaluate(child));
+
+            child = EnglishPattern.O_U_O;
+            rule = PatternRules.MorphematicAdPosition(GrammarCharacterRules.E);
+            Assert.IsFalse(rule.Evaluate(child));
+        }
+
+        [Test]
         public void UpPatternRule()
         {
             var parent = EnglishPattern.O_U_O;
@@ -71,21 +83,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
 
             parent = EnglishPattern.O1_I;
             child = EnglishPattern.Will_I;
-            rule = PatternRules.ByRightMorphemeRule(parent);
-            Assert.IsTrue(rule.Evaluate(child));
-
-
-            // Not allowed morphematic adposition.
-            parent = EnglishPattern.E_I
-                .SetRightSubstitutionRule(PatternSubstitutionRules.Nothing);
-            child = EnglishPattern.I_U_I;
-            rule = PatternRules.ByRightMorphemeRule(parent);
-            Assert.IsFalse(rule.Evaluate(child));
-
-            // Morphematic adposition allowed.
-            parent = EnglishPattern.E_I
-                .SetRightSubstitutionRule(PatternSubstitutionRules.Epsilon_U_E);
-            child = EnglishPattern.I_U_I;
             rule = PatternRules.ByRightMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));
 
@@ -150,16 +147,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             Assert.IsFalse(rule.Evaluate(child));
 
 
-            // Morphematic adposition NOT allowed.
-            parent = EnglishPattern.E_I
-                .SetLeftSubstitutionRule(PatternSubstitutionRules.Nothing);
-            child = Pattern.MorphematicAdPosition(myAttributesModel, "E-U-E", "", EnglishAttributes.U.Lexeme, EnglishAttributes.E.Lexeme, EnglishAttributes.E.Lexeme);
-            rule = PatternRules.ByLeftMorphemeRule(parent);
-            Assert.IsFalse(rule.Evaluate(child));
-
-            // Morphematic adposition allowed.
-            parent = EnglishPattern.E_I
-                .SetLeftSubstitutionRule(PatternSubstitutionRules.Epsilon_U_E);
+            parent = EnglishPattern.E_I;
             child = Pattern.MorphematicAdPosition(myAttributesModel, "E-U-E", "", EnglishAttributes.U.Lexeme, EnglishAttributes.E.Lexeme, EnglishAttributes.E.Lexeme.Adverb);
             rule = PatternRules.ByLeftMorphemeRule(parent);
             Assert.IsTrue(rule.Evaluate(child));

@@ -7,6 +7,24 @@ namespace Krino.Domain.EnglishGrammar.Tests.LinguisticConstructions
     public class EnglishPatternTest
     {
         [Test]
+        public void AdjectiveOnSecondValencyPosition()
+        {
+            var parent = EnglishPattern.A2_I;
+            var child = EnglishPattern.A_Lexeme_Adjective;
+            Assert.IsTrue(parent.LeftPatternRule.Evaluate(child));
+
+            // Noun to adjective unipolar transference shall not be allowed.
+            parent = EnglishPattern.A2_I;
+            child = EnglishPattern.O_to_A;
+            Assert.IsFalse(parent.LeftPatternRule.Evaluate(child));
+
+            // Substitution via an adposition shall not be allowed.
+            parent = EnglishPattern.A2_I;
+            child = EnglishPattern.A_U_A;
+            Assert.IsFalse(parent.LeftPatternRule.Evaluate(child));
+        }
+
+        [Test]
         public void CompoundSubject()
         {
             var parent = EnglishPattern.O1_I;

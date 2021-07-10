@@ -1,5 +1,7 @@
-﻿using Krino.Vertical.Utils.Enums;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.Rules;
+using System;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules
@@ -17,16 +19,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         public static NothingRule<Pattern> Nothing => RuleMaker.Nothing<Pattern>();
 
         /// <summary>
-        /// 
+        /// Accepts pattern which morpheme can be accepted into the adposition.
         /// </summary>
-        public static IExpressionRule<Pattern> ByUpMorphemeRule(Pattern parent) => RuleMaker.Expression<Pattern>(x => CanConnectPatternToAdPosition(parent, x));
+        public static ExpressionRule<Pattern> ByUpMorphemeRule(Pattern parent) => Expression(x => CanConnectPatternToAdPosition(parent, x));
 
         /// <summary>
         /// Accepts pattern which morpheme would be accepted on right.
         /// </summary>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public static IExpressionRule<Pattern> ByRightMorphemeRule(Pattern parent) => RuleMaker.Expression<Pattern>(x => CanConnectPatternToRight(parent, x));
+        public static ExpressionRule<Pattern> ByRightMorphemeRule(Pattern parent) => Expression(x => CanConnectPatternToRight(parent, x));
 
 
         /// <summary>
@@ -34,14 +36,40 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
         /// </summary>
         /// <param name="parent"></param>
         /// <returns></returns>
-        public static IExpressionRule<Pattern> ByLeftMorphemeRule(Pattern parent) => RuleMaker.Expression<Pattern>(x => CanConnectPatternToLeft(parent, x));
+        public static ExpressionRule<Pattern> ByLeftMorphemeRule(Pattern parent) => Expression(x => CanConnectPatternToLeft(parent, x));
 
         /// <summary>
         /// Accepts a particular pattern.
         /// </summary>
         /// <param name="pattern"></param>
         /// <returns></returns>
-        public static IValueRule<Pattern> Is(Pattern pattern) => RuleMaker.Is(pattern);
+        public static IsRule<Pattern> Is(Pattern pattern) => RuleMaker.Is(pattern);
+
+        /// <summary>
+        /// Accepts morphematic adposition pattern with specified grammar characters.
+        /// </summary>
+        /// <param name="grammarCharacterRule"></param>
+        /// <returns></returns>
+        public static ExpressionRule<Pattern> MorphematicAdPosition(IRule<GrammarCharacter> grammarCharacterRule) => Expression(x => CanConnectMorphematicAdPosition(grammarCharacterRule, x));
+
+        public static ExpressionRule<Pattern> NoneMorphematicAdPosition => Expression(x => !x.IsMorphematicAdPosition);
+
+        public static ExpressionRule<Pattern> IsMorpheme => Expression(x => x.IsMorpheme);
+
+        public static ExpressionRule<Pattern> Expression(Func<Pattern, bool> evaluate) => RuleMaker.Expression<Pattern>(x => evaluate(x));
+
+        private static bool CanConnectMorphematicAdPosition(IRule<GrammarCharacter> grammarCharacterRule, Pattern child)
+        {
+            var result = true;
+
+            if (child.IsMorphematicAdPosition)
+            {
+                result = grammarCharacterRule.Evaluate(child.UpRule.GrammarCharacter);
+            }
+
+            return result;
+        }
+
 
 
         private static bool CanConnectPatternToAdPosition(Pattern parent, Pattern child)
@@ -107,13 +135,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
                 }
                 else if (child.IsMorphematicAdPosition)
                 {
-                    // If the parent can accept such morphematic adposition.
-                    if (parent.RightSubstitutionRule.Evaluate(child.UpRule.GrammarCharacter))
+                    if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                     {
-                        if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
-                        {
-                            result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
-                        }
+                        result = parent.RightRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                     }
                 }
                 else if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
@@ -165,13 +189,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.R
             }
             else if (child.IsMorphematicAdPosition)
             {
-                if (parent.LeftSubstitutionRule.Evaluate(child.UpRule.GrammarCharacter))
+                // Note: get the driving grammar character of the child from the right branch.
+                if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
                 {
-                    // Note: get the driving grammar character of the child from the right branch.
-                    if (child.RightRule.AttributesRule is IValueRule<BigInteger> childAttributesValueRule)
-                    {
-                        result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
-                    }
+                    result = parent.LeftRule.AttributesRule.Evaluate(childAttributesValueRule.Value);
                 }
             }
             // Note: get the driving grammar character of the child from the right branch.

@@ -102,7 +102,41 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticConstruct
             Assert.IsFalse(EnglishPattern.A_O.IsMorphematicAdPosition);
         }
 
+        [Test]
+        public void RightPatternRule()
+        {
+            var parent = EnglishPattern.A_O;
+            var child = EnglishPattern.O_U_O;
+            Assert.IsTrue(parent.RightPatternRule.Evaluate(child));
 
+            parent = EnglishPattern.A_O
+                .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Epsilon_U));
+            child = EnglishPattern.O_U_O;
+            Assert.IsTrue(parent.RightPatternRule.Evaluate(child));
+
+            parent = EnglishPattern.A_O
+                .AndRightPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.E));
+            child = EnglishPattern.O_U_O;
+            Assert.IsFalse(parent.RightPatternRule.Evaluate(child));
+        }
+
+        [Test]
+        public void LeftPatternRule()
+        {
+            var parent = EnglishPattern.O_U_O;
+            var child = EnglishPattern.O_U_O;
+            Assert.IsTrue(parent.LeftPatternRule.Evaluate(child));
+
+            parent = EnglishPattern.O_U_O
+                .AndLeftPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.U));
+            child = EnglishPattern.O_U_O;
+            Assert.IsTrue(parent.LeftPatternRule.Evaluate(child));
+
+            parent = EnglishPattern.O_U_O
+                .AndLeftPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.E));
+            child = EnglishPattern.O_U_O;
+            Assert.IsFalse(parent.LeftPatternRule.Evaluate(child));
+        }
 
         [Test]
         public void Equals_Patterns()

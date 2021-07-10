@@ -43,7 +43,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
         public static Pattern O5_I => Pattern.O5_I(myAttributesModel);
 
         // E.g. Speaking is prohibited. 'prohibited' is on the 2nd valency position.
-        public static Pattern A2_I => Pattern.A2_I(myAttributesModel);
+        public static Pattern A2_I => Pattern.A2_I(myAttributesModel).AndLeftPatternRule(PatternRules.IsMorpheme);
 
         public static Pattern O_to_A => Pattern.UnipolarMorphemeTransference(myAttributesModel, "O>A", "Rule to adjective from noun.", EnglishAttributes.A.Lexeme.Adjective, EnglishAttributes.O.Lexeme.Noun);
 
@@ -86,7 +86,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
         public static Pattern E_I => Pattern.EpsilonAdPosition(myAttributesModel, "E-I", "Rule to add a circumstantial adverb after verb valencies.",
                 EnglishAttributes.E.Lexeme.Adverb, EnglishAttributes.I.Lexeme.Verb)
-                .SetLeftSubstitutionRule(PatternSubstitutionRules.Nothing);
+                .AndLeftPatternRule(PatternRules.MorphematicAdPosition(GrammarCharacterRules.Nothing));
 
 
         // negation: TODO: negation should appear in sememe attributes ??

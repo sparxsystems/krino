@@ -49,19 +49,15 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_1_2()
         {
-            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
-            List<IAdTree> results = adTreeCreator.Create("I will start with the good news .".ToLower().Split(" "));
+            var dictionary = new EnglishConstructiveDictionaryFactory()
+            {
+                MaxWords = 7,
+            }.Create();
+            var parser = new Parser(dictionary);
+
+            var results = parser.Parse("I will start with the good news .");
 
             Assert.AreEqual(1, results.Count);
-            Assert.AreEqual("i", results[0].Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("will", results[0].Right.Right.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("start", results[0].Right.Right.Right.Right.Morpheme.Morph);
-            Assert.AreEqual("with", results[0].Right.Morpheme.Morph);
-            Assert.AreEqual("the", results[0].Right.Left.Left.Morpheme.Morph);
-            Assert.AreEqual("good", results[0].Right.Left.Right.Left.Morpheme.Morph);
-            Assert.AreEqual("news", results[0].Right.Left.Right.Right.Morpheme.Morph);
-            Assert.AreEqual(".", results[0].Morpheme.Morph);
         }
 
         // The world, as a small number of people have been saying lately, will not end in 11 years.
