@@ -52,6 +52,25 @@ namespace Krino.Vertical.Utils.Enums
         }
 
         /// <summary>
+        /// Returns enums of this enum group.
+        /// </summary>
+        public IEnumerable<EnumBase> DirectSubEnums
+        {
+            get
+            {
+                var enumProperties = GetType().GetProperties().Where(x => typeof(EnumBase).IsAssignableFrom(x.PropertyType));
+                foreach (var enumProperty in enumProperties)
+                {
+                    var enumPropertyValue = enumProperty.GetValue(this);
+                    if (enumPropertyValue is EnumRootBase == false)
+                    {
+                        yield return (EnumBase)enumPropertyValue;
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         /// Finds all enums applicable for the value.
         /// </summary>
         /// <param name="value"></param>
@@ -115,6 +134,32 @@ namespace Krino.Vertical.Utils.Enums
             else
             {
                 result = new BigInteger(new byte[Length]);
+            }
+
+            return result;
+        }
+
+        protected internal bool TryGetValue(string[] path, int idx, out BigInteger value)
+        {
+            bool result = false;
+            value = 0;
+
+            var enumProperty = GetType().GetProperty(path[idx]);
+            if (enumProperty != null)
+            {
+                var enumPropertyValue = enumProperty.GetValue(this);
+                if (idx + 1 < path.Length)
+                {
+                    if (enumPropertyValue is EnumGroupBase enumGroupBase)
+                    {
+                        result = enumGroupBase.TryGetValue(path, idx + 1, out value);
+                    }
+                }
+                else if (enumPropertyValue is EnumBase enumBase)
+                {
+                    value = enumBase;
+                    result = true;
+                }
             }
 
             return result;

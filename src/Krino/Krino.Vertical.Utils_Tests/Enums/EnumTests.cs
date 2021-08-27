@@ -62,6 +62,8 @@ namespace Krino.Vertical.Utils_Tests.Enums
 
             public static IEnumerable<EnumValue> GetEnumValues() => Instance.EnumValues;
 
+            public static IEnumerable<EnumBase> GetDirectSubEnums() => Instance.DirectSubEnums;
+
             public static new IEnumerable<EnumBase> FindEnums(BigInteger value) => ((EnumRootBase)Instance).FindEnums(value);
         }
 
@@ -81,6 +83,12 @@ namespace Krino.Vertical.Utils_Tests.Enums
             Assert.AreEqual(2, result.Count);
             Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr112", result[0].GetFullName());
             Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr113", result[1].GetFullName());
+
+            value = DummyEnumRoot.Category1.Category11 | DummyEnumRoot.Val2;
+            result = DummyEnumRoot.FindEnums(value).ToList();
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11", result[0].GetFullName());
+            Assert.AreEqual("DummyEnumRoot.Val2", result[1].GetFullName());
         }
 
         [Test]
@@ -93,6 +101,35 @@ namespace Krino.Vertical.Utils_Tests.Enums
             Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr113", result[2].GetFullName());
             Assert.AreEqual("DummyEnumRoot.Category1.Val12", result[3].GetFullName());
             Assert.AreEqual("DummyEnumRoot.Val2", result[4].GetFullName());
+        }
+
+        [Test]
+        public void DirectSubEnums()
+        {
+            var result = DummyEnumRoot.GetDirectSubEnums().ToList();
+            Assert.AreEqual(2, result.Count);
+            Assert.AreEqual("DummyEnumRoot.Category1", result[0].GetFullName());
+            Assert.AreEqual("DummyEnumRoot.Val2", result[1].GetFullName());
+        }
+
+        [Test]
+        public void TryGetValue()
+        {
+            var result = DummyEnumRoot.Instance.TryGetValue("DummyEnumRoot.Category1", out var value);
+            Assert.IsTrue(result);
+            var enums = DummyEnumRoot.FindEnums(value).ToList();
+            Assert.AreEqual(1, enums.Count);
+            Assert.AreEqual("DummyEnumRoot.Category1", enums[0].GetFullName());
+
+            result = DummyEnumRoot.Instance.TryGetValue("DummyEnumRoot.Category1.Category11.Attr113", out value);
+            Assert.IsTrue(result);
+            enums = DummyEnumRoot.FindEnums(value).ToList();
+            Assert.AreEqual(1, enums.Count);
+            Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr113", enums[0].GetFullName());
+
+            // non-existing
+            result = DummyEnumRoot.Instance.TryGetValue("DummyEnumRoot.BlaBla", out value);
+            Assert.IsFalse(result);
         }
 
 
