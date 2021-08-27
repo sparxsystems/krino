@@ -19,8 +19,14 @@ namespace Krino.Vertical.Utils.Enums
 
         }
 
+        /// <summary>
+        /// Number of bits occupied by this enum group.
+        /// </summary>
         internal int Length { get; set; }
 
+        /// <summary>
+        /// Recursively returns all enum values for this enum group.
+        /// </summary>
         public IEnumerable<EnumValue> EnumValues
         {
             get

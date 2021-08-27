@@ -63,6 +63,10 @@ namespace Krino.Vertical.Utils.Enums
             }
         }
 
+        /// <summary>
+        /// Returns the full name of this enum.
+        /// </summary>
+        /// <returns></returns>
         public string GetFullName()
         {
             var result = new StringBuilder();
@@ -99,7 +103,7 @@ namespace Krino.Vertical.Utils.Enums
         }
 
         /// <summary>
-        /// True if the value encodes this enum.
+        /// True if the given value encodes this enum.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>
