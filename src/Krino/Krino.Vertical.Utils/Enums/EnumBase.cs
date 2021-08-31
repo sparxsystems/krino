@@ -64,6 +64,30 @@ namespace Krino.Vertical.Utils.Enums
         }
 
         /// <summary>
+        /// Returns the short name of this enum.
+        /// </summary>
+        /// <remarks>
+        /// It returns the property name from the parent which references this enum.
+        /// </remarks>
+        /// <returns></returns>
+        public string GetName()
+        {
+            string result;
+
+            if (ParentEnum != null)
+            {
+                var referencingProperty = GetReferencingProperty(ParentEnum, this);
+                result = referencingProperty.Name;
+            }
+            else
+            {
+                result = "";
+            }
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns the full name of this enum.
         /// </summary>
         /// <returns></returns>
@@ -90,8 +114,13 @@ namespace Krino.Vertical.Utils.Enums
                 parentInstance = item;
             }
 
-            var property = GetReferencingProperty(parentInstance, this);
-            result.Append(property.Name);
+            // If it is not the root.
+            if (parentInstance != null)
+            {
+                var property = GetReferencingProperty(parentInstance, this);
+                result.Append(property.Name);
+            }
+            
             return result.ToString();
         }
 

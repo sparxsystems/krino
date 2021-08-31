@@ -26,9 +26,13 @@ namespace Krino.Vertical.Utils.Enums
         public bool TryGetValue(string structuredEnumName, out BigInteger value)
         {
             var enumStructure = structuredEnumName.Split('.', System.StringSplitOptions.RemoveEmptyEntries);
-            var idx = this is EnumRootBase ? 1 : 0;
-            var result = TryGetValue(enumStructure, idx, out value);
-            return result;
+            if (enumStructure.Length > 1)
+            {
+                var result = TryGetValue(enumStructure, 1, out value);
+                return result;
+            }
+
+            return false;
         }
     }
 }

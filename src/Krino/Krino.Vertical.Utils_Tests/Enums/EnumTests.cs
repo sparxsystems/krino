@@ -67,12 +67,24 @@ namespace Krino.Vertical.Utils_Tests.Enums
             public static new IEnumerable<EnumBase> FindEnums(BigInteger value) => ((EnumRootBase)Instance).FindEnums(value);
         }
 
+        [Test]
+        public void GetName()
+        {
+            var result = DummyEnumRoot.Category1.Category11.Attr112.GetName();
+            Assert.AreEqual("Attr112", result);
+
+            result = DummyEnumRoot.Instance.GetName();
+            Assert.AreEqual("", result);
+        }
 
         [Test]
         public void GetFullName()
         {
             var result = DummyEnumRoot.Category1.Category11.Attr112.GetFullName();
             Assert.AreEqual("DummyEnumRoot.Category1.Category11.Attr112", result);
+
+            result = DummyEnumRoot.Instance.GetFullName();
+            Assert.AreEqual("", result);
         }
 
         [Test]
