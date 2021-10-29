@@ -35,11 +35,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ViewModel", "Krino.Vi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ViewModel.Tests", "Krino.ViewModel.Tests\Krino.ViewModel.Tests.csproj", "{EED163A2-0231-470A-BB6F-1E6D587B96E5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Domain.EnglishDictionary", "Krino.Domain.EnglishDictionary\Krino.Domain.EnglishDictionary.csproj", "{F9B3FEB0-CE45-4143-8814-2193D224C040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.EnglishDictionary", "Krino.Domain.EnglishDictionary\Krino.Domain.EnglishDictionary.csproj", "{F9B3FEB0-CE45-4143-8814-2193D224C040}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Domain.EnglishDictionary.Tests", "Krino.Domain.EnglishDictionary.Tests\Krino.Domain.EnglishDictionary.Tests.csproj", "{AE91EF10-A1E6-439D-A04F-21DF36CB60BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.EnglishDictionary.Tests", "Krino.Domain.EnglishDictionary.Tests\Krino.Domain.EnglishDictionary.Tests.csproj", "{AE91EF10-A1E6-439D-A04F-21DF36CB60BC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Domain.ConstructiveAdpositionalArgumentation.Tests", "Krino.Domain.ConstructiveAdpositionalArgumentation.Tests\Krino.Domain.ConstructiveAdpositionalArgumentation.Tests.csproj", "{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Domain.ConstructiveAdpositionalArgumentation.Tests", "Krino.Domain.ConstructiveAdpositionalArgumentation.Tests\Krino.Domain.ConstructiveAdpositionalArgumentation.Tests.csproj", "{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Prolog.Client", "Krino.Prolog.Client\Krino.Prolog.Client.csproj", "{CC199EC0-EABB-4E91-917E-9E4440E85D0A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Krino.Prolog.Client.Tests", "Krino.Prolog.Client.Tests\Krino.Prolog.Client.Tests.csproj", "{6F9D7B20-1DA5-441E-8F57-0448C065D3D0}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -103,6 +107,14 @@ Global
 		{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CC199EC0-EABB-4E91-917E-9E4440E85D0A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CC199EC0-EABB-4E91-917E-9E4440E85D0A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CC199EC0-EABB-4E91-917E-9E4440E85D0A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CC199EC0-EABB-4E91-917E-9E4440E85D0A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F9D7B20-1DA5-441E-8F57-0448C065D3D0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F9D7B20-1DA5-441E-8F57-0448C065D3D0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F9D7B20-1DA5-441E-8F57-0448C065D3D0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F9D7B20-1DA5-441E-8F57-0448C065D3D0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +134,8 @@ Global
 		{F9B3FEB0-CE45-4143-8814-2193D224C040} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{AE91EF10-A1E6-439D-A04F-21DF36CB60BC} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
 		{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810} = {45A1752E-C576-42B4-B3B5-6FD51A3E5DD3}
+		{CC199EC0-EABB-4E91-917E-9E4440E85D0A} = {3561EA2A-5D33-4189-81AC-91334D5150BC}
+		{6F9D7B20-1DA5-441E-8F57-0448C065D3D0} = {3561EA2A-5D33-4189-81AC-91334D5150BC}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {923BE6CA-31CF-4753-82D6-544032C43C43}

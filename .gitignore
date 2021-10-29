@@ -39,3 +39,7 @@
 /src/Krino/Krino.Domain.EnglishDictionary/obj
 /src/Krino/Krino.Domain.EnglishDictionary.Tests/bin/Debug/netcoreapp3.1
 /src/Krino/Krino.Domain.EnglishDictionary.Tests/obj
+/src/Krino/Krino.Prolog.Client/obj
+/src/Krino/Krino.Prolog.Client/bin/Debug/netstandard2.1
+/src/Krino/Krino.Prolog.Client.Tests/bin/Debug/netcoreapp3.1
+/src/Krino/Krino.Prolog.Client.Tests/obj
