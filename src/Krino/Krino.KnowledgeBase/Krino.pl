@@ -19,6 +19,7 @@ server(Port) :- http_server(http_dispatch, [port(Port)]).
 
 
 handle_add(_) :-
+    print_message(information, 'ADD'),
     reply_html_page(
         [title('list')],
         [h1('list')]
@@ -37,6 +38,7 @@ handle_remove(_) :-
     ).
 
 handle_clear(_) :-
+    print_message(information, 'CLEAR'),
     reply_html_page(
         [title('list')],
         [h1('list')]
@@ -49,6 +51,7 @@ handle_list(_) :-
     ).
 
 handle_evaluate(_) :-
+    print_message(information, 'EVALUATE'),
     reply_html_page(
         [title('list')],
         [h1('list')]

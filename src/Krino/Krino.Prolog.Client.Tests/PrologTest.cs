@@ -5,6 +5,14 @@ namespace Krino.Prolog.Client.Tests
     public class PrologTest
     {
         [Test]
+        public void Add()
+        {
+            var prolog = new Prolog("http://localhost:8123/");
+            var task = prolog.Add("like(a, b)");
+            task.Wait(3000);
+        }
+
+        [Test]
         public void Clear()
         {
             var prolog = new Prolog("http://localhost:8123/");

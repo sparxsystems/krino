@@ -17,9 +17,9 @@ namespace Krino.Prolog.Client
             myBaseAddress = baseAddress;
         }
 
-        public Task Add(string statement)
+        public async Task Add(string statement)
         {
-            throw new NotImplementedException();
+            var response = await HttpWebClient.Post(GetUri("add"), statement);
         }
 
         public Task Add(IEnumerable<string> statements)
@@ -27,27 +27,12 @@ namespace Krino.Prolog.Client
             throw new NotImplementedException();
         }
 
-        public Task Clear()
-        {
-            var result = HttpWebClient.Delete(new Uri("http://localhost:8123/clear/"));
-            return Task.CompletedTask;
-
-            //using (var httpClient = CreateHttpClient())
-            //{
-            //    var result = httpClient.DeleteAsync("clear");
-            //    return result;
-            //}
-        }
+        public Task Clear() => HttpWebClient.Delete(GetUri("clear"));
 
         public async Task<bool> Evaluate(string statement)
         {
-            bool result = false;
-
-            using (var httpClient = CreateHttpClient())
-            {
-                var response = await httpClient.GetAsync("evaluate");
-                result = response.IsSuccessStatusCode;
-            }
+            var response = await HttpWebClient.Get(GetUri("evaluate"));
+            var result = response.StatusCode == HttpStatusCode.OK;
 
             return result;
         }
@@ -57,14 +42,21 @@ namespace Krino.Prolog.Client
             throw new NotImplementedException();
         }
 
-        private HttpClient CreateHttpClient()
+        private Uri GetUri(string webMethod)
         {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(myBaseAddress);
-            //httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            return httpClient;
+            var result = new UriBuilder(myBaseAddress) { Path = webMethod };
+            return result.Uri;
         }
+
+
+        //private HttpClient CreateHttpClient()
+        //{
+        //    var httpClient = new HttpClient();
+        //    httpClient.BaseAddress = new Uri(myBaseAddress);
+        //    //httpClient.DefaultRequestHeaders.Accept.Clear();
+        //    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+
+        //    return httpClient;
+        //}
     }
 }

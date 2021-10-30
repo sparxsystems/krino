@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Net;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace Krino.Prolog.Client
 {
@@ -11,9 +12,9 @@ namespace Krino.Prolog.Client
         /// </summary>
         /// <param name="uri">The address including the input parameters.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Get(Uri uri)
+        public static async Task<HttpWebResponse> Get(Uri uri)
         {
-            HttpWebResponse aResponse = Request("GET", uri, (byte[])null);
+            HttpWebResponse aResponse = await Request("GET", uri, (byte[])null);
             return aResponse;
         }
 
@@ -23,9 +24,9 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">Data for the post request.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Post(Uri uri, string body)
+        public static async Task<HttpWebResponse> Post(Uri uri, string body)
         {
-            HttpWebResponse aResult = Request("POST", uri, body);
+            HttpWebResponse aResult = await Request("POST", uri, body);
             return aResult;
         }
 
@@ -35,9 +36,9 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">Data for the post request.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Post(Uri uri, byte[] body)
+        public static async Task<HttpWebResponse> Post(Uri uri, byte[] body)
         {
-            HttpWebResponse aResponse = Request("POST", uri, body);
+            HttpWebResponse aResponse = await Request ("POST", uri, body);
             return aResponse;
         }
 
@@ -47,9 +48,9 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">Data for the put request.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Put(Uri uri, string body)
+        public static async Task<HttpWebResponse> Put(Uri uri, string body)
         {
-            HttpWebResponse aResponse = Request("PUT", uri, body);
+            HttpWebResponse aResponse = await Request ("PUT", uri, body);
             return aResponse;
         }
 
@@ -59,9 +60,9 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">Data for the put request.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Put(Uri uri, byte[] body)
+        public static async Task<HttpWebResponse> Put(Uri uri, byte[] body)
         {
-            HttpWebResponse aResponse = Request("PUT", uri, body);
+            HttpWebResponse aResponse = await Request ("PUT", uri, body);
             return aResponse;
         }
 
@@ -71,9 +72,9 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">Data for the patch request.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Patch(Uri uri, string body)
+        public static async Task<HttpWebResponse> Patch(Uri uri, string body)
         {
-            HttpWebResponse aResponse = Request("PATCH", uri, body);
+            HttpWebResponse aResponse = await Request ("PATCH", uri, body);
             return aResponse;
         }
 
@@ -83,9 +84,9 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">Data for the patch request.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Patch(Uri uri, byte[] body)
+        public static async Task<HttpWebResponse> Patch(Uri uri, byte[] body)
         {
-            HttpWebResponse aResponse = Request("PATCH", uri, body);
+            HttpWebResponse aResponse = await Request ("PATCH", uri, body);
             return aResponse;
         }
 
@@ -94,9 +95,9 @@ namespace Krino.Prolog.Client
         /// </summary>
         /// <param name="uri">The address including the input parameters.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Delete(Uri uri)
+        public static async Task<HttpWebResponse> Delete(Uri uri)
         {
-            HttpWebResponse aResponse = Request("DELETE", uri, (byte[])null);
+            HttpWebResponse aResponse = await Request ("DELETE", uri, (byte[])null);
             return aResponse;
         }
 
@@ -107,10 +108,10 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">The request data.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Request(string httpMethod, Uri uri, string body)
+        public static async Task<HttpWebResponse> Request(string httpMethod, Uri uri, string body)
         {
             byte[] aBytes = body != null ? Encoding.UTF8.GetBytes(body) : null;
-            HttpWebResponse aResult = Request(httpMethod, uri, aBytes);
+            HttpWebResponse aResult = await Request(httpMethod, uri, aBytes);
             return aResult;
         }
 
@@ -121,7 +122,7 @@ namespace Krino.Prolog.Client
         /// <param name="uri">The address including the input parameters.</param>
         /// <param name="body">The request data.</param>
         /// <returns>Response from the HTTP server.</returns>
-        public static HttpWebResponse Request(string httpMethod, Uri uri, byte[] body)
+        public static async Task<HttpWebResponse> Request(string httpMethod, Uri uri, byte[] body)
         {
             HttpWebRequest aRequest = (HttpWebRequest)WebRequest.Create(uri);
             aRequest.Method = httpMethod;
@@ -135,7 +136,7 @@ namespace Krino.Prolog.Client
             }
 
             // Sends the message.
-            HttpWebResponse aResponse = aRequest.GetResponse() as HttpWebResponse;
+            HttpWebResponse aResponse = await aRequest.GetResponseAsync() as HttpWebResponse;
 
             return aResponse;
         }
