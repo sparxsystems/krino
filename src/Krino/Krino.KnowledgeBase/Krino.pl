@@ -10,12 +10,12 @@
 :- initialization(server(8123)).
 server(Port) :- http_server(http_dispatch, [port(Port)]).
 
-:- http_handler(root(add), handle_add, [post]).
-:- http_handler(root(add_multiple), handle_add_multiple, [post]).
-:- http_handler(root(remove), handle_remove, [delete]).
-:- http_handler(root(clear), handle_clear, []).
-:- http_handler(root(list), handle_list, [get]).
-:- http_handler(root(evaluate), handle_evaluate, [get]).
+:- http_handler(root(add), handle_add, [method(post)]).
+:- http_handler(root(add_multiple), handle_add_multiple, [method(post)]).
+:- http_handler(root(remove), handle_remove, [method(delete)]).
+:- http_handler(root(clear), handle_clear, [method(delete)]).
+:- http_handler(root(list), handle_list, [method(get)]).
+:- http_handler(root(evaluate), handle_evaluate, [method(get)]).
 
 
 handle_add(_) :-

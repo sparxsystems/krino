@@ -5,9 +5,17 @@ namespace Krino.Prolog.Client.Tests
     public class PrologTest
     {
         [Test]
-        public void Test1()
+        public void Clear()
         {
-            var prolog = new Prolog("http://127.0.0.1:8123/");
+            var prolog = new Prolog("http://localhost:8123/");
+            var task = prolog.Clear();
+            task.Wait(3000);
+        }
+
+        [Test]
+        public void Evaluate()
+        {
+            var prolog = new Prolog("http://localhost:8123/");
             var task = prolog.Evaluate("bla");
             task.Wait(3000);
         }

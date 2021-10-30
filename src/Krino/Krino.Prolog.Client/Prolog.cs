@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
@@ -28,11 +29,14 @@ namespace Krino.Prolog.Client
 
         public Task Clear()
         {
-            using (var httpClient = CreateHttpClient())
-            {
-                var result = httpClient.DeleteAsync("clear");
-                return result;
-            }
+            var result = HttpWebClient.Delete(new Uri("http://localhost:8123/clear/"));
+            return Task.CompletedTask;
+
+            //using (var httpClient = CreateHttpClient())
+            //{
+            //    var result = httpClient.DeleteAsync("clear");
+            //    return result;
+            //}
         }
 
         public async Task<bool> Evaluate(string statement)
