@@ -15,6 +15,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Krino.Prolog.Client\Krino.Prolog.Client.csproj" />
+    <ProjectReference Include="..\Krino.Vertical.Utils\Krino.Vertical.Utils.csproj" />
   </ItemGroup>
 
 </Project>

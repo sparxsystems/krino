@@ -19,7 +19,14 @@ namespace Krino.Prolog.Client
 
         public async Task Add(string statement)
         {
-            var response = await HttpWebClient.Post(GetUri("add"), statement);
+            //var response = await HttpWebClient.Post(GetUri("sum"), statement);
+            using (var httpClient = CreateHttpClient())
+            {
+                var content = new StringContent(statement);
+                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+                var response = await httpClient.PostAsync("sum", content);
+                var s = await response.Content.ReadAsStringAsync();
+            }
         }
 
         public Task Add(IEnumerable<string> statements)
@@ -49,14 +56,14 @@ namespace Krino.Prolog.Client
         }
 
 
-        //private HttpClient CreateHttpClient()
-        //{
-        //    var httpClient = new HttpClient();
-        //    httpClient.BaseAddress = new Uri(myBaseAddress);
-        //    //httpClient.DefaultRequestHeaders.Accept.Clear();
-        //    httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
+        private HttpClient CreateHttpClient()
+        {
+            var httpClient = new HttpClient();
+            httpClient.BaseAddress = new Uri(myBaseAddress);
+            //httpClient.DefaultRequestHeaders.Accept.Clear();
+            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
 
-        //    return httpClient;
-        //}
+            return httpClient;
+        }
     }
 }

@@ -7,22 +7,42 @@
 
 :- dynamic clause/1.
 
+:- use_module(library(http/http_log)).
+
 :- initialization(server(8123)).
 server(Port) :- http_server(http_dispatch, [port(Port)]).
 
-:- http_handler(root(add), handle_add, [method(post)]).
+:- http_handler('/add', handle_add, [method(post)]).
 :- http_handler(root(add_multiple), handle_add_multiple, [method(post)]).
 :- http_handler(root(remove), handle_remove, [method(delete)]).
 :- http_handler(root(clear), handle_clear, [method(delete)]).
 :- http_handler(root(list), handle_list, [method(get)]).
 :- http_handler(root(evaluate), handle_evaluate, [method(get)]).
 
+:- http_handler('/sum', handle_sum, []).
 
-handle_add(_) :-
+handle_sum(Request) :-
+    print_message(information, 'SUM'),
+    http_read_json_dict(Request, Query),
+    solve(Query, Solution),
+    reply_json_dict(Solution).
+
+solve(_{a:X, b:Y}, _{answer:N}) :-
+    print_message(information, 'bla'),
+    number(X),
+    number(Y),
+    N is X + Y.
+
+
+handle_add(Request) :-
     print_message(information, 'ADD'),
+    print_message(information, Request),
+    http_read_json(Request, Query),
+    print_message(information, Query),
+    add(Query),
     reply_html_page(
-        [title('list')],
-        [h1('list')]
+        [title('add')],
+        [h1('add')]
     ).
 
 handle_add_multiple(_) :-
@@ -37,8 +57,9 @@ handle_remove(_) :-
         [h1('list')]
     ).
 
-handle_clear(_) :-
+handle_clear(Request) :-
     print_message(information, 'CLEAR'),
+    print_message(information, Request),
     reply_html_page(
         [title('list')],
         [h1('list')]
@@ -50,8 +71,9 @@ handle_list(_) :-
         [h1('list')]
     ).
 
-handle_evaluate(_) :-
+handle_evaluate(Request) :-
     print_message(information, 'EVALUATE'),
+    print_message(information, Request),
     reply_html_page(
         [title('list')],
         [h1('list')]
