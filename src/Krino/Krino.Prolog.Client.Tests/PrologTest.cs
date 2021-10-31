@@ -1,35 +1,42 @@
-using Krino.Vertical.Utils.Serializers;
 using NUnit.Framework;
+using System.Threading.Tasks;
 
 namespace Krino.Prolog.Client.Tests
 {
     public class PrologTest
     {
         [Test]
-        public void Add()
+        public async Task Add()
         {
-            var prolog = new Prolog("http://localhost:8123/");
+            using var prolog = new Prolog("http://localhost:8123/");
+            await prolog.Add("like(a, b)");
+        }
 
-            var serializer = new DataContractJsonStringSerializer();
-            var arg = (string)serializer.Serialize("like(a, b)");
-            var task = prolog.Add("{\"a\":1, \"b\":2}");
-            task.Wait(3000);
+        [Test]
+        public async Task Remove()
+        {
+            using var prolog = new Prolog("http://localhost:8123/");
+            await prolog.Add("like(a, b)");
+            await prolog.Add("like(c, d)");
+
+            await prolog.Remove("like(a, b)");
         }
 
         [Test]
         public void Clear()
         {
-            var prolog = new Prolog("http://localhost:8123/");
+            using var prolog = new Prolog("http://localhost:8123/");
             var task = prolog.Clear();
             task.Wait(3000);
         }
 
         [Test]
-        public void Evaluate()
+        public async Task Evaluate()
         {
-            var prolog = new Prolog("http://localhost:8123/");
-            var task = prolog.Evaluate("bla");
-            task.Wait(3000);
+            using var prolog = new Prolog("http://localhost:8123/");
+            await prolog.Add("like(a, b)");
+
+            await prolog.Evaluate("like(a, b)");
         }
     }
 }

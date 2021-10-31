@@ -1,69 +1,66 @@
-﻿using System;
+﻿using Krino.Vertical.Utils.Serializers;
+using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Net.Http.Headers;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace Krino.Prolog.Client
 {
-    public class Prolog : IProlog
+    public class Prolog : IProlog, IDisposable
     {
-        private string myBaseAddress;
+        private ISerializer mySerializer;
+        private HttpClient myHttpClient;
 
         public Prolog(string baseAddress)
         {
-            myBaseAddress = baseAddress;
+            mySerializer = new DataContractJsonStringSerializer();
+
+            myHttpClient = new HttpClient();
+            myHttpClient.BaseAddress = new Uri(baseAddress);
+            myHttpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
         }
 
-        public async Task Add(string statement)
+        public void Dispose()
         {
-            //var response = await HttpWebClient.Post(GetUri("sum"), statement);
-            using (var httpClient = CreateHttpClient())
-            {
-                var content = new StringContent(statement);
-                content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
-                var response = await httpClient.PostAsync("sum", content);
-                var s = await response.Content.ReadAsStringAsync();
-            }
+            myHttpClient.Dispose();
         }
 
-        public Task Add(IEnumerable<string> statements)
+        public Task Add(string statement) => Add(new string[] { statement });
+
+        public async Task Add(IEnumerable<string> statements)
         {
-            throw new NotImplementedException();
+            var statementsStr = (string)mySerializer.Serialize(statements);
+            var content = new StringContent(statementsStr);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var response = await myHttpClient.PostAsync("add", content);
+            var s = await response.Content.ReadAsStringAsync();
         }
 
-        public Task Clear() => HttpWebClient.Delete(GetUri("clear"));
+        public Task Remove(string statement) => Remove(new string[] { statement });
+
+        public async Task Remove(IEnumerable<string> statements)
+        {
+            var statementsStr = (string)mySerializer.Serialize(statements);
+            var content = new StringContent(statementsStr);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var response = await myHttpClient.PostAsync("remove", content);
+            var s = await response.Content.ReadAsStringAsync();
+        }
+
+        public Task Clear() => throw new NotImplementedException();
 
         public async Task<bool> Evaluate(string statement)
         {
-            var response = await HttpWebClient.Get(GetUri("evaluate"));
-            var result = response.StatusCode == HttpStatusCode.OK;
+            var statementsStr = (string)mySerializer.Serialize(statement);
+            var content = new StringContent(statementsStr);
+            content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            var response = await myHttpClient.PostAsync("evaluate", content);
+            var s = await response.Content.ReadAsStringAsync();
 
-            return result;
+            return true;
         }
 
-        public Task Remove(string statement)
-        {
-            throw new NotImplementedException();
-        }
-
-        private Uri GetUri(string webMethod)
-        {
-            var result = new UriBuilder(myBaseAddress) { Path = webMethod };
-            return result.Uri;
-        }
-
-
-        private HttpClient CreateHttpClient()
-        {
-            var httpClient = new HttpClient();
-            httpClient.BaseAddress = new Uri(myBaseAddress);
-            //httpClient.DefaultRequestHeaders.Accept.Clear();
-            httpClient.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-
-            return httpClient;
-        }
+        
     }
 }

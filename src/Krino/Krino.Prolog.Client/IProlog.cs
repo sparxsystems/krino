@@ -9,6 +9,7 @@ namespace Krino.Prolog.Client
         Task Add(IEnumerable<string> statements);
 
         Task Remove(string statement);
+        Task Remove(IEnumerable<string> statements);
         Task Clear();
 
         Task<bool> Evaluate(string statement);
