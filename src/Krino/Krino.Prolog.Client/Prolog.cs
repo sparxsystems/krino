@@ -33,6 +33,7 @@ namespace Krino.Prolog.Client
             var statementsStr = (string)mySerializer.Serialize(statements);
             var content = new StringContent(statementsStr);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
             var response = await myHttpClient.PostAsync("add", content);
             var s = await response.Content.ReadAsStringAsync();
         }
@@ -48,7 +49,10 @@ namespace Krino.Prolog.Client
             var s = await response.Content.ReadAsStringAsync();
         }
 
-        public Task Clear() => throw new NotImplementedException();
+        public async Task Clear()
+        {
+            var response = await myHttpClient.DeleteAsync("clear");
+        }
 
         public async Task<bool> Evaluate(string statement)
         {
@@ -56,9 +60,10 @@ namespace Krino.Prolog.Client
             var content = new StringContent(statementsStr);
             content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
             var response = await myHttpClient.PostAsync("evaluate", content);
-            var s = await response.Content.ReadAsStringAsync();
+            var responseStr = await response.Content.ReadAsStringAsync();
+            var evaluation = mySerializer.Deserialize<EvaluationResult>(responseStr);
 
-            return true;
+            return evaluation.Result;
         }
 
         

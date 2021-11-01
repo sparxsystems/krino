@@ -4,7 +4,8 @@
 :- use_module(library(http/http_parameters)).	% new
 :- use_module(library(uri)).			% new
 
-:- http_handler(root(.),      list_modules, []).
+:- http_handler(root(aaa),      list_modules, []).
+:- http_handler(root(bbb),      list_modules, []).
 :- http_handler(root(module), list_module,  []).
 
 server(Port) :-
@@ -15,6 +16,7 @@ server(Port) :-
 %	Create a table of all available modules with their source-file
 
 list_modules(_Request) :-
+	print_message(information, 'HELL 1'),
 	findall(M, current_module(M), List),
 	sort(List, Modules),
 	reply_html_page(title('Loaded Prolog modules'),
@@ -60,6 +62,7 @@ href(HandleID, Query, HREF) :-
 %	List info for a given module.
 
 list_module(Request) :-
+	print_message(information, 'HELL 2'),
 	http_parameters(Request,
 			[ name(Module, [])
 			]),
