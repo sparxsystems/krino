@@ -13,7 +13,7 @@ namespace Krino.Prolog.Client.Tests
             await prolog.Add("like(a, b)");
         }
 
-        //[Test]
+        [Test]
         public async Task Remove()
         {
             using var prolog = new Prolog("http://localhost:8123/");
@@ -23,7 +23,7 @@ namespace Krino.Prolog.Client.Tests
             await prolog.Remove("like(a, b)");
         }
 
-        //[Test]
+        [Test]
         public async Task Clear()
         {
             using var prolog = new Prolog("http://localhost:8123/");
@@ -40,7 +40,7 @@ namespace Krino.Prolog.Client.Tests
             Assert.IsFalse(await prolog.Evaluate("like(c, d)"));
         }
 
-        //[Test]
+        [Test]
         public async Task Evaluate()
         {
             using var prolog = new Prolog("http://localhost:8123/");

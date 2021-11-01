@@ -5,7 +5,8 @@
 :- use_module(library(http/http_json)).
 :- use_module(library(http/html_write)).
 
-:- use_module(library(http/http_log)).
+% Uncomment to enable http logging.
+% :- use_module(library(http/http_log)).
 
 :- dynamic clause/1.
 
