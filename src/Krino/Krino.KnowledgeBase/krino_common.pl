@@ -5,17 +5,24 @@
     ]).
 
 
+k_reflexive_relation(Goal, X) :-
+    call(Goal, X, X).
 
-transitive_relation(Goal, X, Y, TrackingResult) :- transitive_relation(Goal, X, Y, [], [], TrackingResult).
-transitive_relation(Goal, X, Y, L, PreviousTracking, NewTracking) :-
+k_symmetric_relation(Goal, X, Y) :- 
+    call(Goal, X, Y),
+    call(Goal, Y, X).
+
+
+k_transitive_relation(Goal, X, Y, TrackingResult) :- k_transitive_relation(Goal, X, Y, [], [], TrackingResult).
+k_transitive_relation(Goal, X, Y, L, PreviousTracking, NewTracking) :-
     Term =.. [Goal, X, Y],
     k_tracking_call(Term, PreviousTracking, NewTracking),
     \+ memberchk((X, Y), L).
-transitive_relation(Goal, X, Y, L, PreviousTracking, NewTracking) :-
+k_transitive_relation(Goal, X, Y, L, PreviousTracking, NewTracking) :-
     Term =.. [Goal, X, Z],
     k_tracking_call(Term, PreviousTracking, NewTrackingTmp),
     \+ memberchk((X, Z), L),
-    transitive_relation(Goal, Z, Y, [(X, Z) | L], NewTrackingTmp, NewTracking).
+    k_transitive_relation(Goal, Z, Y, [(X, Z) | L], NewTrackingTmp, NewTracking).
 
 
 k_tracking_call(Goal, PreviousTracking, NewTracking) :-
