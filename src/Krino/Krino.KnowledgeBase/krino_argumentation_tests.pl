@@ -1,35 +1,26 @@
 :- use_module(krino_argumentation).
-:- use_module(krino_proof_meta_interpreter).
 
 
-% Demaging the grass is prohibited.
-% Walking on the grass demages the grass.
-% Cycling on the grass demages the grass.
-% Cycling on the grass is prohibited because walking on the grass is prohibited.
-
-% Form: a is X because b is X
-% Form: a is X because a is Y
-
-
-
-% Demaging grass is prohibited.
+% If an activity demages the grass then it is prohibited.
 prohibited(Activity) :- demages(Activity, grass).
 
-% Touching the grass demages the grass.
+% If an activity offends the grass then it is prohibited.
+prohibited(Activity) :- offends(Activity, grass).
+
+% If an activity touches the grass then it demages the grass.
 demages(Activity, grass) :- touches(Activity, grass).
 
-% Walking on the grass touches the grass.
-touches(on(walking, grass), grass).
+% If an activity moves the grass then it touches the grass.
+touches(Activity, grass) :- moves(Activity, grass).
 
-% Cycling on the grass touches the grass.
-touches(on(cycling, grass), grass).
+% Walking on the grass moves the grass.
+moves(on(walking, grass), grass).
 
-% Cycling on the grass is prohibited because walking on the grass is prohibited.
-%k_argument_form(k_because(k_prohibited(k_on(cycling, grass)), k_prohibited(k_on(cycling, grass))), Form).
+% Cycling on the grass moves the grass.
+moves(on(cycling, grass), grass).
 
-r :-
-    has(a, b);
-    has(a, c).
+% Gazing on the grass offends the grass.
+offends(on(gazing, grass), grass).
 
 
 has(a, b).
@@ -37,6 +28,7 @@ has(a, c).
 
 
 :- begin_tests(krino_argumentation).
+
 
 test(k_clause) :-
     k_clause(has(a, b), SubjectTerm, PredicateTerm),
@@ -56,13 +48,36 @@ test(k_argument_form_aXaY) :-
     k_argument_form(because(has(a, b), like(a, b)), Form),
     Form = aXaY.
 
-test(k_argument_evaluate) :-
-    k_argument_evaluate(because(has(a, b), has(a, c))).
+% Cycling on the grass is prohibited because walking on the grass is prohibited.
+test(k_argument_evaluate_aXbX) :-
+    k_argument_evaluate(because(prohibited(on(cycling, grass)), prohibited(on(walking, grass))), Lever), !,
+    %write(["Lever: " | Lever]),
+    % Argument is correct because cycling on the grass demages the grass.
+    Lever = demages(on(cycling,grass),grass).
 
-test(k_argument_evaluate_proof) :-
-    k_proof(k_argument_evaluate(because(has(a, b), has(a, c))), Proof),
-    write(Proof),
-    Proof = [].
+% Cycling on the grass is prohibited because gazing on the grass is prohibited.
+% Incorrect argument because cycling and gazing are prohibited due to different reasons - therefore there is no a lever.
+test(k_argument_evaluate_aXbX_no_lever) :-
+    \+ k_argument_evaluate(because(prohibited(on(cycling, grass)), prohibited(on(gazing, grass))), _), !.
+
+% Cycling on the grass is prohibited because walking on the grass touches the grass.
+% Incorrect argument because there is no a common term (fulcrum) between the conclusion and the premise.
+test(k_argument_evaluate_no_form) :-
+    \+ k_argument_evaluate(because(prohibited(on(cycling, grass)), touches(on(walking, grass), grass)), _), !.
+
+% Walking on the grass demages the grass because it touches the grass.
+test(k_argument_evaluate_aXaY) :-
+    k_argument_evaluate(because(demages(on(walking, grass), grass), touches(on(walking, grass), grass)), Lever), !,
+    %write(["Lever: " | Lever]),
+    Lever = touches(on(walking, grass), grass).
+
+% Walking on the grass is prohibited because it touches the grass.
+% Incorrect argument because the prohibition is caused by demaging and not touching.
+test(k_argument_evaluate_aXaY_unrelated_predicates) :-
+    \+ k_argument_evaluate(because(prohibited(on(walking, grass)), touches(on(walking, grass), grass)), _), !.
+
+test(k_argument_evaluate_no_lever) :-
+    \+ k_argument_evaluate(because(has(a, b), has(a, c)), _).
 
 
 :- end_tests(krino_argumentation).
