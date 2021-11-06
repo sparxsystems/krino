@@ -33,8 +33,8 @@ k_proof(A, Previous, Previous) :-
 
 k_proof(Goal, Previous, Proof) :-
     Goal \= true,
-    Goal \= (_,_),
-    Goal \= (_;_),
+    Goal \= (_,_), % it is not a conjunction
+    Goal \= (_;_), % it is not a disjunction
     \+ predicate_property(Goal, built_in),
     clause(Goal, Body),
     k_proof(Body, Previous, ProofTmp1),
