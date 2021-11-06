@@ -9,11 +9,6 @@
 :- use_module(krino_proof_meta_interpreter).
 
 
-%k_argument(ConclusionClause, PremiseClause, Lever) :-
-%    k_tracking_call(PremiseClause, [], PremiseTrackingResult),
-%    k_tracking_call(ConclusionClause, [], ConclusionTrackingResult),
-%    intersection(ConclusionTrackingResult, PremiseTrackingResult, Lever).
-
 
 k_argument_evaluate(ArgumentTerm, Lever) :-
     % get the form of the argument.
@@ -22,7 +17,7 @@ k_argument_evaluate(ArgumentTerm, Lever) :-
 
     % evaluate the conclusion and provide the proof chain if true.
     k_proof(ConclusionClause, ConclusionProof),
-    %write(ConclusionProof), nl,
+    % write(ConclusionProof), nl,
 
     % get the first reason why the conclusion is true.
     ConclusionProof = [_ | [ConclusionReason | _]],
