@@ -1,4 +1,5 @@
 :- use_module(krino_argumentation).
+:- use_module(krino_proof_meta_interpreter).
 
 
 % Demaging the grass is prohibited.
@@ -26,6 +27,11 @@ touches(on(cycling, grass), grass).
 % Cycling on the grass is prohibited because walking on the grass is prohibited.
 %k_argument_form(k_because(k_prohibited(k_on(cycling, grass)), k_prohibited(k_on(cycling, grass))), Form).
 
+r :-
+    has(a, b);
+    has(a, c).
+
+
 has(a, b).
 has(a, c).
 
@@ -43,7 +49,7 @@ test(k_argument) :-
     PremiseClause = has(a, c).
     
 test(k_argument_form_aXbX) :-
-    k_argument_form(because(prohibited(cycling), prohibited(waking)), Form),
+    k_argument_form(because(prohibited(cycling), prohibited(walking)), Form),
     Form = aXbX.
 
 test(k_argument_form_aXaY) :-
@@ -52,6 +58,11 @@ test(k_argument_form_aXaY) :-
 
 test(k_argument_evaluate) :-
     k_argument_evaluate(because(has(a, b), has(a, c))).
+
+test(k_argument_evaluate_proof) :-
+    k_proof(k_argument_evaluate(because(has(a, b), has(a, c))), Proof),
+    write(Proof),
+    Proof = [].
 
 
 :- end_tests(krino_argumentation).
