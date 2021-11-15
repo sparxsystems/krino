@@ -22,18 +22,25 @@ moves(on(cycling, grass), grass).
 % Gazing on the grass offends the grass.
 offends(on(gazing, grass), grass).
 
-
+has(a).
 has(a, b).
 has(a, c).
+
+verbs :- [demages; touches; moves; offends, has].
 
 
 :- begin_tests(krino_argumentation).
 
 
 test(k_clause) :-
-    k_clause(has(a, b), SubjectTerm, PredicateTerm),
+    k_clause(has(a, b), SubjectTerm, PredicateTerm), !,
     SubjectTerm = a,
     PredicateTerm = has.
+
+test(k_clause) :-
+    k_clause(Clause, a, has), !,
+    Clause = has(a).
+
 
 test(k_argument) :-
     k_argument(because(has(a, b), has(a, c)), ConclusionClause, PremiseClause),
