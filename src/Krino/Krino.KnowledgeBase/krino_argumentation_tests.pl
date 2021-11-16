@@ -1,14 +1,14 @@
 :- use_module(krino_argumentation).
 
 
-% If an activity demages the grass then it is prohibited.
-is_prohibited(Activity) :- demages(Activity, grass).
+% If an activity damages the grass then it is prohibited.
+is_prohibited(Activity) :- damages(Activity, grass).
 
 % If an activity offends the grass then it is prohibited.
 is_prohibited(Activity) :- offends(Activity, grass).
 
-% If an activity touches the grass then it demages the grass.
-demages(Activity, grass) :- touches(Activity, grass).
+% If an activity touches the grass then it damages the grass.
+damages(Activity, grass) :- touches(Activity, grass).
 
 % If an activity moves the grass then it touches the grass.
 touches(Activity, grass) :- moves(Activity, grass).
@@ -23,7 +23,7 @@ moves(on(cycling, grass), grass).
 offends(on(gazing, grass), grass).
 
 is_verb(is_prohibited).
-is_verb(demages).
+is_verb(damages).
 is_verb(touches).
 is_verb(moves).
 is_verb(offends).
@@ -70,8 +70,8 @@ test(k_argument_form_aXaY) :-
 test(k_argument_evaluate_aXbX) :-
     k_argument_evaluate(because(is_prohibited(on(cycling, grass)), is_prohibited(on(walking, grass))), Lever), !,
     %write(["Lever: " | Lever]),
-    % Argument is correct because cycling on the grass demages the grass.
-    Lever = demages(on(cycling,grass),grass).
+    % Argument is correct because cycling on the grass damages the grass.
+    Lever = damages(on(cycling,grass),grass).
 
 % Cycling on the grass is prohibited because gazing on the grass is prohibited.
 % Incorrect argument because cycling and gazing are prohibited due to different reasons - therefore there is no a lever.
@@ -83,9 +83,9 @@ test(k_argument_evaluate_aXbX_no_lever) :-
 test(k_argument_evaluate_no_form) :-
     \+ k_argument_evaluate(because(is_prohibited(on(cycling, grass)), touches(on(walking, grass), grass)), _), !.
 
-% Walking on the grass demages the grass because it touches the grass.
+% Walking on the grass damages the grass because it touches the grass.
 test(k_argument_evaluate_aXaY) :-
-    k_argument_evaluate(because(demages(on(walking, grass), grass), touches(on(walking, grass), grass)), Lever), !,
+    k_argument_evaluate(because(damages(on(walking, grass), grass), touches(on(walking, grass), grass)), Lever), !,
     %write(["Lever: " | Lever]),
     Lever = touches(on(walking, grass), grass).
 
