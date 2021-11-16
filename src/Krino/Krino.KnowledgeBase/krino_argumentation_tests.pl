@@ -55,11 +55,15 @@ test(k_argument) :-
     PremiseClause = has(a, c).
     
 test(k_argument_form_aXbX) :-
-    k_argument_form(because(is_prohibited(cycling), is_prohibited(walking)), Form),
+    k_argument_form(because(is_prohibited(cycling), is_prohibited(walking)), Conclusion, Premise, Form),
+    Conclusion = is_prohibited(cycling),
+    Premise = is_prohibited(walking),
     Form = aXbX.
 
 test(k_argument_form_aXaY) :-
-    k_argument_form(because(has(a, b), like(a, b)), Form),
+    k_argument_form(because(has(a, b), like(a, b)), Conclusion, Premise, Form), !,
+    Conclusion = has(a, b),
+    Premise = like(a, b),
     Form = aXaY.
 
 % Cycling on the grass is prohibited because walking on the grass is prohibited.

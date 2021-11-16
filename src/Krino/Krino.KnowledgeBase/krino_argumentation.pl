@@ -1,7 +1,7 @@
 :- module(krino_argumentation,
     [
         k_argument_evaluate/2,
-        k_argument_form/2,
+        k_argument_form/4,
         k_argument/3,
         k_clause/3
     ]).
@@ -11,9 +11,7 @@
 
 
 k_argument_evaluate(ArgumentTerm, Lever) :-
-    % get the form of the argument.
-    k_argument_form(ArgumentTerm, Form),
-    k_argument(ArgumentTerm, ConclusionClause, PremiseClause),
+    k_argument_form(ArgumentTerm, ConclusionClause, PremiseClause, Form),
 
     % evaluate the conclusion and provide the proof chain if true.
     k_proof(ConclusionClause, ConclusionProof),
@@ -44,16 +42,16 @@ k_argument_evaluate(ArgumentTerm, Lever) :-
 
     
 
-k_argument_form(ArgumentTerm, Form) :-
+k_argument_form(ArgumentTerm, ConclusionClause, PremiseClause, Form) :-
     k_argument(ArgumentTerm, ConclusionClause, PremiseClause),
     k_clause(ConclusionClause, ConclusionSubject, ConclusionPredicate),
     k_clause(PremiseClause, PremiseSubject, PremisePredicate),
     (
         ConclusionSubject = PremiseSubject,
-        Form = aXaY, !
+        Form = aXaY
         ;
         ConclusionPredicate = PremisePredicate,
-        Form = aXbX, !
+        Form = aXbX
     ).
 
 
@@ -84,12 +82,14 @@ k_clause(ClauseTerm, SubjectTerm, PredicateTerm) :-
         ClauseTermTmp =.. [PredicateTerm, _],
         % if such term exist then resolve SubjectTerm
         current_predicate(_, ClauseTermTmp),
+        call(PredicateTerm, SubjectTerm),
         ClauseTerm =.. [PredicateTerm, SubjectTerm]
         ;
         ClauseTermTmp =.. [PredicateTerm, _, _],
         % if such term exist then resolve SubjectTerm
         current_predicate(_, ClauseTermTmp),
-        ClauseTerm =.. [PredicateTerm, SubjectTerm, _]
+        call(PredicateTerm, SubjectTerm, DirectObjectTerm),
+        ClauseTerm =.. [PredicateTerm, SubjectTerm, DirectObjectTerm]
     ).
 
     
