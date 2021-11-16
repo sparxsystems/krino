@@ -3,11 +3,12 @@
 
 :- import(krino_proof_meta_interpreter:k_add_proof/3).
 
-:- begin_tests(krino_proof_meta_interpreter).
 
 has(a,b).
 check_has(A, B) :- has(A, B), ! ; has(B, A).
 
+
+:- begin_tests(krino_proof_meta_interpreter).
 
 test(k_add_proof) :-
     k_add_proof(has(a, b), [], Result), !,

@@ -10,15 +10,17 @@ k_proof(Goal, Proof) :-
     k_proof(Goal, [], ProofTmp),
     k_add_proof(Goal, ProofTmp, Proof).
 
+% Goal is true.
+k_proof(true, [], [true]).
 
-k_proof(true, Previous, [true | Previous]).
-
+% Conjunction
 k_proof((A, B), Previous, Proof) :-
     k_proof(A, Previous, ProofTmp1),
     k_proof(B, ProofTmp1, ProofTmp2),
     k_add_proof(A, ProofTmp2, ProofTmp3),
     k_add_proof(B, ProofTmp3, Proof).
 
+% Disjunction
 k_proof((A; B), Previous, Proof) :-
     k_proof(A, Previous, ProofTmp1),
     k_add_proof(A, ProofTmp1, Proof)
@@ -26,24 +28,27 @@ k_proof((A; B), Previous, Proof) :-
     k_proof(B, Previous, ProofTmp2),
     k_add_proof(B, ProofTmp2, Proof).
 
-
-k_proof(A, Previous, Previous) :-
-    predicate_property(A, built_in), % !,
-    call(A).
+% Prolog-built_in goal.
+k_proof(Goal, Previous, Previous) :-
+    Goal \= true,
+    Goal \= (_ , _), % it is not a conjunction
+    Goal \= (_ ; _), % it is not a disjunction
+    predicate_property(Goal, built_in),
+    call(Goal).
 
 k_proof(Goal, Previous, Proof) :-
     Goal \= true,
-    Goal \= (_,_), % it is not a conjunction
-    Goal \= (_;_), % it is not a disjunction
+    Goal \= (_ , _), % it is not a conjunction
+    Goal \= (_ ; _), % it is not a disjunction
     \+ predicate_property(Goal, built_in),
     clause(Goal, Body),
     k_proof(Body, Previous, ProofTmp1),
     k_add_proof(Body, ProofTmp1, Proof).
 
 
+
 % true, if adding Goal to PreviousProof creates NewProof.
 k_add_proof(Goal, PreviousProof, NewProof) :-
-
     % if Goal is compound or not builtin.
     (compound(Goal) ; \+ predicate_property(Goal, built_in)),
     NewProof = [Goal | PreviousProof], !
