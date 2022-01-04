@@ -45,7 +45,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             using (Trace.Entering())
             {
-                List<IAdTree> results = new List<IAdTree>();
+                var results = new List<IAdTree>();
 
                 var phraseDecomposition = myConstructiveDictionary.DecomposePhrase(phrase, 0);
 
