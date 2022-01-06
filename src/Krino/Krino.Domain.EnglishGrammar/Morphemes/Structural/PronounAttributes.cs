@@ -14,6 +14,8 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
             Objective = new EnumValue(this);
             Possessive = new EnumValue(this);
             Reflexive = new EnumValue(this);
+            Interrogative = new EnumValue(this);
+
             Sememe = new PronounSememes(this);
         }
 
@@ -48,6 +50,11 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         /// They refer back to the subject of the phrase in which they are used.
         /// </remarks>
         public EnumValue Reflexive { get; }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public EnumValue Interrogative { get; }
 
         /// <summary>
         /// Semantic attributes.
