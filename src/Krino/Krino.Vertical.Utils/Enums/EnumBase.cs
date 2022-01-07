@@ -43,14 +43,14 @@ namespace Krino.Vertical.Utils.Enums
         protected int BitIndex { get; private set; }
 
         /// <summary>
-        /// Returns the parent enum group f this enum.
+        /// Returns the parent enum group of this enum.
         /// </summary>
-        protected EnumGroupBase ParentEnum { get; private set; }
+        public EnumGroupBase ParentEnum { get; private set; }
 
         /// <summary>
         /// Returns the sequence of parents to the root.
         /// </summary>
-        internal protected IEnumerable<EnumGroupBase> ParentEnums
+        public IEnumerable<EnumGroupBase> ParentEnums
         {
             get
             {
@@ -81,7 +81,7 @@ namespace Krino.Vertical.Utils.Enums
             }
             else
             {
-                result = "";
+                result = GetType().Name;
             }
 
             return result;
@@ -120,7 +120,12 @@ namespace Krino.Vertical.Utils.Enums
                 var property = GetReferencingProperty(parentInstance, this);
                 result.Append(property.Name);
             }
-            
+            // If this is the root.
+            else
+            {
+                result.Append(GetType().Name);
+            }
+
             return result.ToString();
         }
 
@@ -181,16 +186,13 @@ namespace Krino.Vertical.Utils.Enums
 
 
         /// <summary>
-        /// Implicitly converts the enum into the ulong.
+        /// Implicitly converts the enum into BigInteger.
         /// </summary>
         /// <param name="attribute"></param>
         public static implicit operator BigInteger(EnumBase attribute) => attribute.Value;
 
         public static BigInteger operator |(EnumBase item1, EnumBase item2) => item1.Value | item2.Value;
 
-        public static BigInteger operator &(EnumBase item1, EnumBase item2) => item1.Value | item2.Value;
-
-        public static BigInteger operator %(EnumBase item1, EnumBase item2) => item1.Value % item2.Value;
 
         public static bool operator >(EnumBase item1, EnumBase item2) => item1.Value > item2.Value;
 

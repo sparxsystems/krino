@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 
 namespace Krino.Vertical.Utils.Enums
 {
@@ -25,31 +26,32 @@ namespace Krino.Vertical.Utils.Enums
         internal int Length { get; set; }
 
         /// <summary>
-        /// Recursively returns all enum values for this enum group.
+        /// Recursively returns all enums (not only EnumValue) of this enum group.
         /// </summary>
-        public IEnumerable<EnumValue> EnumValues
+        public IEnumerable<EnumBase> Enums
         {
             get
             {
-                var enumProperties = GetType().GetProperties().Where(x => typeof(EnumBase).IsAssignableFrom(x.PropertyType));
-                foreach (var enumProperty in enumProperties)
+                foreach (var enumItem in DirectSubEnums)
                 {
-                    var enumPropertyValue = enumProperty.GetValue(this);
-                    if (enumPropertyValue is EnumRootBase == false && enumPropertyValue is EnumGroupBase enumGroup)
+                    if (enumItem is EnumRootBase == false && enumItem is EnumGroupBase enumGroup)
                     {
-                        var enumValues = enumGroup.EnumValues;
-                        foreach (var enumValue in enumValues)
+                        foreach (var subEnumItem in enumGroup.Enums)
                         {
-                            yield return enumValue;
+                            yield return subEnumItem;
                         }
                     }
-                    else if (enumPropertyValue is EnumValue)
-                    {
-                        yield return (EnumValue)enumPropertyValue;
-                    }
+
+                    yield return enumItem;
                 }
             }
         }
+
+        /// <summary>
+        /// Recursively returns all enum values for this enum group.
+        /// </summary>
+        public IEnumerable<EnumValue> EnumValues => Enums.OfType<EnumValue>();
+        
 
         /// <summary>
         /// Returns enums of this enum group.
@@ -58,17 +60,23 @@ namespace Krino.Vertical.Utils.Enums
         {
             get
             {
-                var enumProperties = GetType().GetProperties().Where(x => typeof(EnumBase).IsAssignableFrom(x.PropertyType));
-                foreach (var enumProperty in enumProperties)
-                {
-                    var enumPropertyValue = enumProperty.GetValue(this);
-                    if (enumPropertyValue is EnumRootBase == false)
-                    {
-                        yield return (EnumBase)enumPropertyValue;
-                    }
-                }
+                var enumPropertyValues = GetType().GetProperties()
+                    .Where(x => x.DeclaringType != typeof(EnumGroupBase) &&
+                            x.DeclaringType != typeof(EnumBase) &&
+                            !typeof(EnumRootBase).IsAssignableFrom(x.PropertyType) &&
+                            typeof(EnumBase).IsAssignableFrom(x.PropertyType))
+                    .Select(x => (EnumBase)x.GetValue(this));
+
+                return enumPropertyValues;
             }
         }
+
+        /// <summary>
+        /// Returns true if a sub enum is present in the value.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public bool HasDirectSubEnums(BigInteger value) => DirectSubEnums.Any(x => x.IsIn(value));
 
         /// <summary>
         /// Finds all enums applicable for the value.
@@ -77,43 +85,98 @@ namespace Krino.Vertical.Utils.Enums
         /// <returns></returns>
         public IEnumerable<EnumBase> FindEnums(BigInteger value)
         {
-            var enumProperties = GetType().GetProperties().Where(x => typeof(EnumBase).IsAssignableFrom(x.PropertyType));
-            foreach (var enumProperty in enumProperties)
+            // Go via relevant enum properties.
+            var relevantEnumPropertyValues = DirectSubEnums
+                .Where(x => x.IsIn(value));
+
+            foreach (var enumPropertyValue in relevantEnumPropertyValues)
             {
-                var enumPropertyValue = enumProperty.GetValue(this);
+                // If it is an enum group but it is not the root.
                 if (enumPropertyValue is EnumRootBase == false && enumPropertyValue is EnumGroupBase enumGroup)
                 {
-                    // If the group of enums contains the value then find biggest ones.
-                    if (enumGroup.IsIn(value))
+                    // If there are some sub-enums containing the value.
+                    var enumValues = enumGroup.FindEnums(value);
+                    if (enumValues.Any())
                     {
-                        // If there are some sub-enums containing the input value.
-                        var enumValues = enumGroup.FindEnums(value);
-                        if (enumValues.Any())
+                        foreach (var enumValue in enumValues)
                         {
-                            foreach (var enumValue in enumValues)
-                            {
-                                yield return enumValue;
-                            }
+                            yield return enumValue;
                         }
-                        // If this is that biggest value.
-                        else
-                        {
-                            yield return enumGroup;
-                        }
+                    }
+                    // There are no sub-enums containing the value.
+                    else
+                    {
+                        yield return enumGroup;
                     }
                 }
-                else if (enumPropertyValue is EnumValue enumValue)
+                else
                 {
-                    if (enumValue.IsIn(value))
-                    {
-                        yield return enumValue;
-                    }
+                    yield return enumPropertyValue;
                 }
             }
         }
 
+        public string GetFullName(BigInteger value)
+        {
+            var result = new StringBuilder();
+
+            var thisType = GetType();
+
+            // Go via relevant enum properties.
+            var relevantEnumPropertyValues = DirectSubEnums
+                .Where(x => x.IsIn(value))
+                .ToList();
+
+            // If this is the root.
+            if (relevantEnumPropertyValues.Count > 0 && typeof(EnumRootBase).IsAssignableFrom(thisType))
+            {
+                result.Append(thisType.Name).Append(".");
+            }
+
+            if (relevantEnumPropertyValues.Count > 1)
+            {
+                result.Append("(");
+            }
+
+            for (int i = 0; i < relevantEnumPropertyValues.Count; ++i)
+            {
+                var enumPropertyValue = relevantEnumPropertyValues[i];
+
+                if (i > 0)
+                {
+                    result.Append(",");
+                }
+
+                // If it is an enum group but it is not the root.
+                if (enumPropertyValue is EnumRootBase == false && enumPropertyValue is EnumGroupBase enumGroup)
+                {
+                    var name = enumGroup.GetName();
+                    result.Append(name);
+
+                    // If there are some sub-enums containing the value.
+                    var subEnumName = enumGroup.GetFullName(value);
+                    if (!string.IsNullOrEmpty(subEnumName))
+                    {
+                        result.Append(".").Append(subEnumName);
+                    }
+                }
+                else
+                {
+                    var name = enumPropertyValue.GetName();
+                    result.Append(name);
+                }
+            }
+
+            if (relevantEnumPropertyValues.Count > 1)
+            {
+                result.Append(")");
+            }
+
+            return result.ToString();
+        }
+
         /// <summary>
-        /// Clears all bits related to this group.
+        /// Clears all bits related to this enum group, i.e. this group and all its sub-groups and values.
         /// </summary>
         public BigInteger Clear(BigInteger value)
         {
@@ -139,30 +202,34 @@ namespace Krino.Vertical.Utils.Enums
             return result;
         }
 
-        protected internal bool TryGetValue(string[] path, int idx, out BigInteger value)
-        {
-            bool result = false;
-            value = 0;
 
-            var enumProperty = GetType().GetProperty(path[idx]);
-            if (enumProperty != null)
+        protected BigInteger GetValueFromPath(string[] path, int idx)
+        {
+            BigInteger result = 0;
+
+            if (idx < path.Length)
             {
-                var enumPropertyValue = enumProperty.GetValue(this);
-                if (idx + 1 < path.Length)
+                var enumProperty = GetType().GetProperty(path[idx]);
+                if (enumProperty != null)
                 {
-                    if (enumPropertyValue is EnumGroupBase enumGroupBase)
+                    var enumPropertyValue = enumProperty.GetValue(this);
+                    if (idx + 1 < path.Length)
                     {
-                        result = enumGroupBase.TryGetValue(path, idx + 1, out value);
+                        if (enumPropertyValue is EnumGroupBase enumGroupBase)
+                        {
+                            result = enumGroupBase.GetValueFromPath(path, idx + 1);
+                        }
                     }
-                }
-                else if (enumPropertyValue is EnumBase enumBase)
-                {
-                    value = enumBase;
-                    result = true;
+                    else if (enumPropertyValue is EnumBase enumBase)
+                    {
+                        result = enumBase;
+                    }
                 }
             }
 
             return result;
         }
+
+        
     }
 }
