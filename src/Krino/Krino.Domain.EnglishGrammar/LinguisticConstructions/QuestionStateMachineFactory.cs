@@ -15,7 +15,9 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
             result.Configure("initial")
                 .Permit(EnglishAttributes.O.Lexeme.Pronoun, "O")
+                .Permit(EnglishAttributes.O.Lexeme.Pronoun, "O")
                 .Permit(EnglishAttributes.I.Lexeme.Verb, "I");
+
 
             result.Configure("O")
                 .Permit(EnglishAttributes.I.Lexeme.Verb, "I");

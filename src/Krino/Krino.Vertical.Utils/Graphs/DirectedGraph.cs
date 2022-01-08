@@ -6,7 +6,7 @@ using System.Linq;
 
 namespace Krino.Vertical.Utils.Graphs
 {
-    public class DirectedGraph<V, E> : IDirectedGraph<V, E>
+    public class DirectedGraph<V, E> : IDirectedGraph<V, E>, IReadOnlyCollection<V>
     {
         private HashSet<V> myVertices;
         private DoubleKeyMultiDictionary<V, V, DirectedEdge<V, E>> myEdges;
