@@ -1,4 +1,5 @@
-﻿using Krino.Vertical.Utils.Graphs;
+﻿using Krino.Vertical.Utils.Collections;
+using Krino.Vertical.Utils.Graphs;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Collections.Generic;
@@ -9,11 +10,13 @@ namespace Krino.Vertical.Utils.StateMachines
     public class MultiMachine<TState, TTrigger>
     {
         private DirectedGraph<TState, IRule<TTrigger>> myGraph;
-        private Dictionary<TState, State<TState>> myStates = new Dictionary<TState, State<TState>>();
+        private Dictionary<TState, StateRepresentation<TState>> myStates = new Dictionary<TState, StateRepresentation<TState>>();
         private TransitImmediatelyRule<TTrigger> myImmediateTransitRule = new TransitImmediatelyRule<TTrigger>();
 
-        private List<TState> myActiveStates = new List<TState>();
-        private List<TState> myUnhandledStates = new List<TState>();
+        private Tree<StateRecord<TState, TTrigger>> myMachineTrack = new Tree<StateRecord<TState, TTrigger>>(null);
+        private List<Tree<StateRecord<TState, TTrigger>>> myActiveStates = new List<Tree<StateRecord<TState, TTrigger>>>();
+        private List<Tree<StateRecord<TState, TTrigger>>> myUnhandledStates = new List<Tree<StateRecord<TState, TTrigger>>>();
+        
 
         private IEqualityComparer<TState> myStateEqualityComparer;
 
@@ -21,33 +24,28 @@ namespace Krino.Vertical.Utils.StateMachines
         public MultiMachine(IEqualityComparer<TState> stateEqualityComparer = null)
         {
             myStateEqualityComparer = stateEqualityComparer ?? EqualityComparer<TState>.Default;
-
             myGraph = new DirectedGraph<TState, IRule<TTrigger>>(stateEqualityComparer, null);
-
-            Reset();
         }
 
 
-        public IEnumerable<TState> ActiveStates => myActiveStates;
+        public IEnumerable<Tree<StateRecord<TState, TTrigger>>> ActiveStateRecords => myActiveStates;
 
-        public void AddState(TState state, StateKind stateKind)
-        {
-            myGraph.AddVertex(state);
+        public IEnumerable<Tree<StateRecord<TState, TTrigger>>> UnhandledStateRecords => myUnhandledStates;
 
-            var newState = new State<TState>(state, stateKind);
-            myStates[state] = newState;
-        }
 
-        public void AddSubState(TState parent, TState subState, StateKind stateKind)
-        {
-            myGraph.AddVertex(subState);
+        public void AddInitialState(TState state) => AddState(state, StateKind.Initial);
 
-            var newState = new State<TState>(subState, stateKind)
-            {
-                Parent = parent,
-            };
-            myStates[subState] = newState;
-        }
+        public void AddState(TState state) => AddState(state, StateKind.Custom);
+
+        public void AddFinalState(TState state) => AddState(state, StateKind.Final);
+
+
+        public void AddInitialSubState(TState parent, TState subState) => AddSubState(parent, subState, StateKind.Initial);
+
+        public void AddSubState(TState parent, TState subState) => AddSubState(parent, subState, StateKind.Custom);
+
+        public void AddFinalSubState(TState parent, TState subState) => AddSubState(parent, subState, StateKind.Final);
+
 
         public void AddTransition(TState from, TState to) => AddTransition(from, to, myImmediateTransitRule);
 
@@ -57,8 +55,6 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public void Fire(TTrigger trigger)
         {
-            FireImmediateTransitions();
-
             var activeStates = myActiveStates.ToList();
 
             myActiveStates.Clear();
@@ -66,57 +62,113 @@ namespace Krino.Vertical.Utils.StateMachines
 
             foreach (var activeState in activeStates)
             {
-                if (myStates.TryGetValue(activeState, out var stateItem))
+                var fromState = GetTopMostStateToContinue(activeState.Value.StateRepresentation);
+
+                var triggersFromState = myGraph.GetEdgesGoingFrom(fromState.Value);
+                var applicableTriggers = triggersFromState.Where(x => x.Value.Evaluate(trigger));
+                if (applicableTriggers.Any())
                 {
-                    TState fromState;
-
-                    // If it is a final state of a substate then continue from the parent state.
-                    if (stateItem.IsSubstate && stateItem.StateKind == StateKind.Final)
+                    foreach (var edge in applicableTriggers)
                     {
-                        fromState = stateItem.Parent;
-                    }
-                    else
-                    {
-                        fromState = activeState;
-                    }
-
-                    var triggersFromState = myGraph.GetEdgesGoingFrom(fromState);
-                    var applicableTriggers = triggersFromState.Where(x => x.Value.Evaluate(trigger));
-                    if (applicableTriggers.Any())
-                    {
-                        foreach (var edge in applicableTriggers)
+                        if (myStates.TryGetValue(edge.To, out var toState))
                         {
-                            if (myStates.TryGetValue(edge.To, out var toState))
+                            var toStates = GetBottomMostStatesToContinue(toState);
+                            foreach (var stateToContinue in toStates)
                             {
-                                // If the target state has sub-states then find the initial state.
-                                var initialSubState = myStates.Values.FirstOrDefault(x => x.IsSubstate && x.StateKind == StateKind.Initial && myStateEqualityComparer.Equals(edge.To, x.Parent));
-                                if (initialSubState != null)
-                                {
-                                    myActiveStates.Add(initialSubState.Value);
-                                }
-                                else
-                                {
-                                    myActiveStates.Add(edge.To);
-                                }
+                                var newRecord = new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(stateToContinue, edge.Value, trigger));
+                                activeState.Add(newRecord);
+
+                                myActiveStates.Add(newRecord);
                             }
                         }
                     }
-                    else
-                    {
-                        myUnhandledStates.Add(fromState);
-                    }
+                }
+                else
+                {
+                    activeState.Value.IsUnhandled = true;
+                    activeState.Value.UnhandledTrigger = trigger;
+                    myUnhandledStates.Add(activeState);
                 }
             }
+
+            FireImmediateTransitions();
         }
 
         public void Reset()
         {
+            myMachineTrack.Clear();
             myActiveStates.Clear();
-            var initialState = myStates.Values.FirstOrDefault(x => x.StateKind == StateKind.Initial && !x.IsSubstate);
-            if (initialState != null)
+            myUnhandledStates.Clear();
+
+            var allTopLevelInitialStates = myStates.Values.Where(x => x.StateKind == StateKind.Initial && !x.IsSubstate);
+            var allInitialStates = allTopLevelInitialStates.SelectMany(x => GetBottomMostStatesToContinue(x));
+
+            var newRecords = allInitialStates.Select(x => new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(x, null, default(TTrigger))));
+
+            myActiveStates.AddRange(newRecords);
+        }
+
+        private void AddState(TState state, StateKind stateKind)
+        {
+            myGraph.AddVertex(state);
+
+            var newState = new StateRepresentation<TState>(state, stateKind);
+            myStates[state] = newState;
+        }
+
+        private void AddSubState(TState parent, TState subState, StateKind stateKind)
+        {
+            myGraph.AddVertex(subState);
+
+            var newState = new StateRepresentation<TState>(subState, stateKind)
             {
-                myActiveStates.Add(initialState.Value);
+                Parent = parent,
+            };
+            myStates[subState] = newState;
+        }
+
+        private IEnumerable<StateRepresentation<TState>> GetBottomMostStatesToContinue(StateRepresentation<TState> state)
+        {
+            var stack = new Stack<StateRepresentation<TState>>();
+            stack.Push(state);
+
+            while (stack.Count > 0)
+            {
+                var thisState = stack.Pop();
+
+                var substates = GetSubstates(thisState);
+                if (substates.Any())
+                {
+                    foreach (var substate in substates)
+                    {
+                        stack.Push(substate);
+                    }
+                }
+                else
+                {
+                    yield return thisState;
+                }
             }
+        }
+
+        private StateRepresentation<TState> GetTopMostStateToContinue(StateRepresentation<TState> state)
+        {
+            StateRepresentation<TState> result = state;
+            while (result.IsSubstate && result.StateKind == StateKind.Final)
+            {
+                if (myStates.TryGetValue(result.Parent, out var parent))
+                {
+                    result = parent;
+                }
+            }
+
+            return result;
+        }
+
+        private IEnumerable<StateRepresentation<TState>> GetSubstates(StateRepresentation<TState> state)
+        {
+            var result = myStates.Values.Where(x => x.IsSubstate && myStateEqualityComparer.Equals(x.Parent, state.Value));
+            return result;
         }
 
         private void FireImmediateTransitions()
@@ -127,62 +179,53 @@ namespace Krino.Vertical.Utils.StateMachines
             // Go via active states.
             foreach (var activeState in activeStates)
             {
-                var stack = new Stack<TState>();
+                var alreadyProcessed = new HashSet<TState>(myStateEqualityComparer);
+
+                var stack = new Stack<Tree<StateRecord<TState, TTrigger>>>();
                 stack.Push(activeState);
 
                 while (stack.Count > 0)
                 {
                     var thisState = stack.Pop();
 
-                    if (myStates.TryGetValue(activeState, out var stateItem))
+                    var fromState = GetTopMostStateToContinue(thisState.Value.StateRepresentation);
+
+                    if (!alreadyProcessed.Add(fromState.Value))
                     {
-                        TState stateToEvaluate;
+                        throw new InvalidOperationException("Immediate transitions cause the endless loop.");
+                    }
 
-                        // If it is a final state of a substate then continue from the parent state.
-                        if (stateItem.IsSubstate && stateItem.StateKind == StateKind.Final)
-                        {
-                            stateToEvaluate = stateItem.Parent;
-                        }
-                        else
-                        {
-                            stateToEvaluate = stateItem.Value;
-                        }
+                    var allTriggers = myGraph.GetEdgesGoingFrom(fromState.Value);
+                    var immediateTriggers = allTriggers.Where(x => x.Value.Equals(myImmediateTransitRule));
 
-                        var allTriggers = myGraph.GetEdgesGoingFrom(stateToEvaluate);
-                        var immediateTriggers = allTriggers.Where(x => x.Value.Equals(myImmediateTransitRule));
-
-                        // If immediate triggers exist then resolve them.
-                        if (immediateTriggers.Any())
+                    // If immediate triggers exist then resolve them.
+                    if (immediateTriggers.Any())
+                    {
+                        foreach (var edge in immediateTriggers)
                         {
-                            foreach (var edge in immediateTriggers)
+                            if (myStates.TryGetValue(edge.To, out var toState))
                             {
-                                if (myStates.TryGetValue(edge.To, out var toState))
+                                var toStates = GetBottomMostStatesToContinue(toState);
+                                foreach (var stateToContinue in toStates)
                                 {
-                                    // If the target state has sub-states then find the initial state.
-                                    var initialSubState = myStates.Values.FirstOrDefault(x => x.IsSubstate && x.StateKind == StateKind.Initial && myStateEqualityComparer.Equals(edge.To, x.Parent));
-                                    if (initialSubState != null)
-                                    {
-                                        stack.Push(initialSubState.Value);
-                                    }
-                                    else
-                                    {
-                                        stack.Push(edge.To);
-                                    }
+                                    var newRecord = new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(stateToContinue, edge.Value, default(TTrigger)));
+                                    thisState.Add(newRecord);
+                                    stack.Push(newRecord);
                                 }
                             }
+                        }
 
-                            // If there are non-immediate triggers too.
-                            var nonImmediateTriggers = allTriggers.Where(x => !x.Value.Equals(myImmediateTransitRule));
-                            if (nonImmediateTriggers.Any())
-                            {
-                                myActiveStates.Add(stateToEvaluate);
-                            }
-                        }
-                        else
+                        // If there are non-immediate triggers too.
+                        var nonImmediateTriggers = allTriggers.Where(x => !x.Value.Equals(myImmediateTransitRule));
+                        if (nonImmediateTriggers.Any())
                         {
-                            // Store the state without immediate triggers.
-                            myActiveStates.Add(stateToEvaluate);
+                            myActiveStates.Add(thisState);
                         }
+                    }
+                    else
+                    {
+                        // Store the state without immediate triggers.
+                        myActiveStates.Add(thisState);
                     }
                 }
             }
