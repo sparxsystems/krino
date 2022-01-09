@@ -14,16 +14,18 @@ namespace Krino.Vertical.Utils.Rules
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
+        /// <param name="comparer"></param>
         /// <returns></returns>
-        public static IsRule<T> Is<T>(T value) => new IsRule<T>(value);
+        public static IsRule<T> Is<T>(T value, IEqualityComparer<T> comparer = null) => new IsRule<T>(value, comparer);
 
         /// <summary>
         /// Creates the rule accepting everything except the provided value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
+        /// <param name="comparer"></param>
         /// <returns></returns>
-        public static NotRule<T> IsNot<T>(T value) => new IsRule<T>(value).Not();
+        public static NotRule<T> IsNot<T>(T value, IEqualityComparer<T> comparer = null) => new IsRule<T>(value, comparer).Not();
 
         /// <summary>
         /// Creates the rule accepting the null value.
@@ -94,8 +96,9 @@ namespace Krino.Vertical.Utils.Rules
         /// <typeparam name="T"></typeparam>
         /// <param name="rule1"></param>
         /// <param name="value"></param>
+        /// <param name="comparer"></param>
         /// <returns></returns>
-        public static AndRule<T> And<T>(this IRule<T> rule1, T value) where T : IEquatable<T> => rule1.And(new IsRule<T>(value));
+        public static AndRule<T> And<T>(this IRule<T> rule1, T value, IEqualityComparer<T> comparer = null) where T : IEquatable<T> => rule1.And(new IsRule<T>(value, comparer));
 
         /// <summary>
         /// Logical operator OR.
@@ -112,8 +115,9 @@ namespace Krino.Vertical.Utils.Rules
         /// <typeparam name="T"></typeparam>
         /// <param name="rule1"></param>
         /// <param name="value"></param>
+        /// <param name="comparer"></param>
         /// <returns></returns>
-        public static OrRule<T> Or<T>(this IRule<T> rule1, T value) where T : IEquatable<T> => rule1.Or(new IsRule<T>(value));
+        public static OrRule<T> Or<T>(this IRule<T> rule1, T value, IEqualityComparer<T> comparer = null) where T : IEquatable<T> => rule1.Or(new IsRule<T>(value, comparer));
 
         /// <summary>
         /// Logical operator NOT (negation).
@@ -128,7 +132,8 @@ namespace Krino.Vertical.Utils.Rules
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="value"></param>
+        /// <param name="comparer"></param>
         /// <returns></returns>
-        public static NotRule<T> Not<T>(T value) where T : IEquatable<T> => new IsRule<T>(value).Not();
+        public static NotRule<T> Not<T>(T value, IEqualityComparer<T> comparer = null) where T : IEquatable<T> => new IsRule<T>(value, comparer).Not();
     }
 }

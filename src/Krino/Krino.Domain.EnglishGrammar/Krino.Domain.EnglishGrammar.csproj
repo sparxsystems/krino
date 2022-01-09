@@ -5,10 +5,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="stateless" Version="5.11.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalGrammar\Krino.Domain.ConstructiveAdpositionalGrammar.csproj" />
   </ItemGroup>
 

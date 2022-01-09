@@ -12,9 +12,9 @@ namespace Krino.Vertical.Utils.Rules
     {
         private IEqualityComparer<T> myComparer;
 
-        public IsRule(T requiredValue)
+        public IsRule(T requiredValue, IEqualityComparer<T> comparer = null)
         {
-            myComparer = EqualityComparer<T>.Default;
+            myComparer = comparer ?? EqualityComparer<T>.Default;
             Value = requiredValue;
         }
 

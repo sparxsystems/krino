@@ -19,12 +19,16 @@ namespace Krino.Vertical.Utils.StateMachines
         
 
         private IEqualityComparer<TState> myStateEqualityComparer;
+        private IEqualityComparer<TTrigger> myTriggerEqualityComparer;
 
 
-        public MultiMachine(IEqualityComparer<TState> stateEqualityComparer = null)
+        public MultiMachine(IEqualityComparer<TState> stateComparer = null, IEqualityComparer<TTrigger> triggerComparer = null)
         {
-            myStateEqualityComparer = stateEqualityComparer ?? EqualityComparer<TState>.Default;
-            myGraph = new DirectedGraph<TState, IRule<TTrigger>>(stateEqualityComparer, null);
+            myStateEqualityComparer = stateComparer ?? EqualityComparer<TState>.Default;
+            myTriggerEqualityComparer = triggerComparer ?? EqualityComparer<TTrigger>.Default;
+
+            // Note: the edge is of type IRule which implements IEquatable, therefore the default comparer is ok to use for triggers.
+            myGraph = new DirectedGraph<TState, IRule<TTrigger>>(stateComparer, null);
         }
 
 
@@ -49,9 +53,10 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public void AddTransition(TState from, TState to) => AddTransition(from, to, myImmediateTransitRule);
 
-        public void AddTransition(TState from, TState to, TTrigger trigger) => AddTransition(from, to, RuleMaker.Is(trigger));
+        public void AddTransition(TState from, TState to, TTrigger trigger) => AddTransition(from, to, RuleMaker.Is(trigger, myTriggerEqualityComparer));
 
         public void AddTransition(TState from, TState to, IRule<TTrigger> triggerRule) => myGraph.AddEdge(from, to, triggerRule);
+
 
         public void Fire(TTrigger trigger)
         {
