@@ -70,7 +70,7 @@ namespace Krino.Vertical.Utils.StateMachines
                 var fromState = GetStateToContinue(activeState.Value.StateRepresentation);
 
                 var triggersFromState = myGraph.GetEdgesGoingFrom(fromState.Value);
-                var applicableTriggers = triggersFromState.Where(x => x.Value.Evaluate(trigger));
+                var applicableTriggers = triggersFromState.Where(x => !x.Value.Equals(myImmediateTransitRule) && x.Value.Evaluate(trigger));
                 if (applicableTriggers.Any())
                 {
                     foreach (var edge in applicableTriggers)
