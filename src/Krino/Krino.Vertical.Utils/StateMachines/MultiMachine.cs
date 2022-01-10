@@ -67,7 +67,7 @@ namespace Krino.Vertical.Utils.StateMachines
 
             foreach (var activeState in activeStates)
             {
-                var fromState = GetTopMostStateToContinue(activeState.Value.StateRepresentation);
+                var fromState = GetStateToContinue(activeState.Value.StateRepresentation);
 
                 var triggersFromState = myGraph.GetEdgesGoingFrom(fromState.Value);
                 var applicableTriggers = triggersFromState.Where(x => x.Value.Evaluate(trigger));
@@ -77,7 +77,7 @@ namespace Krino.Vertical.Utils.StateMachines
                     {
                         if (myStates.TryGetValue(edge.To, out var toState))
                         {
-                            var toStates = GetBottomMostStatesToContinue(toState);
+                            var toStates = GetStatesToStart(toState);
                             foreach (var stateToContinue in toStates)
                             {
                                 var newRecord = new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(stateToContinue, edge.Value, trigger));
@@ -106,11 +106,13 @@ namespace Krino.Vertical.Utils.StateMachines
             myUnhandledStates.Clear();
 
             var allTopLevelInitialStates = myStates.Values.Where(x => x.StateKind == StateKind.Initial && !x.IsSubstate);
-            var allInitialStates = allTopLevelInitialStates.SelectMany(x => GetBottomMostStatesToContinue(x));
 
-            var newRecords = allInitialStates.Select(x => new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(x, null, default(TTrigger))));
+            // Note: initial state cannot have substates.
+            var newRecords = allTopLevelInitialStates.Select(x => new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(x, null, default(TTrigger))));
 
             myActiveStates.AddRange(newRecords);
+
+            FireImmediateTransitions();
         }
 
         private void AddState(TState state, StateKind stateKind)
@@ -132,39 +134,34 @@ namespace Krino.Vertical.Utils.StateMachines
             myStates[subState] = newState;
         }
 
-        private IEnumerable<StateRepresentation<TState>> GetBottomMostStatesToContinue(StateRepresentation<TState> state)
+        private IEnumerable<StateRepresentation<TState>> GetStatesToStart(StateRepresentation<TState> state)
         {
-            var stack = new Stack<StateRepresentation<TState>>();
-            stack.Push(state);
+            IEnumerable<StateRepresentation<TState>> result;
 
-            while (stack.Count > 0)
+            var initialSubStates = GetSubstates(state).Where(x => x.StateKind == StateKind.Initial);
+            if (initialSubStates.Any())
             {
-                var thisState = stack.Pop();
-
-                var substates = GetSubstates(thisState);
-                if (substates.Any())
-                {
-                    foreach (var substate in substates)
-                    {
-                        stack.Push(substate);
-                    }
-                }
-                else
-                {
-                    yield return thisState;
-                }
+                result = initialSubStates;
             }
+            else
+            {
+                result = new StateRepresentation<TState>[] { state };
+            }
+
+            return result;
         }
 
-        private StateRepresentation<TState> GetTopMostStateToContinue(StateRepresentation<TState> state)
+        private StateRepresentation<TState> GetStateToContinue(StateRepresentation<TState> state)
         {
-            StateRepresentation<TState> result = state;
-            while (result.IsSubstate && result.StateKind == StateKind.Final)
+            StateRepresentation<TState> result;
+            
+            if (state.IsSubstate && state.StateKind == StateKind.Final && myStates.TryGetValue(state.Parent, out var parent))
             {
-                if (myStates.TryGetValue(result.Parent, out var parent))
-                {
-                    result = parent;
-                }
+                result = parent;
+            }
+            else
+            {
+                result = state;
             }
 
             return result;
@@ -172,7 +169,10 @@ namespace Krino.Vertical.Utils.StateMachines
 
         private IEnumerable<StateRepresentation<TState>> GetSubstates(StateRepresentation<TState> state)
         {
-            var result = myStates.Values.Where(x => x.IsSubstate && myStateEqualityComparer.Equals(x.Parent, state.Value));
+            // Note: initial and final state cannot have substates.
+            var result = state.StateKind == StateKind.Custom ?
+                myStates.Values.Where(x => x.IsSubstate && myStateEqualityComparer.Equals(x.Parent, state.Value)) :
+                Enumerable.Empty<StateRepresentation<TState>>();
             return result;
         }
 
@@ -193,7 +193,7 @@ namespace Krino.Vertical.Utils.StateMachines
                 {
                     var thisState = stack.Pop();
 
-                    var fromState = GetTopMostStateToContinue(thisState.Value.StateRepresentation);
+                    var fromState = GetStateToContinue(thisState.Value.StateRepresentation);
 
                     if (!alreadyProcessed.Add(fromState.Value))
                     {
@@ -210,7 +210,7 @@ namespace Krino.Vertical.Utils.StateMachines
                         {
                             if (myStates.TryGetValue(edge.To, out var toState))
                             {
-                                var toStates = GetBottomMostStatesToContinue(toState);
+                                var toStates = GetStatesToStart(toState);
                                 foreach (var stateToContinue in toStates)
                                 {
                                     var newRecord = new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(stateToContinue, edge.Value, default(TTrigger)));

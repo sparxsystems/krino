@@ -189,7 +189,9 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
         public void Fire_SubStates()
         {
             var machine = new MultiMachine<string, int>();
-            machine.AddInitialState("a");
+            machine.AddInitialState("i");
+
+            machine.AddState("a");
             machine.AddInitialSubState("a", "aa");
             machine.AddSubState("a", "ab");
             machine.AddFinalSubState("a", "ac");
@@ -198,6 +200,7 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
             machine.AddInitialSubState("b", "ba");
             machine.AddFinalSubState("b", "bb");
 
+            machine.AddTransition("i", "a");
             machine.AddTransition("a", "b", 20);
             machine.AddTransition("aa", "ab", 11);
             machine.AddTransition("ab", "ac", 12);
@@ -217,11 +220,12 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
             Assert.AreEqual(StateKind.Final, activeStates[0].Value.StateRepresentation.StateKind);
 
             var track = activeStates[0].Parents.ToList();
-            Assert.AreEqual(4, track.Count);
+            Assert.AreEqual(5, track.Count);
             Assert.AreEqual("ba", track[0].Value.StateRepresentation.Value);
             Assert.AreEqual("ac", track[1].Value.StateRepresentation.Value);
             Assert.AreEqual("ab", track[2].Value.StateRepresentation.Value);
             Assert.AreEqual("aa", track[3].Value.StateRepresentation.Value);
+            Assert.AreEqual("i", track[4].Value.StateRepresentation.Value);
         }
     }
 }

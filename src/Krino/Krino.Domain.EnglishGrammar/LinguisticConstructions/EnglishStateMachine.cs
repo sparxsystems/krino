@@ -19,7 +19,7 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
             myStateMachine.AddInitialState("start");
             
-            myStateMachine.AddState("clause");
+            
 
             AddQuestioning();
 
@@ -28,6 +28,16 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
 
             myStateMachine.AddTransition("start", "clause");
             myStateMachine.AddTransition("clause", "end");
+        }
+
+        private void AddClause()
+        {
+            myStateMachine.AddState("clause");
+            myStateMachine.AddInitialSubState("clause", "clause.init");
+
+
+
+            myStateMachine.AddFinalSubState("clause", "clause.final");
         }
 
         private void AddQuestioning()
@@ -39,12 +49,13 @@ namespace Krino.Domain.EnglishGrammar.LinguisticConstructions
             myStateMachine.AddSubState("clause.questioning", "clause.questioning.I");
             myStateMachine.AddFinalSubState("clause.questioning", "clause.questioning.final");
 
-            myStateMachine.AddTransition("clause.questioning.init", "clause.questioning.O", ValueIsInRule.Is(EnglishAttributes.O.Lexeme.Pronoun));
+            myStateMachine.AddTransition("clause.questioning.init", "clause.questioning.O", ValueIsInRule.Is(EnglishAttributes.O.Lexeme.Pronoun.Interrogative));
             myStateMachine.AddTransition("clause.questioning.init", "clause.questioning.I", ValueIsInRule.Is(EnglishAttributes.I.Lexeme.Verb));
             myStateMachine.AddTransition("clause.questioning.O", "clause.questioning.I", ValueIsInRule.Is(EnglishAttributes.I.Lexeme.Verb));
             myStateMachine.AddTransition("clause.questioning.I", "clause.questioning.final", ValueIsInRule.Is(EnglishAttributes.O.Lexeme.Noun | EnglishAttributes.O.Lexeme.Pronoun | EnglishAttributes.A.Lexeme | EnglishAttributes.E.Lexeme.Adverb));
 
-            myStateMachine.AddTransition("clause", "clause.questioning", ValueIsInRule.Is(EnglishAttributes.I.Lexeme.Verb | EnglishAttributes.O.Lexeme.Pronoun.Interrogative));
+            myStateMachine.AddTransition("clause", "clause.questioning");
+            myStateMachine.AddTransition("clause", "clause.questioning");
         }
 
         private void AddObject(string state)
