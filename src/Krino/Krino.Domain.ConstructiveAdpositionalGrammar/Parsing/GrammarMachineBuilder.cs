@@ -8,7 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
     public class GrammarMachineBuilder
     {
         private MultiMachine<LinguisticState, BigInteger> myMachine;
-        private LinguisticState myState;
+        private LinguisticState myParentState;
         private bool myIsSubState;
 
         public GrammarMachineBuilder(MultiMachine<LinguisticState, BigInteger> machine)
@@ -19,20 +19,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myMachine.AddInitialState(initState);
 
             var finalState = new LinguisticState("final", LinguisticStructureType.Undefined);
-            myMachine.AddInitialState(finalState);
+            myMachine.AddFinalState(finalState);
         }
 
-        private GrammarMachineBuilder(MultiMachine<LinguisticState, BigInteger> machine, LinguisticState state)
+        private GrammarMachineBuilder(MultiMachine<LinguisticState, BigInteger> machine, LinguisticState parentState)
         {
             myMachine = machine;
-            myState = state;
+            myParentState = parentState;
             myIsSubState = true;
 
-            var initState = new LinguisticState($"{myState.Id}.init", LinguisticStructureType.Undefined);
-            myMachine.AddInitialState(initState);
+            var initState = new LinguisticState($"{myParentState.Id}.init", LinguisticStructureType.Undefined);
+            myMachine.AddInitialSubState(myParentState, initState);
 
-            var finalState = new LinguisticState($"{myState.Id}.final", LinguisticStructureType.Undefined);
-            myMachine.AddInitialState(finalState);
+            var finalState = new LinguisticState($"{myParentState.Id}.final", LinguisticStructureType.Undefined);
+            myMachine.AddFinalSubState(myParentState, finalState);
         }
 
         public GrammarMachineBuilder AddLexemeStates(params string[] stateIds)
@@ -47,23 +47,41 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public GrammarMachineBuilder AddState(string stateId, LinguisticStructureType stateType)
         {
-            var stateToUse = myIsSubState ? new LinguisticState($"{myState.Id}.{stateId}", stateType) : new LinguisticState(stateId, stateType);
-            myMachine.AddState(stateToUse);
+            if (myIsSubState)
+            {
+                var stateToUse = new LinguisticState($"{myParentState.Id}.{stateId}", stateType);
+                myMachine.AddSubState(myParentState, stateToUse);
+            }
+            else
+            {
+                var stateToUse = new LinguisticState(stateId, stateType);
+                myMachine.AddState(stateToUse);
+            }
+
+            
             return this;
         }
 
-        public GrammarMachineBuilder AddSubState(string subStateId, LinguisticStructureType subStateType)
+        public GrammarMachineBuilder AddSubState(LinguisticStructureType subStateType)
         {
-            var newSubState = myIsSubState ? new LinguisticState($"{myState.Id}.{subStateId}", subStateType) : new LinguisticState(subStateId, subStateType);
+            var newSubState = myIsSubState ? new LinguisticState($"{myParentState.Id}.{subStateType}", subStateType) : new LinguisticState(subStateType.ToString(), subStateType);
+            myMachine.AddState(newSubState);
             var result = new GrammarMachineBuilder(myMachine, newSubState);
 
             return result;
         }
 
+
+        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, LinguisticStructureType to) => AddTransition(from.ToString(), to.ToString());
+
+        public GrammarMachineBuilder AddTransition(string fromId, LinguisticStructureType to) => AddTransition(fromId, to.ToString());
+
+        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, string toId) => AddTransition(from.ToString(), toId);
+
         public GrammarMachineBuilder AddTransition(string fromId, string toId)
         {
-            var fromIdToUse = myIsSubState ? $"{myState.Id}.{fromId}" : fromId;
-            var toIdToUse = myIsSubState ? $"{myState.Id}.{toId}" : toId;
+            var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
+            var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
 
             var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
             var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");
@@ -74,8 +92,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public GrammarMachineBuilder AddTransition(string fromId, string toId, params BigInteger[] triggers)
         {
-            var fromIdToUse = myIsSubState ? $"{myState.Id}.{fromId}" : fromId;
-            var toIdToUse = myIsSubState ? $"{myState.Id}.{toId}" : toId;
+            var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
+            var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
 
             var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
             var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");

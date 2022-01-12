@@ -10,7 +10,7 @@ namespace Krino.Vertical.Utils.StateMachines
     public class MultiMachine<TState, TTrigger>
     {
         private DirectedGraph<TState, IRule<TTrigger>> myGraph;
-        private Dictionary<TState, StateRepresentation<TState>> myStates = new Dictionary<TState, StateRepresentation<TState>>();
+        private Dictionary<TState, StateDefinition<TState>> myStates = new Dictionary<TState, StateDefinition<TState>>();
         private TransitImmediatelyRule<TTrigger> myImmediateTransitRule = new TransitImmediatelyRule<TTrigger>();
 
         private Tree<StateRecord<TState, TTrigger>> myMachineTrack = new Tree<StateRecord<TState, TTrigger>>(null);
@@ -73,7 +73,7 @@ namespace Krino.Vertical.Utils.StateMachines
 
             foreach (var activeState in activeStates)
             {
-                var fromState = GetStateToContinue(activeState.Value.StateRepresentation);
+                var fromState = GetStateToContinue(activeState.Value.Definition);
 
                 var triggersFromState = myGraph.GetEdgesGoingFrom(fromState.Value);
                 var applicableTriggers = triggersFromState.Where(x => !x.Value.Equals(myImmediateTransitRule) && x.Value.Evaluate(trigger));
@@ -125,7 +125,7 @@ namespace Krino.Vertical.Utils.StateMachines
         {
             myGraph.AddVertex(state);
 
-            var newState = new StateRepresentation<TState>(state, stateKind);
+            var newState = new StateDefinition<TState>(state, stateKind);
             myStates[state] = newState;
         }
 
@@ -133,16 +133,16 @@ namespace Krino.Vertical.Utils.StateMachines
         {
             myGraph.AddVertex(subState);
 
-            var newState = new StateRepresentation<TState>(subState, stateKind)
+            var newState = new StateDefinition<TState>(subState, stateKind)
             {
                 Parent = parent,
             };
             myStates[subState] = newState;
         }
 
-        private IEnumerable<StateRepresentation<TState>> GetStatesToStart(StateRepresentation<TState> state)
+        private IEnumerable<StateDefinition<TState>> GetStatesToStart(StateDefinition<TState> state)
         {
-            IEnumerable<StateRepresentation<TState>> result;
+            IEnumerable<StateDefinition<TState>> result;
 
             var initialSubStates = GetSubstates(state).Where(x => x.StateKind == StateKind.Initial);
             if (initialSubStates.Any())
@@ -151,15 +151,15 @@ namespace Krino.Vertical.Utils.StateMachines
             }
             else
             {
-                result = new StateRepresentation<TState>[] { state };
+                result = new StateDefinition<TState>[] { state };
             }
 
             return result;
         }
 
-        private StateRepresentation<TState> GetStateToContinue(StateRepresentation<TState> state)
+        private StateDefinition<TState> GetStateToContinue(StateDefinition<TState> state)
         {
-            StateRepresentation<TState> result;
+            StateDefinition<TState> result;
             
             if (state.IsSubstate && state.StateKind == StateKind.Final && myStates.TryGetValue(state.Parent, out var parent))
             {
@@ -173,12 +173,12 @@ namespace Krino.Vertical.Utils.StateMachines
             return result;
         }
 
-        private IEnumerable<StateRepresentation<TState>> GetSubstates(StateRepresentation<TState> state)
+        private IEnumerable<StateDefinition<TState>> GetSubstates(StateDefinition<TState> state)
         {
             // Note: initial and final state cannot have substates.
             var result = state.StateKind == StateKind.Custom ?
                 myStates.Values.Where(x => x.IsSubstate && myStateEqualityComparer.Equals(x.Parent, state.Value)) :
-                Enumerable.Empty<StateRepresentation<TState>>();
+                Enumerable.Empty<StateDefinition<TState>>();
             return result;
         }
 
@@ -199,7 +199,7 @@ namespace Krino.Vertical.Utils.StateMachines
                 {
                     var thisState = stack.Pop();
 
-                    var fromState = GetStateToContinue(thisState.Value.StateRepresentation);
+                    var fromState = GetStateToContinue(thisState.Value.Definition);
 
                     if (!alreadyProcessed.Add(fromState.Value))
                     {

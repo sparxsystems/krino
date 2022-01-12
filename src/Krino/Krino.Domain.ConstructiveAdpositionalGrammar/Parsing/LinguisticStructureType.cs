@@ -3,12 +3,30 @@
     public enum LinguisticStructureType
     {
         Undefined,
+
         Lexeme,
+        
         Subject,
+
         Predicate,
+        Verb,
         DirectObject,
         IndirectObject,
-        Clause,
-        Sentence
+        SubjectComplement,
+        ObjectiveComplement,
+        Adverbial,
+
+        DeclarativeClause,
+        InterrogativeClause,
+        ImperativeClause,
+        ExclamativeClause,
+        NounClause,
+        AdjectiveClause,
+        AdverbialClause,
+        
+        SimpleSentence,
+        ComplexSentence,
+        CompoundSentence,
+        CompoundComplexSentence
     }
 }

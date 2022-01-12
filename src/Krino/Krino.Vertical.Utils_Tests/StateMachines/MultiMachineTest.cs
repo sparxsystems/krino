@@ -23,7 +23,7 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
 
             var activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(1, activeStates.Count);
-            Assert.AreEqual("a", activeStates[0].Value.StateRepresentation.Value);
+            Assert.AreEqual("a", activeStates[0].Value.Definition.Value);
         }
 
         [Test]
@@ -41,8 +41,8 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
 
             var activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(2, activeStates.Count);
-            Assert.AreEqual("a", activeStates[0].Value.StateRepresentation.Value);
-            Assert.AreEqual("b", activeStates[1].Value.StateRepresentation.Value);
+            Assert.AreEqual("a", activeStates[0].Value.Definition.Value);
+            Assert.AreEqual("b", activeStates[1].Value.Definition.Value);
         }
 
         [Test]
@@ -60,21 +60,21 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
             machine.Fire(2);
             var activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(1, activeStates.Count);
-            Assert.AreEqual("b", activeStates[0].Value.StateRepresentation.Value);
-            Assert.AreEqual(StateKind.Custom, activeStates[0].Value.StateRepresentation.StateKind);
+            Assert.AreEqual("b", activeStates[0].Value.Definition.Value);
+            Assert.AreEqual(StateKind.Custom, activeStates[0].Value.Definition.StateKind);
 
             machine.Fire(3);
             activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(1, activeStates.Count);
-            Assert.AreEqual("c", activeStates[0].Value.StateRepresentation.Value);
-            Assert.AreEqual(StateKind.Final, activeStates[0].Value.StateRepresentation.StateKind);
+            Assert.AreEqual("c", activeStates[0].Value.Definition.Value);
+            Assert.AreEqual(StateKind.Final, activeStates[0].Value.Definition.StateKind);
             Assert.AreEqual(3, activeStates[0].Value.ByTrigger);
 
             var track = activeStates[0].Parents.ToList();
             Assert.AreEqual(2, track.Count);
-            Assert.AreEqual("b", track[0].Value.StateRepresentation.Value);
+            Assert.AreEqual("b", track[0].Value.Definition.Value);
             Assert.AreEqual(2, track[0].Value.ByTrigger);
-            Assert.AreEqual("a", track[1].Value.StateRepresentation.Value);
+            Assert.AreEqual("a", track[1].Value.Definition.Value);
             Assert.IsNull(track[1].Value.ByTransitionRule);
         }
 
@@ -97,8 +97,8 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
 
             var unhandledStates = machine.UnhandledStateRecords.ToList();
             Assert.AreEqual(1, unhandledStates.Count);
-            Assert.AreEqual("a", unhandledStates[0].Value.StateRepresentation.Value);
-            Assert.AreEqual(StateKind.Initial, unhandledStates[0].Value.StateRepresentation.StateKind);
+            Assert.AreEqual("a", unhandledStates[0].Value.Definition.Value);
+            Assert.AreEqual(StateKind.Initial, unhandledStates[0].Value.Definition.StateKind);
             Assert.IsTrue(unhandledStates[0].Value.IsUnhandled);
             Assert.AreEqual(100, unhandledStates[0].Value.UnhandledTrigger);
         }
@@ -118,8 +118,8 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
             machine.Fire(2);
             var activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(2, activeStates.Count);
-            Assert.AreEqual("b", activeStates[0].Value.StateRepresentation.Value);
-            Assert.AreEqual("c", activeStates[1].Value.StateRepresentation.Value);
+            Assert.AreEqual("b", activeStates[0].Value.Definition.Value);
+            Assert.AreEqual("c", activeStates[1].Value.Definition.Value);
         }
 
         [Test]
@@ -137,7 +137,7 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
             machine.Fire(2);
             var activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(1, activeStates.Count);
-            Assert.AreEqual("c", activeStates[0].Value.StateRepresentation.Value);
+            Assert.AreEqual("c", activeStates[0].Value.Definition.Value);
         }
 
         [Test]
@@ -163,8 +163,8 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
 
             var activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(2, activeStates.Count);
-            Assert.AreEqual("b", activeStates[0].Value.StateRepresentation.Value);
-            Assert.AreEqual("c", activeStates[1].Value.StateRepresentation.Value);
+            Assert.AreEqual("b", activeStates[0].Value.Definition.Value);
+            Assert.AreEqual("c", activeStates[1].Value.Definition.Value);
         }
 
         [Test]
@@ -216,16 +216,16 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
 
             var activeStates = machine.ActiveStateRecords.ToList();
             Assert.AreEqual(1, activeStates.Count);
-            Assert.AreEqual("bb", activeStates[0].Value.StateRepresentation.Value);
-            Assert.AreEqual(StateKind.Final, activeStates[0].Value.StateRepresentation.StateKind);
+            Assert.AreEqual("bb", activeStates[0].Value.Definition.Value);
+            Assert.AreEqual(StateKind.Final, activeStates[0].Value.Definition.StateKind);
 
             var track = activeStates[0].Parents.ToList();
             Assert.AreEqual(5, track.Count);
-            Assert.AreEqual("ba", track[0].Value.StateRepresentation.Value);
-            Assert.AreEqual("ac", track[1].Value.StateRepresentation.Value);
-            Assert.AreEqual("ab", track[2].Value.StateRepresentation.Value);
-            Assert.AreEqual("aa", track[3].Value.StateRepresentation.Value);
-            Assert.AreEqual("i", track[4].Value.StateRepresentation.Value);
+            Assert.AreEqual("ba", track[0].Value.Definition.Value);
+            Assert.AreEqual("ac", track[1].Value.Definition.Value);
+            Assert.AreEqual("ab", track[2].Value.Definition.Value);
+            Assert.AreEqual("aa", track[3].Value.Definition.Value);
+            Assert.AreEqual("i", track[4].Value.Definition.Value);
         }
     }
 }

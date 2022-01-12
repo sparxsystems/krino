@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.EnglishGrammar.Morphemes.Semantic;
 using Krino.Vertical.Utils.Enums;
-using System.Numerics;
 
 namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
 {
@@ -14,6 +13,9 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
             Modal = new EnumValue(this);
             Regular = new EnumValue(this);
             Irregular = new EnumValue(this);
+            Stative = new StativeVerbAttributes(this);
+            Action = new ActiveVerbAttributes(this);
+            Auxiliary = new EnumValue(this);
             Unergative = new EnumValue(this);
             Unaccusative = new EnumValue(this);
             Form = new VerbFormAttributes(this);
@@ -37,12 +39,30 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         public EnumValue Irregular { get; }
 
         /// <summary>
+        /// Stative verb.
+        /// </summary>
+        /// <remarks>
+        /// A stative verb defines the state of something: examples are sit, lie, stand.
+        /// </remarks>
+        public StativeVerbAttributes Stative { get; }
+
+        /// <summary>
+        /// Action (or dynamic) verb.
+        /// </summary>
+        public ActiveVerbAttributes Action { get; }
+
+        /// <summary>
+        /// Helper verbs e.g. will.
+        /// </summary>
+        public EnumValue Auxiliary { get; }
+
+        /// <summary>
         /// If stative does the verbant.
         /// </summary>
         public EnumValue Unergative { get; }
 
         /// <summary>
-        /// Verbant happens to the actant (stative).
+        /// Verbant happens to the actant.
         /// </summary>
         public EnumValue Unaccusative { get; }
 
