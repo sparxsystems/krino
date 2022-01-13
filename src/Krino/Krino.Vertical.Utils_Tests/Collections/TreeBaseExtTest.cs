@@ -9,6 +9,25 @@ namespace Krino.Vertical.Utils_Tests.Collections
     public class TreeBaseExtTest
     {
         [Test]
+        public void GetPathToRoot()
+        {
+            Tree<int> tree = new Tree<int>(1)
+            {
+                new Tree<int>(11){ new Tree<int>(111), new Tree<int>(112) },
+                new Tree<int>(12){ new Tree<int>(121), new Tree<int>(122) },
+                new Tree<int>(13){ new Tree<int>(131), new Tree<int>(132) },
+            };
+
+            var n122 = tree.First(x => x.Value == 122);
+            
+            var result = n122.GetPathToRoot().ToList();
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(122, result[0].Value);
+            Assert.AreEqual(12, result[1].Value);
+            Assert.AreEqual(1, result[2].Value);
+        }
+
+        [Test]
         public void MakeRoot()
         {
             Tree<int> tree = new Tree<int>(1)

@@ -4,6 +4,7 @@
     {
         Undefined,
 
+        NonLexeme,
         Lexeme,
         
         Subject,
@@ -13,13 +14,14 @@
         DirectObject,
         IndirectObject,
         SubjectComplement,
-        ObjectiveComplement,
+        ObjectComplement,
         Adverbial,
 
         DeclarativeClause,
         InterrogativeClause,
         ImperativeClause,
         ExclamativeClause,
+
         NounClause,
         AdjectiveClause,
         AdverbialClause,

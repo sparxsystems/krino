@@ -1,4 +1,5 @@
-﻿using Krino.Vertical.Utils.StateMachines;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Vertical.Utils.StateMachines;
 using System;
 using System.Linq;
 using System.Numerics;
@@ -7,11 +8,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
     public class GrammarMachineBuilder
     {
-        private MultiMachine<LinguisticState, BigInteger> myMachine;
+        private MultiMachine<LinguisticState, IWord> myMachine;
         private LinguisticState myParentState;
         private bool myIsSubState;
 
-        public GrammarMachineBuilder(MultiMachine<LinguisticState, BigInteger> machine)
+        public GrammarMachineBuilder(MultiMachine<LinguisticState, IWord> machine)
         {
             myMachine = machine;
 
@@ -22,7 +23,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myMachine.AddFinalState(finalState);
         }
 
-        private GrammarMachineBuilder(MultiMachine<LinguisticState, BigInteger> machine, LinguisticState parentState)
+        private GrammarMachineBuilder(MultiMachine<LinguisticState, IWord> machine, LinguisticState parentState)
         {
             myMachine = machine;
             myParentState = parentState;
@@ -100,12 +101,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             foreach (var trigger in triggers)
             {
-                myMachine.AddTransition(fromToUse, toToUse, trigger);
+                var triggerRule = WordRule.WordContainsAttribute(trigger);
+                myMachine.AddTransition(fromToUse, toToUse, triggerRule);
             }
 
             return this;
         }
 
-        
+
+        public GrammarMachineBuilder AddTransition(string fromId, string toId, params string[] triggers)
+        {
+            var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
+            var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
+
+            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
+            var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");
+
+            foreach (var trigger in triggers)
+            {
+                var triggerRule = WordRule.WordStringIs(trigger);
+                myMachine.AddTransition(fromToUse, toToUse, triggerRule);
+            }
+
+            return this;
+        }
+
+
     }
 }

@@ -4,6 +4,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public interface ITerm : ILinguisticStructure
     {
-        IEnumerable<IWord> Words { get; }
+        List<IWord> Words { get; }
     }
 }

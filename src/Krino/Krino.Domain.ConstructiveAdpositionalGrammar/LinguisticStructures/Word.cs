@@ -1,14 +1,22 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using System.Numerics;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    internal class Word : LinguisticStructureBase, IWord
+    public class Word : LinguisticStructureBase, IWord
     {
-        public Word(IAdTree wordAdTree, IAttributesModel attributesModel, ILinguisticStructureFactory factory, BigInteger attributes)
-            : base(wordAdTree, attributesModel, factory, attributes)
+        private IAdTree myWord;
+
+        public Word(IAdTree word)
+            : base(word.Morpheme.Attributes)
         {
+            myWord = word;
         }
+
+        public string Value => string.Join("", Morphemes.Select(x => x.Morph));
+
+        public IEnumerable<Morpheme> Morphemes => myWord.Select(x => x.Morpheme);
     }
 }

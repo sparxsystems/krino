@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.StateMachines;
@@ -11,11 +12,11 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 {
     public class EnglishMachine
     {
-        private MultiMachine<LinguisticState, BigInteger> myMachine;
+        private MultiMachine<LinguisticState, IWord> myMachine;
 
         public EnglishMachine()
         {
-            myMachine = new MultiMachine<LinguisticState, BigInteger>();
+            myMachine = new MultiMachine<LinguisticState, IWord>();
 
             var root = new GrammarMachineBuilder(myMachine);
 
@@ -33,7 +34,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             myMachine.Reset();
         }
 
-        public MultiMachine<LinguisticState, BigInteger> Machine => myMachine;
+        public MultiMachine<LinguisticState, IWord> Machine => myMachine;
 
         private void AddPredicate(GrammarMachineBuilder builder)
         {
@@ -55,7 +56,6 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             predicate.AddTransition("init", LinguisticStructureType.Verb);
             predicate.AddTransition(LinguisticStructureType.Verb, LinguisticStructureType.DirectObject);
-            predicate.AddTransition(LinguisticStructureType.Verb, LinguisticStructureType.IndirectObject);
             predicate.AddTransition(LinguisticStructureType.Verb, LinguisticStructureType.Adverbial);
             predicate.AddTransition(LinguisticStructureType.Verb, "final");
 

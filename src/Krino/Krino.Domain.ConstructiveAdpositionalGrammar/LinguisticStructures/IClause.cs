@@ -2,7 +2,8 @@
 {
     public interface IClause : ILinguisticStructure
     {
-        ITerm Subject { get; }
-        ITerm Predicate { get; }
+        ISubject Subject { get; set; }
+
+        IPredicate Predicate { get; set; }
     }
 }

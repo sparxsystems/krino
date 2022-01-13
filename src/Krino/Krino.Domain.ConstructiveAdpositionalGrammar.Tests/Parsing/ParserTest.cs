@@ -36,14 +36,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             Assert.AreEqual(1, sentences.Count);
 
-            Assert.IsTrue(StructureAttributes.Sentence.ComplexSentence.IsIn(sentences[0].Attributes));
+            Assert.IsTrue(StructureAttributes.Sentence.Complex.IsIn(sentences[0].Attributes));
 
-            Assert.IsTrue(StructureAttributes.Clause.Independent.IsIn(sentences[0].Clauses[0].Attributes));
+            Assert.IsTrue(StructureAttributes.Clause.Declarative.IsIn(sentences[0].Clauses[0].Attributes));
             Assert.IsTrue(StructureAttributes.Clause.Conclusion.IsIn(sentences[0].Clauses[0].Attributes));
             Assert.AreEqual("book", sentences[0].Clauses[0].Subject.Value);
             Assert.AreEqual("is book", sentences[0].Clauses[0].Predicate.Value);
 
-            Assert.IsTrue(StructureAttributes.Clause.Dependent.IsIn(sentences[0].Clauses[1].Attributes));
+            Assert.IsTrue(StructureAttributes.Clause.Declarative.IsIn(sentences[0].Clauses[1].Attributes));
             Assert.IsTrue(StructureAttributes.Clause.Premis.IsIn(sentences[0].Clauses[1].Attributes));
             Assert.AreEqual("book", sentences[0].Clauses[1].Subject.Value);
             Assert.AreEqual("is book", sentences[0].Clauses[1].Predicate.Value);

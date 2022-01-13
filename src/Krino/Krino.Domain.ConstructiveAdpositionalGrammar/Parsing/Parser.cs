@@ -20,7 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             var result = new List<ISentence>();
 
-            var linguisticStructureFactory = new LinguisticStructureFactory(myDictionary.AttributesModel);
+            //var linguisticStructureFactory = new LinguisticStructureFactory(myDictionary.AttributesModel);
 
             var adTreeCreator = new AdTreeCreator(myDictionary);
 
@@ -36,8 +36,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     var bestAdTree = adTrees.GetBest();
 
-                    var sentence = linguisticStructureFactory.CreateSentence(bestAdTree);
-                    result.Add(sentence);
+                   // var sentence = linguisticStructureFactory.CreateSentence(bestAdTree);
+                   // result.Add(sentence);
                 }
             }
 

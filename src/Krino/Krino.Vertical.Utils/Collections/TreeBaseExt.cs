@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Linq;
 
 namespace Krino.Vertical.Utils.Collections
 {
@@ -7,6 +8,16 @@ namespace Krino.Vertical.Utils.Collections
     /// </summary>
     public static class TreeBaseExt
     {
+        /// <summary>
+        /// Returns path to the root.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="tree"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> GetPathToRoot<T>(this ITreeBase<T> tree)
+            where T : class, ITreeBase<T> => tree.Parents.Prepend((T)tree);
+
+
         /// <summary>
         /// Restructures the tree so that the provided item is the new root of the tree.
         /// </summary>

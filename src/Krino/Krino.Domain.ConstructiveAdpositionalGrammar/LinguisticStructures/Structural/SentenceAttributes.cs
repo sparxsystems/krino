@@ -6,30 +6,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Stru
     {
         public SentenceAttributes(EnumGroupBase parent) : base(parent)
         {
-            SimpleSentence = new EnumValue(this);
-            ComplexSentence = new ComplexSentenceAttributes(this);
-            CompoundSentence = new EnumValue(this);
-            CompoundComplexSentence = new EnumValue(this);
+            Simple = new EnumValue(this);
+            Complex = new ComplexSentenceAttributes(this);
+            Compound = new EnumValue(this);
+            CompoundComplex = new EnumValue(this);
         }
 
         /// <summary>
         /// Contains just one independent clause.
         /// </summary>
-        public EnumValue SimpleSentence { get; }
+        public EnumValue Simple { get; }
 
         /// <summary>
         /// Contains two or more independent clauses.
         /// </summary>
-        public ComplexSentenceAttributes ComplexSentence { get; }
+        public ComplexSentenceAttributes Complex { get; }
 
         /// <summary>
         /// Contains one independent clause and one dependent clause.
         /// </summary>
-        public EnumValue CompoundSentence { get; }
+        public EnumValue Compound { get; }
 
         /// <summary>
         /// Contains at least two independent clauses and one dependent clause.
         /// </summary>
-        public EnumValue CompoundComplexSentence { get; }
+        public EnumValue CompoundComplex { get; }
     }
 }
