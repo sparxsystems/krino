@@ -2,7 +2,7 @@
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    internal class Verb : TermBase, IVerb
+    internal class Verb : PhraseBase, IVerb
     {
         public Verb(BigInteger attributes)
             : base(attributes)

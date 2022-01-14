@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    public interface IDirectObject : ITerm
+    public interface IDirectObject : IPhrase
     {
     }
 }

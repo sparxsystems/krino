@@ -1,6 +1,6 @@
 ﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    public interface IIndirectObject : ITerm 
+    public interface IIndirectObject : IPhrase 
     {
     }
 }

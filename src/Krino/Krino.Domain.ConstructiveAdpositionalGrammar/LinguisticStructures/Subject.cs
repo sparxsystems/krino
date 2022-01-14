@@ -2,7 +2,7 @@
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    internal class Subject : TermBase, ISubject
+    internal class Subject : PhraseBase, ISubject
     {
         public Subject(BigInteger attributes)
             : base(attributes)

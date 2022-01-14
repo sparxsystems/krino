@@ -2,7 +2,7 @@
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    internal class Adverbial : TermBase, IAdverbial
+    internal class Adverbial : PhraseBase, IAdverbial
     {
         public Adverbial(BigInteger attributes)
             : base(attributes)

@@ -6,13 +6,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
     {
         public static void AddSubStructure(this ILinguisticStructure parent, ILinguisticStructure subStructure)
         {
-            if (parent is ITerm term)
+            if (parent is IPhrase term)
             {
                 term.Words.Add((IWord)subStructure);
             }
             else if (parent is IPredicate predicate)
             {
-                predicate.Terms.Add((ITerm)subStructure);
+                predicate.Terms.Add((IPhrase)subStructure);
             }
             else if (parent is IClause clause)
             {

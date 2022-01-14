@@ -6,6 +6,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Stru
     {
         public ClauseAttributes(EnumGroupBase parent) : base(parent)
         {
+            Dependent = new EnumValue(this);
+            Independent = new EnumValue(this);
+
             Declarative = new EnumValue(this);
             Interrogative = new EnumValue(this);
             Imperative = new EnumValue(this);
@@ -18,6 +21,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Stru
             Premis = new EnumValue(this);
             Conclusion = new EnumValue(this);
         }
+
+        /// <summary>
+        /// Starts with a subordinating conjunction.
+        /// </summary>
+        public EnumValue Dependent { get; }
+        public EnumValue Independent { get; }
 
         public EnumValue Declarative { get; }
         public EnumValue Interrogative { get; }

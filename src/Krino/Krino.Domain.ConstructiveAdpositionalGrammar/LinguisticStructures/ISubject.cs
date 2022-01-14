@@ -2,7 +2,7 @@
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    public interface ISubject : ITerm
+    public interface ISubject : IPhrase
     {
     }
 }

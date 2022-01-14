@@ -2,7 +2,7 @@
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    internal class DirectObject : TermBase, IDirectObject
+    internal class DirectObject : PhraseBase, IDirectObject
     {
         public DirectObject(BigInteger attributes)
             : base(attributes)

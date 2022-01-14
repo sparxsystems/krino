@@ -1,6 +1,6 @@
 ﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    public interface IAdverbial : ITerm 
+    public interface IAdverbial : IPhrase 
     {
     }
 }
