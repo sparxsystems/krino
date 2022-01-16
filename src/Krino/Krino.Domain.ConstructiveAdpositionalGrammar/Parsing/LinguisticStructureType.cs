@@ -7,6 +7,11 @@
         NonLexeme,
         Lexeme,
         
+        Adverb,
+        AttributiveAdjective,
+        PredicativeAdjective,
+
+
         Subject,
 
         Predicate,

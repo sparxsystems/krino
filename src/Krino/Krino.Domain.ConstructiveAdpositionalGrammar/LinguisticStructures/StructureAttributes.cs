@@ -19,6 +19,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public static EnumValue Predicate { get; } = new EnumValue(Instance);
         public static EnumValue Verb { get; } = new EnumValue(Instance);
 
+
+        public static EnumValue Adverb { get; } = new EnumValue(Instance);
+        public static AdjectiveAttributes Adjective { get; } = new AdjectiveAttributes(Instance);
         public static ObjectAttributes Object { get; } = new ObjectAttributes(Instance);
 
         public static ComplementAttributes Complement { get; } = new ComplementAttributes(Instance);

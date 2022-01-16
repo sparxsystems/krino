@@ -210,12 +210,12 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
 
             machine.AddTransition("ba", "bb", 21);
 
-            machine.Reset();
+            machine.Reset(); // active state = aa
 
-            machine.Fire(11);
-            machine.Fire(12);
-            machine.Fire(20);
-            machine.Fire(21);
+            machine.Fire(11); // aa (init) -> ab
+            machine.Fire(12); // ab -> ac (final)
+            machine.Fire(20); // a -> ba (init)
+            machine.Fire(21); // ba -> bb (final)
 
             var activeStates = machine.GetActiveStates().ToList();
             Assert.AreEqual(1, activeStates.Count);

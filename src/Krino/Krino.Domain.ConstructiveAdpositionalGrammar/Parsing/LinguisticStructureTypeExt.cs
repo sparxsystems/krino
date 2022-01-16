@@ -12,6 +12,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             switch (type)
             {
+                case LinguisticStructureType.Adverb:
+                    {
+                        result = StructureAttributes.Adverb;
+                        break;
+                    }
+
+                case LinguisticStructureType.AttributiveAdjective:
+                    {
+                        result = StructureAttributes.Adjective.Attributive;
+                        break;
+                    }
+                case LinguisticStructureType.PredicativeAdjective:
+                    {
+                        result = StructureAttributes.Adjective.Predicative;
+                        break;
+                    }
+
                 case LinguisticStructureType.Subject:
                     {
                         result = StructureAttributes.Subject;
@@ -114,6 +131,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             if (StructureAttributes.Clause.IsIn(attributes))
             {
                 result = new Clause(attributes);
+            }
+            else if (StructureAttributes.Adverb.IsIn(attributes))
+            {
+                result = new Adverb(attributes);
+            }
+            else if (StructureAttributes.Adjective.IsIn(attributes))
+            {
+                result = new AdjectiveElement(attributes);
             }
             else if (StructureAttributes.Subject.IsIn(attributes))
             {

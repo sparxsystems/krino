@@ -21,8 +21,10 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var root = new GrammarMachineBuilder(myMachine);
 
             var declarativeClause = root.AddSubState(LinguisticStructureType.DeclarativeClause);
+
             AddNounElement(declarativeClause, LinguisticStructureType.Subject);
-            AddPredicate(declarativeClause);
+            AddPredicateElement(declarativeClause, LinguisticStructureType.Predicate);
+            
             declarativeClause.AddTransition("init", LinguisticStructureType.Subject);
             declarativeClause.AddTransition(LinguisticStructureType.Subject, LinguisticStructureType.Predicate);
             declarativeClause.AddTransition(LinguisticStructureType.Predicate, "final");
@@ -36,9 +38,9 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
         public MultiMachine<LinguisticState, IWord> Machine => myMachine;
 
-        private void AddPredicate(GrammarMachineBuilder builder)
+        private void AddPredicateElement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
         {
-            var predicate = builder.AddSubState(LinguisticStructureType.Predicate);
+            var predicate = builder.AddSubState(objectType);
 
             predicate.AddSubState(LinguisticStructureType.Verb)
                 .AddLexemeStates("I", "E", "U")
@@ -50,13 +52,15 @@ namespace Krino.Domain.EnglishGrammar.Parsing
                 .AddTransition("E", "I", EnglishAttributes.I.Lexeme.Verb)
                 .AddTransition("U", "I", EnglishAttributes.I.Lexeme.Verb);
 
-            AddNounElement(predicate, LinguisticStructureType.DirectObject);
             AddNounElement(predicate, LinguisticStructureType.IndirectObject);
+            AddNounElement(predicate, LinguisticStructureType.DirectObject);
+            
             //AddNounElement(predicate, LinguisticStructureType.AdverbialComplement, EnglishAttributes.E.Lexeme.Adverb | EnglishAttributes.E.Lexeme.Preposition);
 
             predicate.AddTransition("init", LinguisticStructureType.Verb);
-            predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.DirectObject, EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent);
+
             predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.IndirectObject, EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent, EnglishAttributes.I.Lexeme.Verb.Valency.Quadrivalent, EnglishAttributes.I.Lexeme.Verb.Valency.Pentavalent);
+            predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.DirectObject, EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent);
             predicate.AddTransition(LinguisticStructureType.Verb, "final");
 
             predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.DirectObject);
@@ -70,43 +74,56 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         }
 
 
-        private void AddNounElement(GrammarMachineBuilder builder, LinguisticStructureType objectType, BigInteger initFilter = default)
+        private void AddNounElement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
         {
             var objectBuilder = builder.AddSubState(objectType)
-                .AddLexemeStates("O", "A", "E1", "E2", "E3", "U1", "U2", "U3");
+                .AddLexemeStates("Determiner", "Noun", "Pronoun", "U");
 
-            if (initFilter == 0 || EnglishAttributes.O.Lexeme.IsIn(initFilter))
-            {
-                objectBuilder.AddTransition("init", "O", EnglishAttributes.O.Lexeme.Noun, EnglishAttributes.O.Lexeme.Pronoun);
-            }
-            if (initFilter == 0 || EnglishAttributes.A.Lexeme.IsIn(initFilter))
-            {
-                objectBuilder.AddTransition("init", "A", EnglishAttributes.A.Lexeme);
-            }
-            if (initFilter == 0 || EnglishAttributes.E.Lexeme.Preposition.IsIn(initFilter))
-            {
-                objectBuilder.AddTransition("init", "E2", EnglishAttributes.E.Lexeme.Preposition);
-            }
+            AddAdjectiveElement(objectBuilder, LinguisticStructureType.AttributiveAdjective);
+            AddAdjectiveElement(objectBuilder, LinguisticStructureType.PredicativeAdjective);
 
-            objectBuilder.AddTransition("O", "O", EnglishAttributes.O.Lexeme.Noun, EnglishAttributes.O.Lexeme.Pronoun)
-                .AddTransition("O", "A", EnglishAttributes.A.Lexeme)
-                .AddTransition("O", "E2", EnglishAttributes.E.Lexeme.Preposition)
-                .AddTransition("O", "E3", EnglishAttributes.E.Lexeme.Postposition)
-                .AddTransition("O", "U1", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
-                .AddTransition("O", "final")
-                .AddTransition("A", "A", EnglishAttributes.A.Lexeme)
-                .AddTransition("A", "U2", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
-                .AddTransition("A", "O", EnglishAttributes.O.Lexeme.Noun)
-                .AddTransition("E1", "E1", EnglishAttributes.E.Lexeme.Adverb)
-                .AddTransition("E1", "U3", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
-                .AddTransition("E1", "A", EnglishAttributes.A.Lexeme)
-                .AddTransition("E2", "O", EnglishAttributes.O.Lexeme.Noun, EnglishAttributes.O.Lexeme.Pronoun)
-                .AddTransition("E2", "A", EnglishAttributes.A.Lexeme)
-                .AddTransition("E2", "E1", EnglishAttributes.E.Lexeme.Adverb)
-                .AddTransition("U1", "O", EnglishAttributes.O.Lexeme.Noun, EnglishAttributes.O.Lexeme.Pronoun)
-                .AddTransition("U2", "A", EnglishAttributes.A.Lexeme)
-                .AddTransition("U3", "E1", EnglishAttributes.E.Lexeme.Adverb)
-                .AddTransition("E3", "final");
+            objectBuilder.AddTransition("init", LinguisticStructureType.AttributiveAdjective)
+                .AddTransition("init", "Determiner", EnglishAttributes.A.Lexeme.Determiner)
+                .AddTransition("init", "Noun", EnglishAttributes.O.Lexeme.Noun)
+                .AddTransition("init", "Pronoun", EnglishAttributes.O.Lexeme.Pronoun)
+
+                .AddTransition(LinguisticStructureType.AttributiveAdjective, "Noun", EnglishAttributes.O.Lexeme.Noun)
+
+                .AddTransition("Determiner", "Noun", EnglishAttributes.O.Lexeme.Noun)
+
+                .AddTransition("Pronoun", "U", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
+                .AddTransition("Pronoun", "final")
+
+                .AddTransition("Noun", "U", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
+                .AddTransition("Noun", LinguisticStructureType.PredicativeAdjective)
+                .AddTransition("Noun", "final")
+
+                .AddTransition(LinguisticStructureType.PredicativeAdjective, "final");
+
+        }
+
+        private void AddAdjectiveElement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
+        {
+            var adjectiveBuilder = builder.AddSubState(objectType)
+                .AddLexemeStates("A", "U");
+
+            AddAdverbElement(adjectiveBuilder, LinguisticStructureType.Adverb);
+
+            adjectiveBuilder.AddTransition("init", "A", EnglishAttributes.A.Lexeme.Adjective)
+                .AddTransition("init", LinguisticStructureType.Adverb)
+                .AddTransition(LinguisticStructureType.Adverb, "A")
+                .AddTransition("A", "U", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
+                .AddTransition("A", "final")
+                .AddTransition("U", "A", EnglishAttributes.A.Lexeme.Adjective)
+                .AddTransition("U", LinguisticStructureType.Adverb);
+        }
+
+        private void AddAdverbElement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
+        {
+            builder.AddSubState(objectType)
+                .AddLexemeStates("E")
+                .AddTransition("init", "E", EnglishAttributes.E.Lexeme.Adverb)
+                .AddTransition("E", "final");
         }
     }
 }

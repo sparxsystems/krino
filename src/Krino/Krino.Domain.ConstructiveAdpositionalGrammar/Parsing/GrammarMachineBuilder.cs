@@ -117,6 +117,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
+
+        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, LinguisticStructureType to, params BigInteger[] triggers) => AddTransition(from.ToString(), to.ToString(), triggers);
+
+        public GrammarMachineBuilder AddTransition(string fromId, LinguisticStructureType to, params BigInteger[] triggers) => AddTransition(fromId, to.ToString(), triggers);
+
+        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, string toId, params BigInteger[] triggers) => AddTransition(from.ToString(), toId, triggers);
+
         public GrammarMachineBuilder AddTransition(string fromId, string toId, params BigInteger[] triggers)
         {
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
