@@ -40,17 +40,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     }
                 case LinguisticStructureType.SubjectComplement:
                     {
-                        result = StructureAttributes.Object.SubjectComplement;
+                        result = StructureAttributes.Complement.SubjectComplement;
                         break;
                     }
                 case LinguisticStructureType.ObjectComplement:
                     {
-                        result = StructureAttributes.Object.ObjectComplement;
+                        result = StructureAttributes.Complement.ObjectComplement;
                         break;
                     }
-                case LinguisticStructureType.Adverbial:
+                case LinguisticStructureType.AdjectiveComplement:
                     {
-                        result = StructureAttributes.Adverbial;
+                        result = StructureAttributes.Complement.AdjectiveComplement;
+                        break;
+                    }
+                case LinguisticStructureType.AdverbialComplement:
+                    {
+                        result = StructureAttributes.Complement.AdverbialComplement;
                         break;
                     }
 
@@ -130,17 +135,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 result = new IndirectObject(attributes);
             }
-            else if (StructureAttributes.Object.SubjectComplement.IsIn(attributes))
+            else if (StructureAttributes.Complement.SubjectComplement.IsIn(attributes))
             {
                 result = new SubjectComplement(attributes);
             }
-            else if (StructureAttributes.Object.ObjectComplement.IsIn(attributes))
+            else if (StructureAttributes.Complement.ObjectComplement.IsIn(attributes))
             {
                 result = new ObjectComplement(attributes);
             }
-            else if (StructureAttributes.Adverbial.IsIn(attributes))
+            else if (StructureAttributes.Complement.AdjectiveComplement.IsIn(attributes))
             {
-                result = new Adverbial(attributes);
+                result = new AdjectiveComplement(attributes);
+            }
+            else if (StructureAttributes.Complement.AdverbialComplement.IsIn(attributes))
+            {
+                result = new AdverbialComplement(attributes);
             }
 
             if (result == null)

@@ -9,13 +9,13 @@ namespace Krino.Vertical.Utils.StateMachines
 {
     public class MultiMachine<TState, TTrigger>
     {
-        private DirectedGraph<TState, IRule<TTrigger>> myGraph;
+        private DirectedGraph<TState, TransitionRule<TState, TTrigger>> myGraph;
         private Dictionary<TState, StateDefinition<TState>> myStates = new Dictionary<TState, StateDefinition<TState>>();
-        private TransitImmediatelyRule<TTrigger> myImmediateTransitRule = new TransitImmediatelyRule<TTrigger>();
+        private ImmediateTriggerRule<TTrigger> myTriggerImmediatelyRule = new ImmediateTriggerRule<TTrigger>();
 
-        private Tree<StateRecord<TState, TTrigger>> myMachineTrack = new Tree<StateRecord<TState, TTrigger>>(null);
-        private List<Tree<StateRecord<TState, TTrigger>>> myActiveStates = new List<Tree<StateRecord<TState, TTrigger>>>();
-        private List<Tree<StateRecord<TState, TTrigger>>> myUnhandledStates = new List<Tree<StateRecord<TState, TTrigger>>>();
+        private Tree<StateItem<TState, TTrigger>> myMachineTrack = new Tree<StateItem<TState, TTrigger>>(null);
+        private List<Tree<StateItem<TState, TTrigger>>> myActiveStates = new List<Tree<StateItem<TState, TTrigger>>>();
+        private List<Tree<StateItem<TState, TTrigger>>> myUnhandledStates = new List<Tree<StateItem<TState, TTrigger>>>();
         
 
         private IEqualityComparer<TState> myStateEqualityComparer;
@@ -27,8 +27,8 @@ namespace Krino.Vertical.Utils.StateMachines
             myStateEqualityComparer = stateComparer ?? EqualityComparer<TState>.Default;
             myTriggerEqualityComparer = triggerComparer ?? EqualityComparer<TTrigger>.Default;
 
-            // Note: the edge is of type IRule which implements IEquatable, therefore the default comparer is ok to use for triggers.
-            myGraph = new DirectedGraph<TState, IRule<TTrigger>>(stateComparer, null);
+            // Note: TransitionRule implements IEquatable, therefore the default comparer is ok to use for triggers.
+            myGraph = new DirectedGraph<TState, TransitionRule<TState, TTrigger>>(stateComparer, null);
 
             DefaultTriggerRuleFactoryMethod = x => RuleMaker.Is(x, myTriggerEqualityComparer);
         }
@@ -38,9 +38,17 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public IEnumerable<TState> States => myGraph;
 
-        public IEnumerable<Tree<StateRecord<TState, TTrigger>>> ActiveStateRecords => myActiveStates;
+        public IEnumerable<StateTrace<TState, TTrigger>> GetActiveStates()
+        {
+            var result = myActiveStates.Select(x => new StateTrace<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));
+            return result;
+        }
 
-        public IEnumerable<Tree<StateRecord<TState, TTrigger>>> UnhandledStateRecords => myUnhandledStates;
+        public IEnumerable<StateTrace<TState, TTrigger>> GetUnhandledStates()
+        {
+            var result = myUnhandledStates.Select(x => new StateTrace<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));
+            return result;
+        }
 
 
         public void AddInitialState(TState state) => AddState(state, StateKind.Initial);
@@ -57,11 +65,13 @@ namespace Krino.Vertical.Utils.StateMachines
         public void AddFinalSubState(TState parent, TState subState) => AddSubState(parent, subState, StateKind.Final);
 
 
-        public void AddTransition(TState from, TState to) => AddTransition(from, to, myImmediateTransitRule);
+        public void AddTransition(TState from, TState to) => AddTransition(from, to, myTriggerImmediatelyRule);
 
         public void AddTransition(TState from, TState to, TTrigger trigger) => AddTransition(from, to, DefaultTriggerRuleFactoryMethod(trigger));
 
-        public void AddTransition(TState from, TState to, IRule<TTrigger> triggerRule) => myGraph.AddEdge(from, to, triggerRule);
+        public void AddTransition(TState from, TState to, IRule<TTrigger> triggerRule) => AddTransition(from, to, new TransitionRule<TState, TTrigger>(null, null, null, triggerRule));
+
+        public void AddTransition(TState from, TState to, TransitionRule<TState, TTrigger> transitionRule) => myGraph.AddEdge(from, to, transitionRule);
 
 
         public void Fire(TTrigger trigger)
@@ -73,20 +83,22 @@ namespace Krino.Vertical.Utils.StateMachines
 
             foreach (var activeState in activeStates)
             {
-                var fromState = GetStateToContinue(activeState.Value.Definition);
+                var stateTrace = new StateTrace<TState, TTrigger>(activeState.GetPathToRoot().Reverse().Select(x => x.Value));
 
-                var triggersFromState = myGraph.GetEdgesGoingFrom(fromState.Value);
-                var applicableTriggers = triggersFromState.Where(x => !x.Value.Equals(myImmediateTransitRule) && x.Value.Evaluate(trigger));
-                if (applicableTriggers.Any())
+                var fromState = GetStateToContinueFrom(activeState.Value.Definition);
+
+                var edgesFromState = myGraph.GetEdgesGoingFrom(fromState.Value);
+                var applicableEdges = edgesFromState.Where(x => !x.Value.TriggerRule.Equals(myTriggerImmediatelyRule) && x.Value.Evaluate(stateTrace, x.From, x.To, trigger));
+                if (applicableEdges.Any())
                 {
-                    foreach (var edge in applicableTriggers)
+                    foreach (var edge in applicableEdges)
                     {
                         if (myStates.TryGetValue(edge.To, out var toState))
                         {
                             var toStates = GetStatesToStart(toState);
                             foreach (var stateToContinue in toStates)
                             {
-                                var newRecord = new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(stateToContinue, edge.Value, trigger));
+                                var newRecord = new Tree<StateItem<TState, TTrigger>>(new StateItem<TState, TTrigger>(stateToContinue, edge.Value, trigger));
                                 activeState.Add(newRecord);
 
                                 myActiveStates.Add(newRecord);
@@ -114,7 +126,7 @@ namespace Krino.Vertical.Utils.StateMachines
             var allTopLevelInitialStates = myStates.Values.Where(x => x.StateKind == StateKind.Initial && !x.IsSubstate);
 
             // Note: initial state cannot have substates.
-            var newRecords = allTopLevelInitialStates.Select(x => new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(x, null, default(TTrigger))));
+            var newRecords = allTopLevelInitialStates.Select(x => new Tree<StateItem<TState, TTrigger>>(new StateItem<TState, TTrigger>(x, null, default(TTrigger))));
 
             myActiveStates.AddRange(newRecords);
 
@@ -157,7 +169,7 @@ namespace Krino.Vertical.Utils.StateMachines
             return result;
         }
 
-        private StateDefinition<TState> GetStateToContinue(StateDefinition<TState> state)
+        private StateDefinition<TState> GetStateToContinueFrom(StateDefinition<TState> state)
         {
             StateDefinition<TState> result;
             
@@ -190,24 +202,26 @@ namespace Krino.Vertical.Utils.StateMachines
             // Go via active states.
             foreach (var activeState in activeStates)
             {
+                var stateTrace = new StateTrace<TState, TTrigger>(activeState.GetPathToRoot().Reverse().Select(x => x.Value));
+
                 var alreadyProcessed = new HashSet<TState>(myStateEqualityComparer);
 
-                var stack = new Stack<Tree<StateRecord<TState, TTrigger>>>();
+                var stack = new Stack<Tree<StateItem<TState, TTrigger>>>();
                 stack.Push(activeState);
 
                 while (stack.Count > 0)
                 {
                     var thisState = stack.Pop();
 
-                    var fromState = GetStateToContinue(thisState.Value.Definition);
+                    var fromState = GetStateToContinueFrom(thisState.Value.Definition);
 
                     if (!alreadyProcessed.Add(fromState.Value))
                     {
                         throw new InvalidOperationException("Immediate transitions cause the endless loop.");
                     }
 
-                    var allTriggers = myGraph.GetEdgesGoingFrom(fromState.Value);
-                    var immediateTriggers = allTriggers.Where(x => x.Value.Equals(myImmediateTransitRule));
+                    var edgesFromState = myGraph.GetEdgesGoingFrom(fromState.Value);
+                    var immediateTriggers = edgesFromState.Where(x => x.Value.TriggerRule.Equals(myTriggerImmediatelyRule) && x.Value.Evaluate(stateTrace, x.From, x.To, default(TTrigger)));
 
                     // If immediate triggers exist then resolve them.
                     if (immediateTriggers.Any())
@@ -219,7 +233,7 @@ namespace Krino.Vertical.Utils.StateMachines
                                 var toStates = GetStatesToStart(toState);
                                 foreach (var stateToContinue in toStates)
                                 {
-                                    var newRecord = new Tree<StateRecord<TState, TTrigger>>(new StateRecord<TState, TTrigger>(stateToContinue, edge.Value, default(TTrigger)));
+                                    var newRecord = new Tree<StateItem<TState, TTrigger>>(new StateItem<TState, TTrigger>(stateToContinue, edge.Value, default(TTrigger)));
                                     thisState.Add(newRecord);
                                     stack.Push(newRecord);
                                 }
@@ -227,7 +241,7 @@ namespace Krino.Vertical.Utils.StateMachines
                         }
 
                         // If there are non-immediate triggers too.
-                        var nonImmediateTriggers = allTriggers.Where(x => !x.Value.Equals(myImmediateTransitRule));
+                        var nonImmediateTriggers = edgesFromState.Where(x => !x.Value.TriggerRule.Equals(myTriggerImmediatelyRule));
                         if (nonImmediateTriggers.Any())
                         {
                             myActiveStates.Add(thisState);

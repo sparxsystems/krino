@@ -15,7 +15,8 @@
         IndirectObject,
         SubjectComplement,
         ObjectComplement,
-        Adverbial,
+        AdjectiveComplement,
+        AdverbialComplement,
 
         DeclarativeClause,
         InterrogativeClause,

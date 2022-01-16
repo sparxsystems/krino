@@ -91,6 +91,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
+
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(LinguisticStructureType from, LinguisticStructureType to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.ToString(), to.ToString(), previousWordAttributes);
+
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, LinguisticStructureType to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(fromId, to.ToString(), previousWordAttributes);
+
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(LinguisticStructureType from, string toId, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.ToString(), toId, previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
+        {
+            var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
+            var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
+
+            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
+            var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");
+
+            foreach (var attribute in previousWordAttributes)
+            {
+                var traceRule = ParsingRule.PreviousWordContainsAttribute(attribute);
+                var triggerRule = ParsingRule.GetImmediateTrigger();
+                var transitionRule = new TransitionRule<LinguisticState, IWord>(traceRule, null, null, triggerRule);
+
+                myMachine.AddTransition(fromToUse, toToUse, transitionRule);
+            }
+            
+            return this;
+        }
+
         public GrammarMachineBuilder AddTransition(string fromId, string toId, params BigInteger[] triggers)
         {
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
@@ -101,12 +127,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             foreach (var trigger in triggers)
             {
-                var triggerRule = WordRule.WordContainsAttribute(trigger);
+                var triggerRule = ParsingRule.WordContainsAttribute(trigger);
                 myMachine.AddTransition(fromToUse, toToUse, triggerRule);
             }
 
             return this;
         }
+
 
 
         public GrammarMachineBuilder AddTransition(string fromId, string toId, params string[] triggers)
@@ -119,7 +146,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             foreach (var trigger in triggers)
             {
-                var triggerRule = WordRule.WordStringIs(trigger);
+                var triggerRule = ParsingRule.WordStringIs(trigger);
                 myMachine.AddTransition(fromToUse, toToUse, triggerRule);
             }
 

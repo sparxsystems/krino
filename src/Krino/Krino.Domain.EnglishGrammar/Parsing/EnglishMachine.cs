@@ -21,7 +21,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var root = new GrammarMachineBuilder(myMachine);
 
             var declarativeClause = root.AddSubState(LinguisticStructureType.DeclarativeClause);
-            AddObject(declarativeClause, LinguisticStructureType.Subject);
+            AddNounElement(declarativeClause, LinguisticStructureType.Subject);
             AddPredicate(declarativeClause);
             declarativeClause.AddTransition("init", LinguisticStructureType.Subject);
             declarativeClause.AddTransition(LinguisticStructureType.Subject, LinguisticStructureType.Predicate);
@@ -50,27 +50,27 @@ namespace Krino.Domain.EnglishGrammar.Parsing
                 .AddTransition("E", "I", EnglishAttributes.I.Lexeme.Verb)
                 .AddTransition("U", "I", EnglishAttributes.I.Lexeme.Verb);
 
-            AddObject(predicate, LinguisticStructureType.DirectObject);
-            AddObject(predicate, LinguisticStructureType.IndirectObject);
-            AddObject(predicate, LinguisticStructureType.Adverbial, EnglishAttributes.E.Lexeme.Adverb | EnglishAttributes.E.Lexeme.Preposition);
+            AddNounElement(predicate, LinguisticStructureType.DirectObject);
+            AddNounElement(predicate, LinguisticStructureType.IndirectObject);
+            //AddNounElement(predicate, LinguisticStructureType.AdverbialComplement, EnglishAttributes.E.Lexeme.Adverb | EnglishAttributes.E.Lexeme.Preposition);
 
             predicate.AddTransition("init", LinguisticStructureType.Verb);
-            predicate.AddTransition(LinguisticStructureType.Verb, LinguisticStructureType.DirectObject);
-            predicate.AddTransition(LinguisticStructureType.Verb, LinguisticStructureType.Adverbial);
+            predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.DirectObject, EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent);
+            predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.IndirectObject, EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent, EnglishAttributes.I.Lexeme.Verb.Valency.Quadrivalent, EnglishAttributes.I.Lexeme.Verb.Valency.Pentavalent);
             predicate.AddTransition(LinguisticStructureType.Verb, "final");
 
-            predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.IndirectObject);
-            predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.Adverbial);
+            predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.DirectObject);
+
+            //predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.AdverbialComplement);
             predicate.AddTransition(LinguisticStructureType.DirectObject, "final");
 
-            predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.Adverbial);
-            predicate.AddTransition(LinguisticStructureType.IndirectObject, "final");
+            
 
-            predicate.AddTransition(LinguisticStructureType.Adverbial, "final");
+            //predicate.AddTransition(LinguisticStructureType.AdverbialComplement, "final");
         }
 
 
-        private void AddObject(GrammarMachineBuilder builder, LinguisticStructureType objectType, BigInteger initFilter = default)
+        private void AddNounElement(GrammarMachineBuilder builder, LinguisticStructureType objectType, BigInteger initFilter = default)
         {
             var objectBuilder = builder.AddSubState(objectType)
                 .AddLexemeStates("O", "A", "E1", "E2", "E3", "U1", "U2", "U3");
@@ -89,6 +89,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             }
 
             objectBuilder.AddTransition("O", "O", EnglishAttributes.O.Lexeme.Noun, EnglishAttributes.O.Lexeme.Pronoun)
+                .AddTransition("O", "A", EnglishAttributes.A.Lexeme)
                 .AddTransition("O", "E2", EnglishAttributes.E.Lexeme.Preposition)
                 .AddTransition("O", "E3", EnglishAttributes.E.Lexeme.Postposition)
                 .AddTransition("O", "U1", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)

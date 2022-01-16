@@ -7,7 +7,7 @@ using System.Numerics;
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
 {
     [DebuggerDisplay("{DebugView}")]
-    internal class WordContainsAttributeRule : IRule<IWord>
+    internal class WordContainsAttributeRule : RuleBase<IWord>, IRule<IWord>
     {
         private ValueIsInRule myRule;
 
@@ -18,9 +18,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
 
         public BigInteger Attribute => myRule.Value;
 
-        public bool Equals(IRule<IWord> other) => other is WordContainsAttributeRule rule && myRule.Equals(rule.myRule);
+        public override bool Evaluate(IWord value) => myRule.Evaluate(value.Attributes);
 
-        public bool Evaluate(IWord value) => myRule.Evaluate(value.Attributes);
+        public override bool Equals(IRule<IWord> other) => other is WordContainsAttributeRule rule && myRule.Equals(rule.myRule);
 
         private string DebugView => Attribute.ToString();
     }

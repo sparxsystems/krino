@@ -6,7 +6,7 @@ using System.Diagnostics;
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
 {
     [DebuggerDisplay("{DebugView}")]
-    internal class WordStringIsRule : IRule<IWord>
+    internal class WordStringIsRule : RuleBase<IWord>, IRule<IWord>
     {
         private StringComparison myComparison;
 
@@ -18,9 +18,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
 
         public string WordStr { get; private set; }
 
-        public bool Equals(IRule<IWord> other) => other is WordStringIsRule rule && WordStr.Equals(rule.WordStr, myComparison);
+        public override bool Evaluate(IWord value) => WordStr.Equals(value.Value, myComparison);
 
-        public bool Evaluate(IWord value) => WordStr.Equals(value.Value, myComparison);
+        public override bool Equals(IRule<IWord> other) => other is WordStringIsRule rule && WordStr.Equals(rule.WordStr, myComparison);
 
         private string DebugView => WordStr;
     }

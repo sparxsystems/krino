@@ -19,10 +19,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         private IAttributesModel myAttributesModel = new EnglishAttributesModel();
 
         [Test]
-        public void GetTexts()
+        public void GetTexts_I_read_the_book()
         {
             var i = new Word(new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var read = new Word(new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), new Pattern()));
+            var read = new Word(new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent ), new Pattern()));
             var the = new Word(new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
             var book = new Word(new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
 
@@ -35,7 +35,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(the);
             grammar.Add(book);
 
-            var text = grammar.GetTexts().ToList();
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+        [Test]
+        public void GetTexts_I_give_him_a_book()
+        {
+            var i = new Word(new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+            var give = new Word(new AdTree(new Morpheme(myAttributesModel, "give", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
+            var him = new Word(new AdTree(new Morpheme(myAttributesModel, "him", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+            var a = new Word(new AdTree(new Morpheme(myAttributesModel, "a", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+            var book = new Word(new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            grammar.Add(i);
+            grammar.Add(give);
+            grammar.Add(him);
+            grammar.Add(a);
+            grammar.Add(book);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
         }
     }
 }

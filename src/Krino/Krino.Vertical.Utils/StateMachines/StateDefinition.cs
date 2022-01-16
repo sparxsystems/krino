@@ -1,5 +1,8 @@
-﻿namespace Krino.Vertical.Utils.StateMachines
+﻿using System.Diagnostics;
+
+namespace Krino.Vertical.Utils.StateMachines
 {
+    [DebuggerDisplay("{DebugView}")]
     public class StateDefinition<TState>
     {
         private TState myParent;
@@ -26,5 +29,7 @@
         }
 
         public bool IsSubstate => myIsParentSet;
+
+        private string DebugView => $"{StateKind}: {Value}";
     }
 }
