@@ -12,22 +12,39 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             switch (type)
             {
-                case LinguisticStructureType.Adverb:
+                case LinguisticStructureType.NounElement:
                     {
-                        result = StructureAttributes.Adverb;
+                        result = StructureAttributes.NounElement;
                         break;
                     }
-
+                case LinguisticStructureType.AdjectiveElement:
+                    {
+                        result = StructureAttributes.AdjectiveElement;
+                        break;
+                    }
                 case LinguisticStructureType.AttributiveAdjective:
                     {
-                        result = StructureAttributes.Adjective.Attributive;
+                        result = StructureAttributes.AdjectiveElement.Attributive;
                         break;
                     }
                 case LinguisticStructureType.PredicativeAdjective:
                     {
-                        result = StructureAttributes.Adjective.Predicative;
+                        result = StructureAttributes.AdjectiveElement.Predicative;
                         break;
                     }
+                case LinguisticStructureType.AdverbElement:
+                    {
+                        result = StructureAttributes.AdverbElement;
+                        break;
+                    }
+
+
+                case LinguisticStructureType.PrepositionalPhrase:
+                    {
+                        result = StructureAttributes.PrepositionalPhrase;
+                        break;
+                    }
+
 
                 case LinguisticStructureType.Subject:
                     {
@@ -45,6 +62,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         result = StructureAttributes.Verb;
                         break;
                     }
+
+
                 case LinguisticStructureType.DirectObject:
                     {
                         result = StructureAttributes.Object.Direct;
@@ -55,6 +74,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         result = StructureAttributes.Object.Indirect;
                         break;
                     }
+                case LinguisticStructureType.ObjectOfPreposition:
+                    {
+                        result = StructureAttributes.Object.ObjectOfPreposition;
+                        break;
+                    }
+
+
                 case LinguisticStructureType.SubjectComplement:
                     {
                         result = StructureAttributes.Complement.SubjectComplement;
@@ -128,15 +154,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             ILinguisticStructure result = null;
 
             var attributes = type.GetAttributes();
+
+            // TODO: !!!
+            //if (StructureAttributes.NounElement.IsIn(attributes))
+            //{
+            //    result = new Ph(attributes);
+            //}
+
             if (StructureAttributes.Clause.IsIn(attributes))
             {
                 result = new Clause(attributes);
             }
-            else if (StructureAttributes.Adverb.IsIn(attributes))
+            else if (StructureAttributes.AdverbElement.IsIn(attributes))
             {
                 result = new Adverb(attributes);
             }
-            else if (StructureAttributes.Adjective.IsIn(attributes))
+            else if (StructureAttributes.AdjectiveElement.IsIn(attributes))
             {
                 result = new AdjectiveElement(attributes);
             }
@@ -152,6 +185,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 result = new Verb(attributes);
             }
+
             else if (StructureAttributes.Object.Direct.IsIn(attributes))
             {
                 result = new DirectObject(attributes);
@@ -160,6 +194,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 result = new IndirectObject(attributes);
             }
+            else if (StructureAttributes.Object.ObjectOfPreposition.IsIn(attributes))
+            {
+                result = new Obj(attributes);
+            }
+
             else if (StructureAttributes.Complement.SubjectComplement.IsIn(attributes))
             {
                 result = new SubjectComplement(attributes);

@@ -8,9 +8,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Stru
         {
             Direct = new EnumValue(this);
             Indirect = new EnumValue(this);
+            ObjectOfPreposition = new EnumValue(this);
         }
 
         public EnumValue Direct { get; }
         public EnumValue Indirect { get; }
+
+        public EnumValue ObjectOfPreposition { get; }
     }
 }

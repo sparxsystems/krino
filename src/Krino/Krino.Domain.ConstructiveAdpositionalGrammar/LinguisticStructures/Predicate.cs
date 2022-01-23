@@ -11,9 +11,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         {
         }
 
-        public List<IPhrase> Terms { get; } = new List<IPhrase>();
+        public List<IPhrase> Phrases { get; } = new List<IPhrase>();
 
 
-        public string Value => string.Join(" ", Terms.Select(x => x.Value));
+        public string Value => string.Join(" ", Phrases.Select(x => x.Value));
     }
 }

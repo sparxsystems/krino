@@ -12,7 +12,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             }
             else if (parent is IPredicate predicate)
             {
-                predicate.Terms.Add((IPhrase)subStructure);
+                predicate.Phrases.Add((IPhrase)subStructure);
             }
             else if (parent is IClause clause)
             {

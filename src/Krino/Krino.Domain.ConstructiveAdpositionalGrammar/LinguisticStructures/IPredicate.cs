@@ -4,6 +4,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public interface IPredicate : ILinguisticStructure
     {
-        List<IPhrase> Terms { get; }
+        List<IPhrase> Phrases { get; }
     }
 }

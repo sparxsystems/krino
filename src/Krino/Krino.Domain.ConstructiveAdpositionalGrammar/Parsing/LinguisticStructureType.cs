@@ -6,11 +6,14 @@
 
         NonLexeme,
         Lexeme,
-        
-        Adverb,
+
+        NounElement,
+        AdjectiveElement,
         AttributiveAdjective,
         PredicativeAdjective,
+        AdverbElement,
 
+        PrepositionalPhrase,
 
         Subject,
 
@@ -18,10 +21,13 @@
         Verb,
         DirectObject,
         IndirectObject,
+        ObjectOfPreposition,
+
         SubjectComplement,
         ObjectComplement,
         AdjectiveComplement,
         AdverbialComplement,
+
 
         DeclarativeClause,
         InterrogativeClause,

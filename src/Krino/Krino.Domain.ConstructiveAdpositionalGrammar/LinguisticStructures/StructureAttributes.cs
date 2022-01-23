@@ -15,13 +15,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public static EnumValue NonLexeme { get; } = new EnumValue(Instance);
         public static EnumValue Lexeme { get; } = new EnumValue(Instance);
 
+        public static EnumValue NounElement { get; } = new EnumValue(Instance);
+        public static AdjectiveAttributes AdjectiveElement { get; } = new AdjectiveAttributes(Instance);
+        public static EnumValue AdverbElement { get; } = new EnumValue(Instance);
+
+        public static EnumValue PrepositionalPhrase { get; } = new EnumValue(Instance);
+
         public static EnumValue Subject { get; } = new EnumValue(Instance);
         public static EnumValue Predicate { get; } = new EnumValue(Instance);
         public static EnumValue Verb { get; } = new EnumValue(Instance);
 
 
-        public static EnumValue Adverb { get; } = new EnumValue(Instance);
-        public static AdjectiveAttributes Adjective { get; } = new AdjectiveAttributes(Instance);
         public static ObjectAttributes Object { get; } = new ObjectAttributes(Instance);
 
         public static ComplementAttributes Complement { get; } = new ComplementAttributes(Instance);

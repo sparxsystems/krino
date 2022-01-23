@@ -54,6 +54,8 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             AddNounElement(predicate, LinguisticStructureType.IndirectObject);
             AddNounElement(predicate, LinguisticStructureType.DirectObject);
+            AddObjectComplement(predicate, LinguisticStructureType.ObjectComplement);
+            AddAdverbialComplement(predicate, LinguisticStructureType.AdverbialComplement);
             
             //AddNounElement(predicate, LinguisticStructureType.AdverbialComplement, EnglishAttributes.E.Lexeme.Adverb | EnglishAttributes.E.Lexeme.Preposition);
 
@@ -64,15 +66,57 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             predicate.AddTransition(LinguisticStructureType.Verb, "final");
 
             predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.DirectObject);
+            predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.AdverbialComplement);
 
-            //predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.AdverbialComplement);
+            predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.ObjectComplement);
+            predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.AdverbialComplement);
             predicate.AddTransition(LinguisticStructureType.DirectObject, "final");
 
-            
+            predicate.AddTransition(LinguisticStructureType.ObjectComplement, "final");
 
-            //predicate.AddTransition(LinguisticStructureType.AdverbialComplement, "final");
+
+            predicate.AddTransition(LinguisticStructureType.AdverbialComplement, "final");
         }
 
+
+        private void AddObjectComplement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
+        {
+            var objectComplement = builder.AddSubState(objectType);
+
+            AddNounElement(objectComplement, LinguisticStructureType.NounElement);
+            AddAdjectiveElement(objectComplement, LinguisticStructureType.AdjectiveElement);
+
+            objectComplement.AddTransition("init", LinguisticStructureType.NounElement);
+            objectComplement.AddTransition("init", LinguisticStructureType.AdjectiveElement);
+            objectComplement.AddTransition(LinguisticStructureType.NounElement, "final");
+            objectComplement.AddTransition(LinguisticStructureType.AdjectiveElement, "final");
+        }
+
+
+        private void AddAdverbialComplement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
+        {
+            var adverbialComplement = builder.AddSubState(objectType);
+
+            AddPrepositionalPhrase(adverbialComplement, LinguisticStructureType.PrepositionalPhrase);
+            AddAdverbElement(adverbialComplement, LinguisticStructureType.AdverbElement);
+
+            adverbialComplement.AddTransition("init", LinguisticStructureType.PrepositionalPhrase);
+            adverbialComplement.AddTransition("init", LinguisticStructureType.AdverbElement);
+            adverbialComplement.AddTransition(LinguisticStructureType.PrepositionalPhrase, "final");
+            adverbialComplement.AddTransition(LinguisticStructureType.AdverbElement, "final");
+        }
+
+        private void AddPrepositionalPhrase(GrammarMachineBuilder builder, LinguisticStructureType objectType)
+        {
+            var objectOfPreposition = builder.AddSubState(objectType)
+                .AddLexemeStates("E");
+
+            AddNounElement(objectOfPreposition, LinguisticStructureType.ObjectOfPreposition);
+
+            objectOfPreposition.AddTransition("init", "E", EnglishAttributes.E.Lexeme.Postposition);
+            objectOfPreposition.AddTransition("E", LinguisticStructureType.ObjectOfPreposition);
+            objectOfPreposition.AddTransition(LinguisticStructureType.ObjectOfPreposition, "final");
+        }
 
         private void AddNounElement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
         {
@@ -107,15 +151,15 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var adjectiveBuilder = builder.AddSubState(objectType)
                 .AddLexemeStates("A", "U");
 
-            AddAdverbElement(adjectiveBuilder, LinguisticStructureType.Adverb);
+            AddAdverbElement(adjectiveBuilder, LinguisticStructureType.AdverbElement);
 
             adjectiveBuilder.AddTransition("init", "A", EnglishAttributes.A.Lexeme.Adjective)
-                .AddTransition("init", LinguisticStructureType.Adverb)
-                .AddTransition(LinguisticStructureType.Adverb, "A")
+                .AddTransition("init", LinguisticStructureType.AdverbElement)
+                .AddTransition(LinguisticStructureType.AdverbElement, "A")
                 .AddTransition("A", "U", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
                 .AddTransition("A", "final")
                 .AddTransition("U", "A", EnglishAttributes.A.Lexeme.Adjective)
-                .AddTransition("U", LinguisticStructureType.Adverb);
+                .AddTransition("U", LinguisticStructureType.AdverbElement);
         }
 
         private void AddAdverbElement(GrammarMachineBuilder builder, LinguisticStructureType objectType)
