@@ -11,6 +11,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public IWord Preposition { get; set; }
 
-        public IPhrase ObjectOfPreposition { get; set; }
+        public INounElement ObjectOfPreposition { get; set; }
     }
 }

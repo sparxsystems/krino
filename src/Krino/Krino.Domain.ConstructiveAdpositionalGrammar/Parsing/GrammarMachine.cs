@@ -3,6 +3,7 @@ using Krino.Vertical.Utils.StateMachines;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
@@ -40,6 +41,45 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         public GrammarMachine(MultiMachine<LinguisticState, IWord> grammarMachine)
         {
             myMachine = grammarMachine;
+        }
+
+        public string DebugView
+        {
+            get
+            {
+                var builder = new StringBuilder();
+
+                var activeStates = myMachine.GetActiveStates().ToList();
+                foreach (var activeState in activeStates)
+                {
+                    foreach (var item in activeState.Trace)
+                    {
+                        if (item.Definition.StateKind == StateKind.Initial)
+                        {
+                            builder.Append("(");
+                        }
+                        else if (item.Definition.StateKind == StateKind.Custom)
+                        {
+                            if (item.Definition.Value.Type == LinguisticStructureType.Lexeme)
+                            {
+                                builder.Append(item.ByTrigger.Value);
+                            }
+                            else
+                            {
+                                builder.Append(item.Definition.Value.Type);
+                            }
+                        }
+                        else if (item.Definition.StateKind == StateKind.Final)
+                        {
+                            builder.Append(")");
+                        }
+                    }
+
+                    builder.AppendLine();
+                }
+
+                return builder.ToString();
+            }
         }
 
 

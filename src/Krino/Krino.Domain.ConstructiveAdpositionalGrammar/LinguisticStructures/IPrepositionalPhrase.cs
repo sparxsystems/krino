@@ -4,6 +4,6 @@
     {
         IWord Preposition { get; set; }
 
-        IPhrase ObjectOfPreposition { get; set; }
+        INounElement ObjectOfPreposition { get; set; }
     }
 }

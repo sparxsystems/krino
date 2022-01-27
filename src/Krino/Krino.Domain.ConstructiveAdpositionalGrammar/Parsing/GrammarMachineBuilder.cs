@@ -84,10 +84,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
             var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
 
-            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
-            var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");
-
-            myMachine.AddTransition(fromToUse, toToUse);
+            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse);
+            if (fromToUse != null)
+            {
+                var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse);
+                if (toToUse != null)
+                {
+                    myMachine.AddTransition(fromToUse, toToUse);
+                }
+            }
+            
             return this;
         }
 
@@ -102,17 +108,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
             var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
 
-            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
-            var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");
-
-            foreach (var attribute in previousWordAttributes)
+            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse);
+            if (fromToUse != null)
             {
-                var traceRule = ParsingRule.PreviousWordContainsAttribute(attribute);
-                var triggerRule = ParsingRule.GetImmediateTrigger();
-                var transitionRule = new TransitionRule<LinguisticState, IWord>(traceRule, null, null, triggerRule);
+                var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse);
+                if (toToUse != null)
+                {
+                    foreach (var attribute in previousWordAttributes)
+                    {
+                        var traceRule = ParsingRule.PreviousWordContainsAttribute(attribute);
+                        var triggerRule = ParsingRule.GetImmediateTrigger();
+                        var transitionRule = new TransitionRule<LinguisticState, IWord>(traceRule, null, null, triggerRule);
 
-                myMachine.AddTransition(fromToUse, toToUse, transitionRule);
+                        myMachine.AddTransition(fromToUse, toToUse, transitionRule);
+                    }
+                }
             }
+            
             
             return this;
         }
@@ -129,13 +141,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
             var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
 
-            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
-            var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");
-
-            foreach (var trigger in triggers)
+            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse);
+            if (fromToUse != null)
             {
-                var triggerRule = ParsingRule.WordContainsAttribute(trigger);
-                myMachine.AddTransition(fromToUse, toToUse, triggerRule);
+                var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse);
+                if (toToUse != null)
+                {
+                    foreach (var trigger in triggers)
+                    {
+                        var triggerRule = ParsingRule.WordContainsAttribute(trigger);
+                        myMachine.AddTransition(fromToUse, toToUse, triggerRule);
+                    }
+                }
             }
 
             return this;
@@ -148,13 +165,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
             var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
 
-            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse) ?? throw new InvalidOperationException($"State '{fromIdToUse}' was not found.");
-            var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse) ?? throw new InvalidOperationException($"State '{toIdToUse}' was not found.");
-
-            foreach (var trigger in triggers)
+            var fromToUse = myMachine.States.FirstOrDefault(x => x.Id == fromIdToUse);
+            if (fromToUse != null)
             {
-                var triggerRule = ParsingRule.WordStringIs(trigger);
-                myMachine.AddTransition(fromToUse, toToUse, triggerRule);
+                var toToUse = myMachine.States.FirstOrDefault(x => x.Id == toIdToUse);
+                if (toToUse != null)
+                {
+                    foreach (var trigger in triggers)
+                    {
+                        var triggerRule = ParsingRule.WordStringIs(trigger);
+                        myMachine.AddTransition(fromToUse, toToUse, triggerRule);
+                    }
+                }
             }
 
             return this;
