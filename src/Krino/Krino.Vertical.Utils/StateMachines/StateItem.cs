@@ -1,4 +1,5 @@
 ﻿using System.Diagnostics;
+using System.Reflection;
 
 namespace Krino.Vertical.Utils.StateMachines
 {
@@ -44,6 +45,14 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public TTrigger UnhandledTrigger { get; set; }
 
-        private string DebugView => $"{Definition.Value}";
+        private string DebugView
+        {
+            get
+            {
+                var result = Definition.Value.GetType().GetProperty("DebugView", BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance)?.GetValue(Definition.Value, null) as string;
+                result ??= $"{Definition.Value}";
+                return result;
+            }
+        }
     }
 }

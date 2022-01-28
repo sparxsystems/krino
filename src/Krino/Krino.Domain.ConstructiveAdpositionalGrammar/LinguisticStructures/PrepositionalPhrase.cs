@@ -1,11 +1,12 @@
-﻿using System.Numerics;
+﻿using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     internal class PrepositionalPhrase : PhraseBase, IPrepositionalPhrase, IPhrase
     {
-        public PrepositionalPhrase(BigInteger attributes)
-            : base(attributes)
+        public PrepositionalPhrase(EnumRootBase enumRoot, BigInteger attributes)
+            : base(enumRoot, attributes)
         {
         }
 

@@ -16,7 +16,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         public void Value()
         {
             var adTree = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O), EnglishPattern.O_Lexeme_Noun);
-            var word = new Word(adTree);
+            var word = new Word(EnglishAttributes.Instance, adTree);
             Assert.AreEqual("book", word.Value);
 
 
@@ -28,7 +28,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
                 Left = new AdTree(new Morpheme(myAttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix), EnglishPattern.I_Suffix_ing),
             };
 
-            word = new Word(adTree);
+            word = new Word(EnglishAttributes.Instance, adTree);
             Assert.AreEqual("reading", word.Value);
         }
     }

@@ -8,7 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         {
             if (parent is IPhrase term)
             {
-                term.Words.Add((IWord)subStructure);
+                term.Items.Add((IPhraseItem)subStructure);
             }
             else if (parent is IPredicate predicate)
             {

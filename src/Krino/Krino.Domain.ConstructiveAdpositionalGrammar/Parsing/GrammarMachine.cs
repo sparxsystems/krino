@@ -50,28 +50,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 var builder = new StringBuilder();
 
                 var activeStates = myMachine.GetActiveStates().ToList();
-                foreach (var activeState in activeStates)
+                for (var i = 0; i < activeStates.Count; ++i)
                 {
+                    builder.Append(i).Append(" ");
+
+                    var activeState = activeStates[i];
+
                     foreach (var item in activeState.Trace)
                     {
-                        if (item.Definition.StateKind == StateKind.Initial)
+                        if (item.Definition.Parent != null)
                         {
-                            builder.Append("(");
-                        }
-                        else if (item.Definition.StateKind == StateKind.Custom)
-                        {
-                            if (item.Definition.Value.Type == LinguisticStructureType.Lexeme)
+                            if (item.Definition.StateKind == StateKind.Initial)
                             {
-                                builder.Append(item.ByTrigger.Value);
+                                if (builder.Length > 0 && (builder[builder.Length - 1] == ')' || builder[builder.Length - 1] == '\''))
+                                {
+                                    builder.Append(" ");
+                                }
+
+                                builder.Append(item.Definition.Parent.Type).Append("(");
                             }
-                            else
+                            else if (item.Definition.StateKind == StateKind.Custom && item.Definition.Value.Type == LinguisticStructureType.Lexeme)
                             {
-                                builder.Append(item.Definition.Value.Type);
+                                builder.Append("'").Append(item.ByTrigger.Value).Append("'");
                             }
-                        }
-                        else if (item.Definition.StateKind == StateKind.Final)
-                        {
-                            builder.Append(")");
+                            else if (item.Definition.StateKind == StateKind.Final)
+                            {
+                                builder.Append(")");
+                            }
                         }
                     }
 
@@ -101,11 +106,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             foreach (var activeState in relevantActiveStates)
             {
-                var text = new Text();
+                var text = new Text(StructureAttributes.Instance);
 
                 var stack = new Stack<ILinguisticStructure>();
                 
-                var sentence = new Sentence(0);
+                var sentence = new Sentence(StructureAttributes.Instance, 0);
                 stack.Push(sentence);
 
                 foreach (var state in activeState.Trace)

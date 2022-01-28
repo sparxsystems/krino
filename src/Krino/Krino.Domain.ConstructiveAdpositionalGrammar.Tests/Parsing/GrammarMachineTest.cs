@@ -21,10 +21,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void GetTexts_I_read_the_book()
         {
-            var i = new Word(new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var read = new Word(new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent ), new Pattern()));
-            var the = new Word(new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var book = new Word(new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+            var read = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent ), new Pattern()));
+            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
 
 
             var english = new EnglishMachine().Machine;
@@ -42,11 +42,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void GetTexts_I_give_him_a_book()
         {
-            var i = new Word(new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var give = new Word(new AdTree(new Morpheme(myAttributesModel, "give", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
-            var him = new Word(new AdTree(new Morpheme(myAttributesModel, "him", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var a = new Word(new AdTree(new Morpheme(myAttributesModel, "a", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var book = new Word(new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+            var give = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "give", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
+            var him = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "him", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+            var a = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "a", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
 
 
             var english = new EnglishMachine().Machine;
@@ -65,12 +65,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [Test]
         public void GetTexts_I_read_the_book_in_the_room()
         {
-            var i = new Word(new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var read = new Word(new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), new Pattern()));
-            var the = new Word(new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var book = new Word(new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
-            var in_ = new Word(new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition), new Pattern()));
-            var room = new Word(new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+            var read = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), new Pattern()));
+            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+            var in_ = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition), new Pattern()));
+            var room = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
 
 
             var english = new EnglishMachine().Machine;
@@ -80,10 +80,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(read);
             grammar.Add(the);
             grammar.Add(book);
-            var kk = grammar.DebugView;
             grammar.Add(in_);
             grammar.Add(the);
             grammar.Add(room);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+        [Test]
+        public void GetTexts_The_book_is_green()
+        {
+            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+            var is_ = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
+            var green = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            grammar.Add(the);
+            grammar.Add(book);
+            grammar.Add(is_);
+            grammar.Add(green);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);

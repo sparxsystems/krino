@@ -162,7 +162,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             AddNounElement(objectOfPreposition, LinguisticStructureType.ObjectOfPreposition, recursion);
 
-            objectOfPreposition.AddTransition("init", "E", EnglishAttributes.E.Lexeme.Postposition);
+            objectOfPreposition.AddTransition("init", "E", EnglishAttributes.E.Lexeme.Preposition);
             objectOfPreposition.AddTransition("E", LinguisticStructureType.ObjectOfPreposition);
             objectOfPreposition.AddTransition(LinguisticStructureType.ObjectOfPreposition, "final");
         }
@@ -222,12 +222,12 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var adverbElement = builder.AddSubState(objectType)
                 .AddLexemeStates("E");
 
-            AddPrepositionalPhrase(adverbElement, LinguisticStructureType.PrepositionalPhrase, recursion);
+            //AddPrepositionalPhrase(adverbElement, LinguisticStructureType.PrepositionalPhrase, recursion);
 
             adverbElement.AddTransition("init", "E", EnglishAttributes.E.Lexeme.Adverb)
-                .AddTransition("init", LinguisticStructureType.PrepositionalPhrase)
-                .AddTransition("E", "final")
-                .AddTransition(LinguisticStructureType.PrepositionalPhrase, "final");
+                //.AddTransition("init", LinguisticStructureType.PrepositionalPhrase)
+                .AddTransition("E", "final");
+                //.AddTransition(LinguisticStructureType.PrepositionalPhrase, "final");
         }
     }
 }

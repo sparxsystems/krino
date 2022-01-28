@@ -1,11 +1,12 @@
-﻿using System.Numerics;
+﻿using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     internal class Clause : LinguisticStructureBase, IClause
     {
-        public Clause(BigInteger attributes)
-            : base(attributes)
+        public Clause(EnumRootBase enumRoot, BigInteger attributes)
+            : base(enumRoot, attributes)
         {
         }
 

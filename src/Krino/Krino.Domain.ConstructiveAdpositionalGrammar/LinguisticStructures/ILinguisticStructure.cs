@@ -6,6 +6,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
     {
         BigInteger Attributes { get; }
 
+        string AttributesStr { get; }
+
         string Value { get; }
     }
 }

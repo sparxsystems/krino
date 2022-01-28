@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    public interface IWord : ILinguisticStructure
+    public interface IWord : IPhraseItem, ILinguisticStructure
     {
         /// <summary>
         /// One lexeme and non-lexemes the word consists of.

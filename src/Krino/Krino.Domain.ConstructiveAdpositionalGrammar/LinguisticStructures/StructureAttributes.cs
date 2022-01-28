@@ -10,7 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         /// </summary>
         private StructureAttributes() { }
 
-        private static StructureAttributes Instance { get; } = new StructureAttributes();
+        public static StructureAttributes Instance { get; } = new StructureAttributes();
 
         public static EnumValue NonLexeme { get; } = new EnumValue(Instance);
         public static EnumValue Lexeme { get; } = new EnumValue(Instance);

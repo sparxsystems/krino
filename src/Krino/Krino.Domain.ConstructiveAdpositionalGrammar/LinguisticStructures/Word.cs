@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+using Krino.Vertical.Utils.Enums;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -9,8 +10,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
     {
         private IAdTree myWord;
 
-        public Word(IAdTree word)
-            : base(word.Morpheme.Attributes)
+        public Word(EnumRootBase enumRoot, IAdTree word)
+            : base(enumRoot, word.Morpheme.Attributes)
         {
             myWord = word;
         }

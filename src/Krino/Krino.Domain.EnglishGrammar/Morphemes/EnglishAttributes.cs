@@ -15,7 +15,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes
         /// </summary>
         private EnglishAttributes() { }
 
-        private static EnglishAttributes Instance { get; } = new EnglishAttributes();
+        public static EnglishAttributes Instance { get; } = new EnglishAttributes();
 
         /// <summary>
         /// Stative

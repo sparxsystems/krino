@@ -2,8 +2,8 @@
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    public interface IPhrase : ILinguisticStructure
+    public interface IPhrase : IPhraseItem, ILinguisticStructure
     {
-        List<IWord> Words { get; }
+        List<IPhraseItem> Items { get; }
     }
 }

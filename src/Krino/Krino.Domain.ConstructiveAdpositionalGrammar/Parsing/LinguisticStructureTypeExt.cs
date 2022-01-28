@@ -161,15 +161,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             // Elements
             if (StructureAttributes.NounElement.IsIn(attributes))
             {
-                result = new NounElement(attributes);
+                result = new NounElement(StructureAttributes.Instance, attributes);
             }
             else if (StructureAttributes.AdjectiveElement.IsIn(attributes))
             {
-                result = new AdjectiveElement(attributes);
+                result = new AdjectiveElement(StructureAttributes.Instance, attributes);
             }
             else if (StructureAttributes.AdverbElement.IsIn(attributes))
             {
-                result = new AdverbElement(attributes);
+                result = new AdverbElement(StructureAttributes.Instance, attributes);
             }
 
             // Objects
@@ -177,7 +177,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                      StructureAttributes.Object.Indirect.IsIn(attributes) ||
                      StructureAttributes.Object.ObjectOfPreposition.IsIn(attributes))
             {
-                result = new Objectt(attributes);
+                result = new Objectt(StructureAttributes.Instance, attributes);
             }
 
             // Complements
@@ -186,35 +186,35 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                      StructureAttributes.Complement.AdjectiveComplement.IsIn(attributes) ||
                      StructureAttributes.Complement.AdverbialComplement.IsIn(attributes))
             {
-                result = new Complement(attributes);
+                result = new Complement(StructureAttributes.Instance, attributes);
             }
 
             // Phrases
             else if (StructureAttributes.PrepositionalPhrase.IsIn(attributes))
             {
-                result = new PrepositionalPhrase(attributes);
+                result = new PrepositionalPhrase(StructureAttributes.Instance, attributes);
             }
 
 
             else if (StructureAttributes.Subject.IsIn(attributes))
             {
-                result = new Subject(attributes);
+                result = new Subject(StructureAttributes.Instance, attributes);
             }
             else if (StructureAttributes.Verb.IsIn(attributes))
             {
-                result = new Verb(attributes);
+                result = new Verb(StructureAttributes.Instance, attributes);
             }
 
 
             else if (StructureAttributes.Predicate.IsIn(attributes))
             {
-                result = new Predicate(attributes);
+                result = new Predicate(StructureAttributes.Instance, attributes);
             }
             
 
             else if (StructureAttributes.Clause.IsIn(attributes))
             {
-                result = new Clause(attributes);
+                result = new Clause(StructureAttributes.Instance, attributes);
             }
 
 
