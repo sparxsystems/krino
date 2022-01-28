@@ -99,8 +99,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             var result = new List<IText>();
 
-            var comparer = new StateTraceComparer();
-            var relevantActiveStates = myMachine.GetActiveStates().Distinct(comparer);
+            //var comparer = new StateTraceComparer();
+            var relevantActiveStates = myMachine.GetActiveStates();
 
             //var kk = relevantActiveStates.Select(x => string.Join(" -> ", x.GetPathToRoot().Reverse().Select(y => y.Value.Definition.Value.Id)));
 
@@ -138,9 +138,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     }
                 }
 
-                text.Sentences.Add(sentence);
-
-                result.Add(text);
+                // If completed.
+                if (stack.Count == 1)
+                {
+                    text.Sentences.Add(sentence);
+                    result.Add(text);
+                }
             }
 
 

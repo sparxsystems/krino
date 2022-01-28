@@ -94,7 +94,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
             var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
             var is_ = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
-            var green = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+            var green = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
 
 
             var english = new EnglishMachine().Machine;
@@ -104,6 +104,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(book);
             grammar.Add(is_);
             grammar.Add(green);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+        [Test]
+        public void GetTexts_The_green_book_is_on_the_table()
+        {
+            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+            var green = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
+            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+            var is_ = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
+            var on = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "on", EnglishAttributes.E.Lexeme.Preposition), new Pattern()));
+            var table = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "table", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            grammar.Add(the);
+            grammar.Add(green);
+            grammar.Add(book);
+            grammar.Add(is_);
+            grammar.Add(on);
+            grammar.Add(the);
+            grammar.Add(table);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);

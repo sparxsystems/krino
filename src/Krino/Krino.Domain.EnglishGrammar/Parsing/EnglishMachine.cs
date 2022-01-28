@@ -75,7 +75,6 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             predicate.AddTransition(LinguisticStructureType.Verb, "final");
 
             predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.DirectObject);
-            predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.AdverbialComplement);
 
             predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.ObjectComplement);
             predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.AdverbialComplement);
@@ -99,15 +98,15 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             if (--recursion == 0) return;
 
-            var objectComplement = builder.AddSubState(objectType);
+            var subjectComplement = builder.AddSubState(objectType);
 
-            AddNounElement(objectComplement, LinguisticStructureType.NounElement, recursion);
-            AddAdjectiveElement(objectComplement, LinguisticStructureType.AdjectiveElement, recursion);
+            AddNounElement(subjectComplement, LinguisticStructureType.NounElement, recursion);
+            AddAdjectiveElement(subjectComplement, LinguisticStructureType.AdjectiveElement, recursion);
 
-            objectComplement.AddTransition("init", LinguisticStructureType.NounElement);
-            objectComplement.AddTransition("init", LinguisticStructureType.AdjectiveElement);
-            objectComplement.AddTransition(LinguisticStructureType.NounElement, "final");
-            objectComplement.AddTransition(LinguisticStructureType.AdjectiveElement, "final");
+            subjectComplement.AddTransition("init", LinguisticStructureType.NounElement);
+            subjectComplement.AddTransition("init", LinguisticStructureType.AdjectiveElement);
+            subjectComplement.AddTransition(LinguisticStructureType.NounElement, "final");
+            subjectComplement.AddTransition(LinguisticStructureType.AdjectiveElement, "final");
         }
 
         private void AddObjectComplement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
@@ -184,6 +183,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
                 .AddTransition(LinguisticStructureType.AttributiveAdjective, "Noun", EnglishAttributes.O.Lexeme.Noun)
 
+                .AddTransition("Determiner", LinguisticStructureType.AttributiveAdjective)
                 .AddTransition("Determiner", "Noun", EnglishAttributes.O.Lexeme.Noun)
 
                 .AddTransition("Pronoun", "U", EnglishAttributes.U.Lexeme.Conjunction.Coordinating)
