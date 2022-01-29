@@ -20,6 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public static EnumValue AdverbElement { get; } = new EnumValue(Instance);
 
         public static EnumValue PrepositionalPhrase { get; } = new EnumValue(Instance);
+        public static EnumValue InfinitivePhrase { get; } = new EnumValue(Instance);
 
         public static EnumValue Subject { get; } = new EnumValue(Instance);
         public static EnumValue Predicate { get; } = new EnumValue(Instance);

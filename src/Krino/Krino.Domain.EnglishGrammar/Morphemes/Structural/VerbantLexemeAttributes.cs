@@ -1,7 +1,4 @@
 ﻿using Krino.Vertical.Utils.Enums;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
 {

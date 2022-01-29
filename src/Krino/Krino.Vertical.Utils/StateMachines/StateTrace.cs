@@ -15,6 +15,28 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public int Count => myPath.Count;
 
+        public bool IsCompleted
+        {
+            get
+            {
+                var countOfOpenStates = 0;
+
+                foreach (var item in myPath)
+                {
+                    if (item.Definition.StateKind == StateKind.Initial)
+                    {
+                        ++countOfOpenStates;
+                    }
+                    else if (item.Definition.StateKind == StateKind.Final)
+                    {
+                        --countOfOpenStates;
+                    }
+                }
+
+                return countOfOpenStates == 0;
+            }
+        }
+
         public IReadOnlyList<StateItem<TState, TTrigger>> Trace => myPath;
     }
 }

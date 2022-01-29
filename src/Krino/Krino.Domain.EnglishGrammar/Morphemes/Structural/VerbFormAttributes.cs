@@ -7,10 +7,11 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         public VerbFormAttributes(EnumGroupBase parent) : base(parent)
         {
             Base = new EnumValue(this);
-            ThirdPersonSingular = new EnumValue(this);
-            PresentParticiple = new EnumValue(this);
             Past = new EnumValue(this);
             PastParticiple = new EnumValue(this);
+
+            ThirdPersonSingular = new EnumValue(this);
+            PresentParticiple = new EnumValue(this);
             Gerund = new EnumValue(this);
         }
 
@@ -19,6 +20,18 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         /// (First form of the verb.)
         /// </summary>
         public EnumValue Base { get; }
+
+        /// <summary>
+        /// Past form of a verb.
+        /// (Second form of the verb.)
+        /// </summary>
+        public EnumBase Past { get; }
+
+        /// <summary>
+        /// A verb form which is used in forming perfect and passive tenses and sometimes as an adjective.
+        /// (Third form of the verb.)
+        /// </summary>
+        public EnumValue PastParticiple { get; }
 
         /// <summary>
         /// Third person singular form of a verb..
@@ -34,18 +47,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         /// It’s used in the past, present, and future progressive verb tenses. 
         /// </remarks>
         public EnumValue PresentParticiple { get; }
-
-        /// <summary>
-        /// Past form of a verb.
-        /// (Second form of the verb.)
-        /// </summary>
-        public EnumBase Past { get; }
-
-        /// <summary>
-        /// A verb form which is used in forming perfect and passive tenses and sometimes as an adjective.
-        /// (Third form of the verb.)
-        /// </summary>
-        public EnumValue PastParticiple { get; }
+        
 
         /// <summary>
         /// A verb form which acts as a noun. In English ending with -ing.

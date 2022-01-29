@@ -1,9 +1,10 @@
-﻿using System.Diagnostics;
+﻿using System;
+using System.Diagnostics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
     [DebuggerDisplay("{DebugView}")]
-    public class LinguisticState
+    public class LinguisticState : IEquatable<LinguisticState>
     {
         public LinguisticState(string id, LinguisticStructureType type)
         {
@@ -15,5 +16,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         public LinguisticStructureType Type { get; private set; }
 
         private string DebugView => $"{Id}: {Type}";
+
+        public bool Equals(LinguisticState other) => Id == other.Id;
+
+        public override bool Equals(object obj) => obj is LinguisticState other && Equals(other);
+
+        public override int GetHashCode() => Id.GetHashCode();
     }
 }

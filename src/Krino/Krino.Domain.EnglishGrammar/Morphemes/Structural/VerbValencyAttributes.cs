@@ -8,7 +8,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         public VerbValencyAttributes(EnumGroupBase parent) : base(parent)
         {
             Avalent = new EnumValue(this);
-            Monovalent = new EnumValue(this);
+            Monovalent = new MonoValentVerbAttributes(this);
             Bivalent = new EnumValue(this);
             Trivalent = new EnumValue(this);
             Quadrivalent = new EnumValue(this);
@@ -21,22 +21,22 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         public EnumValue Avalent { get; }
 
         /// <summary>
-        /// Valency 1.
+        /// Valency 1. (intransitive)
         /// </summary>
-        public EnumValue Monovalent { get; }
+        public MonoValentVerbAttributes Monovalent { get; }
 
         /// <summary>
-        /// Valency 2.
+        /// Valency 2. (monotransitive)
         /// </summary>
         public EnumValue Bivalent { get; }
 
         /// <summary>
-        /// Valency 3.
+        /// Valency 3. (ditransitive)
         /// </summary>
         public EnumValue Trivalent { get; }
 
         /// <summary>
-        /// Valency 4.
+        /// Valency 4. (tritransitive)
         /// </summary>
         public EnumValue Quadrivalent { get; }
 

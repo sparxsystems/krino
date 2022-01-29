@@ -50,6 +50,9 @@ namespace Krino.Vertical.Utils.StateMachines
             return result;
         }
 
+        public bool ContainsState(TState state) => myGraph.ContainsVertex(state);
+
+        public bool TryGetStateDefinition(TState state, out StateDefinition<TState> result) => myStates.TryGetValue(state, out result);
 
         public void AddInitialState(TState state) => AddState(state, StateKind.Initial);
 

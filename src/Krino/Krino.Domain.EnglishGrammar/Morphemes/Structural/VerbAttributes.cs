@@ -16,8 +16,7 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
             Stative = new StativeVerbAttributes(this);
             Action = new ActiveVerbAttributes(this);
             Auxiliary = new EnumValue(this);
-            Unergative = new EnumValue(this);
-            Unaccusative = new EnumValue(this);
+            InfinitiveMarker = new EnumValue(this);
             Form = new VerbFormAttributes(this);
             Valency = new VerbValencyAttributes(this);
             Sememe = new VerbSememes(this);
@@ -57,14 +56,9 @@ namespace Krino.Domain.EnglishGrammar.Morphemes.Structural
         public EnumValue Auxiliary { get; }
 
         /// <summary>
-        /// If stative does the verbant.
+        /// 'to' which marks the infinitive.
         /// </summary>
-        public EnumValue Unergative { get; }
-
-        /// <summary>
-        /// Verbant happens to the actant.
-        /// </summary>
-        public EnumValue Unaccusative { get; }
+        public EnumValue InfinitiveMarker { get; }
 
         /// <summary>
         /// Form of the verb.

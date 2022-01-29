@@ -5,6 +5,7 @@ using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishGrammar.Morphemes;
 using Krino.Domain.EnglishGrammar.Parsing;
+using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System;
 using System.Collections.Generic;
@@ -129,6 +130,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(on);
             grammar.Add(the);
             grammar.Add(table);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+
+        [Test]
+        public void GetTexts_I_am_tired_to_read()
+        {
+            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+            var am = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "am", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
+            var tired = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "tired", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
+            var to = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "to", EnglishAttributes.I.Lexeme.Verb.InfinitiveMarker), new Pattern()));
+            var read = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
+
+
+            //Trace.StartProfiler();
+            var english = new EnglishMachine().Machine;
+            //Trace.StopProfiler();
+
+            var grammar = new GrammarMachine(english);
+
+            grammar.Add(i);
+            grammar.Add(am);
+            grammar.Add(tired);
+            grammar.Add(to);
+            grammar.Add(read);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);

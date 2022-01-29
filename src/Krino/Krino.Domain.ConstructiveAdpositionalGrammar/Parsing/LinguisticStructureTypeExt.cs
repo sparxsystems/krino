@@ -85,6 +85,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         result = StructureAttributes.PrepositionalPhrase;
                         break;
                     }
+                case LinguisticStructureType.InfinitivePhrase:
+                    {
+                        result = StructureAttributes.InfinitivePhrase;
+                        break;
+                    }
 
 
                 case LinguisticStructureType.Subject:
@@ -193,6 +198,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             else if (StructureAttributes.PrepositionalPhrase.IsIn(attributes))
             {
                 result = new PrepositionalPhrase(StructureAttributes.Instance, attributes);
+            }
+            else if (StructureAttributes.InfinitivePhrase.IsIn(attributes))
+            {
+                result = new InfinitivePhrase(StructureAttributes.Instance, attributes);
             }
 
 

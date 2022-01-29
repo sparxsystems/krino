@@ -9,33 +9,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
     public class GrammarMachine
     {
-        private class StateTraceComparer : IEqualityComparer<StateTrace<LinguisticState, IWord>>
-        {
-            public bool Equals(StateTrace<LinguisticState, IWord> x, StateTrace<LinguisticState, IWord> y)
-            {
-                var xPath = GetRelevantPath(x.Trace).Select(x => x.Definition.Value.Id);
-                var yPath = GetRelevantPath(y.Trace).Select(x => x.Definition.Value.Id);
-                var result = xPath.SequenceEqual(yPath);
-                return result;
-            }
-
-            public int GetHashCode(StateTrace<LinguisticState, IWord> obj)
-            {
-                int hash = 486187739;
-
-                var path = GetRelevantPath(obj.Trace).Select(x => x.Definition.Value.Id);
-                foreach (var state in path)
-                {
-                    hash = (hash * 16777619) ^ state.GetHashCode();
-                }
-
-                return hash;
-            }
-
-            private IEnumerable<StateItem<LinguisticState, IWord>> GetRelevantPath(IEnumerable<StateItem<LinguisticState, IWord>> o)
-                => o.Where(x => x.Definition.StateKind != StateKind.Initial && x.Definition.StateKind != StateKind.Final);
-        }
-
         private MultiMachine<LinguisticState, IWord> myMachine;
 
         public GrammarMachine(MultiMachine<LinguisticState, IWord> grammarMachine)
@@ -99,8 +72,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             var result = new List<IText>();
 
-            //var comparer = new StateTraceComparer();
-            var relevantActiveStates = myMachine.GetActiveStates();
+            var relevantActiveStates = myMachine.GetActiveStates().Where(x => x.IsCompleted);
 
             //var kk = relevantActiveStates.Select(x => string.Join(" -> ", x.GetPathToRoot().Reverse().Select(y => y.Value.Definition.Value.Id)));
 
@@ -138,12 +110,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     }
                 }
 
-                // If completed.
-                if (stack.Count == 1)
-                {
-                    text.Sentences.Add(sentence);
-                    result.Add(text);
-                }
+                text.Sentences.Add(sentence);
+                result.Add(text);
             }
 
 

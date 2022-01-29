@@ -27,6 +27,7 @@
 
         // Phrases
         PrepositionalPhrase,
+        InfinitivePhrase,
 
         Subject,
         Verb,
