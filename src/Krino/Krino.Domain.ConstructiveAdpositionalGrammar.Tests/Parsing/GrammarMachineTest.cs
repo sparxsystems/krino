@@ -17,149 +17,149 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     [TestFixture]
     public class GrammarMachineTest
     {
-        private IAttributesModel myAttributesModel = new EnglishAttributesModel();
+        //private IAttributesModel myAttributesModel = new EnglishAttributesModel();
 
-        [Test]
-        public void GetTexts_I_read_the_book()
-        {
-            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var read = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent ), new Pattern()));
-            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
-
-
-            var english = new EnglishMachine().Machine;
-            var grammar = new GrammarMachine(english);
-
-            grammar.Add(i);
-            grammar.Add(read);
-            grammar.Add(the);
-            grammar.Add(book);
-
-            var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-        }
-
-        [Test]
-        public void GetTexts_I_give_him_a_book()
-        {
-            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var give = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "give", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
-            var him = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "him", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var a = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "a", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+        //[Test]
+        //public void GetTexts_I_read_the_book()
+        //{
+        //    var i = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+        //    var read = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent ), new Pattern()));
+        //    var the = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+        //    var book = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
 
 
-            var english = new EnglishMachine().Machine;
-            var grammar = new GrammarMachine(english);
+        //    var english = new EnglishMachine().Machine;
+        //    var grammar = new GrammarMachine(english);
 
-            grammar.Add(i);
-            grammar.Add(give);
-            grammar.Add(him);
-            grammar.Add(a);
-            grammar.Add(book);
+        //    grammar.Add(i);
+        //    grammar.Add(read);
+        //    grammar.Add(the);
+        //    grammar.Add(book);
 
-            var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-        }
+        //    var texts = grammar.GetTexts().ToList();
+        //    Assert.AreEqual(1, texts.Count);
+        //}
 
-        [Test]
-        public void GetTexts_I_read_the_book_in_the_room()
-        {
-            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var read = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), new Pattern()));
-            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
-            var in_ = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition), new Pattern()));
-            var room = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+        //[Test]
+        //public void GetTexts_I_give_him_a_book()
+        //{
+        //    var i = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+        //    var give = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "give", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
+        //    var him = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "him", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+        //    var a = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "a", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+        //    var book = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
 
 
-            var english = new EnglishMachine().Machine;
-            var grammar = new GrammarMachine(english);
+        //    var english = new EnglishMachine().Machine;
+        //    var grammar = new GrammarMachine(english);
 
-            grammar.Add(i);
-            grammar.Add(read);
-            grammar.Add(the);
-            grammar.Add(book);
-            grammar.Add(in_);
-            grammar.Add(the);
-            grammar.Add(room);
+        //    grammar.Add(i);
+        //    grammar.Add(give);
+        //    grammar.Add(him);
+        //    grammar.Add(a);
+        //    grammar.Add(book);
 
-            var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-        }
+        //    var texts = grammar.GetTexts().ToList();
+        //    Assert.AreEqual(1, texts.Count);
+        //}
 
-        [Test]
-        public void GetTexts_The_book_is_green()
-        {
-            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
-            var is_ = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
-            var green = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
-
-
-            var english = new EnglishMachine().Machine;
-            var grammar = new GrammarMachine(english);
-
-            grammar.Add(the);
-            grammar.Add(book);
-            grammar.Add(is_);
-            grammar.Add(green);
-
-            var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-        }
-
-        [Test]
-        public void GetTexts_The_green_book_is_on_the_table()
-        {
-            var the = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
-            var green = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
-            var book = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
-            var is_ = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
-            var on = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "on", EnglishAttributes.E.Lexeme.Preposition), new Pattern()));
-            var table = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "table", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
-
-            var english = new EnglishMachine().Machine;
-            var grammar = new GrammarMachine(english);
-
-            grammar.Add(the);
-            grammar.Add(green);
-            grammar.Add(book);
-            grammar.Add(is_);
-            grammar.Add(on);
-            grammar.Add(the);
-            grammar.Add(table);
-
-            var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-        }
+        //[Test]
+        //public void GetTexts_I_read_the_book_in_the_room()
+        //{
+        //    var i = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+        //    var read = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent), new Pattern()));
+        //    var the = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+        //    var book = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+        //    var in_ = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition), new Pattern()));
+        //    var room = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
 
 
-        [Test]
-        public void GetTexts_I_am_tired_to_read()
-        {
-            var i = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
-            var am = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "am", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
-            var tired = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "tired", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
-            var to = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "to", EnglishAttributes.I.Lexeme.Verb.InfinitiveMarker), new Pattern()));
-            var read = new Word(EnglishAttributes.Instance, new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
+        //    var english = new EnglishMachine().Machine;
+        //    var grammar = new GrammarMachine(english);
+
+        //    grammar.Add(i);
+        //    grammar.Add(read);
+        //    grammar.Add(the);
+        //    grammar.Add(book);
+        //    grammar.Add(in_);
+        //    grammar.Add(the);
+        //    grammar.Add(room);
+
+        //    var texts = grammar.GetTexts().ToList();
+        //    Assert.AreEqual(1, texts.Count);
+        //}
+
+        //[Test]
+        //public void GetTexts_The_book_is_green()
+        //{
+        //    var the = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+        //    var book = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+        //    var is_ = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
+        //    var green = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
 
 
-            //Trace.StartProfiler();
-            var english = new EnglishMachine().Machine;
-            //Trace.StopProfiler();
+        //    var english = new EnglishMachine().Machine;
+        //    var grammar = new GrammarMachine(english);
 
-            var grammar = new GrammarMachine(english);
+        //    grammar.Add(the);
+        //    grammar.Add(book);
+        //    grammar.Add(is_);
+        //    grammar.Add(green);
 
-            grammar.Add(i);
-            grammar.Add(am);
-            grammar.Add(tired);
-            grammar.Add(to);
-            grammar.Add(read);
+        //    var texts = grammar.GetTexts().ToList();
+        //    Assert.AreEqual(1, texts.Count);
+        //}
 
-            var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-        }
+        //[Test]
+        //public void GetTexts_The_green_book_is_on_the_table()
+        //{
+        //    var the = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner), new Pattern()));
+        //    var green = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "green", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
+        //    var book = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+        //    var is_ = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
+        //    var on = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "on", EnglishAttributes.E.Lexeme.Preposition), new Pattern()));
+        //    var table = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "table", EnglishAttributes.O.Lexeme.Noun), new Pattern()));
+
+        //    var english = new EnglishMachine().Machine;
+        //    var grammar = new GrammarMachine(english);
+
+        //    grammar.Add(the);
+        //    grammar.Add(green);
+        //    grammar.Add(book);
+        //    grammar.Add(is_);
+        //    grammar.Add(on);
+        //    grammar.Add(the);
+        //    grammar.Add(table);
+
+        //    var texts = grammar.GetTexts().ToList();
+        //    Assert.AreEqual(1, texts.Count);
+        //}
+
+
+        //[Test]
+        //public void GetTexts_I_am_tired_to_read()
+        //{
+        //    var i = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun), new Pattern()));
+        //    var am = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "am", EnglishAttributes.I.Lexeme.Verb.Stative.Linking), new Pattern()));
+        //    var tired = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "tired", EnglishAttributes.A.Lexeme.Adjective), new Pattern()));
+        //    var to = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "to", EnglishAttributes.I.Lexeme.Verb.InfinitiveMarker), new Pattern()));
+        //    var read = new Word(EnglishAttributes.Instance, new AdTree(new ConstructiveAdpositionalGrammar.Morphemes.Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Trivalent), new Pattern()));
+
+
+        //    //Trace.StartProfiler();
+        //    var english = new EnglishMachine().Machine;
+        //    //Trace.StopProfiler();
+
+        //    var grammar = new GrammarMachine(english);
+
+        //    grammar.Add(i);
+        //    grammar.Add(am);
+        //    grammar.Add(tired);
+        //    grammar.Add(to);
+        //    grammar.Add(read);
+
+        //    var texts = grammar.GetTexts().ToList();
+        //    Assert.AreEqual(1, texts.Count);
+        //}
     }
 }

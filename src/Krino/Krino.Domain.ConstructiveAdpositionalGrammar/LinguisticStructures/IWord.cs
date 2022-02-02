@@ -1,13 +1,13 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public interface IWord : IPhraseItem, ILinguisticStructure
     {
-        /// <summary>
-        /// One lexeme and non-lexemes the word consists of.
-        /// </summary>
-        IEnumerable<Morpheme> Morphemes { get; }
+        List<IMorpheme> Prefixes { get; }
+
+        IMorpheme Root { get; set; }
+
+        List<IMorpheme> Suffixes { get; }
     }
 }

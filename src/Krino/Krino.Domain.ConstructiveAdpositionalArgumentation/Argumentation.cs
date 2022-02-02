@@ -7,7 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalArgumentation
 {
     public class Argumentation : IArgumentation
     {
-        public bool IsArgument(ISentence sentence) => StructureAttributes.Sentence.Complex.Argument.IsIn(sentence.Attributes);
+        public bool IsArgument(ISentence sentence) => RootAttributes.Sentence.Complex.Argument.IsIn(sentence.Attributes);
 
 
         public ArgumentEvaluationResult Evaluate(ISentence argument)

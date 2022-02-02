@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using System;
 using System.Numerics;
 
@@ -15,66 +16,66 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 // Elements
                 case LinguisticStructureType.NounElement:
                     {
-                        result = StructureAttributes.NounElement;
+                        result = GrammarAttributes.NounElement;
                         break;
                     }
                 case LinguisticStructureType.AdjectiveElement:
                     {
-                        result = StructureAttributes.AdjectiveElement;
+                        result = GrammarAttributes.AdjectiveElement;
                         break;
                     }
                 case LinguisticStructureType.AttributiveAdjective:
                     {
-                        result = StructureAttributes.AdjectiveElement.Attributive;
+                        result = GrammarAttributes.AdjectiveElement.Attributive;
                         break;
                     }
                 case LinguisticStructureType.PredicativeAdjective:
                     {
-                        result = StructureAttributes.AdjectiveElement.Predicative;
+                        result = GrammarAttributes.AdjectiveElement.Predicative;
                         break;
                     }
                 case LinguisticStructureType.AdverbElement:
                     {
-                        result = StructureAttributes.AdverbElement;
+                        result = GrammarAttributes.AdverbElement;
                         break;
                     }
 
                 // Objects
                 case LinguisticStructureType.DirectObject:
                     {
-                        result = StructureAttributes.Object.Direct;
+                        result = GrammarAttributes.Object.Direct;
                         break;
                     }
                 case LinguisticStructureType.IndirectObject:
                     {
-                        result = StructureAttributes.Object.Indirect;
+                        result = GrammarAttributes.Object.Indirect;
                         break;
                     }
                 case LinguisticStructureType.ObjectOfPreposition:
                     {
-                        result = StructureAttributes.Object.ObjectOfPreposition;
+                        result = GrammarAttributes.Object.ObjectOfPreposition;
                         break;
                     }
 
                 // Complements
                 case LinguisticStructureType.SubjectComplement:
                     {
-                        result = StructureAttributes.Complement.SubjectComplement;
+                        result = GrammarAttributes.Complement.SubjectComplement;
                         break;
                     }
                 case LinguisticStructureType.ObjectComplement:
                     {
-                        result = StructureAttributes.Complement.ObjectComplement;
+                        result = GrammarAttributes.Complement.ObjectComplement;
                         break;
                     }
                 case LinguisticStructureType.AdjectiveComplement:
                     {
-                        result = StructureAttributes.Complement.AdjectiveComplement;
+                        result = GrammarAttributes.Complement.AdjectiveComplement;
                         break;
                     }
                 case LinguisticStructureType.AdverbialComplement:
                     {
-                        result = StructureAttributes.Complement.AdverbialComplement;
+                        result = GrammarAttributes.Complement.AdverbialComplement;
                         break;
                     }
 
@@ -82,30 +83,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 // Phrases
                 case LinguisticStructureType.PrepositionalPhrase:
                     {
-                        result = StructureAttributes.PrepositionalPhrase;
+                        result = GrammarAttributes.PrepositionalPhrase;
                         break;
                     }
                 case LinguisticStructureType.InfinitivePhrase:
                     {
-                        result = StructureAttributes.InfinitivePhrase;
+                        result = GrammarAttributes.InfinitivePhrase;
                         break;
                     }
 
 
                 case LinguisticStructureType.Subject:
                     {
-                        result = StructureAttributes.Subject;
+                        result = GrammarAttributes.Subject;
                         break;
                     }
                 case LinguisticStructureType.Verb:
                     {
-                        result = StructureAttributes.Verb;
+                        result = GrammarAttributes.Verb;
                         break;
                     }
 
                 case LinguisticStructureType.Predicate:
                     {
-                        result = StructureAttributes.Predicate;
+                        result = GrammarAttributes.Predicate;
                         break;
                     }
                 
@@ -113,37 +114,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 // Clauses
                 case LinguisticStructureType.DeclarativeClause:
                     {
-                        result = StructureAttributes.Clause.Declarative;
+                        result = GrammarAttributes.Clause.Declarative;
                         break;
                     }
                 case LinguisticStructureType.InterrogativeClause:
                     {
-                        result = StructureAttributes.Clause.Interrogative;
+                        result = GrammarAttributes.Clause.Interrogative;
                         break;
                     }
                 case LinguisticStructureType.ImperativeClause:
                     {
-                        result = StructureAttributes.Clause.Imperative;
+                        result = GrammarAttributes.Clause.Imperative;
                         break;
                     }
                 case LinguisticStructureType.ExclamativeClause:
                     {
-                        result = StructureAttributes.Clause.Exclamative;
+                        result = GrammarAttributes.Clause.Exclamative;
                         break;
                     }
                 case LinguisticStructureType.NounClause:
                     {
-                        result = StructureAttributes.Clause.NounClause;
+                        result = GrammarAttributes.Clause.NounClause;
                         break;
                     }
                 case LinguisticStructureType.AdjectiveClause:
                     {
-                        result = StructureAttributes.Clause.AdjectiveClause;
+                        result = GrammarAttributes.Clause.AdjectiveClause;
                         break;
                     }
                 case LinguisticStructureType.AdverbialClause:
                     {
-                        result = StructureAttributes.Clause.AdverbialClause;
+                        result = GrammarAttributes.Clause.AdverbialClause;
                         break;
                     }
 
@@ -164,66 +165,66 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             var attributes = type.GetAttributes();
 
             // Elements
-            if (StructureAttributes.NounElement.IsIn(attributes))
+            if (GrammarAttributes.NounElement.IsIn(attributes))
             {
-                result = new NounElement(StructureAttributes.Instance, attributes);
+                result = new NounElement(attributes);
             }
-            else if (StructureAttributes.AdjectiveElement.IsIn(attributes))
+            else if (GrammarAttributes.AdjectiveElement.IsIn(attributes))
             {
-                result = new AdjectiveElement(StructureAttributes.Instance, attributes);
+                result = new AdjectiveElement(attributes);
             }
-            else if (StructureAttributes.AdverbElement.IsIn(attributes))
+            else if (GrammarAttributes.AdverbElement.IsIn(attributes))
             {
-                result = new AdverbElement(StructureAttributes.Instance, attributes);
+                result = new AdverbElement(attributes);
             }
 
             // Objects
-            else if (StructureAttributes.Object.Direct.IsIn(attributes) ||
-                     StructureAttributes.Object.Indirect.IsIn(attributes) ||
-                     StructureAttributes.Object.ObjectOfPreposition.IsIn(attributes))
+            else if (GrammarAttributes.Object.Direct.IsIn(attributes) ||
+                     GrammarAttributes.Object.Indirect.IsIn(attributes) ||
+                     GrammarAttributes.Object.ObjectOfPreposition.IsIn(attributes))
             {
-                result = new Objectt(StructureAttributes.Instance, attributes);
+                result = new Objectt(attributes);
             }
 
             // Complements
-            else if (StructureAttributes.Complement.SubjectComplement.IsIn(attributes) ||
-                     StructureAttributes.Complement.ObjectComplement.IsIn(attributes) ||
-                     StructureAttributes.Complement.AdjectiveComplement.IsIn(attributes) ||
-                     StructureAttributes.Complement.AdverbialComplement.IsIn(attributes))
+            else if (GrammarAttributes.Complement.SubjectComplement.IsIn(attributes) ||
+                     GrammarAttributes.Complement.ObjectComplement.IsIn(attributes) ||
+                     GrammarAttributes.Complement.AdjectiveComplement.IsIn(attributes) ||
+                     GrammarAttributes.Complement.AdverbialComplement.IsIn(attributes))
             {
-                result = new Complement(StructureAttributes.Instance, attributes);
+                result = new Complement(attributes);
             }
 
             // Phrases
-            else if (StructureAttributes.PrepositionalPhrase.IsIn(attributes))
+            else if (GrammarAttributes.PrepositionalPhrase.IsIn(attributes))
             {
-                result = new PrepositionalPhrase(StructureAttributes.Instance, attributes);
+                result = new PrepositionalPhrase(attributes);
             }
-            else if (StructureAttributes.InfinitivePhrase.IsIn(attributes))
+            else if (GrammarAttributes.InfinitivePhrase.IsIn(attributes))
             {
-                result = new InfinitivePhrase(StructureAttributes.Instance, attributes);
-            }
-
-
-            else if (StructureAttributes.Subject.IsIn(attributes))
-            {
-                result = new Subject(StructureAttributes.Instance, attributes);
-            }
-            else if (StructureAttributes.Verb.IsIn(attributes))
-            {
-                result = new Verb(StructureAttributes.Instance, attributes);
+                result = new InfinitivePhrase(attributes);
             }
 
 
-            else if (StructureAttributes.Predicate.IsIn(attributes))
+            else if (GrammarAttributes.Subject.IsIn(attributes))
             {
-                result = new Predicate(StructureAttributes.Instance, attributes);
+                result = new Subject(attributes);
+            }
+            else if (GrammarAttributes.Verb.IsIn(attributes))
+            {
+                result = new Verb(attributes);
+            }
+
+
+            else if (GrammarAttributes.Predicate.IsIn(attributes))
+            {
+                result = new Predicate(attributes);
             }
             
 
-            else if (StructureAttributes.Clause.IsIn(attributes))
+            else if (GrammarAttributes.Clause.IsIn(attributes))
             {
-                result = new Clause(StructureAttributes.Instance, attributes);
+                result = new Clause(attributes);
             }
 
 

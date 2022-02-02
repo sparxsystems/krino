@@ -1,5 +1,4 @@
-﻿using Krino.Vertical.Utils.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
@@ -7,8 +6,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     internal abstract class PhraseBase : LinguisticStructureBase, IPhrase
     {
-        public PhraseBase(EnumRootBase enumRoot, BigInteger attributes)
-            : base(enumRoot, attributes)
+        public PhraseBase(BigInteger attributes)
+            : base(attributes)
         {
         }
 

@@ -1,13 +1,12 @@
-﻿using Krino.Vertical.Utils.Enums;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     internal class Text : LinguisticStructureBase, IText
     {
-        public Text(EnumRootBase enumRoot)
-            : base(enumRoot, 0)
+        public Text()
+            : base(0)
         {
         }
 

@@ -1,21 +1,17 @@
-﻿using Krino.Vertical.Utils.Enums;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public abstract class LinguisticStructureBase
     {
-        private EnumRootBase myEnumRoot;
-
-        public LinguisticStructureBase(EnumRootBase enumRoot, BigInteger attributes)
+        public LinguisticStructureBase(BigInteger attributes)
         {
-            myEnumRoot = enumRoot;
             Attributes = attributes;
         }
 
-
         public virtual BigInteger Attributes { get; protected set; }
 
-        public string AttributesStr => myEnumRoot.GetFullName(Attributes);
+        public string AttributesStr => GrammarAttributes.Instance.GetFullName(Attributes);
     }
 }
