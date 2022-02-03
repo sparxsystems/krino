@@ -22,5 +22,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         public override bool Equals(object obj) => obj is LinguisticState other && Equals(other);
 
         public override int GetHashCode() => Id.GetHashCode();
+
+        public static bool operator ==(LinguisticState a, LinguisticState b) => a.Equals(b);
+        public static bool operator !=(LinguisticState a, LinguisticState b) => !a.Equals(b);
     }
 }

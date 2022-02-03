@@ -9,8 +9,10 @@
 
         // Elements
         NounElement,
+        VerbElement,
         AdjectiveElement,
         AttributiveAdjective,
+        PostpositiveAdjective,
         PredicativeAdjective,
         AdverbElement,
 

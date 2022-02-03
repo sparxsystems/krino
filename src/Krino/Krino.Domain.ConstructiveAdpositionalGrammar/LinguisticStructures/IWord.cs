@@ -9,5 +9,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         IMorpheme Root { get; set; }
 
         List<IMorpheme> Suffixes { get; }
+
+        IEnumerable<IMorpheme> Morphemes { get; }
     }
 }

@@ -29,6 +29,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                         result = GrammarAttributes.AdjectiveElement.Attributive;
                         break;
                     }
+                case LinguisticStructureType.PostpositiveAdjective:
+                    {
+                        result = GrammarAttributes.AdjectiveElement.PostPositive;
+                        break;
+                    }
                 case LinguisticStructureType.PredicativeAdjective:
                     {
                         result = GrammarAttributes.AdjectiveElement.Predicative;
@@ -43,12 +48,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 // Objects
                 case LinguisticStructureType.DirectObject:
                     {
-                        result = GrammarAttributes.Object.Direct;
+                        result = GrammarAttributes.Object.ObjectOfVerb.Direct;
                         break;
                     }
                 case LinguisticStructureType.IndirectObject:
                     {
-                        result = GrammarAttributes.Object.Indirect;
+                        result = GrammarAttributes.Object.ObjectOfVerb.Indirect;
                         break;
                     }
                 case LinguisticStructureType.ObjectOfPreposition:
@@ -179,8 +184,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             }
 
             // Objects
-            else if (GrammarAttributes.Object.Direct.IsIn(attributes) ||
-                     GrammarAttributes.Object.Indirect.IsIn(attributes) ||
+            else if (GrammarAttributes.Object.ObjectOfVerb.Direct.IsIn(attributes) ||
+                     GrammarAttributes.Object.ObjectOfVerb.Indirect.IsIn(attributes) ||
                      GrammarAttributes.Object.ObjectOfPreposition.IsIn(attributes))
             {
                 result = new Objectt(attributes);

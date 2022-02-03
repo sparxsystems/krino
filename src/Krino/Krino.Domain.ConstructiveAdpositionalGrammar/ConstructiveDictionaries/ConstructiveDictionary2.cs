@@ -5,7 +5,6 @@ using Krino.Vertical.Utils.Diagnostic;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 {
@@ -19,9 +18,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             InitializeMorphemes(morphemes);
         }
 
-        public IEnumerable<IMorpheme> FreeMorphemes => throw new NotImplementedException();
+        public IEnumerable<IMorpheme> FreeMorphemes => myFreeMorphemes.Select(x => x.Value);
 
-        public IEnumerable<IMorpheme> BoundMorphemes => throw new NotImplementedException();
+        public IEnumerable<IMorpheme> BoundMorphemes => myBoundMorphemes.Select(x => x.Value);
 
         public IEnumerable<IWord> FindWords(string word, int maxDistance)
         {
@@ -125,7 +124,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
 
             // Find if the word is a lexeme with suffixes.
             var wordSuffixes = FindLexemeAndItsSuffixes(word, morphDistance, new List<IMorpheme>());
-            foreach (IReadOnlyList<Morpheme> sequence in wordSuffixes)
+            foreach (var sequence in wordSuffixes)
             {
                 var wordConstruct = new Word(localSequence.Concat(sequence.Reverse()).ToList());
                 yield return wordConstruct;
@@ -190,7 +189,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                             localSequence.Add(sufix);
 
                             var sequences = FindLexemeAndItsSuffixes(newWord, morphDistance, localSequence);
-                            foreach (IReadOnlyList<Morpheme> sequence in sequences)
+                            foreach (var sequence in sequences)
                             {
                                 yield return sequence;
                             }

@@ -6,13 +6,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
     {
         public ObjectAttributes(EnumGroupBase parent) : base(parent)
         {
-            Direct = new EnumValue(this);
-            Indirect = new EnumValue(this);
+            ObjectOfVerb = new ObjectOfVerbAttributes(this);
             ObjectOfPreposition = new EnumValue(this);
         }
 
-        public EnumValue Direct { get; }
-        public EnumValue Indirect { get; }
+        public ObjectOfVerbAttributes ObjectOfVerb { get; }
 
         public EnumValue ObjectOfPreposition { get; }
     }
