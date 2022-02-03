@@ -2,6 +2,7 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Vertical.Utils.Diagnostic;
+using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.StateMachines;
 
 namespace Krino.Domain.EnglishGrammar.Parsing
@@ -17,19 +18,18 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var root = new GrammarMachineBuilder(myMachine);
 
-            var declarativeClause = root.AddSubState(LinguisticStructureType.DeclarativeClause);
+            var declarativeClause = root.AddSubState(GrammarAttributes.Clause.Declarative);
             if (declarativeClause != null)
             {
-                AddNounElement(declarativeClause, LinguisticStructureType.Subject, myMaxRecursion);
-                AddPredicateElement(declarativeClause, LinguisticStructureType.Predicate, myMaxRecursion);
+                AddNounElement(declarativeClause, GrammarAttributes.Subject, myMaxRecursion);
+                AddPredicateElement(declarativeClause, GrammarAttributes.Predicate, myMaxRecursion);
 
-                declarativeClause.AddTransition("init", LinguisticStructureType.Subject);
-                declarativeClause.AddTransition(LinguisticStructureType.Subject, LinguisticStructureType.Predicate);
-                declarativeClause.AddTransition(LinguisticStructureType.Predicate, "final");
+                declarativeClause.AddTransition("init", GrammarAttributes.Subject);
+                declarativeClause.AddTransition(GrammarAttributes.Subject, GrammarAttributes.Predicate);
+                declarativeClause.AddTransition(GrammarAttributes.Predicate, "final");
 
-
-                root.AddTransition("init", LinguisticStructureType.DeclarativeClause)
-                    .AddTransition(LinguisticStructureType.DeclarativeClause, "final");
+                root.AddTransition("init", GrammarAttributes.Clause.Declarative)
+                    .AddTransition(GrammarAttributes.Clause.Declarative, "final");
             }
 
             myMachine.Reset();
@@ -37,103 +37,103 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
         public MultiMachine<LinguisticState, IWord> Machine => myMachine;
 
-        private void AddNounElement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddNounElement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
             if (--recursion == 0) return;
 
             var objectBuilder = builder.AddSubState(objectType)
-                .AddLexemeStates("Determiner", "Noun", "Pronoun", "U");
+                .AddStates(GrammarAttributes.Morpheme.A.Free.Determiner, GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.Morpheme.O.Free.Pronoun, GrammarAttributes.Morpheme.U.Free.Conjunction);
 
-            AddAdjectiveElement(objectBuilder, LinguisticStructureType.AttributiveAdjective, recursion);
-            AddAdjectiveElement(objectBuilder, LinguisticStructureType.PostpositiveAdjective, recursion);
-            AddInfinitivePhrase(objectBuilder, LinguisticStructureType.InfinitivePhrase, recursion);
+            AddAdjectiveElement(objectBuilder, GrammarAttributes.AdjectiveElement.Attributive, recursion);
+            AddAdjectiveElement(objectBuilder, GrammarAttributes.AdjectiveElement.PostPositive, recursion);
+            AddInfinitivePhrase(objectBuilder, GrammarAttributes.InfinitivePhrase, recursion);
 
-            objectBuilder.AddTransition("init", LinguisticStructureType.AttributiveAdjective)
-                .AddTransition("init", "Determiner", GrammarAttributes.Morpheme.A.Free.Determiner)
-                .AddTransition("init", "Noun", GrammarAttributes.Morpheme.O.Free.Noun)
-                .AddTransition("init", "Pronoun", GrammarAttributes.Morpheme.O.Free.Pronoun)
-                .AddTransition("init", LinguisticStructureType.InfinitivePhrase)
+            objectBuilder.AddTransition("init", GrammarAttributes.AdjectiveElement.Attributive)
+                .AddTransition("init", GrammarAttributes.Morpheme.A.Free.Determiner, GrammarAttributes.Morpheme.A.Free.Determiner)
+                .AddTransition("init", GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.Morpheme.O.Free.Noun)
+                .AddTransition("init", GrammarAttributes.Morpheme.O.Free.Pronoun, GrammarAttributes.Morpheme.O.Free.Pronoun)
+                .AddTransition("init", GrammarAttributes.InfinitivePhrase)
 
-                .AddTransition(LinguisticStructureType.AttributiveAdjective, "Noun", GrammarAttributes.Morpheme.O.Free.Noun)
+                .AddTransition(GrammarAttributes.AdjectiveElement.Attributive, GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.Morpheme.O.Free.Noun)
 
-                .AddTransition("Determiner", LinguisticStructureType.AttributiveAdjective)
-                .AddTransition("Determiner", "Noun", GrammarAttributes.Morpheme.O.Free.Noun)
+                .AddTransition(GrammarAttributes.Morpheme.A.Free.Determiner, GrammarAttributes.AdjectiveElement.Attributive)
+                .AddTransition(GrammarAttributes.Morpheme.A.Free.Determiner, GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.Morpheme.O.Free.Noun)
 
-                .AddTransition("Pronoun", "U", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
-                .AddTransition("Pronoun", "final")
+                .AddTransition(GrammarAttributes.Morpheme.O.Free.Pronoun, GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.Morpheme.O.Free.Pronoun, "final")
 
-                .AddTransition("Noun", "U", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
-                .AddTransition("Noun", LinguisticStructureType.PostpositiveAdjective)
-                .AddTransition("Noun", "final")
+                .AddTransition(GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.InfinitivePhrase)
+                .AddTransition(GrammarAttributes.Morpheme.O.Free.Noun, "final")
 
-                .AddTransition("U", "Noun", GrammarAttributes.Morpheme.O.Free.Noun)
-                .AddTransition("U", LinguisticStructureType.AttributiveAdjective)
-                .AddTransition("U", "Determiner", GrammarAttributes.Morpheme.A.Free.Determiner)
-                .AddTransition("U", "Pronoun", GrammarAttributes.Morpheme.O.Free.Pronoun)
-                .AddTransition("U", LinguisticStructureType.InfinitivePhrase)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.Morpheme.O.Free.Noun)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.AdjectiveElement.Attributive)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.Morpheme.A.Free.Determiner, GrammarAttributes.Morpheme.A.Free.Determiner)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.Morpheme.O.Free.Pronoun, GrammarAttributes.Morpheme.O.Free.Pronoun)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.InfinitivePhrase)
 
-                .AddTransition(LinguisticStructureType.PostpositiveAdjective, "final")
+                .AddTransition(GrammarAttributes.AdjectiveElement.PostPositive, "final")
 
-                .AddTransition(LinguisticStructureType.InfinitivePhrase, "U", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
-                .AddTransition(LinguisticStructureType.InfinitivePhrase, "final");
+                .AddTransition(GrammarAttributes.InfinitivePhrase, GrammarAttributes.Morpheme.U.Free.Conjunction, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.InfinitivePhrase, "final");
         }
 
-        private void AddAdjectiveElement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddAdjectiveElement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
             if (--recursion == 0) return;
 
             var adjectiveBuilder = builder.AddSubState(objectType)
-                .AddLexemeStates("A", "U");
+                .AddStates(GrammarAttributes.Morpheme.A, GrammarAttributes.Morpheme.U);
 
-            AddAdverbElement(adjectiveBuilder, LinguisticStructureType.AdverbElement, recursion);
-            AddInfinitivePhrase(adjectiveBuilder, LinguisticStructureType.InfinitivePhrase, recursion);
+            AddAdverbElement(adjectiveBuilder, GrammarAttributes.AdverbElement, recursion);
+            AddInfinitivePhrase(adjectiveBuilder, GrammarAttributes.InfinitivePhrase, recursion);
 
             adjectiveBuilder.AddTransition("init", "A", GrammarAttributes.Morpheme.A.Free.Adjective)
-                .AddTransition("init", LinguisticStructureType.AdverbElement)
-                .AddTransition("init", LinguisticStructureType.InfinitivePhrase)
+                .AddTransition("init", GrammarAttributes.AdverbElement)
+                .AddTransition("init", GrammarAttributes.InfinitivePhrase)
 
-                .AddTransition(LinguisticStructureType.AdverbElement, "A")
+                .AddTransition(GrammarAttributes.AdverbElement, "A")
                 
-                .AddTransition("A", "U", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition("A", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
                 .AddTransition("A", "final")
                 
-                .AddTransition("U", "A", GrammarAttributes.Morpheme.A.Free.Adjective)
-                .AddTransition("U", LinguisticStructureType.AdverbElement)
-                .AddTransition("U", LinguisticStructureType.InfinitivePhrase)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, "A", GrammarAttributes.Morpheme.A.Free.Adjective)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.AdverbElement)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.InfinitivePhrase)
 
-                .AddTransition(LinguisticStructureType.InfinitivePhrase, "U", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
-                .AddTransition(LinguisticStructureType.InfinitivePhrase, "final");
+                .AddTransition(GrammarAttributes.InfinitivePhrase, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.InfinitivePhrase, "final");
         }
 
-        private void AddAdverbElement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddAdverbElement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
             if (--recursion == 0) return;
 
             var adverbElement = builder.AddSubState(objectType)
-                .AddLexemeStates("E", "U");
+                .AddStates(GrammarAttributes.Morpheme.E, GrammarAttributes.Morpheme.U);
 
-            AddInfinitivePhrase(adverbElement, LinguisticStructureType.InfinitivePhrase, recursion);
+            AddInfinitivePhrase(adverbElement, GrammarAttributes.InfinitivePhrase, recursion);
 
-            adverbElement.AddTransition("init", "E", GrammarAttributes.Morpheme.E.Free.Adverb)
-                .AddTransition("init", LinguisticStructureType.InfinitivePhrase)
+            adverbElement.AddTransition("init", GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.E.Free.Adverb)
+                .AddTransition("init", GrammarAttributes.InfinitivePhrase)
 
-                .AddTransition("E", "U", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
-                .AddTransition("E", "final")
+                .AddTransition(GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.Morpheme.E.Free.Adverb, "final")
 
-                .AddTransition("U", "E", GrammarAttributes.Morpheme.E.Free.Adverb)
-                .AddTransition("U", LinguisticStructureType.InfinitivePhrase)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.E.Free.Adverb)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.InfinitivePhrase)
 
-                .AddTransition(LinguisticStructureType.InfinitivePhrase, "U", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
-                .AddTransition(LinguisticStructureType.InfinitivePhrase, "final");
+                .AddTransition(GrammarAttributes.InfinitivePhrase, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.InfinitivePhrase, "final");
         }
 
-        private void AddPredicateElement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddPredicateElement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
@@ -141,55 +141,55 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var predicate = builder.AddSubState(objectType);
 
-            predicate.AddSubState(LinguisticStructureType.Verb)
-                .AddLexemeStates("I", "E", "U")
-                .AddTransition("init", "I", GrammarAttributes.Morpheme.I.Free.Verb)
-                .AddTransition("I", "I", GrammarAttributes.Morpheme.I.Free.Verb)
-                .AddTransition("I", "E", GrammarAttributes.Morpheme.E.Free.Adverb)
-                .AddTransition("I", "U", GrammarAttributes.Morpheme.U.Free.Conjunction)
-                .AddTransition("I", "final")
-                .AddTransition("E", "I", GrammarAttributes.Morpheme.I.Free.Verb)
-                .AddTransition("U", "I", GrammarAttributes.Morpheme.I.Free.Verb);
+            predicate.AddSubState(GrammarAttributes.VerbElement)
+                .AddStates(GrammarAttributes.Morpheme.I, GrammarAttributes.Morpheme.E, GrammarAttributes.Morpheme.U)
+                .AddTransition("init", GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb)
+                .AddTransition(GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb)
+                .AddTransition(GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.E.Free.Adverb)
+                .AddTransition(GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.Morpheme.I.Free.Verb, "final")
+                .AddTransition(GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb);
 
-            AddNounElement(predicate, LinguisticStructureType.IndirectObject, recursion);
-            AddNounElement(predicate, LinguisticStructureType.DirectObject, recursion);
+            AddNounElement(predicate, GrammarAttributes.Object.ObjectOfVerb.Indirect, recursion);
+            AddNounElement(predicate, GrammarAttributes.Object.ObjectOfVerb.Direct, recursion);
 
-            AddObjectComplement(predicate, LinguisticStructureType.ObjectComplement, recursion);
-            AddAdverbialComplement(predicate, LinguisticStructureType.AdverbialComplement, recursion);
-            AddSubjectComplement(predicate, LinguisticStructureType.SubjectComplement, recursion);
-            AddAdjectiveComplement(predicate, LinguisticStructureType.AdjectiveComplement, recursion);
+            AddObjectComplement(predicate, GrammarAttributes.Complement.ObjectComplement, recursion);
+            AddAdverbialComplement(predicate, GrammarAttributes.Complement.AdverbialComplement, recursion);
+            AddSubjectComplement(predicate, GrammarAttributes.Complement.SubjectComplement, recursion);
+            AddAdjectiveComplement(predicate, GrammarAttributes.Complement.AdjectiveComplement, recursion);
             
-            //AddNounElement(predicate, LinguisticStructureType.AdverbialComplement, GrammarAttributes.Morpheme.E.Free.Adverb | GrammarAttributes.Morpheme.E.Free.Preposition);
+            //AddNounElement(predicate, GrammarAttributes.Complement.AdverbialComplement, GrammarAttributes.Morpheme.E.Free.Adverb | GrammarAttributes.Morpheme.E.Free.Preposition);
 
-            predicate.AddTransition("init", LinguisticStructureType.Verb);
+            predicate.AddTransition("init", GrammarAttributes.VerbElement);
 
-            predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.IndirectObject, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Pentavalent);
-            predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.DirectObject, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent);
-            predicate.AddTransition(LinguisticStructureType.Verb, LinguisticStructureType.AdverbialComplement);
-            predicate.AddTransitionWithPreviousWordRule(LinguisticStructureType.Verb, LinguisticStructureType.SubjectComplement, GrammarAttributes.Morpheme.I.Free.Verb.Stative.Linking);
-            predicate.AddTransition(LinguisticStructureType.Verb, "final");
+            predicate.AddTransitionWithPreviousWordRule(GrammarAttributes.VerbElement, GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Pentavalent);
+            predicate.AddTransitionWithPreviousWordRule(GrammarAttributes.VerbElement, GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent);
+            predicate.AddTransition(GrammarAttributes.VerbElement, GrammarAttributes.Complement.AdverbialComplement);
+            predicate.AddTransitionWithPreviousWordRule(GrammarAttributes.VerbElement, GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Morpheme.I.Free.Verb.Stative.Linking);
+            predicate.AddTransition(GrammarAttributes.VerbElement, "final");
 
-            predicate.AddTransition(LinguisticStructureType.IndirectObject, LinguisticStructureType.DirectObject);
+            predicate.AddTransition(GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Object.ObjectOfVerb.Direct);
 
-            predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.ObjectComplement);
-            predicate.AddTransition(LinguisticStructureType.DirectObject, LinguisticStructureType.AdverbialComplement);
-            predicate.AddTransition(LinguisticStructureType.DirectObject, "final");
+            predicate.AddTransition(GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Complement.ObjectComplement);
+            predicate.AddTransition(GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Complement.AdverbialComplement);
+            predicate.AddTransition(GrammarAttributes.Object.ObjectOfVerb.Direct, "final");
 
-            predicate.AddTransition(LinguisticStructureType.ObjectComplement, LinguisticStructureType.AdverbialComplement);
-            predicate.AddTransition(LinguisticStructureType.ObjectComplement, "final");
+            predicate.AddTransition(GrammarAttributes.Complement.ObjectComplement, GrammarAttributes.Complement.AdverbialComplement);
+            predicate.AddTransition(GrammarAttributes.Complement.ObjectComplement, "final");
 
-            predicate.AddTransition(LinguisticStructureType.SubjectComplement, LinguisticStructureType.AdverbialComplement);
-            predicate.AddTransition(LinguisticStructureType.SubjectComplement, LinguisticStructureType.AdjectiveComplement);
-            predicate.AddTransition(LinguisticStructureType.SubjectComplement, "final");
+            predicate.AddTransition(GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Complement.AdverbialComplement);
+            predicate.AddTransition(GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Complement.AdjectiveComplement);
+            predicate.AddTransition(GrammarAttributes.Complement.SubjectComplement, "final");
 
-            predicate.AddTransition(LinguisticStructureType.AdjectiveComplement, LinguisticStructureType.AdverbialComplement);
-            predicate.AddTransition(LinguisticStructureType.AdjectiveComplement, "final");
+            predicate.AddTransition(GrammarAttributes.Complement.AdjectiveComplement, GrammarAttributes.Complement.AdverbialComplement);
+            predicate.AddTransition(GrammarAttributes.Complement.AdjectiveComplement, "final");
 
-            predicate.AddTransition(LinguisticStructureType.AdverbialComplement, "final");
+            predicate.AddTransition(GrammarAttributes.Complement.AdverbialComplement, "final");
         }
 
 
-        private void AddSubjectComplement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddSubjectComplement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
@@ -197,16 +197,16 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var subjectComplement = builder.AddSubState(objectType);
 
-            AddNounElement(subjectComplement, LinguisticStructureType.NounElement, recursion);
-            AddAdjectiveElement(subjectComplement, LinguisticStructureType.PredicativeAdjective, recursion);
+            AddNounElement(subjectComplement, GrammarAttributes.NounElement, recursion);
+            AddAdjectiveElement(subjectComplement, GrammarAttributes.AdjectiveElement.Predicative, recursion);
 
-            subjectComplement.AddTransition("init", LinguisticStructureType.NounElement);
-            subjectComplement.AddTransition("init", LinguisticStructureType.PredicativeAdjective);
-            subjectComplement.AddTransition(LinguisticStructureType.NounElement, "final");
-            subjectComplement.AddTransition(LinguisticStructureType.PredicativeAdjective, "final");
+            subjectComplement.AddTransition("init", GrammarAttributes.NounElement);
+            subjectComplement.AddTransition("init", GrammarAttributes.AdjectiveElement.Predicative);
+            subjectComplement.AddTransition(GrammarAttributes.NounElement, "final");
+            subjectComplement.AddTransition(GrammarAttributes.AdjectiveElement.Predicative, "final");
         }
 
-        private void AddObjectComplement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddObjectComplement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
@@ -214,17 +214,17 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var objectComplement = builder.AddSubState(objectType);
 
-            AddNounElement(objectComplement, LinguisticStructureType.NounElement, recursion);
-            AddAdjectiveElement(objectComplement, LinguisticStructureType.PostpositiveAdjective, recursion);
+            AddNounElement(objectComplement, GrammarAttributes.NounElement, recursion);
+            AddAdjectiveElement(objectComplement, GrammarAttributes.AdjectiveElement.PostPositive, recursion);
 
-            objectComplement.AddTransition("init", LinguisticStructureType.NounElement);
-            objectComplement.AddTransition("init", LinguisticStructureType.PostpositiveAdjective);
-            objectComplement.AddTransition(LinguisticStructureType.NounElement, "final");
-            objectComplement.AddTransition(LinguisticStructureType.PostpositiveAdjective, "final");
+            objectComplement.AddTransition("init", GrammarAttributes.NounElement);
+            objectComplement.AddTransition("init", GrammarAttributes.AdjectiveElement.PostPositive);
+            objectComplement.AddTransition(GrammarAttributes.NounElement, "final");
+            objectComplement.AddTransition(GrammarAttributes.AdjectiveElement.PostPositive, "final");
         }
 
 
-        private void AddAdverbialComplement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddAdverbialComplement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
@@ -232,16 +232,16 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var adverbialComplement = builder.AddSubState(objectType);
 
-            AddPrepositionalPhrase(adverbialComplement, LinguisticStructureType.PrepositionalPhrase, recursion);
-            AddAdverbElement(adverbialComplement, LinguisticStructureType.AdverbElement, recursion);
+            AddPrepositionalPhrase(adverbialComplement, GrammarAttributes.PrepositionalPhrase, recursion);
+            AddAdverbElement(adverbialComplement, GrammarAttributes.AdverbElement, recursion);
 
-            adverbialComplement.AddTransition("init", LinguisticStructureType.PrepositionalPhrase);
-            adverbialComplement.AddTransition("init", LinguisticStructureType.AdverbElement);
-            adverbialComplement.AddTransition(LinguisticStructureType.PrepositionalPhrase, "final");
-            adverbialComplement.AddTransition(LinguisticStructureType.AdverbElement, "final");
+            adverbialComplement.AddTransition("init", GrammarAttributes.PrepositionalPhrase);
+            adverbialComplement.AddTransition("init", GrammarAttributes.AdverbElement);
+            adverbialComplement.AddTransition(GrammarAttributes.PrepositionalPhrase, "final");
+            adverbialComplement.AddTransition(GrammarAttributes.AdverbElement, "final");
         }
 
-        private void AddAdjectiveComplement(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddAdjectiveComplement(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
@@ -249,47 +249,47 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var adverbialComplement = builder.AddSubState(objectType);
 
-            AddPrepositionalPhrase(adverbialComplement, LinguisticStructureType.PrepositionalPhrase, recursion);
-            AddPrepositionalPhrase(adverbialComplement, LinguisticStructureType.InfinitivePhrase, recursion);
+            AddPrepositionalPhrase(adverbialComplement, GrammarAttributes.PrepositionalPhrase, recursion);
+            AddPrepositionalPhrase(adverbialComplement, GrammarAttributes.InfinitivePhrase, recursion);
 
-            adverbialComplement.AddTransition("init", LinguisticStructureType.PrepositionalPhrase);
-            adverbialComplement.AddTransition("init", LinguisticStructureType.InfinitivePhrase);
+            adverbialComplement.AddTransition("init", GrammarAttributes.PrepositionalPhrase);
+            adverbialComplement.AddTransition("init", GrammarAttributes.InfinitivePhrase);
 
-            adverbialComplement.AddTransition(LinguisticStructureType.PrepositionalPhrase, "final");
+            adverbialComplement.AddTransition(GrammarAttributes.PrepositionalPhrase, "final");
 
-            adverbialComplement.AddTransition(LinguisticStructureType.InfinitivePhrase, "final");
+            adverbialComplement.AddTransition(GrammarAttributes.InfinitivePhrase, "final");
         }
 
-        private void AddPrepositionalPhrase(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddPrepositionalPhrase(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
             if (--recursion == 0) return;
 
             var objectOfPreposition = builder.AddSubState(objectType)
-                .AddLexemeStates("E");
+                .AddStates(GrammarAttributes.Morpheme.E);
 
-            AddNounElement(objectOfPreposition, LinguisticStructureType.ObjectOfPreposition, recursion);
+            AddNounElement(objectOfPreposition, GrammarAttributes.Object.ObjectOfPreposition, recursion);
 
-            objectOfPreposition.AddTransition("init", "E", GrammarAttributes.Morpheme.E.Free.Preposition);
-            objectOfPreposition.AddTransition("E", LinguisticStructureType.ObjectOfPreposition);
-            objectOfPreposition.AddTransition(LinguisticStructureType.ObjectOfPreposition, "final");
+            objectOfPreposition.AddTransition("init", GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.E.Free.Preposition);
+            objectOfPreposition.AddTransition(GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Object.ObjectOfPreposition);
+            objectOfPreposition.AddTransition(GrammarAttributes.Object.ObjectOfPreposition, "final");
         }
 
-        private void AddInfinitivePhrase(GrammarMachineBuilder builder, LinguisticStructureType objectType, int recursion)
+        private void AddInfinitivePhrase(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
             if (--recursion == 0) return;
 
             var objectOfPreposition = builder.AddSubState(objectType)
-                .AddLexemeStates("to");
+                .AddStates(GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker);
 
-            AddPredicateElement(objectOfPreposition, LinguisticStructureType.Predicate, recursion);
+            AddPredicateElement(objectOfPreposition, GrammarAttributes.Predicate, recursion);
 
             objectOfPreposition.AddTransition("init", "to", GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker);
-            objectOfPreposition.AddTransition("to", LinguisticStructureType.Predicate);
-            objectOfPreposition.AddTransition(LinguisticStructureType.Predicate, "final");
+            objectOfPreposition.AddTransition("to", GrammarAttributes.Predicate);
+            objectOfPreposition.AddTransition(GrammarAttributes.Predicate, "final");
         }
 
 

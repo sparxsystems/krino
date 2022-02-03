@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
 using Krino.Vertical.Utils.Diagnostic;
+using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.StateMachines;
 using System;
 using System.Linq;
@@ -19,10 +20,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             myMachine = machine;
 
-            var initState = new LinguisticState("init", LinguisticStructureType.Undefined);
+            var initState = new LinguisticState("init", null);
             myMachine.AddInitialState(initState);
 
-            var finalState = new LinguisticState("final", LinguisticStructureType.Undefined);
+            var finalState = new LinguisticState("final", null);
             myMachine.AddFinalState(finalState);
         }
 
@@ -34,26 +35,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myParentState = parentState;
             myIsSubState = true;
 
-            var initState = new LinguisticState($"{myParentState.Id}.init", LinguisticStructureType.Undefined);
+            var initState = new LinguisticState($"{myParentState.Id}.init", null);
             myMachine.AddInitialSubState(myParentState, initState);
 
-            var finalState = new LinguisticState($"{myParentState.Id}.final", LinguisticStructureType.Undefined);
+            var finalState = new LinguisticState($"{myParentState.Id}.final", null);
             myMachine.AddFinalSubState(myParentState, finalState);
         }
 
-        public GrammarMachineBuilder AddLexemeStates(params string[] stateIds)
+        public GrammarMachineBuilder AddStates(params EnumBase[] states)
         {
             using var _t = Trace.Entering();
 
-            foreach (var id in stateIds)
+            foreach (var state in states)
             {
-                AddState(id, LinguisticStructureType.Lexeme);
+                AddState(state.GetName(), state);
             }
 
             return this;
         }
 
-        public GrammarMachineBuilder AddState(string stateId, LinguisticStructureType stateType)
+        public GrammarMachineBuilder AddState(string stateId, EnumBase stateType)
         {
             using var _t = Trace.Entering();
 
@@ -72,7 +73,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
-        public GrammarMachineBuilder AddSubState(LinguisticStructureType subStateType)
+        public GrammarMachineBuilder AddSubState(EnumBase subStateType)
         {
             using var _t = Trace.Entering();
 
@@ -84,11 +85,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, LinguisticStructureType to) => AddTransition(from.ToString(), to.ToString());
+        public GrammarMachineBuilder AddTransition(EnumBase from, EnumBase to) => AddTransition(from.GetFullName(), to.GetFullName());
 
-        public GrammarMachineBuilder AddTransition(string fromId, LinguisticStructureType to) => AddTransition(fromId, to.ToString());
+        public GrammarMachineBuilder AddTransition(string fromId, EnumBase to) => AddTransition(fromId, to.GetFullName());
 
-        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, string toId) => AddTransition(from.ToString(), toId);
+        public GrammarMachineBuilder AddTransition(EnumBase from, string toId) => AddTransition(from.GetFullName(), toId);
 
         public GrammarMachineBuilder AddTransition(string fromId, string toId)
         {
@@ -103,11 +104,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(LinguisticStructureType from, LinguisticStructureType to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.ToString(), to.ToString(), previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(EnumBase from, EnumBase to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetFullName(), to.GetFullName(), previousWordAttributes);
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, LinguisticStructureType to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(fromId, to.ToString(), previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, EnumBase to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(fromId, to.GetFullName(), previousWordAttributes);
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(LinguisticStructureType from, string toId, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.ToString(), toId, previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(EnumBase from, string toId, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetFullName(), toId, previousWordAttributes);
         public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
         {
             using var _t = Trace.Entering();
@@ -128,11 +129,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, LinguisticStructureType to, params BigInteger[] triggers) => AddTransition(from.ToString(), to.ToString(), triggers);
+        public GrammarMachineBuilder AddTransition(EnumBase from, EnumBase to, params BigInteger[] triggers) => AddTransition(from.GetFullName(), to.GetFullName(), triggers);
 
-        public GrammarMachineBuilder AddTransition(string fromId, LinguisticStructureType to, params BigInteger[] triggers) => AddTransition(fromId, to.ToString(), triggers);
+        public GrammarMachineBuilder AddTransition(string fromId, EnumBase to, params BigInteger[] triggers) => AddTransition(fromId, to.GetFullName(), triggers);
 
-        public GrammarMachineBuilder AddTransition(LinguisticStructureType from, string toId, params BigInteger[] triggers) => AddTransition(from.ToString(), toId, triggers);
+        public GrammarMachineBuilder AddTransition(EnumBase from, string toId, params BigInteger[] triggers) => AddTransition(from.GetFullName(), toId, triggers);
 
         public GrammarMachineBuilder AddTransition(string fromId, string toId, params BigInteger[] triggers)
         {
@@ -179,9 +180,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}.{fromId}" : fromId;
             var toIdToUse = myIsSubState ? $"{myParentState.Id}.{toId}" : toId;
 
-            if (myMachine.TryGetStateDefinition(new LinguisticState(fromIdToUse, LinguisticStructureType.Undefined), out from))
+            if (myMachine.TryGetStateDefinition(new LinguisticState(fromIdToUse, null), out from))
             {
-                if (myMachine.TryGetStateDefinition(new LinguisticState(toIdToUse, LinguisticStructureType.Undefined), out to))
+                if (myMachine.TryGetStateDefinition(new LinguisticState(toIdToUse, null), out to))
                 {
                     return true;
                 }
