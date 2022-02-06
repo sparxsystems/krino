@@ -85,13 +85,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddTransition(EnumBase from, EnumBase to) => AddTransition(from.GetGrammarId(), to.GetGrammarId());
+        public GrammarMachineBuilder AddEmptyTransition(EnumBase from, EnumBase to) => AddEmptyTransition(from.GetGrammarId(), to.GetGrammarId());
 
-        public GrammarMachineBuilder AddTransition(string fromId, EnumBase to) => AddTransition(fromId, to.GetGrammarId());
+        public GrammarMachineBuilder AddEmptyTransition(string fromId, EnumBase to) => AddEmptyTransition(fromId, to.GetGrammarId());
 
-        public GrammarMachineBuilder AddTransition(EnumBase from, string toId) => AddTransition(from.GetGrammarId(), toId);
+        public GrammarMachineBuilder AddEmptyTransition(EnumBase from, string toId) => AddEmptyTransition(from.GetGrammarId(), toId);
 
-        public GrammarMachineBuilder AddTransition(string fromId, string toId)
+        public GrammarMachineBuilder AddEmptyTransition(string fromId, string toId)
         {
             using var _t = Trace.Entering();
 
@@ -128,24 +128,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
+        public GrammarMachineBuilder AddTriggeredTransition(EnumBase from, EnumBase to) => AddTriggeredTransition(from.GetGrammarId(), to);
 
-        public GrammarMachineBuilder AddTransition(EnumBase from, EnumBase to, params BigInteger[] triggers) => AddTransition(from.GetGrammarId(), to.GetGrammarId(), triggers);
-
-        public GrammarMachineBuilder AddTransition(string fromId, EnumBase to, params BigInteger[] triggers) => AddTransition(fromId, to.GetGrammarId(), triggers);
-
-        public GrammarMachineBuilder AddTransition(EnumBase from, string toId, params BigInteger[] triggers) => AddTransition(from.GetGrammarId(), toId, triggers);
-
-        public GrammarMachineBuilder AddTransition(string fromId, string toId, params BigInteger[] triggers)
+        public GrammarMachineBuilder AddTriggeredTransition(string fromId, EnumBase to)
         {
             using var _t = Trace.Entering();
 
-            if (TryGetStateDefinitions(fromId, toId, out var from, out var to))
+            var toId = to.GetGrammarId();
+
+            if (TryGetStateDefinitions(fromId, toId, out var fromState, out var toState))
             {
-                foreach (var trigger in triggers)
-                {
-                    var triggerRule = ParsingRule.WordContainsAttribute(trigger);
-                    myMachine.AddTransition(from.Value, to.Value, triggerRule);
-                }
+                BigInteger defaultTrigger = to;
+
+                var triggerRule = ParsingRule.WordContainsAttribute(defaultTrigger);
+                myMachine.AddTransition(fromState.Value, toState.Value, triggerRule);
             }
 
             return this;
