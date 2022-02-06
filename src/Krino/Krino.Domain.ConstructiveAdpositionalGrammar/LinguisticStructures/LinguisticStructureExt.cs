@@ -27,7 +27,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             }
             else if (parent is ISentence sentence)
             {
-                sentence.Clauses.Add((IClause)subStructure);
+                if (subStructure is IClause internalClause)
+                {
+                    sentence.Clauses.Add(internalClause);
+                }
+                else if (subStructure is IWord punctuation)
+                {
+                    sentence.PunctuationMark = punctuation.Root;
+                }
+            }
+            else if (parent is IText text)
+            {
+                text.Sentences.Add((ISentence)subStructure);
             }
             else
             {

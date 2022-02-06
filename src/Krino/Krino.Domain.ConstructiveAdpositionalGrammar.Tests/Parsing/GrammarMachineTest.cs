@@ -17,7 +17,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var read = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent);
             var the = new Word("the", GrammarAttributes.Morpheme.A.Free.Determiner);
             var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
-
+            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
 
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
@@ -28,6 +28,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(read);
             grammar.Add(the);
             grammar.Add(book);
+            grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
@@ -41,6 +42,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var him = new Word("him", GrammarAttributes.Morpheme.O.Free.Pronoun);
             var a = new Word("a", GrammarAttributes.Morpheme.A.Free.Determiner);
             var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
+            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
 
 
             var english = new EnglishMachine().Machine;
@@ -51,6 +53,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(him);
             grammar.Add(a);
             grammar.Add(book);
+            grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
@@ -65,6 +68,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
             var in_ = new Word("in", GrammarAttributes.Morpheme.E.Free.Preposition);
             var room = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
+            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
 
 
             var english = new EnglishMachine().Machine;
@@ -77,6 +81,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(in_);
             grammar.Add(the);
             grammar.Add(room);
+            grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
@@ -89,6 +94,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
             var is_ = new Word("is", GrammarAttributes.Morpheme.I.Free.Verb.Stative.Linking);
             var green = new Word("green", GrammarAttributes.Morpheme.A.Free.Adjective);
+            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
 
 
             var english = new EnglishMachine().Machine;
@@ -98,6 +104,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(book);
             grammar.Add(is_);
             grammar.Add(green);
+            grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
@@ -112,6 +119,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var is_ = new Word("is", GrammarAttributes.Morpheme.I.Free.Verb.Stative.Linking);
             var on = new Word("on", GrammarAttributes.Morpheme.E.Free.Preposition);
             var table = new Word("table", GrammarAttributes.Morpheme.O.Free.Noun);
+            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
 
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
@@ -123,6 +131,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(on);
             grammar.Add(the);
             grammar.Add(table);
+            grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
@@ -137,6 +146,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var tired = new Word("tired", GrammarAttributes.Morpheme.A.Free.Adjective);
             var to = new Word("to", GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker);
             var read = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Trivalent);
+            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
 
 
             //Trace.StartProfiler();
@@ -150,6 +160,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(tired);
             grammar.Add(to);
             grammar.Add(read);
+            grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);

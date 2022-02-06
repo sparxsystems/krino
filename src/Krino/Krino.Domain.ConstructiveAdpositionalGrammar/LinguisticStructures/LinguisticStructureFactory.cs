@@ -78,6 +78,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
                 result = new Clause(attributes);
             }
 
+            else if (GrammarAttributes.Sentence.IsIn(attributes))
+            {
+                result = new Sentence(attributes);
+            }
 
 
 

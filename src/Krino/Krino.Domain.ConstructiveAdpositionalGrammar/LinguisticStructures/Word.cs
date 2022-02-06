@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+using Krino.Vertical.Utils.Collections;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -20,17 +21,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         }
 
         public Word(IEnumerable<IMorpheme> morphemes)
-            : base(morphemes.FirstOrDefault(x => GrammarAttributes.Morpheme.IsFreeMorpheme(x.Attributes))?.Attributes ?? 0)
+            : base(0)
         {
-            var prefixes = morphemes.TakeWhile(x => GrammarAttributes.Morpheme.IsPrefix(x.Attributes));
-            Prefixes.AddRange(prefixes);
+            if (morphemes.IsSingle())
+            {
+                Root = morphemes.FirstOrDefault();
+                Attributes = Root.Attributes;
+            }
+            else
+            {
+                var prefixes = morphemes.TakeWhile(x => GrammarAttributes.Morpheme.IsPrefix(x.Attributes));
+                Prefixes.AddRange(prefixes);
 
-            Root = morphemes.FirstOrDefault(x => GrammarAttributes.Morpheme.IsFreeMorpheme(x.Attributes));
+                Root = morphemes.FirstOrDefault(x => GrammarAttributes.Morpheme.IsFreeMorpheme(x.Attributes));
 
-            var suffixes = morphemes.SkipWhile(x => !GrammarAttributes.Morpheme.IsSuffix(x.Attributes))
-                .TakeWhile(x => GrammarAttributes.Morpheme.IsSuffix(x.Attributes));
+                var suffixes = morphemes.SkipWhile(x => !GrammarAttributes.Morpheme.IsSuffix(x.Attributes))
+                    .TakeWhile(x => GrammarAttributes.Morpheme.IsSuffix(x.Attributes));
 
-            Suffixes.AddRange(suffixes);
+                Suffixes.AddRange(suffixes);
+            }
         }
 
         public List<IMorpheme> Prefixes { get; } = new List<IMorpheme>();

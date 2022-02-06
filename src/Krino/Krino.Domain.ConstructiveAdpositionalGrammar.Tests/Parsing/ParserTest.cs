@@ -15,10 +15,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var grammar = new EnglishMachine();
             var parser = new Parser(dictionary, grammar.Machine);
 
-            var sentences = parser.Parse("I read book");
+            var text = parser.Parse("I read book.");
             
-            Assert.AreEqual(1, sentences.Count);
-            Assert.AreEqual("i read book", sentences[0].Value);
+            Assert.AreEqual(1, text.Count);
+            Assert.AreEqual("i read book.", text[0].Value);
         }
 
         [Test]

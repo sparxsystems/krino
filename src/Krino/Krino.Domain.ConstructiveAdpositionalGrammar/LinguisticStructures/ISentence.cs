@@ -5,5 +5,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
     public interface ISentence : ILinguisticStructure
     {
         List<IClause> Clauses { get; }
+
+        IMorpheme PunctuationMark { get; set; }
     }
 }

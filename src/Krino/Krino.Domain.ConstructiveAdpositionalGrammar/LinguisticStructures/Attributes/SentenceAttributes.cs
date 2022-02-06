@@ -10,6 +10,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
             Complex = new ComplexSentenceAttributes(this);
             Compound = new EnumValue(this);
             CompoundComplex = new EnumValue(this);
+
+            Declarative = new EnumValue(this);
+            Interrogative = new EnumValue(this);
+            Imperative = new EnumValue(this);
+            Exclamative = new EnumValue(this);
         }
 
         /// <summary>
@@ -31,5 +36,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// Contains at least two independent clauses and one dependent clause.
         /// </summary>
         public EnumValue CompoundComplex { get; }
+
+
+        public EnumValue Declarative { get; }
+
+        /// <summary>
+        /// Question.
+        /// </summary>
+        public EnumValue Interrogative { get; }
+
+        public EnumValue Imperative { get; }
+        
+        public EnumValue Exclamative { get; }
+
     }
 }

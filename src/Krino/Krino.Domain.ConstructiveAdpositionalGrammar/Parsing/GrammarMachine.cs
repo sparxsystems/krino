@@ -38,12 +38,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             foreach (var activeState in relevantActiveStates)
             {
-                var text = new Text();
-
                 var stack = new Stack<ILinguisticStructure>();
-                
-                var sentence = new Sentence(0);
-                stack.Push(sentence);
+
+                var text = new Text();
+                stack.Push(text);
 
                 foreach (var state in activeState.Trace)
                 {
@@ -70,7 +68,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     }
                 }
 
-                text.Sentences.Add(sentence);
                 result.Add(text);
             }
 
