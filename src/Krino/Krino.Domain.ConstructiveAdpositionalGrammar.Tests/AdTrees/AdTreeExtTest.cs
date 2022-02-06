@@ -1,10 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions.Rules;
-using Krino.Domain.EnglishGrammar.Morphemes;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +10,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
     [TestFixture]
     public class AdTreeExtTest
     {
-        private IAttributesModel myAttributesModel = new EnglishAttributesModel();
-
         [Test]
         public void GetSequenceToRoot()
         {
-            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0))
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Right = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0)),
+                    Left = new AdTree(new Morpheme("I", 0))
                 },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Left = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0)),
+                    Left = new AdTree(new Morpheme("the", 0))
                 }
             };
 
@@ -43,17 +37,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void GetPath()
         {
-            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0))
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Right = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0)),
+                    Left = new AdTree(new Morpheme("I", 0))
                 },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Left = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0)),
+                    Left = new AdTree(new Morpheme("the", 0))
                 }
             };
 
@@ -70,22 +64,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void TryGetAdTree()
         {
-            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0))
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Right = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0)),
+                    Left = new AdTree(new Morpheme("I", 0))
                 },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Left = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0)),
+                    Left = new AdTree(new Morpheme("the", 0))
                 }
             };
 
             adTree.TryGetAdTree(new AdTreePosition[] { AdTreePosition.ChildOnRight, AdTreePosition.ChildOnLeft }, out IAdTree result);
-            Assert.AreEqual("I", result.Morpheme.Morph);
+            Assert.AreEqual("I", result.Morpheme.Value);
 
             // Root
             adTree.TryGetAdTree(new AdTreePosition[] { }, out IAdTree root);
@@ -95,17 +89,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void GetFirstAdPositionOnLeft()
         {
-            AdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+            AdTree adTree = new AdTree(new Morpheme("", 0))
             {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Right = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("read", 0)),
+                    Left = new AdTree(new Morpheme("I", 0))
                 },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
+                Left = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", 0), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", 0), new Pattern())
+                    Right = new AdTree(new Morpheme("book", 0)),
+                    Left = new AdTree(new Morpheme("the", 0))
                 }
             };
 
@@ -120,81 +114,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             result = adTree.GetFirstAdPositionOnLeft();
             Assert.IsNull(result);
         }
-
-        [Test]
-        public void MakeDeepCopy()
-        {
-            // The phrase: I read the book.
-            var adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
-            {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
-                {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), new Pattern())
-                },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.U), new Pattern())
-                {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme), new Pattern())
-                }
-            };
-
-            var copy = adTree.Right.MakeDeepCopy();
-            Assert.IsNull(copy.AdPosition);
-            Assert.IsTrue(adTree.Right.Equals(copy));
-        }
-
-        [Test]
-        public void MakeShallowCopy()
-        {
-            // The phrase: I read the book.
-            IAdTree adTree = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
-            {
-                Right = new AdTree(new Morpheme(myAttributesModel, "", 0), new Pattern())
-                {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "read", EnglishAttributes.I.Lexeme.Verb), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "I", EnglishAttributes.O.Lexeme), new Pattern())
-                },
-                Left = new AdTree(new Morpheme(myAttributesModel, "", EnglishAttributes.U), new Pattern())
-                {
-                    Right = new AdTree(new Morpheme(myAttributesModel, "book", EnglishAttributes.O.Lexeme), new Pattern()),
-                    Left = new AdTree(new Morpheme(myAttributesModel, "the", EnglishAttributes.A.Lexeme), new Pattern())
-                }
-            };
-
-            // Note: the copy does not start from the root but the whole tree will be copied.
-            IAdTree copy = adTree.Right.MakeShallowCopy();
-
-            // The copy must be set to the same position as the original.
-            Assert.IsTrue(adTree.Right.Morpheme == copy.Morpheme);
-            Assert.IsTrue(adTree.Right.Pattern == copy.Pattern);
-
-            // Get the root - for easier testing.
-            adTree = adTree.Root;
-            copy = copy.Root;
-
-            Assert.IsTrue(adTree.Morpheme == copy.Morpheme);
-            Assert.IsTrue(adTree.Pattern == copy.Pattern);
-
-            Assert.IsTrue(adTree.Right.Morpheme == copy.Right.Morpheme);
-            Assert.IsTrue(adTree.Right.Pattern == copy.Right.Pattern);
-
-            Assert.IsTrue(adTree.Right.Right.Morpheme == copy.Right.Right.Morpheme);
-            Assert.IsTrue(adTree.Right.Right.Pattern == copy.Right.Right.Pattern);
-
-            Assert.IsTrue(adTree.Right.Left.Morpheme == copy.Right.Left.Morpheme);
-            Assert.IsTrue(adTree.Right.Left.Pattern == copy.Right.Left.Pattern);
-
-            Assert.IsTrue(adTree.Left.Morpheme == copy.Left.Morpheme);
-            Assert.IsTrue(adTree.Left.Pattern == copy.Left.Pattern);
-
-            Assert.IsTrue(adTree.Left.Right.Morpheme == copy.Left.Right.Morpheme);
-            Assert.IsTrue(adTree.Left.Right.Pattern == copy.Left.Right.Pattern);
-
-            Assert.IsTrue(adTree.Left.Left.Morpheme == copy.Left.Left.Morpheme);
-            Assert.IsTrue(adTree.Left.Left.Pattern == copy.Left.Left.Pattern);
-        }
-
-        
+       
     }
 }

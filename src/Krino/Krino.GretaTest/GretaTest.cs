@@ -2,7 +2,6 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
-using Krino.Domain.EnglishGrammar.Morphemes;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System;
@@ -14,7 +13,6 @@ namespace Krino.GretaTest
     [TestFixture]
     public class GretaTest
     {
-        private EnglishAttributesModel myEnglishAttributesModel = new EnglishAttributesModel();
 
         [Test]
         public void Sentence_1_1()
@@ -46,9 +44,9 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_2_1()
         {
-            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
-            List<IAdTree> results = adTreeCreator.Create("The world as a small number of people have been saying lately will not end in 11 years".ToLower().Split(" "));
+            //var dictionary = new EnglishConstructiveDictionaryFactory().Create();
+            //AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
+            //List<IAdTree> results = adTreeCreator.Create("The world as a small number of people have been saying lately will not end in 11 years".ToLower().Split(" "));
 
             //List<string> phraseElements = adTree
             //    .Where(x => !string.IsNullOrEmpty(x.Morpheme.Morph))

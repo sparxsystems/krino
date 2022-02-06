@@ -1,8 +1,6 @@
 ﻿@page "/"
 
 @using System.Linq
-@using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes
-@using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions
 @using Krino.Vertical.Utils.Enums
 
 @inject Krino.ViewModel.IConstructiveDictionaryViewModel myConstructiveDictionary
@@ -23,19 +21,10 @@
         <h5 class="text-center">Lexemes</h5>
         <div class="row">
             <div class="col-md">
-                <RadzenGrid Data="@Lexemes" AllowFiltering="true" AllowSorting="true"  Style=@($"height:{@TableHeight};")>
+                @*<RadzenGrid Data="@Lexemes" AllowFiltering="true" AllowSorting="true"  Style=@($"height:{@TableHeight};")>
                     <Columns>
-                        <RadzenGridColumn TItem="Morpheme" Sortable="true" Filterable="true" Title="Morph" Property="@nameof(Morpheme.Morph)" />
-                        <RadzenGridColumn TItem="Morpheme" Title="Attributes">
-                            <Template Context="morpheme">
-                                @foreach (var attribute in morpheme.AttributeItems)
-                                {
-                                    <div>@(GetAttributeName(attribute))</div>
-                                }
-                            </Template>
-                        </RadzenGridColumn>
                     </Columns>
-                </RadzenGrid>
+                </RadzenGrid>*@
             </div>
         </div>
     </div>
@@ -43,19 +32,10 @@
         <h5 class="text-center">Non-Lexemes</h5>
         <div class="row">
             <div class="col-md">
-                <RadzenGrid Data="@NonLexemes"  Style=@($"height:{@TableHeight};")>
+                @*<RadzenGrid Data="@NonLexemes"  Style=@($"height:{@TableHeight};")>
                     <Columns>
-                        <RadzenGridColumn TItem="Morpheme" Sortable="true" Title="Morph" Property="@nameof(Morpheme.Morph)" />
-                        <RadzenGridColumn TItem="Morpheme" Title="Attributes">
-                            <Template Context="morpheme">
-                                @foreach (var attribute in morpheme.AttributeItems)
-                                {
-                                    <div>@(GetAttributeName(attribute))</div>
-                                }
-                            </Template>
-                        </RadzenGridColumn>
                     </Columns>
-                </RadzenGrid>
+                </RadzenGrid>*@
             </div>
         </div>
     </div>
@@ -63,12 +43,10 @@
         <h5 class="text-center">Patterns</h5>
         <div class="row">
             <div class="col-md">
-                <RadzenGrid Data="@Patterns" Style=@($"height:{@TableHeight};")>
+                @*<RadzenGrid Data="@Patterns" Style=@($"height:{@TableHeight};")>
                     <Columns>
-                        <RadzenGridColumn TItem="Pattern" Title="Rule" Property="@nameof(Pattern.Name)" Width="5em" />
-                        <RadzenGridColumn TItem="Pattern" Title="Description" Property="@nameof(Pattern.Description)" />
                     </Columns>
-                </RadzenGrid>
+                </RadzenGrid>*@
             </div>
         </div>
     </div>
@@ -92,12 +70,7 @@
 
 
 @code {
-    private string TableHeight = "400px";
     private List<string> myAdTreeResults = new List<string>();
-
-    private IEnumerable<Morpheme> Lexemes => myConstructiveDictionary.Lexemes;
-    private IEnumerable<Morpheme> NonLexemes => myConstructiveDictionary.NonLexemes;
-    private IEnumerable<Pattern> Patterns => myConstructiveDictionary.Patterns;
 
     private string Statement { get; set; } = "I have some good news and some bad news";
 
@@ -108,17 +81,17 @@
     {
         myAdTreeResults.Clear();
 
-        var adTrees = myConstructiveDictionary.GetAdTree(Statement);
-        if (adTrees != null)
-        {
-            foreach (var adTree in adTrees)
-            {
-                var visualization = myConstructiveDictionary.GetAdTreeVisualization(adTree);
-                if (!string.IsNullOrEmpty(visualization))
-                {
-                    myAdTreeResults.Add(visualization);
-                }
-            }
-        }
+        //var adTrees = myConstructiveDictionary.GetAdTree(Statement);
+        //if (adTrees != null)
+        //{
+        //    foreach (var adTree in adTrees)
+        //    {
+        //        var visualization = myConstructiveDictionary.GetAdTreeVisualization(adTree);
+        //        if (!string.IsNullOrEmpty(visualization))
+        //        {
+        //            myAdTreeResults.Add(visualization);
+        //        }
+        //    }
+        //}
     }
 }

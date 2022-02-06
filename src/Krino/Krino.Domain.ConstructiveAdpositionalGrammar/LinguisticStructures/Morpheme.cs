@@ -1,11 +1,12 @@
-﻿using System;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+using System;
 using System.Diagnostics;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     [DebuggerDisplay("{DebuggerDisplay}")]
-    internal class Morpheme : LinguisticStructureBase, IMorpheme
+    public class Morpheme : LinguisticStructureBase, IMorpheme
     {
         public Morpheme(string value, BigInteger attributes)
             : base(attributes)
@@ -14,6 +15,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         }
 
         public string Value { get; private set; }
+
+        public GrammarCharacter GrammarCharacter => GrammarAttributes.Morpheme.GetGrammarCharacter(Attributes);
 
 
         public bool Equals(IMorpheme other) => Value == other.Value && Attributes == other.Attributes;

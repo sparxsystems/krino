@@ -79,5 +79,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
             return false;
         }
+
+        public GrammarCharacter GetGrammarCharacter(BigInteger attributes)
+        {
+            GrammarCharacter result;
+
+            if (O.IsIn(attributes))
+            {
+                result = GrammarCharacter.O;
+            }
+            else if (I.IsIn(attributes))
+            {
+                result = GrammarCharacter.I;
+            }
+            else if (A.IsIn(attributes))
+            {
+                result = GrammarCharacter.A;
+            }
+            else if (E.IsIn(attributes))
+            {
+                result = GrammarCharacter.E;
+            }
+            else if (U.IsIn(attributes))
+            {
+                result = GrammarCharacter.U;
+            }
+            else
+            {
+                result = GrammarCharacter.e;
+            }
+
+            return result;
+        }
     }
 }

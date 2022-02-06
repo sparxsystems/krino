@@ -1,7 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
 using System;
@@ -13,26 +11,11 @@ namespace Krino.ViewModel
 {
     public class ConstructiveDictionaryViewModel : IConstructiveDictionaryViewModel
     {
-        private IConstructiveDictionary myConstructiveDictionary;
-        private AdTreeCreator myAdTreeCreator;
+        private IConstructiveDictionary2 myConstructiveDictionary;
 
         public ConstructiveDictionaryViewModel()
         {
             myConstructiveDictionary = new EnglishConstructiveDictionaryFactory().Create();
-            myAdTreeCreator = new AdTreeCreator(myConstructiveDictionary);
-        }
-
-        public IEnumerable<Morpheme> Lexemes => myConstructiveDictionary.Lexemes;
-
-        public IEnumerable<Morpheme> NonLexemes => myConstructiveDictionary.NonLexemes;
-
-        public IEnumerable<Pattern> Patterns => myConstructiveDictionary.Patterns;
-
-        public IReadOnlyList<IAdTree> GetAdTree(string phrase)
-        {
-            var phraseToUse = phrase.ToLower().Split(" ", StringSplitOptions.RemoveEmptyEntries);
-            var result = myAdTreeCreator.Create(phraseToUse);
-            return result;
         }
 
         public string GetAdTreeVisualization(IAdTree adTree)
@@ -129,15 +112,10 @@ namespace Krino.ViewModel
         private string GetAdTreeItemVisualization(IAdTree adTree)
         {
             var grammarCharacter = adTree.Morpheme != null ? $"[{adTree.Morpheme.GrammarCharacter}]" : "";
-            var pattern = !adTree.Pattern.IsMorpheme ? $"{{{adTree.Pattern.Name}}}" : "";
-            var morpheme = !string.IsNullOrEmpty(adTree.Morpheme?.Morph) ? $"{adTree.Morpheme?.Morph}" : "";
+            var morpheme = !string.IsNullOrEmpty(adTree.Morpheme?.Value) ? $"{adTree.Morpheme?.Value}" : "";
 
             var result = new StringBuilder();
 
-            if (pattern != "")
-            {
-                result.Append(pattern);
-            }
             if (grammarCharacter != "")
             {
                 result.Append(grammarCharacter);

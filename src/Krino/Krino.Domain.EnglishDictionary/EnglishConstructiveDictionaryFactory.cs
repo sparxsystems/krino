@@ -1,5 +1,4 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
 
 namespace Krino.Domain.EnglishDictionary
 {
@@ -7,10 +6,9 @@ namespace Krino.Domain.EnglishDictionary
     {
         public int MaxWords { get; set; } = 7;
 
-        public IConstructiveDictionary Create()
+        public IConstructiveDictionary2 Create()
         {
-            var patternConstructions = new PatternConstructions(MaxWords, PatternProvider.Patterns);
-            var result = new ConstructiveDictionary(MorphemeProvider.AttributesModel, patternConstructions, MorphemeProvider.Morphemes);
+            var result = new ConstructiveDictionary2(MorphemeProvider.Morphemes);
             return result;
         }
     }

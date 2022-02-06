@@ -2,7 +2,6 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
-using Krino.Domain.EnglishGrammar.LinguisticConstructions;
 using NUnit.Framework;
 using System.Linq;
 

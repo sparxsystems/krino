@@ -1,72 +1,70 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
-using Krino.Domain.EnglishGrammar.Morphemes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using System.Collections.Generic;
 
 namespace Krino.Domain.EnglishDictionary
 {
     public class MorphemeProvider
     {
-        public static EnglishAttributesModel AttributesModel { get; } = new EnglishAttributesModel();
-
-        public static List<Morpheme> Morphemes => new List<Morpheme>()
+        public static List<IMorpheme> Morphemes => new List<IMorpheme>()
         {
             // Lexemes.
-            new Morpheme(AttributesModel, "a", EnglishAttributes.A.Lexeme.Determiner.IndefiniteArticle),
-            new Morpheme(AttributesModel, "and", EnglishAttributes.U.Lexeme.Conjunction),
-            new Morpheme(AttributesModel, "as", EnglishAttributes.U.Lexeme.Conjunction),
+            new Morpheme("a", GrammarAttributes.Morpheme.A.Free.Determiner.IndefiniteArticle),
+            new Morpheme("and", GrammarAttributes.Morpheme.U.Free.Conjunction),
+            new Morpheme("as", GrammarAttributes.Morpheme.U.Free.Conjunction),
             
-            new Morpheme(AttributesModel, "bad", EnglishAttributes.A.Lexeme.Adjective.Attributive),
-            new Morpheme(AttributesModel, "because", EnglishAttributes.U.Lexeme.Conjunction.Subordinating.Sememe.Cause),
-            new Morpheme(AttributesModel, "been", EnglishAttributes.I.Lexeme.Verb.Form.PastParticiple),
-            new Morpheme(AttributesModel, "book", EnglishAttributes.O.Lexeme.Noun),
+            new Morpheme("bad", GrammarAttributes.Morpheme.A.Free.Adjective),
+            new Morpheme("because", GrammarAttributes.Morpheme.U.Free.Conjunction.Subordinating.Sememe.Cause),
+            new Morpheme("been", GrammarAttributes.Morpheme.I.Free.Verb.Form.PastParticiple),
+            new Morpheme("book", GrammarAttributes.Morpheme.O.Free.Noun),
 
-            new Morpheme(AttributesModel, "climate", EnglishAttributes.O.Lexeme.Noun),
-            new Morpheme(AttributesModel, "cycling", EnglishAttributes.O.Lexeme.Noun),
-            new Morpheme(AttributesModel, "damage", EnglishAttributes.O.Lexeme.Noun),
-            new Morpheme(AttributesModel, "damage", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
-            new Morpheme(AttributesModel, "eleven", EnglishAttributes.A.Lexeme.Numeral.Cardinal),
-            new Morpheme(AttributesModel, "emergency", EnglishAttributes.O.Lexeme.Noun),
-            new Morpheme(AttributesModel, "end", EnglishAttributes.I.Lexeme.Verb.Form.Base | EnglishAttributes.I.Lexeme.Verb.Valency.Monovalent),
-            new Morpheme(AttributesModel, "good", EnglishAttributes.A.Lexeme.Adjective.Attributive),
-            new Morpheme(AttributesModel, "grass", EnglishAttributes.O.Lexeme.Noun.Common.Concrete),
-            new Morpheme(AttributesModel, "have", EnglishAttributes.I.Lexeme.Verb.Form.Base | EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
+            new Morpheme("climate", GrammarAttributes.Morpheme.O.Free.Noun),
+            new Morpheme("cycling", GrammarAttributes.Morpheme.O.Free.Noun),
+            new Morpheme("damage", GrammarAttributes.Morpheme.O.Free.Noun),
+            new Morpheme("damage", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
+            new Morpheme("eleven", GrammarAttributes.Morpheme.A.Free.Numeral.Cardinal),
+            new Morpheme("emergency", GrammarAttributes.Morpheme.O.Free.Noun),
+            new Morpheme("end", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Monovalent),
+            new Morpheme("good", GrammarAttributes.Morpheme.A.Free.Adjective),
+            new Morpheme("grass", GrammarAttributes.Morpheme.O.Free.Noun.Common.Concrete),
+            new Morpheme("have", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
             
-            new Morpheme(AttributesModel, "i", EnglishAttributes.O.Lexeme.Pronoun.Subjective),
-            new Morpheme(AttributesModel, "in", EnglishAttributes.E.Lexeme.Preposition),
-            new Morpheme(AttributesModel, "is", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
+            new Morpheme("i", GrammarAttributes.Morpheme.O.Free.Pronoun.Subjective),
+            new Morpheme("in", GrammarAttributes.Morpheme.E.Free.Preposition),
+            new Morpheme("is", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
 
-            new Morpheme(AttributesModel, "lately", EnglishAttributes.E.Lexeme.Adverb),
-            new Morpheme(AttributesModel, "news", EnglishAttributes.O.Lexeme.Noun),
-            new Morpheme(AttributesModel, "number", EnglishAttributes.O.Lexeme.Noun),
-            new Morpheme(AttributesModel, "not", EnglishAttributes.E.Lexeme.Adverb),
-            new Morpheme(AttributesModel, "of", EnglishAttributes.E.Lexeme.Preposition),
-            new Morpheme(AttributesModel, "on", EnglishAttributes.E.Lexeme.Preposition),
+            new Morpheme("lately", GrammarAttributes.Morpheme.E.Free.Adverb),
+            new Morpheme("news", GrammarAttributes.Morpheme.O.Free.Noun),
+            new Morpheme("number", GrammarAttributes.Morpheme.O.Free.Noun),
+            new Morpheme("not", GrammarAttributes.Morpheme.E.Free.Adverb),
+            new Morpheme("of", GrammarAttributes.Morpheme.E.Free.Preposition),
+            new Morpheme("on", GrammarAttributes.Morpheme.E.Free.Preposition),
             
-            new Morpheme(AttributesModel, "people", EnglishAttributes.O.Lexeme.Noun.Sememe.Number.Plural),
-            new Morpheme(AttributesModel, "prohibit", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
+            new Morpheme("people", GrammarAttributes.Morpheme.O.Free.Noun.Sememe.Number.Plural),
+            new Morpheme("prohibit", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
 
-            new Morpheme(AttributesModel, "read", EnglishAttributes.I.Lexeme.Verb.Valency.Monovalent | EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
-            new Morpheme(AttributesModel, "regarding", EnglishAttributes.E.Lexeme.Preposition),
+            new Morpheme("read", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
+            new Morpheme("regarding", GrammarAttributes.Morpheme.E.Free.Preposition),
 
-            new Morpheme(AttributesModel, "say", EnglishAttributes.I.Lexeme.Verb.Form.Base | EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
-            new Morpheme(AttributesModel, "small", EnglishAttributes.A.Lexeme.Adjective),
-            new Morpheme(AttributesModel, "some", EnglishAttributes.A.Lexeme.Determiner),
-            new Morpheme(AttributesModel, "start", EnglishAttributes.I.Lexeme.Verb.Valency.Bivalent),
-            new Morpheme(AttributesModel, "the", EnglishAttributes.A.Lexeme.Determiner.DefiniteArticle),
+            new Morpheme("say", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
+            new Morpheme("small", GrammarAttributes.Morpheme.A.Free.Adjective),
+            new Morpheme("some", GrammarAttributes.Morpheme.A.Free.Determiner),
+            new Morpheme("start", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
+            new Morpheme("the", GrammarAttributes.Morpheme.A.Free.Determiner.DefiniteArticle),
 
-            new Morpheme(AttributesModel, "walk", EnglishAttributes.I.Lexeme.Verb.Valency.Monovalent),
-            new Morpheme(AttributesModel, "will", EnglishAttributes.I.Lexeme.Verb.Modal),
-            new Morpheme(AttributesModel, "with", EnglishAttributes.E.Lexeme.Preposition),
-            new Morpheme(AttributesModel, "world", EnglishAttributes.O.Lexeme.Noun),
+            new Morpheme("walk", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Monovalent),
+            new Morpheme("will", GrammarAttributes.Morpheme.I.Free.Verb.Modal),
+            new Morpheme("with", GrammarAttributes.Morpheme.E.Free.Preposition),
+            new Morpheme("world", GrammarAttributes.Morpheme.O.Free.Noun),
 
-            new Morpheme(AttributesModel, "year", EnglishAttributes.O.Lexeme.Noun.Common | EnglishAttributes.O.Lexeme.Noun.Countable),
+            new Morpheme("year", GrammarAttributes.Morpheme.O.Free.Noun.Common | GrammarAttributes.Morpheme.O.Free.Noun.Countable),
 
             // Non-lexemes.
-            new Morpheme(AttributesModel, ".", EnglishAttributes.U.NonLexeme.PunctuationMark.Period),
-            new Morpheme(AttributesModel, ",", EnglishAttributes.U.NonLexeme.PunctuationMark.Comma),
-            new Morpheme(AttributesModel, "ed", EnglishAttributes.I.NonLexeme.Suffix),
-            new Morpheme(AttributesModel, "ing", EnglishAttributes.I.NonLexeme.Suffix),
-            new Morpheme(AttributesModel, "s", EnglishAttributes.O.NonLexeme.Suffix),
+            new Morpheme(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period),
+            new Morpheme(",", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Comma),
+            new Morpheme("ed", GrammarAttributes.Morpheme.I.Bound.Suffix),
+            new Morpheme("ing", GrammarAttributes.Morpheme.I.Bound.Suffix),
+            new Morpheme("s", GrammarAttributes.Morpheme.O.Bound.Suffix),
         };
     }
 }

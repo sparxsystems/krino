@@ -1,5 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
 using System;
 using System.Collections.Generic;
 
@@ -11,14 +10,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
     public interface IAdTree : IEquatable<IAdTree>, IEnumerable<IAdTree>
     {
         /// <summary>
-        /// Pattern followed by this adtree element.
-        /// </summary>
-        Pattern Pattern { get; }
-
-        /// <summary>
         /// Morpheme.
         /// </summary>
-        Morpheme Morpheme { get; }
+        IMorpheme Morpheme { get; }
 
         /// <summary>
         /// Reference to the AdPosition (direct parent). Null if it is the root.
@@ -34,6 +28,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// The left child.
         /// </summary>
         IAdTree Left { get; set; }
+
+        /// <summary>
+        /// Returns true if the text in the left branch is before the text in the right branch.
+        /// </summary>
+        bool IsLeftFirst { get; set; }
 
         /// <summary>
         /// Returns true if this tree element is the adpostion.
@@ -111,10 +110,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         /// Returns the text phrase represented by this adtree.
         /// </summary>
         string Phrase { get; }
-
-        /// <summary>
-        /// Returns sequence of grammar characters specifying patterns the adtree is built from.
-        /// </summary>
-        string PatternSignature { get; }
     }
 }

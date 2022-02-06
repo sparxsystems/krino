@@ -1,6 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticConstructions.Rules;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Morphemes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections;
@@ -22,15 +21,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
         private IAdTree myLeftChild;
 
 
-        public AdTree(Morpheme morpheme, Pattern pattern)
+        public AdTree(IMorpheme morpheme)
         {
             Morpheme = morpheme ?? throw new ArgumentNullException(nameof(morpheme));
-            Pattern = pattern ?? throw new ArgumentNullException(nameof(pattern));
         }
 
-        public Pattern Pattern { get; }
-
-        public Morpheme Morpheme { get; }
+        public IMorpheme Morpheme { get; }
 
         public IAdTree AdPosition
         {
@@ -102,6 +98,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
+        public bool IsLeftFirst { get; set; }
+
         public bool IsAdPosition => Right != null || Left != null;
 
         public IEnumerable<IAdTree> AdPositions
@@ -171,7 +169,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return result;
         }
 
-        public bool IsGovernor => IsOnRight && Pattern.IsLikeMorpheme;
+        public bool IsGovernor => IsOnRight;
 
         public IEnumerable<IAdTree> DependentAdPositions
         {
@@ -206,77 +204,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                 var result = new StringBuilder();
 
                 bool isFirst = true;
-                var items = this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Morph));
+                var items = this.Where(x => !string.IsNullOrEmpty(x.Morpheme?.Value));
                 foreach (var item in items)
                 {
                     if (isFirst)
                     {
-                        result.Append(item.Morpheme.Morph);
+                        result.Append(item.Morpheme.Value);
                         isFirst = false;
                     }
                     else
                     {
-                        if (!item.Morpheme.IsSuffix)
+                        if (!GrammarAttributes.Morpheme.IsSuffix(item.Morpheme.Attributes))
                         {
                             result.Append(" ");
                         }
 
-                        result.Append(item.Morpheme.Morph);
-                    }
-                }
-
-                return result.ToString();
-            }
-        }
-
-        public string PatternSignature
-        {
-            get
-            {
-                var result = new StringBuilder();
-
-                foreach (var item in this)
-                {
-                    if (item.Pattern.IsLikeMorpheme)
-                    {
-                        // If we are not inside a morpheme transference.
-                        if (!item.AdPositions.Any(x => x.Pattern.IsLikeMorpheme))
-                        {
-                            result.Append(item.Pattern.UpRule.GrammarCharacter);
-                        }
-                    }
-                    else
-                    {
-                        if (item.Pattern.IsLeftFirst)
-                        {
-                            if (item.Left == null)
-                            {
-                                result.Append(item.Pattern.LeftRule.GrammarCharacter);
-                            }
-                            if (item.Pattern.IsMorphematicAdPosition)
-                            {
-                                result.Append(item.Pattern.UpRule.GrammarCharacter);
-                            }
-                            if (item.Right == null)
-                            {
-                                result.Append(item.Pattern.RightRule.GrammarCharacter);
-                            }
-                        }
-                        else
-                        {
-                            if (item.Right == null)
-                            {
-                                result.Append(item.Pattern.RightRule.GrammarCharacter);
-                            }
-                            if (item.Pattern.IsMorphematicAdPosition)
-                            {
-                                result.Append(item.Pattern.UpRule.GrammarCharacter);
-                            }
-                            if (item.Left == null)
-                            {
-                                result.Append(item.Pattern.LeftRule.GrammarCharacter);
-                            }
-                        }
+                        result.Append(item.Morpheme.Value);
                     }
                 }
 
@@ -304,9 +247,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
 
                     while (moveNext())
                     {
-                        if (thisEnumerator.Current.Morpheme.Morph != otherEnumerator.Current.Morpheme.Morph ||
-                            thisEnumerator.Current.Morpheme.Attributes != otherEnumerator.Current.Morpheme.Attributes ||
-                            !thisEnumerator.Current.Pattern.Equals(otherEnumerator.Current.Pattern))
+                        if (thisEnumerator.Current.Morpheme.Value != otherEnumerator.Current.Morpheme.Value ||
+                            thisEnumerator.Current.Morpheme.Attributes != otherEnumerator.Current.Morpheme.Attributes)
                         {
                             return false;
                         }
@@ -322,15 +264,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             }
         }
 
-        public override int GetHashCode()
-        {
-            int hash = 486187739;
-
-            hash = (hash * 16777619) ^ Morpheme.GetHashCode();
-            hash = (hash * 16777619) ^ Pattern.GetHashCode();
-
-            return hash;
-        }
+        public override int GetHashCode() => Morpheme.GetHashCode();
+        
 
 
         public IEnumerable<IAdTree> GetAdTreesInAdTreeOrder()
@@ -364,7 +299,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     adPositionStack.Push(aThis);
 
                     // If left is before right.
-                    if (phraseOrder && aThis.Pattern.IsLeftFirst)
+                    if (phraseOrder && aThis.IsLeftFirst)
                     {
                         stack.Push(aThis.Right);
                         stack.Push(aThis.Left);
@@ -396,30 +331,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
             return GetEnumerator();
         }
 
-        private string DebuggerDisplay
-        {
-            get
-            {
-                StringBuilder builder = new StringBuilder();
-                builder.Append(Pattern.Name);
-
-                var phrase = Phrase;
-
-                if (!string.IsNullOrEmpty(phrase))
-                {
-                    builder.Append(": ");
-                    builder.Append(phrase);
-                }
-                else if (!Pattern.UpRule.MorphRule.Equals(MorphRules.Nothing) &&
-                         !Pattern.UpRule.MorphRule.Evaluate(null) &&
-                         !Pattern.UpRule.MorphRule.Evaluate(""))
-                {
-                    builder.Append(": ");
-                    builder.Append("?");
-                }
-
-                return builder.ToString();
-            }
-        }
+        private string DebuggerDisplay => Phrase;
+        
     }
 }
