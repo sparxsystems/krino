@@ -1,9 +1,7 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
+using Krino.Domain.EnglishGrammar.Parsing;
 using NUnit.Framework;
-using System.Linq;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 {
@@ -14,12 +12,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         public void Parse_SimpleSentence()
         {
             var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            var parser = new Parser(dictionary);
+            var grammar = new EnglishMachine();
+            var parser = new Parser(dictionary, grammar.Machine);
 
-            var sentences = parser.Parse("I read book.");
+            var sentences = parser.Parse("I read book");
             
             Assert.AreEqual(1, sentences.Count);
-            Assert.AreEqual("i read book .", sentences[0].Value);
+            Assert.AreEqual("i read book", sentences[0].Value);
         }
 
         [Test]

@@ -20,7 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         }
 
         public Word(IEnumerable<IMorpheme> morphemes)
-            : base(0)
+            : base(morphemes.FirstOrDefault(x => GrammarAttributes.Morpheme.IsFreeMorpheme(x.Attributes))?.Attributes ?? 0)
         {
             var prefixes = morphemes.TakeWhile(x => GrammarAttributes.Morpheme.IsPrefix(x.Attributes));
             Prefixes.AddRange(prefixes);

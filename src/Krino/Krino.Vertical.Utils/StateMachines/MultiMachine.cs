@@ -44,6 +44,9 @@ namespace Krino.Vertical.Utils.StateMachines
             return result;
         }
 
+        public bool IsActive => myActiveStates.Any();
+
+
         public IEnumerable<StateTrace<TState, TTrigger>> GetUnhandledStates()
         {
             var result = myUnhandledStates.Select(x => new StateTrace<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));

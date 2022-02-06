@@ -12,55 +12,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
     {
         private MultiMachine<LinguisticState, IWord> myMachine;
 
-        public GrammarMachine(MultiMachine<LinguisticState, IWord> grammarMachine)
+        public GrammarMachine(MultiMachine<LinguisticState, IWord> grammarRules)
         {
-            myMachine = grammarMachine;
+            myMachine = grammarRules;
         }
-
-        public string DebugView
-        {
-            get
-            {
-                var builder = new StringBuilder();
-
-                var activeStates = myMachine.GetActiveStates().ToList();
-                for (var i = 0; i < activeStates.Count; ++i)
-                {
-                    builder.Append(i).Append(" ");
-
-                    var activeState = activeStates[i];
-
-                    foreach (var item in activeState.Trace)
-                    {
-                        if (item.Definition.Parent != null)
-                        {
-                            if (item.Definition.StateKind == StateKind.Initial)
-                            {
-                                if (builder.Length > 0 && (builder[builder.Length - 1] == ')' || builder[builder.Length - 1] == '\''))
-                                {
-                                    builder.Append(" ");
-                                }
-
-                                builder.Append(item.Definition.Parent.Type.GetGrammarId()).Append("(");
-                            }
-                            else if (item.Definition.StateKind == StateKind.Custom && GrammarAttributes.Morpheme.IsFreeMorpheme(item.Definition.Value.Type))
-                            {
-                                builder.Append("'").Append(item.ByTrigger.Value).Append("'");
-                            }
-                            else if (item.Definition.StateKind == StateKind.Final)
-                            {
-                                builder.Append(")");
-                            }
-                        }
-                    }
-
-                    builder.AppendLine();
-                }
-
-                return builder.ToString();
-            }
-        }
-
 
         public void Add(IWord word)
         {
@@ -68,6 +23,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
         public void Reset() => myMachine.Reset();
+
+        public bool IsActive => myMachine.IsActive;
 
         public IEnumerable<IText> GetTexts()
         {
@@ -119,6 +76,52 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
 
             return result;
+        }
+
+
+
+        public string DebugView
+        {
+            get
+            {
+                var builder = new StringBuilder();
+
+                var activeStates = myMachine.GetActiveStates().ToList();
+                for (var i = 0; i < activeStates.Count; ++i)
+                {
+                    builder.Append(i).Append(" ");
+
+                    var activeState = activeStates[i];
+
+                    foreach (var item in activeState.Trace)
+                    {
+                        if (item.Definition.Parent != null)
+                        {
+                            if (item.Definition.StateKind == StateKind.Initial)
+                            {
+                                if (builder.Length > 0 && (builder[builder.Length - 1] == ')' || builder[builder.Length - 1] == '\''))
+                                {
+                                    builder.Append(" ");
+                                }
+
+                                builder.Append(item.Definition.Parent.Type.GetGrammarId()).Append("(");
+                            }
+                            else if (item.Definition.StateKind == StateKind.Custom && GrammarAttributes.Morpheme.IsFreeMorpheme(item.Definition.Value.Type))
+                            {
+                                builder.Append("'").Append(item.ByTrigger.Value).Append("'");
+                            }
+                            else if (item.Definition.StateKind == StateKind.Final)
+                            {
+                                builder.Append(")");
+                            }
+                        }
+                    }
+
+                    builder.AppendLine();
+                }
+
+                return builder.ToString();
+            }
         }
     }
 }
