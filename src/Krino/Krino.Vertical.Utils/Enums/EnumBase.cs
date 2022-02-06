@@ -143,7 +143,6 @@ namespace Krino.Vertical.Utils.Enums
         /// <returns></returns>
         public bool IsIn(BigInteger value) => IsIn(Value, value);
 
-
         protected BigInteger Value
         {
             get
@@ -183,6 +182,9 @@ namespace Krino.Vertical.Utils.Enums
         /// <param name="bigValue"></param>
         /// <returns></returns>
         public static bool IsIn(BigInteger inValue, BigInteger bigValue) => (inValue & bigValue) == inValue;
+
+        public override string ToString() => GetFullName();
+        
 
 
         /// <summary>

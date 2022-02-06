@@ -44,7 +44,10 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             if (--recursion == 0) return;
 
             var objectBuilder = builder.AddSubState(objectType)
-                .AddStates(GrammarAttributes.Morpheme.A.Free.Determiner, GrammarAttributes.Morpheme.O.Free.Noun, GrammarAttributes.Morpheme.O.Free.Pronoun, GrammarAttributes.Morpheme.U.Free.Conjunction);
+                .AddStates(GrammarAttributes.Morpheme.A.Free.Determiner,
+                           GrammarAttributes.Morpheme.O.Free.Noun,
+                           GrammarAttributes.Morpheme.O.Free.Pronoun,
+                           GrammarAttributes.Morpheme.U.Free.Conjunction);
 
             AddAdjectiveElement(objectBuilder, GrammarAttributes.AdjectiveElement.Attributive, recursion);
             AddAdjectiveElement(objectBuilder, GrammarAttributes.AdjectiveElement.PostPositive, recursion);
@@ -87,21 +90,21 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             if (--recursion == 0) return;
 
             var adjectiveBuilder = builder.AddSubState(objectType)
-                .AddStates(GrammarAttributes.Morpheme.A, GrammarAttributes.Morpheme.U);
+                .AddStates(GrammarAttributes.Morpheme.A.Free.Adjective, GrammarAttributes.Morpheme.U);
 
             AddAdverbElement(adjectiveBuilder, GrammarAttributes.AdverbElement, recursion);
             AddInfinitivePhrase(adjectiveBuilder, GrammarAttributes.InfinitivePhrase, recursion);
 
-            adjectiveBuilder.AddTransition("init", "A", GrammarAttributes.Morpheme.A.Free.Adjective)
+            adjectiveBuilder.AddTransition("init", GrammarAttributes.Morpheme.A.Free.Adjective, GrammarAttributes.Morpheme.A.Free.Adjective)
                 .AddTransition("init", GrammarAttributes.AdverbElement)
                 .AddTransition("init", GrammarAttributes.InfinitivePhrase)
 
-                .AddTransition(GrammarAttributes.AdverbElement, "A")
+                .AddTransition(GrammarAttributes.AdverbElement, GrammarAttributes.Morpheme.A.Free.Adjective)
                 
-                .AddTransition("A", GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
-                .AddTransition("A", "final")
+                .AddTransition(GrammarAttributes.Morpheme.A.Free.Adjective, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+                .AddTransition(GrammarAttributes.Morpheme.A.Free.Adjective, "final")
                 
-                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, "A", GrammarAttributes.Morpheme.A.Free.Adjective)
+                .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.Morpheme.A.Free.Adjective, GrammarAttributes.Morpheme.A.Free.Adjective)
                 .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.AdverbElement)
                 .AddTransition(GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating, GrammarAttributes.InfinitivePhrase)
 
@@ -116,7 +119,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             if (--recursion == 0) return;
 
             var adverbElement = builder.AddSubState(objectType)
-                .AddStates(GrammarAttributes.Morpheme.E, GrammarAttributes.Morpheme.U);
+                .AddStates(GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating);
 
             AddInfinitivePhrase(adverbElement, GrammarAttributes.InfinitivePhrase, recursion);
 
@@ -142,7 +145,10 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var predicate = builder.AddSubState(objectType);
 
             predicate.AddSubState(GrammarAttributes.VerbElement)
-                .AddStates(GrammarAttributes.Morpheme.I, GrammarAttributes.Morpheme.E, GrammarAttributes.Morpheme.U)
+                .AddStates(GrammarAttributes.Morpheme.I.Free.Verb,
+                           GrammarAttributes.Morpheme.E.Free.Adverb,
+                           GrammarAttributes.Morpheme.U.Free.Conjunction.Coordinating)
+
                 .AddTransition("init", GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb)
                 .AddTransition(GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.I.Free.Verb)
                 .AddTransition(GrammarAttributes.Morpheme.I.Free.Verb, GrammarAttributes.Morpheme.E.Free.Adverb, GrammarAttributes.Morpheme.E.Free.Adverb)
@@ -267,7 +273,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             if (--recursion == 0) return;
 
             var objectOfPreposition = builder.AddSubState(objectType)
-                .AddStates(GrammarAttributes.Morpheme.E);
+                .AddStates(GrammarAttributes.Morpheme.E.Free.Adverb);
 
             AddNounElement(objectOfPreposition, GrammarAttributes.Object.ObjectOfPreposition, recursion);
 
@@ -287,8 +293,8 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             AddPredicateElement(objectOfPreposition, GrammarAttributes.Predicate, recursion);
 
-            objectOfPreposition.AddTransition("init", "to", GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker);
-            objectOfPreposition.AddTransition("to", GrammarAttributes.Predicate);
+            objectOfPreposition.AddTransition("init", GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker, GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker);
+            objectOfPreposition.AddTransition(GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker, GrammarAttributes.Predicate);
             objectOfPreposition.AddTransition(GrammarAttributes.Predicate, "final");
         }
 

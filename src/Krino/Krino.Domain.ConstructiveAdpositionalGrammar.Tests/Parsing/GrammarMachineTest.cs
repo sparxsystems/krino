@@ -22,6 +22,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
 
+            var k = grammar.DebugView;
+
             grammar.Add(i);
             grammar.Add(read);
             grammar.Add(the);

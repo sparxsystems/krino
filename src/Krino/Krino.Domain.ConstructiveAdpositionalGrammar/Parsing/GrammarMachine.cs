@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.StateMachines;
 using System;
 using System.Collections.Generic;
@@ -40,9 +41,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                                     builder.Append(" ");
                                 }
 
-                                builder.Append(item.Definition.Parent.Type).Append("(");
+                                builder.Append(item.Definition.Parent.Type.GetGrammarId()).Append("(");
                             }
-                            else if (item.Definition.StateKind == StateKind.Custom && item.Definition.Value.Type == LinguisticStructureType.Lexeme)
+                            else if (item.Definition.StateKind == StateKind.Custom && GrammarAttributes.Morpheme.IsFreeMorpheme(item.Definition.Value.Type))
                             {
                                 builder.Append("'").Append(item.ByTrigger.Value).Append("'");
                             }
@@ -72,6 +73,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             var result = new List<IText>();
 
+            var linguisticStructureFactory = new LinguisticStructureFactory();
+
             var relevantActiveStates = myMachine.GetActiveStates().Where(x => x.IsCompleted);
 
             //var kk = relevantActiveStates.Select(x => string.Join(" -> ", x.GetPathToRoot().Reverse().Select(y => y.Value.Definition.Value.Id)));
@@ -91,7 +94,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     {
                         if (state.Definition.StateKind == StateKind.Initial)
                         {
-                            var structure = state.Definition.Parent.Type.GetLinguisticStructure();
+                            var structure = linguisticStructureFactory.Create(state.Definition.Parent.Type);
 
                             var parent = stack.Peek();
                             parent.AddSubStructure(structure);
