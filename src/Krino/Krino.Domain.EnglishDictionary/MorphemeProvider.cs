@@ -24,10 +24,10 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("damage", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
             new Morpheme("eleven", GrammarAttributes.Morpheme.A.Free.Numeral.Cardinal),
             new Morpheme("emergency", GrammarAttributes.Morpheme.O.Free.Noun),
-            new Morpheme("end", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Monovalent),
+            new Morpheme("end", GrammarAttributes.Morpheme.I.Free.Verb | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Monovalent),
             new Morpheme("good", GrammarAttributes.Morpheme.A.Free.Adjective),
             new Morpheme("grass", GrammarAttributes.Morpheme.O.Free.Noun.Common.Concrete),
-            new Morpheme("have", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
+            new Morpheme("have", GrammarAttributes.Morpheme.I.Free.Verb | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
             
             new Morpheme("i", GrammarAttributes.Morpheme.O.Free.Pronoun.Subjective),
             new Morpheme("in", GrammarAttributes.Morpheme.E.Free.Preposition),
@@ -46,7 +46,7 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("read", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
             new Morpheme("regarding", GrammarAttributes.Morpheme.E.Free.Preposition),
 
-            new Morpheme("say", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
+            new Morpheme("say", GrammarAttributes.Morpheme.I.Free.Verb | GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),
             new Morpheme("small", GrammarAttributes.Morpheme.A.Free.Adjective),
             new Morpheme("some", GrammarAttributes.Morpheme.A.Free.Determiner),
             new Morpheme("start", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent),

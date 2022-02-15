@@ -21,6 +21,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// <summary>
         /// Expresses a fact.
         /// </summary>
+        /// <remarks>
+        /// This aspect is also known as the indefinite aspect.
+        /// </remarks>
         public EnumValue Simple { get; }
 
         /// <summary>
@@ -34,7 +37,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue Perfect { get; }
 
         /// <summary>
-        /// Combines the perfect and the progressive to refer to the completed portion of a continuous action.
+        /// Expresses the end of an ongoing action.
         /// </summary>
         public BigInteger ContinousPerfect => Continuous | Perfect;
     }

@@ -9,14 +9,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
             Base = new EnumValue(this);
             Past = new EnumValue(this);
             PastParticiple = new EnumValue(this);
-
-            ThirdPersonSingular = new EnumValue(this);
+            Ing = new EnumValue(this);
             PresentParticiple = new EnumValue(this);
             Gerund = new EnumValue(this);
+            ThirdPersonSingular = new EnumValue(this);
         }
 
         /// <summary>
-        /// Infinitive form of the verb.
+        /// The version of the verb without any endings.
         /// (First form of the verb.)
         /// </summary>
         public EnumValue Base { get; }
@@ -25,7 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// Past form of a verb.
         /// (Second form of the verb.)
         /// </summary>
-        public EnumBase Past { get; }
+        public EnumValue Past { get; }
 
         /// <summary>
         /// A verb form which is used in forming perfect and passive tenses and sometimes as an adjective.
@@ -34,9 +34,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue PastParticiple { get; }
 
         /// <summary>
-        /// Third person singular form of a verb..
+        /// Ing form of the verb acting as gerund or present participle.
         /// </summary>
-        public EnumBase ThirdPersonSingular { get; }
+        public EnumValue Ing { get; }
 
         /// <summary>
         /// The present participle verb form is created by adding -ing to the root word.
@@ -57,5 +57,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// Gerunds are used as nouns.
         /// </remarks>
         public EnumValue Gerund { get; }
+
+        /// <summary>
+        /// Third person singular present form.
+        /// </summary>
+        public EnumValue ThirdPersonSingular { get; }
     }
 }

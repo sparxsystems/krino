@@ -1,5 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes;
-using Krino.Vertical.Utils.Enums;
+﻿using Krino.Vertical.Utils.Enums;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes
 {
@@ -12,7 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         {
             Person = new PersonSememes(this);
             Number = new NumberSememes(this);
-            Tense = new VerbTenseSememes(this);
+            Time = new VerbTimeSememes(this);
             Aspect = new VerbAspectSememes(this);
             Mood = new VerbMoodSememes(this);
             Voice = new VerbVoiceSememes(this);
@@ -20,16 +19,25 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
         public PersonSememes Person { get; }
 
+        /// <summary>
+        /// Singular or plural.
+        /// </summary>
         public NumberSememes Number { get; }
 
         /// <summary>
-        /// Refers to when the action occurred.
+        /// Refers to the time (the perception of the reality): past, present and future.
         /// </summary>
-        public VerbTenseSememes Tense { get; }
+        /// <remarks>
+        /// Note: Tense is a grammatical category combining Time and Aspect.
+        /// </remarks>
+        public VerbTimeSememes Time { get; }
 
         /// <summary>
         /// Refers to the flow of time.
         /// </summary>
+        /// <remarks>
+        /// Note: Tense is a grammatical category combining Time and Aspect.
+        /// </remarks>
         public VerbAspectSememes Aspect { get; }
 
         /// <summary>
@@ -38,7 +46,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public VerbMoodSememes Mood { get; }
 
         /// <summary>
-        /// Refers who does the verb (active vs passive).
+        /// Refers who does the verb (active or passive).
         /// </summary>
         public VerbVoiceSememes Voice { get; }
     }

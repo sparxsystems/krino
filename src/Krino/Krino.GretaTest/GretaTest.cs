@@ -2,6 +2,7 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
+using Krino.Domain.EnglishGrammar.Parsing;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System;
@@ -21,7 +22,8 @@ namespace Krino.GretaTest
             //Trace.StartProfiler();
 
             var dictionary = new EnglishConstructiveDictionaryFactory() { MaxWords = 8 }.Create();
-            var parser = new Parser(dictionary);
+            var grammar = new EnglishMachine();
+            var parser = new Parser(dictionary, grammar.Machine);
             //var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
             var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
 
@@ -33,7 +35,8 @@ namespace Krino.GretaTest
         public void Sentence_1_2()
         {
             var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            var parser = new Parser(dictionary);
+            var grammar = new EnglishMachine();
+            var parser = new Parser(dictionary, grammar.Machine);
 
             var results = parser.Parse("I will start with the good news.");
 
