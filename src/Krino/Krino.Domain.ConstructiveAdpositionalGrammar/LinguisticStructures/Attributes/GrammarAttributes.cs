@@ -16,7 +16,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
 
         public static EnumValue NounElement { get; } = new EnumValue(Instance);
-        public static EnumValue VerbElement { get; } = new EnumValue(Instance);
+        public static VerbElementAttributes VerbElement { get; } = new VerbElementAttributes(Instance);
         public static AdjectiveElementAttributes AdjectiveElement { get; } = new AdjectiveElementAttributes(Instance);
         public static EnumValue AdverbElement { get; } = new EnumValue(Instance);
 

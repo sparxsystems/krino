@@ -15,11 +15,6 @@ namespace Krino.Vertical.Utils.Enums
         protected EnumRootBase() : base(null) { }
 
         /// <summary>
-        /// Number of bits the whole enum occupies.
-        /// </summary>
-        new public int Length { get; internal set; }
-
-        /// <summary>
         /// Returns value for the value for the structured enum name.
         /// </summary>
         /// <param name="structuredEnumName"></param>

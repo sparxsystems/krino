@@ -1,6 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Enums;
+using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
 using System;
 using System.Linq;
@@ -20,10 +21,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             myMachine = machine;
 
-            var initState = new LinguisticState("init", null);
+            var initState = new LinguisticState("init", 0);
             myMachine.AddInitialState(initState);
 
-            var finalState = new LinguisticState("final", null);
+            var finalState = new LinguisticState("final", 0);
             myMachine.AddFinalState(finalState);
         }
 
@@ -35,18 +36,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myParentState = parentState;
             myIsSubState = true;
 
-            var initState = new LinguisticState($"{myParentState.Id}-init", null);
+            var initState = new LinguisticState($"{myParentState.Id}-init", 0);
             myMachine.AddInitialSubState(myParentState, initState);
 
-            var finalState = new LinguisticState($"{myParentState.Id}-final", null);
+            var finalState = new LinguisticState($"{myParentState.Id}-final", 0);
             myMachine.AddFinalSubState(myParentState, finalState);
         }
 
-        public GrammarMachineBuilder AddStates(params EnumBase[] states)
+        public LinguisticState ParentState => myParentState;
+
+        public GrammarMachineBuilder AddStates(params BigInteger[] attributes)
         {
             using var _t = Trace.Entering();
 
-            foreach (var state in states)
+            foreach (var state in attributes)
             {
                 AddState(state.GetGrammarId(), state);
             }
@@ -54,18 +57,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
-        public GrammarMachineBuilder AddState(string stateId, EnumBase stateType)
+        public GrammarMachineBuilder AddState(string stateId, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
             if (myIsSubState)
             {
-                var stateToUse = new LinguisticState($"{myParentState.Id}-{stateId}", stateType);
+                var stateToUse = new LinguisticState($"{myParentState.Id}-{stateId}", attributes);
                 myMachine.AddSubState(myParentState, stateToUse);
             }
             else
             {
-                var stateToUse = new LinguisticState(stateId, stateType);
+                var stateToUse = new LinguisticState(stateId, attributes);
                 myMachine.AddState(stateToUse);
             }
 
@@ -73,11 +76,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
-        public GrammarMachineBuilder AddSubState(EnumBase subStateType)
+        public GrammarMachineBuilder AddSubState(BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
-            var newSubState = myIsSubState ? new LinguisticState($"{myParentState.Id}-{subStateType.GetGrammarId()}", subStateType) : new LinguisticState(subStateType.GetGrammarId(), subStateType);
+            var newSubState = myIsSubState ? new LinguisticState($"{myParentState.Id}-{attributes.GetGrammarId()}", attributes) : new LinguisticState(attributes.GetGrammarId(), attributes);
             myMachine.AddState(newSubState);
             var result = new GrammarMachineBuilder(myMachine, newSubState);
 
@@ -85,11 +88,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddEmptyTransition(EnumBase from, EnumBase to) => AddEmptyTransition(from.GetGrammarId(), to.GetGrammarId());
+        public GrammarMachineBuilder AddEmptyTransition(BigInteger from, BigInteger to) => AddEmptyTransition(from.GetGrammarId(), to.GetGrammarId());
 
-        public GrammarMachineBuilder AddEmptyTransition(string fromId, EnumBase to) => AddEmptyTransition(fromId, to.GetGrammarId());
+        public GrammarMachineBuilder AddEmptyTransition(string fromId, BigInteger to) => AddEmptyTransition(fromId, to.GetGrammarId());
 
-        public GrammarMachineBuilder AddEmptyTransition(EnumBase from, string toId) => AddEmptyTransition(from.GetGrammarId(), toId);
+        public GrammarMachineBuilder AddEmptyTransition(BigInteger from, string toId) => AddEmptyTransition(from.GetGrammarId(), toId);
 
         public GrammarMachineBuilder AddEmptyTransition(string fromId, string toId)
         {
@@ -104,11 +107,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(EnumBase from, EnumBase to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetGrammarId(), to.GetGrammarId(), previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(BigInteger from, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetGrammarId(), to.GetGrammarId(), previousWordAttributes);
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, EnumBase to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(fromId, to.GetGrammarId(), previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(fromId, to.GetGrammarId(), previousWordAttributes);
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(EnumBase from, string toId, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetGrammarId(), toId, previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(BigInteger from, string toId, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetGrammarId(), toId, previousWordAttributes);
         public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
         {
             using var _t = Trace.Entering();
@@ -128,9 +131,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
-        public GrammarMachineBuilder AddTriggeredTransition(EnumBase from, EnumBase to) => AddTriggeredTransition(from.GetGrammarId(), to);
+        public GrammarMachineBuilder AddTriggeredTransition(BigInteger from, BigInteger to) => AddTriggeredTransition(from.GetGrammarId(), to);
 
-        public GrammarMachineBuilder AddTriggeredTransition(string fromId, EnumBase to)
+        public GrammarMachineBuilder AddTriggeredTransition(string fromId, BigInteger to) => AddTriggeredTransition(fromId, to, ParsingRule.WordContainsAttribute(to));
+
+        public GrammarMachineBuilder AddTriggeredTransition(string fromId, BigInteger to, IRule<IWord> transitionRule)
         {
             using var _t = Trace.Entering();
 
@@ -140,8 +145,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 BigInteger defaultTrigger = to;
 
-                var triggerRule = ParsingRule.WordContainsAttribute(defaultTrigger);
-                myMachine.AddTransition(fromState.Value, toState.Value, triggerRule);
+                myMachine.AddTransition(fromState.Value, toState.Value, transitionRule);
             }
 
             return this;
@@ -158,9 +162,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             var fromIdToUse = myIsSubState ? $"{myParentState.Id}-{fromId}" : fromId;
             var toIdToUse = myIsSubState ? $"{myParentState.Id}-{toId}" : toId;
 
-            if (myMachine.TryGetStateDefinition(new LinguisticState(fromIdToUse, null), out from))
+            if (myMachine.TryGetStateDefinition(new LinguisticState(fromIdToUse, 0), out from))
             {
-                if (myMachine.TryGetStateDefinition(new LinguisticState(toIdToUse, null), out to))
+                if (myMachine.TryGetStateDefinition(new LinguisticState(toIdToUse, 0), out to))
                 {
                     return true;
                 }

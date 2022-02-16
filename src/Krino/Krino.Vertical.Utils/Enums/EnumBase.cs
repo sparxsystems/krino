@@ -153,6 +153,28 @@ namespace Krino.Vertical.Utils.Enums
             }
         }
 
+        protected byte[] GetCorrectBytes(BigInteger value)
+        {
+            byte[] result;
+
+            byte[] valueBytes = value.ToByteArray();
+
+            var root = ParentEnums.OfType<EnumBase>().Prepend(this).Concat(ParentEnums).OfType<EnumRootBase>().FirstOrDefault();
+            int arrayLength = root.Length % 8 == 0 ? 1 + root.Length / 8 : 1 + root.Length / 8 + 1;
+
+            if (valueBytes.Length < arrayLength)
+            {
+                result = new byte[arrayLength];
+                Array.Copy(valueBytes, 0, result, 0, valueBytes.Length);
+            }
+            else
+            {
+                result = valueBytes;
+            }
+
+            return result;
+        }
+
         private byte[] GetValueInBytes()
         {
             byte[] result;

@@ -1,7 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.StateMachines;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -49,7 +48,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                     {
                         if (state.Definition.StateKind == StateKind.Initial)
                         {
-                            var structure = linguisticStructureFactory.Create(state.Definition.Parent.Type);
+                            var structure = linguisticStructureFactory.Create(state.Definition.Parent.Attributes);
 
                             var parent = stack.Peek();
                             parent.AddSubStructure(structure);
@@ -101,9 +100,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                                     builder.Append(" ");
                                 }
 
-                                builder.Append(item.Definition.Parent.Type.GetGrammarId()).Append("(");
+                                builder.Append(item.Definition.Parent.Attributes.GetGrammarId()).Append("(");
                             }
-                            else if (item.Definition.StateKind == StateKind.Custom && GrammarAttributes.Morpheme.IsFreeMorpheme(item.Definition.Value.Type))
+                            else if (item.Definition.StateKind == StateKind.Custom && GrammarAttributes.Morpheme.IsFreeMorpheme(item.Definition.Value.Attributes))
                             {
                                 builder.Append("'").Append(item.ByTrigger.Value).Append("'");
                             }

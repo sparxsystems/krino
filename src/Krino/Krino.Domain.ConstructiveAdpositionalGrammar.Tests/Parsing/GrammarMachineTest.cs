@@ -11,6 +11,27 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     public class GrammarMachineTest
     {
         [Test]
+        public void GetTexts_I_read()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.O.Free.Pronoun);
+            var read = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            var k = grammar.DebugView;
+
+            grammar.Add(i);
+            grammar.Add(read);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+
+        [Test]
         public void GetTexts_I_read_the_book()
         {
             var i = new Word("i", GrammarAttributes.Morpheme.O.Free.Pronoun);

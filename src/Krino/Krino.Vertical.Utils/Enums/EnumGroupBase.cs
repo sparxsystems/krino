@@ -178,29 +178,15 @@ namespace Krino.Vertical.Utils.Enums
         /// <summary>
         /// Clears all bits related to this enum group, i.e. this group and all its sub-groups and values.
         /// </summary>
-        public BigInteger Clear(BigInteger value)
-        {
-            BigInteger result;
+        public BigInteger Clear(BigInteger value) => ClearInternal(BitIndex, value);
 
-            // If this is not the root.
-            if (ParentEnum != null)
-            {
-                byte[] bytes = value.ToByteArray();
+        /// <summary>
+        /// Clears all bits related to sub-groups and sub-values of this enum.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <returns></returns>
+        public BigInteger ClearSubEnums(BigInteger value) => ClearInternal(BitIndex + 1, value);
 
-                for (int i = BitIndex; i < BitIndex + Length + 1; ++i)
-                {
-                    bytes[bytes.Length - i / 8 - 2] &= (byte)(~(0x80 >> (i % 8)));
-                }
-
-                result = new BigInteger(bytes);
-            }
-            else
-            {
-                result = new BigInteger(new byte[Length]);
-            }
-
-            return result;
-        }
 
 
         protected BigInteger GetValueFromPath(string[] path, int idx)
@@ -230,6 +216,30 @@ namespace Krino.Vertical.Utils.Enums
             return result;
         }
 
-        
+        private BigInteger ClearInternal(int startIdx, BigInteger value)
+        {
+            BigInteger result;
+
+            // If this is not the root.
+            if (ParentEnum != null)
+            {
+                // Note: if just value.ToByteArray() is called then the returned byte array can be optimised and its length can be short.
+                byte[] bytes = GetCorrectBytes(value);
+
+                for (int i = startIdx; i < BitIndex + Length + 1; ++i)
+                {
+                    bytes[bytes.Length - i / 8 - 2] &= (byte)(~(0x80 >> (i % 8)));
+                }
+
+                result = new BigInteger(bytes);
+            }
+            else
+            {
+                result = new BigInteger(new byte[Length]);
+            }
+
+            return result;
+        }
+
     }
 }

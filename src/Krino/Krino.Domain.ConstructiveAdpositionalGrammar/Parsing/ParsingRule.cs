@@ -13,7 +13,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         public static IRule<IWord> WordStringIs(string word, bool caseSensitive = false) => new WordStringIsRule(word, caseSensitive);
         public static IRule<IWord> WordContainsAttribute(BigInteger attribute) => new WordContainsAttributeRule(attribute);
 
+        public static IRule<IWord> AuxiliaryWordIs(params string[] auxiliaryWords)
+        {
+            IRule<IWord> result = null;
+
+            for (int i = 0; i < auxiliaryWords.Length; ++i)
+            {
+                var wordStr = auxiliaryWords[i];
+
+                if (i == 0)
+                {
+                    result = WordStringIs(wordStr, false);
+                }
+                else
+                {
+                    result = result.Or(WordStringIs(wordStr, true));
+                }
+            }
+
+            return result;
+        }
+
         public static IRule<StateTrace<LinguisticState, IWord>> PreviousWordContainsAttribute(BigInteger attribute) => new PreviousWordContainsAttributeRule(attribute);
+
+
 
         public static ImmediateTriggerRule<IWord> GetImmediateTrigger() => myImmediateTriggerRule;
     }

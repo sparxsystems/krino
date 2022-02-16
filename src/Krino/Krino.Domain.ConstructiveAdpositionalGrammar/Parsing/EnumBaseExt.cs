@@ -1,46 +1,18 @@
-﻿using Krino.Vertical.Utils.Enums;
-using System;
-using System.Linq;
-using System.Reflection;
-using System.Text;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
     internal static class EnumBaseExt
     {
-        public static string GetGrammarId(this EnumBase source)
+        public static string GetGrammarId(this BigInteger attributes)
         {
-            var result = new StringBuilder();
-
-            object parentInstance = null;
-            var path = source.ParentEnums.Reverse();
-            foreach (var item in path)
-            {
-                if (item != path.First())
-                {
-                    // Property chain from the root.
-                    var referencingProperty = GetReferencingProperty(parentInstance, item);
-                    result.Append(referencingProperty.Name).Append(".");
-                }
-
-                parentInstance = item;
-            }
-
-            // If this is not the root.
-            if (parentInstance != null)
-            {
-                var property = GetReferencingProperty(parentInstance, source);
-                result.Append(property.Name);
-            }
-
-            return result.ToString();
+            var toReplace = string.Join("", nameof(GrammarAttributes), ".");
+            var result = GrammarAttributes.Instance.GetFullName(attributes).Replace(toReplace, "");
+            return result;
         }
 
-        private static PropertyInfo GetReferencingProperty(object instance, object value)
-        {
-            var properties = instance.GetType().GetProperties();
-            var referencingProperty = properties.First(x => x.GetValue(instance) == value);
-            return referencingProperty;
-        }
+        public static string GetGrammarId(this EnumBase source) => ((BigInteger)source).GetGrammarId();
     }
 }

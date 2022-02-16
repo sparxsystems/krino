@@ -1,5 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes;
-using Krino.Vertical.Utils.Enums;
+﻿using Krino.Vertical.Utils.Enums;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes
 {
@@ -19,7 +18,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
             InfinitiveMarker = new EnumValue(this);
             Form = new VerbFormAttributes(this);
             Valency = new VerbValencyAttributes(this);
-            Sememe = new VerbSememes(this);
         }
 
         /// <summary>
@@ -69,10 +67,5 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// Valency of the verb.
         /// </summary>
         public VerbValencyAttributes Valency { get; }
-
-        /// <summary>
-        /// Semantic attributes.
-        /// </summary>
-        public VerbSememes Sememe { get; }
     }
 }
