@@ -25,7 +25,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue Concrete { get; }
 
         /// <summary>
-        /// The name of the quaity, action or state e.g. obedience, goodness.
+        /// The name of the quality, action or state e.g. obedience, goodness.
         /// </summary>
         public EnumValue Abstract { get; }
     }

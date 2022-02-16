@@ -12,6 +12,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
             Positive = new EnumValue(this);
             Comparative = new EnumValue(this);
             Superlative = new EnumValue(this);
+            ConjunctiveAdverb = new EnumValue(this);
         }
 
         /// <summary>
@@ -28,5 +29,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// Comparing one action or state with all the others in the same category e.g. fastest.
         /// </summary>
         public EnumValue Superlative { get; }
+
+        /// <summary>
+        /// Connects two independent clauses or sentences.
+        /// </summary>
+        /// <remarks>
+        /// E.g.: also, consequently, furthermore, however, moreover, nevertheless, therefore.
+        /// </remarks>
+        public EnumValue ConjunctiveAdverb { get; }
     }
 }
