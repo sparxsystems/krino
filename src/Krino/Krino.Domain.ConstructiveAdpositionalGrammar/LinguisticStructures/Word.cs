@@ -30,13 +30,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             }
             else
             {
-                var prefixes = morphemes.TakeWhile(x => GrammarAttributes.Morpheme.IsPrefix(x.Attributes));
+                var prefixes = morphemes.TakeWhile(x => GrammarAttributes.Morpheme.Bound.Prefix.IsIn(x.Attributes));
                 Prefixes.AddRange(prefixes);
 
-                Root = morphemes.FirstOrDefault(x => GrammarAttributes.Morpheme.IsFreeMorpheme(x.Attributes));
+                Root = morphemes.FirstOrDefault(x => GrammarAttributes.Morpheme.Free.IsIn(x.Attributes));
 
-                var suffixes = morphemes.SkipWhile(x => !GrammarAttributes.Morpheme.IsSuffix(x.Attributes))
-                    .TakeWhile(x => GrammarAttributes.Morpheme.IsSuffix(x.Attributes));
+                var suffixes = morphemes.SkipWhile(x => !GrammarAttributes.Morpheme.Bound.Suffix.IsIn(x.Attributes))
+                    .TakeWhile(x => GrammarAttributes.Morpheme.Bound.Suffix.IsIn(x.Attributes));
 
                 Suffixes.AddRange(suffixes);
             }

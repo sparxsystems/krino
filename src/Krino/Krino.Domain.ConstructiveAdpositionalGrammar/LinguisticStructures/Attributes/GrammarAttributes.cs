@@ -13,6 +13,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
         public static MorphemeAttributes Morpheme { get; } = new MorphemeAttributes(Instance);
 
+        /// <summary>
+        /// Punction mark like . ! ? , ; : etc.
+        /// </summary>
+        public static AdPositionPunctuationMarkAttributes PunctuationMark { get; } = new AdPositionPunctuationMarkAttributes(Instance);
+
 
 
         public static EnumValue NounElement { get; } = new EnumValue(Instance);
@@ -20,13 +25,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public static AdjectiveElementAttributes AdjectiveElement { get; } = new AdjectiveElementAttributes(Instance);
         public static EnumValue AdverbElement { get; } = new EnumValue(Instance);
 
-        public static EnumValue PrepositionalPhrase { get; } = new EnumValue(Instance);
-        public static EnumValue InfinitivePhrase { get; } = new EnumValue(Instance);
-
         
-        public static EnumValue Verb { get; } = new EnumValue(Instance);
+        public static PhraseAttributes Phrase { get; } = new PhraseAttributes(Instance);
+
         public static ObjectAttributes Object { get; } = new ObjectAttributes(Instance);
         public static ComplementAttributes Complement { get; } = new ComplementAttributes(Instance);
+        public static EnumValue Adverbial { get; } = new EnumValue(Instance);
 
         /// <summary>
         /// Noun element functioning as the subject.

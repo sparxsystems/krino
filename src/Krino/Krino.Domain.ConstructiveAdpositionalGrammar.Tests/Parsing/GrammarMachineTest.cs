@@ -11,11 +11,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     public class GrammarMachineTest
     {
         [Test]
-        public void GetTexts_I_read()
+        public void GetTexts_Basic()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.O.Free.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb.Form.Base);
-            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
@@ -32,13 +32,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
 
         [Test]
-        public void GetTexts_I_read_the_book()
+        public void GetTexts_DirectObject()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.O.Free.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent);
-            var the = new Word("the", GrammarAttributes.Morpheme.A.Free.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
-            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
@@ -56,14 +56,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void GetTexts_I_give_him_a_book()
+        public void GetTexts_IndirectObject()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.O.Free.Pronoun);
-            var give = new Word("give", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Trivalent);
-            var him = new Word("him", GrammarAttributes.Morpheme.O.Free.Pronoun);
-            var a = new Word("a", GrammarAttributes.Morpheme.A.Free.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
-            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var give = new Word("give", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent);
+            var him = new Word("him", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var a = new Word("a", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
 
             var english = new EnglishMachine().Machine;
@@ -81,15 +81,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void GetTexts_I_read_the_book_in_the_room()
+        public void GetTexts_AdverbialAfterDirectObject()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.O.Free.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Bivalent);
-            var the = new Word("the", GrammarAttributes.Morpheme.A.Free.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
-            var in_ = new Word("in", GrammarAttributes.Morpheme.E.Free.Preposition);
-            var room = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
-            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var in_ = new Word("in", GrammarAttributes.Morpheme.Free.Functional.Preposition);
+            var room = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
 
             var english = new EnglishMachine().Machine;
@@ -109,17 +109,19 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void GetTexts_The_book_is_green()
+        public void GetTexts_SubjectComplement()
         {
-            var the = new Word("the", GrammarAttributes.Morpheme.A.Free.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
-            var is_ = new Word("is", GrammarAttributes.Morpheme.I.Free.Verb.Stative.Linking);
-            var green = new Word("green", GrammarAttributes.Morpheme.A.Free.Adjective);
-            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular);
+            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
 
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
 
             grammar.Add(the);
             grammar.Add(book);
@@ -132,15 +134,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
-        public void GetTexts_The_green_book_is_on_the_table()
+        public void GetTexts_NounPhraseSubject()
         {
-            var the = new Word("the", GrammarAttributes.Morpheme.A.Free.Determiner);
-            var green = new Word("green", GrammarAttributes.Morpheme.A.Free.Adjective);
-            var book = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
-            var is_ = new Word("is", GrammarAttributes.Morpheme.I.Free.Verb.Stative.Linking);
-            var on = new Word("on", GrammarAttributes.Morpheme.E.Free.Preposition);
-            var table = new Word("table", GrammarAttributes.Morpheme.O.Free.Noun);
-            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word("flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
@@ -148,26 +148,24 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(the);
             grammar.Add(green);
             grammar.Add(book);
-            grammar.Add(is_);
-            grammar.Add(on);
-            grammar.Add(the);
-            grammar.Add(table);
+            grammar.Add(flies);
             grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
         }
+
 
 
         [Test]
         public void GetTexts_I_am_tired_to_read()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.O.Free.Pronoun);
-            var am = new Word("am", GrammarAttributes.Morpheme.I.Free.Verb.Stative.Linking);
-            var tired = new Word("tired", GrammarAttributes.Morpheme.A.Free.Adjective);
-            var to = new Word("to", GrammarAttributes.Morpheme.I.Free.Verb.InfinitiveMarker);
-            var read = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb.Valency.Trivalent);
-            var punct = new Word(".", GrammarAttributes.Morpheme.U.Bound.PunctuationMark.Period);
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var am = new Word("am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular);
+            var tired = new Word("tired", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var to = new Word("to", GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
 
             //Trace.StartProfiler();
@@ -175,6 +173,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             //Trace.StopProfiler();
 
             var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
 
             grammar.Add(i);
             grammar.Add(am);

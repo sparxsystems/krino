@@ -214,7 +214,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
                     }
                     else
                     {
-                        if (!GrammarAttributes.Morpheme.IsSuffix(item.Morpheme.Attributes))
+                        if (!GrammarAttributes.Morpheme.Bound.Suffix.IsIn(item.Morpheme.Attributes))
                         {
                             result.Append(" ");
                         }

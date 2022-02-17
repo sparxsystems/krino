@@ -16,7 +16,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public string Value { get; private set; }
 
-        public GrammarCharacter GrammarCharacter => GrammarAttributes.Morpheme.GetGrammarCharacter(Attributes);
+        /// <summary>
+        /// TODO: !!
+        /// </summary>
+        public GrammarCharacter GrammarCharacter => GrammarCharacter.e;
 
 
         public bool Equals(IMorpheme other) => Value == other.Value && Attributes == other.Attributes;

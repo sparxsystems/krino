@@ -2,10 +2,9 @@
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    internal class VerbElement : PhraseBase, IVerbElement
+    internal class VerbElement : VerbElementBase, IVerbElement
     {
-        public VerbElement(BigInteger attributes)
-            : base(attributes)
+        public VerbElement(BigInteger attributes) : base(attributes)
         {
         }
     }

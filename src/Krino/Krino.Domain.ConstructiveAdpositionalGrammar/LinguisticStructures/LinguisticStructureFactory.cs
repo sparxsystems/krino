@@ -1,5 +1,4 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
-using Krino.Vertical.Utils.Enums;
 using System;
 using System.Numerics;
 
@@ -11,49 +10,22 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         {
             ILinguisticStructure result = null;
 
-            // Elements
-            if (GrammarAttributes.NounElement.IsIn(attributes))
-            {
-                result = new NounElement(attributes);
-            }
-            else if (GrammarAttributes.AdjectiveElement.IsIn(attributes))
-            {
-                result = new AdjectiveElement(attributes);
-            }
-            else if (GrammarAttributes.AdverbElement.IsIn(attributes))
-            {
-                result = new AdverbElement(attributes);
-            }
-            else if (GrammarAttributes.VerbElement.IsIn(attributes))
+            // Specialized phrases.
+            if (GrammarAttributes.VerbElement.IsIn(attributes))
             {
                 result = new VerbElement(attributes);
             }
 
-            // Objects
-            else if (GrammarAttributes.Object.ObjectOfVerb.Direct.IsIn(attributes) ||
-                     GrammarAttributes.Object.ObjectOfVerb.Indirect.IsIn(attributes) ||
-                     GrammarAttributes.Object.ObjectOfPreposition.IsIn(attributes))
-            {
-                result = new Objectt(attributes);
-            }
+            // General phrases
+            else if (GrammarAttributes.NounElement.IsIn(attributes) ||
+                     GrammarAttributes.AdjectiveElement.IsIn(attributes) ||
+                     GrammarAttributes.AdverbElement.IsIn(attributes) ||
 
-            // Complements
-            else if (GrammarAttributes.Complement.SubjectComplement.IsIn(attributes) ||
-                     GrammarAttributes.Complement.ObjectComplement.IsIn(attributes) ||
-                     GrammarAttributes.Complement.AdjectiveComplement.IsIn(attributes) ||
-                     GrammarAttributes.Complement.AdverbialComplement.IsIn(attributes))
+                     GrammarAttributes.Object.IsIn(attributes) ||
+                     GrammarAttributes.Complement.IsIn(attributes) ||
+                     GrammarAttributes.Phrase.IsIn(attributes))
             {
-                result = new Complement(attributes);
-            }
-
-            // Phrases
-            else if (GrammarAttributes.PrepositionalPhrase.IsIn(attributes))
-            {
-                result = new PrepositionalPhrase(attributes);
-            }
-            else if (GrammarAttributes.InfinitivePhrase.IsIn(attributes))
-            {
-                result = new InfinitivePhrase(attributes);
+                result = new Phrase(attributes);
             }
 
 
@@ -61,12 +33,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             {
                 result = new Subject(attributes);
             }
-            else if (GrammarAttributes.Verb.IsIn(attributes))
-            {
-                result = new Verb(attributes);
-            }
-
-
             else if (GrammarAttributes.Predicate.IsIn(attributes))
             {
                 result = new Predicate(attributes);

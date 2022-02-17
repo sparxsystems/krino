@@ -102,7 +102,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                                 builder.Append(item.Definition.Parent.Attributes.GetGrammarId()).Append("(");
                             }
-                            else if (item.Definition.StateKind == StateKind.Custom && GrammarAttributes.Morpheme.IsFreeMorpheme(item.Definition.Value.Attributes))
+                            else if (item.Definition.StateKind == StateKind.Custom && GrammarAttributes.Morpheme.Free.IsIn(item.Definition.Value.Attributes))
                             {
                                 builder.Append("'").Append(item.ByTrigger.Value).Append("'");
                             }

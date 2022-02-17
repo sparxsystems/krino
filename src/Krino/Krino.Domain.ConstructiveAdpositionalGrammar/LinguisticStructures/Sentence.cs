@@ -24,12 +24,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             {
                 BigInteger result = base.Attributes;
 
-                if (GrammarAttributes.Morpheme.U.Bound.PunctuationMark.QuestionMark.IsIn(base.Attributes))
+                if (GrammarAttributes.PunctuationMark.QuestionMark.IsIn(base.Attributes))
                 {
                     result |= GrammarAttributes.Sentence.Interrogative;
                 }
                 else if (Clauses.Count == 1 && GrammarAttributes.Clause.Imperative.IsIn(Clauses[0].Attributes) &&
-                         GrammarAttributes.Morpheme.U.Bound.PunctuationMark.ExclamationPoint.IsIn(base.Attributes))
+                         GrammarAttributes.PunctuationMark.ExclamationPoint.IsIn(base.Attributes))
                 {
                     result |= GrammarAttributes.Sentence.Imperative;
                 }

@@ -12,18 +12,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
             Ing = new EnumValue(this);
             PresentParticiple = new EnumValue(this);
             Gerund = new EnumValue(this);
-            ThirdPersonSingular = new EnumValue(this);
+
+            // Note: these are just forms and not semantic meanings!
+            PastFirstPersonSingular = new EnumValue(this);
+            PastSecondPersonSingular = new EnumValue(this);
+            PastThirdPersonSingular = new EnumValue(this);
+            PastAnyPersonPlural = new EnumValue(this);
+
+            PresentFirstPersonSingular = new EnumValue(this);
+            PresentSecondPersonSingular = new EnumValue(this);
+            PresentThirdPersonSingular = new EnumValue(this);
+            PresentAnyPersonPlural = new EnumValue(this);
         }
 
         /// <summary>
         /// The version of the verb without any endings.
-        /// (First form of the verb.)
         /// </summary>
         public EnumValue Base { get; }
 
         /// <summary>
         /// Past form of a verb.
-        /// (Second form of the verb.)
         /// </summary>
         public EnumValue Past { get; }
 
@@ -34,6 +42,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue PastParticiple { get; }
 
         /// <summary>
+        /// ???
         /// Ing form of the verb acting as gerund or present participle.
         /// </summary>
         public EnumValue Ing { get; }
@@ -50,6 +59,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         
 
         /// <summary>
+        /// ???
         /// A verb form which acts as a noun. In English ending with -ing.
         /// </summary>
         /// <remarks>
@@ -58,9 +68,23 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// </remarks>
         public EnumValue Gerund { get; }
 
-        /// <summary>
-        /// Third person singular present form.
-        /// </summary>
-        public EnumValue ThirdPersonSingular { get; }
+
+
+        public EnumValue PastFirstPersonSingular { get; }
+
+        public EnumValue PastSecondPersonSingular { get; }
+
+        public EnumValue PastThirdPersonSingular { get; }
+
+        public EnumValue PastAnyPersonPlural { get; }
+
+
+        public EnumValue PresentFirstPersonSingular { get; }
+
+        public EnumValue PresentSecondPersonSingular { get; }
+
+        public EnumValue PresentThirdPersonSingular { get; }
+
+        public EnumValue PresentAnyPersonPlural { get; }
     }
 }

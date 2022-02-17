@@ -36,10 +36,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             myParentState = parentState;
             myIsSubState = true;
 
-            var initState = new LinguisticState($"{myParentState.Id}-init", 0);
+            var initState = new LinguisticState($"{myParentState.Id}|init", 0);
             myMachine.AddInitialSubState(myParentState, initState);
 
-            var finalState = new LinguisticState($"{myParentState.Id}-final", 0);
+            var finalState = new LinguisticState($"{myParentState.Id}|final", 0);
             myMachine.AddFinalSubState(myParentState, finalState);
         }
 
@@ -63,7 +63,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             if (myIsSubState)
             {
-                var stateToUse = new LinguisticState($"{myParentState.Id}-{stateId}", attributes);
+                var stateToUse = new LinguisticState($"{myParentState.Id}|{stateId}", attributes);
                 myMachine.AddSubState(myParentState, stateToUse);
             }
             else
@@ -80,7 +80,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
-            var newSubState = myIsSubState ? new LinguisticState($"{myParentState.Id}-{attributes.GetGrammarId()}", attributes) : new LinguisticState(attributes.GetGrammarId(), attributes);
+            var newSubState = myIsSubState ? new LinguisticState($"{myParentState.Id}|{attributes.GetGrammarId()}", attributes) : new LinguisticState(attributes.GetGrammarId(), attributes);
             myMachine.AddState(newSubState);
             var result = new GrammarMachineBuilder(myMachine, newSubState);
 
@@ -159,8 +159,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             from = default;
             to = default;
 
-            var fromIdToUse = myIsSubState ? $"{myParentState.Id}-{fromId}" : fromId;
-            var toIdToUse = myIsSubState ? $"{myParentState.Id}-{toId}" : toId;
+            var fromIdToUse = myIsSubState ? $"{myParentState.Id}|{fromId}" : fromId;
+            var toIdToUse = myIsSubState ? $"{myParentState.Id}|{toId}" : toId;
 
             if (myMachine.TryGetStateDefinition(new LinguisticState(fromIdToUse, 0), out from))
             {

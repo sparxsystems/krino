@@ -1,9 +1,6 @@
-﻿using System.Collections.Generic;
-
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
-    public interface IPredicate : IPhraseItem, ILinguisticStructure
+    public interface IPredicate : IVerbElement
     {
-        List<IPhrase> Phrases { get; }
     }
 }

@@ -10,11 +10,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructure
         [Test]
         public void Value()
         {
-            var word = new Word("book", GrammarAttributes.Morpheme.O.Free.Noun);
+            var word = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
             Assert.AreEqual("book", word.Value);
 
-            word = new Word("read", GrammarAttributes.Morpheme.I.Free.Verb);
-            word.Suffixes.Add(new Morpheme("ing", GrammarAttributes.Morpheme.O.Bound.Suffix));
+            word = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb);
+            word.Suffixes.Add(new Morpheme("ing", GrammarAttributes.Morpheme.Bound.Suffix));
             Assert.AreEqual("reading", word.Value);
         }
     }

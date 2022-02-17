@@ -1,4 +1,5 @@
 ﻿using Krino.Vertical.Utils.Enums;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes
 {
@@ -49,5 +50,21 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// Refers who does the verb (active or passive).
         /// </summary>
         public VerbVoiceSememes Voice { get; }
+
+
+        public BigInteger PastSimpleTense => Time.Past | Aspect.Simple;
+        public BigInteger PastContinuousTense => Time.Past | Aspect.Continuous;
+        public BigInteger PastPerfectTense => Time.Past | Aspect.Perfect;
+        public BigInteger PastContinuousPerfectTense => Time.Past | Aspect.ContinousPerfect;
+
+        public BigInteger PresentSimpleTense => Time.Present | Aspect.Simple;
+        public BigInteger PresentContinuousTense => Time.Present | Aspect.Continuous;
+        public BigInteger PresentPerfectTense => Time.Present | Aspect.Perfect;
+        public BigInteger PresentContinuousPerfectTense => Time.Present | Aspect.ContinousPerfect;
+
+        public BigInteger FutureSimpleTense => Time.Future | Aspect.Simple;
+        public BigInteger FutureContinuousTense => Time.Future | Aspect.Continuous;
+        public BigInteger FuturePerfectTense => Time.Future | Aspect.Perfect;
+        public BigInteger FutureContinuousPerfectTense => Time.Future | Aspect.ContinousPerfect;
     }
 }

@@ -187,13 +187,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.I)),
-                    Left = new AdTree(new Morpheme("I", GrammarAttributes.Morpheme.O))
+                    Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb)),
+                    Left = new AdTree(new Morpheme("I", GrammarAttributes.Morpheme.Free.Functional.Pronoun))
                 },
                 Left = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme("book", GrammarAttributes.Morpheme.O)),
-                    Left = new AdTree(new Morpheme("the", GrammarAttributes.Morpheme.A))
+                    Right = new AdTree(new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun)),
+                    Left = new AdTree(new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner))
                 }
             };
 
@@ -225,13 +225,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.I)),
-                    Left = new AdTree(new Morpheme("I", GrammarAttributes.Morpheme.O))
+                    Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb)),
+                    Left = new AdTree(new Morpheme("I", GrammarAttributes.Morpheme.Free.Functional.Pronoun))
                 },
                 Left = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme("book", GrammarAttributes.Morpheme.O)),
-                    Left = new AdTree(new Morpheme("the", GrammarAttributes.Morpheme.A))
+                    Right = new AdTree(new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun)),
+                    Left = new AdTree(new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner))
                 }
             };
 
@@ -253,13 +253,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
             {
                 Right = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.I)),
-                    Left = new AdTree(new Morpheme("I", GrammarAttributes.Morpheme.O))
+                    Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb)),
+                    Left = new AdTree(new Morpheme("I", GrammarAttributes.Morpheme.Free.Functional.Pronoun))
                 },
                 Left = new AdTree(new Morpheme("", 0))
                 {
-                    Right = new AdTree(new Morpheme("book", GrammarAttributes.Morpheme.O)),
-                    Left = new AdTree(new Morpheme("the", GrammarAttributes.Morpheme.A))
+                    Right = new AdTree(new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun)),
+                    Left = new AdTree(new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner))
                 }
             };
 
@@ -306,10 +306,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
         [Test]
         public void Phrase_Suffix()
         {
-            AdTree adTree = new AdTree(new Morpheme("", GrammarAttributes.Morpheme.O.Free))
+            AdTree adTree = new AdTree(new Morpheme("", GrammarAttributes.Morpheme.Free.Lexical.Noun))
             {
-                Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.I.Free)),
-                Left = new AdTree(new Morpheme("ing", GrammarAttributes.Morpheme.I.Bound.Suffix)),
+                Right = new AdTree(new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb)),
+                Left = new AdTree(new Morpheme("ing", GrammarAttributes.Morpheme.Bound.Suffix)),
             };
 
             string phrase = adTree.Phrase;

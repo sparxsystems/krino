@@ -6,10 +6,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
     internal static class EnumBaseExt
     {
+        private static readonly string myToReplace = string.Join("", nameof(GrammarAttributes), ".");
+
         public static string GetGrammarId(this BigInteger attributes)
         {
-            var toReplace = string.Join("", nameof(GrammarAttributes), ".");
-            var result = GrammarAttributes.Instance.GetFullName(attributes).Replace(toReplace, "");
+            var result = GrammarAttributes.Instance.GetFullName(attributes).Replace(myToReplace, "");
             return result;
         }
 

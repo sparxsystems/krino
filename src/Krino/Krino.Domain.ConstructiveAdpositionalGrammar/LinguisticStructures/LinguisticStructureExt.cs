@@ -10,10 +10,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             {
                 term.Items.Add((IPhraseItem)subStructure);
             }
-            else if (parent is IPredicate predicate)
-            {
-                predicate.Phrases.Add((IPhrase)subStructure);
-            }
+
             else if (parent is IClause clause)
             {
                 if (subStructure is ISubject subject)

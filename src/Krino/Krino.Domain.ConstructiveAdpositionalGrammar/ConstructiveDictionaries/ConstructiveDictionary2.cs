@@ -96,7 +96,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             myBoundMorphemes = new MultiKeyDistinctValueDictionary<string, IMorpheme>();
             foreach (IMorpheme morpheme in morphemes)
             {
-                if (GrammarAttributes.Morpheme.IsFreeMorpheme(morpheme.Attributes))
+                if (GrammarAttributes.Morpheme.Free.IsIn(morpheme.Attributes))
                 {
                     myFreeMorphemes.Add(morpheme.Value, morpheme);
                 }
@@ -135,7 +135,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
             {
                 string nonLexeme = word.Substring(0, i);
                 var prefixHomonyms = FindBoundMorphemes(nonLexeme)
-                    .Where(x => GrammarAttributes.Morpheme.IsPrefix(x.Attributes));
+                    .Where(x => GrammarAttributes.Morpheme.Bound.Prefix.IsIn(x.Attributes));
                 if (prefixHomonyms.Any())
                 {
                     string newWord = word.Substring(i);
@@ -179,7 +179,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 {
                     var nonLexeme = word.Substring(i);
                     var suffixes = FindBoundMorphemes(nonLexeme)
-                        .Where(x => GrammarAttributes.Morpheme.IsSuffix(x.Attributes));
+                        .Where(x => GrammarAttributes.Morpheme.Bound.Suffix.IsIn(x.Attributes));
                     if (suffixes.Any())
                     {
                         var newWord = word.Substring(0, i);

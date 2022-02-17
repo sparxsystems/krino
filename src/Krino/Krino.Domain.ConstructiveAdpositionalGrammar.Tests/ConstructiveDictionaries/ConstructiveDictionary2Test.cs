@@ -15,8 +15,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             var morphemes = new List<Morpheme>()
             {
-                new Morpheme("write", GrammarAttributes.Morpheme.I.Free.Verb),
-                new Morpheme("book", GrammarAttributes.Morpheme.O.Free.Noun),
+                new Morpheme("write", GrammarAttributes.Morpheme.Free.Lexical.Verb),
+                new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             };
 
             var dictionary = new ConstructiveDictionary2(morphemes);
@@ -38,13 +38,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("ex", GrammarAttributes.Morpheme.O.Bound.Prefix),
-                new Morpheme("extra", GrammarAttributes.Morpheme.O.Bound.Prefix),
-                new Morpheme("re", GrammarAttributes.Morpheme.O.Bound.Prefix),
-                new Morpheme("er", GrammarAttributes.Morpheme.O.Bound.Suffix),
-                new Morpheme("less", GrammarAttributes.Morpheme.A.Bound.Suffix),
-                new Morpheme("write", GrammarAttributes.Morpheme.I.Free),
-                new Morpheme("read", GrammarAttributes.Morpheme.I.Free),
+                new Morpheme("ex", GrammarAttributes.Morpheme.Bound.Prefix),
+                new Morpheme("extra", GrammarAttributes.Morpheme.Bound.Prefix),
+                new Morpheme("re", GrammarAttributes.Morpheme.Bound.Prefix),
+                new Morpheme("er", GrammarAttributes.Morpheme.Bound.Suffix),
+                new Morpheme("less", GrammarAttributes.Morpheme.Bound.Suffix),
+                new Morpheme("write", GrammarAttributes.Morpheme.Free.Lexical.Verb),
+                new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb),
             };
 
             var dictionary = new ConstructiveDictionary2(morphemes);
@@ -85,8 +85,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDiction
         {
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("write", GrammarAttributes.Morpheme.I.Free.Verb),
-                new Morpheme("er", GrammarAttributes.Morpheme.O.Bound.Suffix),
+                new Morpheme("write", GrammarAttributes.Morpheme.Free.Lexical.Verb),
+                new Morpheme("er", GrammarAttributes.Morpheme.Bound.Suffix),
             };
 
             var dictionary = new ConstructiveDictionary2(morphemes);
