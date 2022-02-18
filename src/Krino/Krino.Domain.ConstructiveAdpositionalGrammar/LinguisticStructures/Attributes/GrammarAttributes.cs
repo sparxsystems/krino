@@ -30,7 +30,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
         public static ObjectAttributes Object { get; } = new ObjectAttributes(Instance);
         public static ComplementAttributes Complement { get; } = new ComplementAttributes(Instance);
-        public static EnumValue Adverbial { get; } = new EnumValue(Instance);
+        public static EnumValue AdverbialAdjunct { get; } = new EnumValue(Instance);
 
         /// <summary>
         /// Noun element functioning as the subject.
@@ -45,5 +45,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
         public static ClauseAttributes Clause { get; } = new ClauseAttributes(Instance);
         public static SentenceAttributes Sentence { get; } = new SentenceAttributes(Instance);
+
+        /// <summary>
+        /// Indicates the concatenation of elements.
+        /// </summary>
+        public static EnumValue Concat { get; } = new EnumValue(Instance);
     }
 }

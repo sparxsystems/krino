@@ -88,12 +88,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
             var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
             var in_ = new Word("in", GrammarAttributes.Morpheme.Free.Functional.Preposition);
-            var room = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var room = new Word("room", GrammarAttributes.Morpheme.Free.Lexical.Noun);
             var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
 
             var english = new EnglishMachine().Machine;
             var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
 
             grammar.Add(i);
             grammar.Add(read);
@@ -184,7 +186,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
+            Assert.AreEqual(2, texts.Count);
         }
     }
 }

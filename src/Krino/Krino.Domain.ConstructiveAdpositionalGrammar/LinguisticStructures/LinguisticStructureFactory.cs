@@ -20,6 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             else if (GrammarAttributes.NounElement.IsIn(attributes) ||
                      GrammarAttributes.AdjectiveElement.IsIn(attributes) ||
                      GrammarAttributes.AdverbElement.IsIn(attributes) ||
+                     GrammarAttributes.AdverbialAdjunct.IsIn(attributes) ||
 
                      GrammarAttributes.Object.IsIn(attributes) ||
                      GrammarAttributes.Complement.IsIn(attributes) ||

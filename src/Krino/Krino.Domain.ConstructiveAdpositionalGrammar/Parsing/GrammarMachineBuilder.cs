@@ -107,12 +107,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(BigInteger from, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetGrammarId(), to.GetGrammarId(), previousWordAttributes);
+        public GrammarMachineBuilder AddTransitionWithPreviousWordIsRule(BigInteger from, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordIsRule(from.GetGrammarId(), to.GetGrammarId(), previousWordAttributes);
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(fromId, to.GetGrammarId(), previousWordAttributes);
-
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(BigInteger from, string toId, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordRule(from.GetGrammarId(), toId, previousWordAttributes);
-        public GrammarMachineBuilder AddTransitionWithPreviousWordRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
+        public GrammarMachineBuilder AddTransitionWithPreviousWordIsRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
         {
             using var _t = Trace.Entering();
 
@@ -130,6 +127,29 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             return this;
         }
+
+
+        public GrammarMachineBuilder AddTransitionWithPreviousWordNotRule(BigInteger from, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordNotRule(from.GetGrammarId(), to.GetGrammarId(), previousWordAttributes);
+
+        public GrammarMachineBuilder AddTransitionWithPreviousWordNotRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
+        {
+            using var _t = Trace.Entering();
+
+            if (TryGetStateDefinitions(fromId, toId, out var from, out var to))
+            {
+                foreach (var attribute in previousWordAttributes)
+                {
+                    var traceRule = RuleMaker.Not(ParsingRule.PreviousWordContainsAttribute(attribute));
+                    var triggerRule = ParsingRule.GetImmediateTrigger();
+                    var transitionRule = new TransitionRule<LinguisticState, IWord>(traceRule, null, null, triggerRule);
+
+                    myMachine.AddTransition(from.Value, to.Value, transitionRule);
+                }
+            }
+
+            return this;
+        }
+
 
         public GrammarMachineBuilder AddTriggeredTransition(BigInteger from, BigInteger to) => AddTriggeredTransition(from.GetGrammarId(), to);
 

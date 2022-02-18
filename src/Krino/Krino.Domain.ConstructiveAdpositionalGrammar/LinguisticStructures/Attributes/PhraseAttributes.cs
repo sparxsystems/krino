@@ -11,6 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
             GerundPhrase = new EnumValue(this);
             VerbPhrase = new EnumValue(this);
             PrepositionalPhrase = new EnumValue(this);
+            AdverbialPhrase = new EnumValue(this);
         }
 
         public EnumValue NounPhrase { get; }
@@ -18,5 +19,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue GerundPhrase { get; }
         public EnumValue VerbPhrase { get; }
         public EnumValue PrepositionalPhrase { get; }
+
+        public EnumValue AdverbialPhrase { get; }
     }
 }

@@ -25,6 +25,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public IPhrase AdjectiveComplement => Items.OfType<IPhrase>().FirstOrDefault(x => GrammarAttributes.Complement.AdjectiveComplement.IsIn(x.Attributes));
 
-        public IPhrase Adverbial => Items.OfType<IPhrase>().FirstOrDefault(x => GrammarAttributes.Adverbial.IsIn(x.Attributes));
+        public IPhrase Adverbial => Items.OfType<IPhrase>().FirstOrDefault(x => GrammarAttributes.AdverbialAdjunct.IsIn(x.Attributes));
     }
 }

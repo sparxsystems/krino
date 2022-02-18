@@ -46,6 +46,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue Pentavalent { get; }
 
 
+
+
         /// <summary>
         /// True if the value encodes at least one valancy attribute.
         /// </summary>
