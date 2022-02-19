@@ -76,5 +76,7 @@ namespace Krino.Vertical.Utils.Strings
 
             return d[n, m];
         }
+
+        public static string JoinIgnoreEmpty(string separator, params string[] args) => string.Join(separator, args.Where(x => !string.IsNullOrEmpty(x)));
     }
 }

@@ -50,7 +50,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
                 result = new Sentence(attributes);
             }
 
-
+            else if (GrammarAttributes.Text.IsIn(attributes))
+            {
+                result = new Text(attributes);
+            }
 
             if (result == null)
             {

@@ -1,12 +1,13 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     internal class Text : LinguisticStructureBase, IText
     {
-        public Text()
-            : base(0)
+        public Text(BigInteger attributes)
+            : base(attributes)
         {
         }
 

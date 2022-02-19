@@ -46,6 +46,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public static ClauseAttributes Clause { get; } = new ClauseAttributes(Instance);
         public static SentenceAttributes Sentence { get; } = new SentenceAttributes(Instance);
 
+        public static EnumValue Text { get; } = new EnumValue(Instance);
+
+
         /// <summary>
         /// Indicates the concatenation of elements.
         /// </summary>

@@ -157,6 +157,58 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual(1, texts.Count);
         }
 
+        [Test]
+        public void GetTexts_ConcatNouns()
+        {
+            var pen = new Word("pen", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var and = new Word("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word("fly", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            grammar.Add(pen);
+            grammar.Add(and);
+            grammar.Add(book);
+            grammar.Add(flies);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+        [Test]
+        public void GetTexts_ConcatAdjectives()
+        {
+            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var and = new Word("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            var blue = new Word("blue", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word("flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            grammar.Add(the);
+            grammar.Add(green);
+            grammar.Add(and);
+            grammar.Add(blue);
+            grammar.Add(book);
+            grammar.Add(flies);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
 
 
         [Test]
@@ -187,6 +239,37 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(2, texts.Count);
+        }
+
+
+        [Test]
+        public void GetTexts_TwoSentences()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var write = new Word("write", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            // First sentence.
+            grammar.Add(i);
+            grammar.Add(read);
+            grammar.Add(punct);
+
+            // Second sentence.
+            grammar.Add(i);
+            grammar.Add(write);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+            Assert.AreEqual(2, texts[0].Sentences.Count);
         }
     }
 }

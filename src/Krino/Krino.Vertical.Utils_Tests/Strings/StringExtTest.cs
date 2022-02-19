@@ -15,5 +15,11 @@ namespace Krino.Vertical.Utils_Tests.Strings
             // 1 letter must be added.
             Assert.AreEqual(1, "writ".Distance("write"));
         }
+
+        [Test]
+        public void JoinIgnoreEmpty()
+        {
+            Assert.AreEqual("a,b", StringExt.JoinIgnoreEmpty(",", "", null, "a", "", null, "b", "", null));
+        }
     }
 }

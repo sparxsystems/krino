@@ -25,51 +25,20 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public bool IsActive => myMachine.IsActive;
 
+        public IEnumerable<StatePath<LinguisticState, IWord>> ActiveStates => myMachine.GetActiveStates();
+
         public IEnumerable<IText> GetTexts()
         {
             var result = new List<IText>();
 
-            var linguisticStructureFactory = new LinguisticStructureFactory();
-
-            var relevantActiveStates = myMachine.GetActiveStates().Where(x => x.IsCompleted);
-
-            //var kk = relevantActiveStates.Select(x => string.Join(" -> ", x.GetPathToRoot().Reverse().Select(y => y.Value.Definition.Value.Id)));
+            var relevantActiveStates = ActiveStates.Where(x => x.IsCompleted);
 
             foreach (var activeState in relevantActiveStates)
             {
-                var stack = new Stack<ILinguisticStructure>();
-
-                var text = new Text();
-                stack.Push(text);
-
-                foreach (var state in activeState.Trace)
-                {
-                    if (state.Definition.IsSubstate)
-                    {
-                        if (state.Definition.StateKind == StateKind.Initial)
-                        {
-                            var structure = linguisticStructureFactory.Create(state.Definition.Parent.Attributes);
-
-                            var parent = stack.Peek();
-                            parent.AddSubStructure(structure);
-
-                            stack.Push(structure);
-                        }
-                        else if (state.Definition.StateKind == StateKind.Final)
-                        {
-                            var completedStructure = stack.Pop();
-                        }
-                        else
-                        {
-                            var parent = stack.Peek();
-                            parent.AddSubStructure(state.ByTrigger);
-                        }
-                    }
-                }
-
+                // Note: the grammar machine top-most state machine consists of one Text state.
+                var text = activeState.Path.GetText();
                 result.Add(text);
             }
-
 
             return result;
         }
@@ -89,7 +58,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                     var activeState = activeStates[i];
 
-                    foreach (var item in activeState.Trace)
+                    foreach (var item in activeState.Path)
                     {
                         if (item.Definition.Parent != null)
                         {

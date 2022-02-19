@@ -5,20 +5,20 @@ namespace Krino.Vertical.Utils.StateMachines
 {
     public class TransitionRule<TState, TTrigger> : IEquatable<TransitionRule<TState, TTrigger>>
     {
-        public TransitionRule(IRule<StateTrace<TState, TTrigger>> traceRule, IRule<TState> fromStateRule, IRule<TState> toStateRule, IRule<TTrigger> triggerRule)
+        public TransitionRule(IRule<StatePath<TState, TTrigger>> traceRule, IRule<TState> fromStateRule, IRule<TState> toStateRule, IRule<TTrigger> triggerRule)
         {
-            TraceRule = traceRule ?? RuleMaker.Anything<StateTrace<TState, TTrigger>>();
+            TraceRule = traceRule ?? RuleMaker.Anything<StatePath<TState, TTrigger>>();
             FromStateRule = fromStateRule ?? RuleMaker.Anything<TState>();
             ToStateRule = toStateRule ?? RuleMaker.Anything<TState>();
             TriggerRule = triggerRule ?? RuleMaker.Anything<TTrigger>();
         }
 
-        public IRule<StateTrace<TState, TTrigger>> TraceRule { get; }
+        public IRule<StatePath<TState, TTrigger>> TraceRule { get; }
         public IRule<TState> FromStateRule { get; }
         public IRule<TState> ToStateRule { get; }
         public IRule<TTrigger> TriggerRule { get; }
 
-        public bool Evaluate(StateTrace<TState, TTrigger> stateTrace, TState fromState, TState toState, TTrigger trigger)
+        public bool Evaluate(StatePath<TState, TTrigger> stateTrace, TState fromState, TState toState, TTrigger trigger)
         {
             var result = TraceRule.Evaluate(stateTrace) &&
                          FromStateRule.Evaluate(fromState) &&

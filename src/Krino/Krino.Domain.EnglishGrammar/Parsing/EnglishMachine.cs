@@ -14,21 +14,44 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         private int myMaxRecursion = 10;
         private MultiMachine<LinguisticState, IWord> myMachine;
 
+
+        public MultiMachine<LinguisticState, IWord> Machine => myMachine;
+
+
         public EnglishMachine()
         {
             myMachine = new MultiMachine<LinguisticState, IWord>();
 
             var root = new GrammarMachineBuilder(myMachine);
 
-            AddSimpleSentence(root, GrammarAttributes.Sentence.Simple, myMaxRecursion);
+            AddText(root, GrammarAttributes.Text);
 
-            root.AddEmptyTransition("init", GrammarAttributes.Sentence.Simple);
-            root.AddEmptyTransition(GrammarAttributes.Sentence.Simple, "final");
+            root.AddEmptyTransition("init", GrammarAttributes.Text);
+            root.AddEmptyTransition(GrammarAttributes.Text, "final");
 
             myMachine.Reset();
         }
 
-        public MultiMachine<LinguisticState, IWord> Machine => myMachine;
+        
+        private void AddText(GrammarMachineBuilder builder, EnumBase objectType)
+        {
+            var text = builder.AddSubState(objectType);
+            text.AddState("start_loop", 0);
+            text.AddState("end_loop", 0);
+
+            AddSimpleSentence(text, GrammarAttributes.Sentence.Simple, myMaxRecursion);
+
+            text.AddEmptyTransition("init", "start_loop");
+
+            text.AddEmptyTransition("start_loop", GrammarAttributes.Sentence.Simple);
+            text.AddEmptyTransition(GrammarAttributes.Sentence.Simple, "end_loop");
+
+            // Next sentence.
+            text.AddEmptyTransition("end_loop", "start_loop");
+
+            text.AddEmptyTransition("end_loop", "final");
+
+        }
 
 
         private void AddSimpleSentence(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
@@ -222,15 +245,15 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var verbElement = builder.AddSubState(attributes);
 
             AddPresentSimple(verbElement, GrammarAttributes.VerbElement.Sememe.PresentSimpleTense, recursion);
-            //var presentContinuousState = AddPresentContinuous(verbElement, recursion);
+            AddPresentContinuous(verbElement, GrammarAttributes.VerbElement.Sememe.PresentContinuousTense, recursion);
             //var presentPerfectState = AddPresentPerfect(verbElement, recursion);
 
             verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentSimpleTense);
-            //verbElement.AddEmptyTransition("init", presentContinuousState);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentContinuousTense);
             //verbElement.AddEmptyTransition("init", presentPerfectState);
 
             verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentSimpleTense, "final");
-            //verbElement.AddEmptyTransition(presentContinuousState, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentContinuousTense, "final");
             //verbElement.AddEmptyTransition(presentPerfectState, "final");
         }
 
@@ -261,18 +284,31 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentAnyPersonPlural, "final");
         }
 
-        //private void AddPresentContinuous(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
-        //{
-        //    using var _t = Trace.Entering();
+        private void AddPresentContinuous(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
 
-        //    if (--recursion == 0) return;
+            if (--recursion == 0) return;
 
-        //    var verbElement = builder.AddSubState(attributes)
-        //        .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            var verbElement = builder.AddSubState(attributes)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular,
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentSecondPersonSingular,
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular,
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentAnyPersonPlural,
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
-        //    verbElement.AddTriggeredTransition("Init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
-        //    verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
-        //}
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular);
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentSecondPersonSingular);
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular);
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentAnyPersonPlural);
+
+            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentSecondPersonSingular, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentAnyPersonPlural, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+        }
 
         //private BigInteger AddPresentPerfect(GrammarMachineBuilder builder, int recursion)
         //{

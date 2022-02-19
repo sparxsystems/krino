@@ -70,7 +70,7 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
             Assert.AreEqual(StateKind.Final, activeStates[0].CurrentState.Definition.StateKind);
             Assert.AreEqual(3, activeStates[0].CurrentState.ByTrigger);
 
-            var track = activeStates[0].Trace;
+            var track = activeStates[0].Path;
             Assert.AreEqual(3, track.Count);
             Assert.AreEqual("a", track[0].Definition.Value);
             Assert.IsNull(track[0].ByTransitionRule);
@@ -222,7 +222,7 @@ namespace Krino.Vertical.Utils_Tests.StateMachines
             Assert.AreEqual("bb", activeStates[0].CurrentState.Definition.Value);
             Assert.AreEqual(StateKind.Final, activeStates[0].CurrentState.Definition.StateKind);
 
-            var track = activeStates[0].Trace;
+            var track = activeStates[0].Path;
             Assert.AreEqual(6, track.Count);
             Assert.AreEqual("i", track[0].Definition.Value);
             Assert.AreEqual("aa", track[1].Definition.Value);

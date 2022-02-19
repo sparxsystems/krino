@@ -34,6 +34,8 @@ namespace Krino.Vertical.Utils.StateMachines
         /// </summary>
         public TransitionRule<TState, TTrigger> ByTransitionRule { get; private set; }
 
+        public bool IsImmediateTransition => ByTransitionRule?.TriggerRule is ImmediateTriggerRule<TTrigger>;
+
         /// <summary>
         /// True if the received trigger could not be processed by this state.
         /// </summary>

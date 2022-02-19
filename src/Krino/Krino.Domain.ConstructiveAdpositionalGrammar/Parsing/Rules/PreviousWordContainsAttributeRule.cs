@@ -8,7 +8,7 @@ using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
 {
-    public class PreviousWordContainsAttributeRule : RuleBase<StateTrace<LinguisticState, IWord>>, IRule<StateTrace<LinguisticState, IWord>>
+    public class PreviousWordContainsAttributeRule : RuleBase<StatePath<LinguisticState, IWord>>, IRule<StatePath<LinguisticState, IWord>>
     {
         private BigInteger myAttribute;
 
@@ -18,12 +18,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
         }
 
 
-        public override bool Evaluate(StateTrace<LinguisticState, IWord> value)
+        public override bool Evaluate(StatePath<LinguisticState, IWord> value)
         {
-            var result = value.Trace.Reverse().Any(x => x.ByTrigger != null && EnumBase.IsIn(myAttribute, x.ByTrigger.Attributes));
+            var result = value.Path.Reverse().Any(x => x.ByTrigger != null && EnumBase.IsIn(myAttribute, x.ByTrigger.Attributes));
             return result;
         }
 
-        public override bool Equals(IRule<StateTrace<LinguisticState, IWord>> other) => other is PreviousWordContainsAttributeRule rule && myAttribute == rule.myAttribute;
+        public override bool Equals(IRule<StatePath<LinguisticState, IWord>> other) => other is PreviousWordContainsAttributeRule rule && myAttribute == rule.myAttribute;
     }
 }

@@ -25,7 +25,7 @@ namespace Krino.Vertical.Utils.Collections
         }
 
         /// <summary>
-        /// Same as TakeWhile() but also returns the first element which broke the condition.
+        /// Same as TakeWhile() but also returns the first element which breaks the condition.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <param name="source"></param>

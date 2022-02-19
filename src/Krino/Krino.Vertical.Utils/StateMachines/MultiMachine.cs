@@ -38,18 +38,18 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public IEnumerable<TState> States => myGraph;
 
-        public IEnumerable<StateTrace<TState, TTrigger>> GetActiveStates()
+        public IEnumerable<StatePath<TState, TTrigger>> GetActiveStates()
         {
-            var result = myActiveStates.Select(x => new StateTrace<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));
+            var result = myActiveStates.Select(x => new StatePath<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));
             return result;
         }
 
         public bool IsActive => myActiveStates.Any();
 
 
-        public IEnumerable<StateTrace<TState, TTrigger>> GetUnhandledStates()
+        public IEnumerable<StatePath<TState, TTrigger>> GetUnhandledStates()
         {
-            var result = myUnhandledStates.Select(x => new StateTrace<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));
+            var result = myUnhandledStates.Select(x => new StatePath<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));
             return result;
         }
 
@@ -89,7 +89,7 @@ namespace Krino.Vertical.Utils.StateMachines
 
             foreach (var activeState in activeStates)
             {
-                var stateTrace = new StateTrace<TState, TTrigger>(activeState.GetPathToRoot().Reverse().Select(x => x.Value));
+                var stateTrace = new StatePath<TState, TTrigger>(activeState.GetPathToRoot().Reverse().Select(x => x.Value));
 
                 var fromState = GetStateToContinueFrom(activeState.Value.Definition);
 
@@ -208,7 +208,7 @@ namespace Krino.Vertical.Utils.StateMachines
             // Go via active states.
             foreach (var activeState in activeStates)
             {
-                var stateTrace = new StateTrace<TState, TTrigger>(activeState.GetPathToRoot().Reverse().Select(x => x.Value));
+                var stateTrace = new StatePath<TState, TTrigger>(activeState.GetPathToRoot().Reverse().Select(x => x.Value));
 
                 var alreadyProcessed = new HashSet<TState>(myStateEqualityComparer);
 

@@ -34,7 +34,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-        public static IRule<StateTrace<LinguisticState, IWord>> PreviousWordContainsAttribute(BigInteger attribute) => new PreviousWordContainsAttributeRule(attribute);
+        public static IRule<StatePath<LinguisticState, IWord>> PreviousWordContainsAttribute(BigInteger attribute) => new PreviousWordContainsAttributeRule(attribute);
 
 
 

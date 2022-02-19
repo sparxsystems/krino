@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using Krino.Vertical.Utils.Strings;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
@@ -13,6 +14,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public IPredicate Predicate { get; set; }
 
-        public string Value => string.Join(" ", Subject.Value, Predicate.Value);
+        public string Value => StringExt.JoinIgnoreEmpty(" ", Subject?.Value, Predicate?.Value);
     }
 }
