@@ -246,15 +246,15 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             AddPresentSimple(verbElement, GrammarAttributes.VerbElement.Sememe.PresentSimpleTense, recursion);
             AddPresentContinuous(verbElement, GrammarAttributes.VerbElement.Sememe.PresentContinuousTense, recursion);
-            //var presentPerfectState = AddPresentPerfect(verbElement, recursion);
+            AddPresentPerfect(verbElement, GrammarAttributes.VerbElement.Sememe.PresentPerfectTense, recursion);
 
             verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentSimpleTense);
             verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentContinuousTense);
-            //verbElement.AddEmptyTransition("init", presentPerfectState);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentPerfectTense);
 
             verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentSimpleTense, "final");
             verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentContinuousTense, "final");
-            //verbElement.AddEmptyTransition(presentPerfectState, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentPerfectTense, "final");
         }
 
 
@@ -310,20 +310,22 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
         }
 
-        //private BigInteger AddPresentPerfect(GrammarMachineBuilder builder, int recursion)
-        //{
-        //    using var _t = Trace.Entering();
+        private void AddPresentPerfect(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
 
-        //    if (--recursion == 0) return 0;
+            if (--recursion == 0) return;
 
-        //    var verbElement = builder.AddSubState(GrammarAttributes.VerbElement.Sememe.Time.Present | GrammarAttributes.VerbElement.Sememe.Aspect.Perfect)
-        //        .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+            var verbElement = builder.AddSubState(attributes)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary,
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
 
-        //    verbElement.AddTriggeredTransition("Init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary, ParsingRule.AuxiliaryWordIs("have", "has"));
-        //    verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
-
-        //    return verbElement.ParentState.Attributes;
-        //}
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary, ParsingRule.AuxiliaryWordIs("have", "has"));
+            
+            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+            
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple, "final");
+        }
 
 
 

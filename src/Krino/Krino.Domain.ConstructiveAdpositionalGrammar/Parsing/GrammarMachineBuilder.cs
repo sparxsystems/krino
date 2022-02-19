@@ -155,7 +155,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public GrammarMachineBuilder AddTriggeredTransition(string fromId, BigInteger to) => AddTriggeredTransition(fromId, to, ParsingRule.WordContainsAttribute(to));
 
-        public GrammarMachineBuilder AddTriggeredTransition(string fromId, BigInteger to, IRule<IWord> transitionRule)
+        public GrammarMachineBuilder AddTriggeredTransition(string fromId, BigInteger to, IRule<IWord> triggerRule)
         {
             using var _t = Trace.Entering();
 
@@ -163,9 +163,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             if (TryGetStateDefinitions(fromId, toId, out var fromState, out var toState))
             {
-                BigInteger defaultTrigger = to;
-
-                myMachine.AddTransition(fromState.Value, toState.Value, transitionRule);
+                myMachine.AddTransition(fromState.Value, toState.Value, triggerRule);
             }
 
             return this;

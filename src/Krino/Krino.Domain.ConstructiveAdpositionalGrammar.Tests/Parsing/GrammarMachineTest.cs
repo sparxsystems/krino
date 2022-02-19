@@ -241,6 +241,60 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual(2, texts.Count);
         }
 
+        [Test]
+        public void GetTexts_PresentContionuous()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var am = new Word("am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular);
+            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            //Trace.StartProfiler();
+            var english = new EnglishMachine().Machine;
+            //Trace.StopProfiler();
+
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            grammar.Add(i);
+            grammar.Add(am);
+            grammar.Add(reading);
+            grammar.Add(book);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+        [Test]
+        public void GetTexts_PresentPerfect()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            //Trace.StartProfiler();
+            var english = new EnglishMachine().Machine;
+            //Trace.StopProfiler();
+
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            grammar.Add(i);
+            grammar.Add(have);
+            grammar.Add(read);
+            grammar.Add(book);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
 
         [Test]
         public void GetTexts_TwoSentences()
