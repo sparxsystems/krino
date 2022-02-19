@@ -61,27 +61,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-        public static IEnumerable<StateItem<LinguisticState, IWord>> ExtractLast(IEnumerable<StateItem<LinguisticState, IWord>> statePath, BigInteger attributes)
+
+        public static IPhrase GetLastVerbPhrase(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
         {
-            var result = statePath.Reverse()
-                .TakeUntil(x => GrammarAttributes.Sentence.IsIn(x.Definition.Value.Attributes))
-                .Reverse();
-
-            return result;
-        }
-
-        public static ISentence GetLastSentence(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
-        {
-            var sentencePath = statePath.TakeFromLast(x => GrammarAttributes.Sentence.IsIn(x.Definition.Value.Attributes));
-            var sentence = sentencePath.GetLinguisticStructures().FirstOrDefault() as ISentence;
-
-            return sentence;
-        }
-
-        public static IClause GetLastClause(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
-        {
-            var clausePath = statePath.TakeFromLast(x => GrammarAttributes.Clause.IsIn(x.Definition.Value.Attributes));
-            var clause = clausePath.GetLinguisticStructures().FirstOrDefault() as IClause;
+            var clausePath = statePath.TakeFromLast(x => x.Definition.StateKind == StateKind.Initial && GrammarAttributes.Phrase.VerbPhrase.IsIn(x.Definition.Parent.Attributes));
+            var clause = clausePath.GetLinguisticStructures().FirstOrDefault() as IPhrase;
 
             return clause;
         }

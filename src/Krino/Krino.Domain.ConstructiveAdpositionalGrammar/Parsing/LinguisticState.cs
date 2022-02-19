@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+using System;
 using System.Diagnostics;
 using System.Numerics;
 
@@ -15,6 +16,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public string Id { get; private set; }
         public BigInteger Attributes { get; private set; }
+
+        public string AttributesStr => GrammarAttributes.Instance.GetFullName(Attributes);
 
 
         // Note: this is to provide a readable info for DebuggerDisplay in StateDefinition<TState>.

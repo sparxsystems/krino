@@ -117,7 +117,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 foreach (var attribute in previousWordAttributes)
                 {
-                    var pathRule = ParsingRule.PreviousWordContainsAttribute(attribute);
+                    var pathRule = ParsingRule.PreviousWordAttributes(attribute);
                     var triggerRule = ParsingRule.ImmediateTrigger();
                     var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
 
@@ -139,7 +139,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 foreach (var attribute in previousWordAttributes)
                 {
-                    var pathRule = RuleMaker.Not(ParsingRule.PreviousWordContainsAttribute(attribute));
+                    var pathRule = RuleMaker.Not(ParsingRule.PreviousWordAttributes(attribute));
                     var triggerRule = ParsingRule.ImmediateTrigger();
                     var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
 
@@ -149,6 +149,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
             return this;
         }
+
+        public GrammarMachineBuilder AddTransitionWithVerbPhraseRules(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
+            => AddTransitionWithRules(from.GetGrammarId(), to.GetGrammarId(), acceptedAttributes.Select(x => ParsingRule.VerbPhraseAttributesRule(x)).ToArray());
+
+        public GrammarMachineBuilder AddTransitionWithVerbPhraseRules(string fromId, string toId, params BigInteger[] acceptedAttributes)
+            => AddTransitionWithRules(fromId, toId, acceptedAttributes.Select(x => ParsingRule.VerbPhraseAttributesRule(x)).ToArray());
+
+        public GrammarMachineBuilder AddTransitionWithRules(string fromId, string toId, params IRule<StatePath<LinguisticState, IWord>>[] pathRules)
+        {
+            using var _t = Trace.Entering();
+
+            if (pathRules != null && pathRules.Length > 0 && TryGetStateDefinitions(fromId, toId, out var from, out var to))
+            {
+                foreach (var pathRule in pathRules)
+                {
+                    var triggerRule = ParsingRule.ImmediateTrigger();
+                    var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
+
+                    myMachine.AddTransition(from.Value, to.Value, transitionRule);
+                }
+            }
+
+            return this;
+        }
+
 
 
         public GrammarMachineBuilder AddTriggeredTransition(BigInteger from, BigInteger to) => AddTriggeredTransition(from.GetGrammarId(), to);

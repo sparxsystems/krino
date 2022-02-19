@@ -11,7 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         private static ImmediateTriggerRule<IWord> myImmediateTriggerRule = new ImmediateTriggerRule<IWord>();
 
         public static IRule<IWord> WordStringIs(string word, bool caseSensitive = false) => new WordStringIsRule(word, caseSensitive);
-        public static IRule<IWord> WordContainsAttribute(BigInteger attribute) => new WordContainsAttributeRule(attribute);
+        public static IRule<IWord> WordContainsAttribute(BigInteger attribute) => new WordAttributesRule(attribute);
 
         public static IRule<IWord> AuxiliaryWordIs(params string[] auxiliaryWords)
         {
@@ -34,9 +34,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-        public static IRule<StatePath<LinguisticState, IWord>> PreviousWordContainsAttribute(BigInteger attribute) => new PreviousWordContainsAttributeRule(attribute);
+        public static IRule<StatePath<LinguisticState, IWord>> PreviousWordAttributes(BigInteger attribute) => new PreviousWordAttributesRule(attribute);
 
 
+        public static IRule<StatePath<LinguisticState, IWord>> VerbPhraseAttributesRule(BigInteger attribute) => new VerbPhraseAttributesRule(attribute);
 
         public static ImmediateTriggerRule<IWord> ImmediateTrigger() => myImmediateTriggerRule;
     }
