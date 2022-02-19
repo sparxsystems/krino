@@ -212,7 +212,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
 
         [Test]
-        public void GetTexts_I_am_tired_to_read()
+        public void GetTexts_InfinitiveAsAdjectiveComplement()
         {
             var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
             var am = new Word("am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular);
@@ -273,7 +273,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
             var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
             var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
             var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 

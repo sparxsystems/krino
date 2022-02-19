@@ -1,5 +1,8 @@
 ﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
+    /// <summary>
+    /// Element containing the verb phrase and all other modifiers related to the verb.
+    /// </summary>
     public interface IVerbElement : IPhrase
     {
         IPhrase Verb { get; }

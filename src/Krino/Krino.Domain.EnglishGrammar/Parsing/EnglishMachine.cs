@@ -80,7 +80,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var declarativeClause = builder.AddSubState(objectType);
 
             AddNounElement(declarativeClause, GrammarAttributes.Subject, recursion);
-            AddVerbElement(declarativeClause, GrammarAttributes.Predicate, recursion);
+            AddVerbElement(declarativeClause, GrammarAttributes.Predicate, 0, recursion);
 
             declarativeClause.AddEmptyTransition("init", GrammarAttributes.Subject);
             declarativeClause.AddEmptyTransition(GrammarAttributes.Subject, GrammarAttributes.Predicate);
@@ -98,21 +98,27 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var nounElement = builder.AddSubState(attributes);
 
             AddNounPhrase(nounElement, GrammarAttributes.Phrase.NounPhrase, recursion);
+            AddInfinitivePhrase(nounElement, GrammarAttributes.Phrase.InfinitivePhrase, recursion);
 
             nounElement.AddEmptyTransition("init", GrammarAttributes.Phrase.NounPhrase);
+            nounElement.AddEmptyTransition("init", GrammarAttributes.Phrase.InfinitivePhrase);
+
             nounElement.AddEmptyTransition(GrammarAttributes.Phrase.NounPhrase, "final");
+
+            nounElement.AddEmptyTransition(GrammarAttributes.Phrase.InfinitivePhrase, "final");
         }
 
-        private void AddVerbElement(GrammarMachineBuilder builder, EnumBase objectType, int recursion) => AddConcatenation(builder, objectType, recursion, AddSingleVerbElement);
-        private void AddSingleVerbElement(GrammarMachineBuilder builder, BigInteger objectType, int recursion)
+        private void AddVerbElement(GrammarMachineBuilder builder, EnumBase objectType, BigInteger verbPhraseFilter, int recursion)
+            => AddConcatenation(builder, objectType, recursion, (builder, attributes, recursion) => AddSingleVerbElement(builder, attributes, verbPhraseFilter, recursion));
+        private void AddSingleVerbElement(GrammarMachineBuilder builder, BigInteger attributes, BigInteger verbPhraseFilter, int recursion)
         {
             using var _t = Trace.Entering();
 
             if (--recursion == 0) return;
 
-            var verbElement = builder.AddSubState(objectType);
+            var verbElement = builder.AddSubState(attributes);
 
-            AddVerbPhrase(verbElement, GrammarAttributes.Phrase.VerbPhrase, recursion);
+            AddVerbPhrase(verbElement, GrammarAttributes.Phrase.VerbPhrase, verbPhraseFilter, recursion);
 
             AddNounElement(verbElement, GrammarAttributes.Object.ObjectOfVerb.Indirect, recursion);
             AddNounElement(verbElement, GrammarAttributes.Object.ObjectOfVerb.Direct, recursion);
@@ -162,21 +168,18 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             if (--recursion == 0) return;
 
-            var adjectiveBuilder = builder.AddSubState(objectType)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var adjectiveElement = builder.AddSubState(objectType);
 
-            AddAdverbElement(adjectiveBuilder, GrammarAttributes.AdverbElement, recursion);
-            AddInfinitivePhrase(adjectiveBuilder, GrammarAttributes.Phrase.InfinitivePhrase, recursion);
+            AddAdjectivePhrase(adjectiveElement, GrammarAttributes.Phrase.AdjectivePhrase, recursion);
+            AddInfinitivePhrase(adjectiveElement, GrammarAttributes.Phrase.InfinitivePhrase, recursion);
 
-            adjectiveBuilder.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            adjectiveBuilder.AddEmptyTransition("init", GrammarAttributes.AdverbElement);
-            adjectiveBuilder.AddEmptyTransition("init", GrammarAttributes.Phrase.InfinitivePhrase);
 
-            adjectiveBuilder.AddTriggeredTransition(GrammarAttributes.AdverbElement, GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            adjectiveElement.AddEmptyTransition("init", GrammarAttributes.Phrase.AdjectivePhrase);
+            adjectiveElement.AddEmptyTransition("init", GrammarAttributes.Phrase.InfinitivePhrase);
 
-            adjectiveBuilder.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Adjective, "final");
+            adjectiveElement.AddEmptyTransition(GrammarAttributes.Phrase.AdjectivePhrase, "final");
 
-            adjectiveBuilder.AddEmptyTransition(GrammarAttributes.Phrase.InfinitivePhrase, "final");
+            adjectiveElement.AddEmptyTransition(GrammarAttributes.Phrase.InfinitivePhrase, "final");
         }
 
         private void AddAdverbElement(GrammarMachineBuilder builder, BigInteger objectType, int recursion) => AddConcatenation(builder, objectType, recursion, AddSingleAdverbElement);
@@ -211,32 +214,51 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             if (--recursion == 0) return;
 
-            var objectBuilder = builder.AddSubState(objectType);
-            objectBuilder.AddStates(GrammarAttributes.Morpheme.Free.Functional.Determiner,
+            var nounPhrase = builder.AddSubState(objectType);
+            nounPhrase.AddStates(GrammarAttributes.Morpheme.Free.Functional.Determiner,
                                     GrammarAttributes.Morpheme.Free.Lexical.Noun,
                                     GrammarAttributes.Morpheme.Free.Functional.Pronoun);
 
-            AddAdjectiveElement(objectBuilder, GrammarAttributes.AdjectiveElement.Attributive, recursion);
-            AddAdjectiveElement(objectBuilder, GrammarAttributes.AdjectiveElement.PostPositive, recursion);
+            AddAdjectiveElement(nounPhrase, GrammarAttributes.AdjectiveElement.Attributive, recursion);
+            AddAdjectiveElement(nounPhrase, GrammarAttributes.AdjectiveElement.PostPositive, recursion);
 
-            objectBuilder.AddEmptyTransition("init", GrammarAttributes.AdjectiveElement.Attributive);
-            objectBuilder.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            objectBuilder.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            objectBuilder.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            nounPhrase.AddEmptyTransition("init", GrammarAttributes.AdjectiveElement.Attributive);
+            nounPhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            nounPhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            nounPhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
 
-            objectBuilder.AddTriggeredTransition(GrammarAttributes.AdjectiveElement.Attributive, GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            nounPhrase.AddTriggeredTransition(GrammarAttributes.AdjectiveElement.Attributive, GrammarAttributes.Morpheme.Free.Lexical.Noun);
 
-            objectBuilder.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Determiner, GrammarAttributes.AdjectiveElement.Attributive);
-            objectBuilder.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Functional.Determiner, GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            nounPhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Determiner, GrammarAttributes.AdjectiveElement.Attributive);
+            nounPhrase.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Functional.Determiner, GrammarAttributes.Morpheme.Free.Lexical.Noun);
 
-            objectBuilder.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Pronoun, "final");
+            nounPhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Pronoun, "final");
 
-            objectBuilder.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Noun, "final");
+            nounPhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Noun, "final");
 
-            objectBuilder.AddEmptyTransition(GrammarAttributes.AdjectiveElement.PostPositive, "final");
+            nounPhrase.AddEmptyTransition(GrammarAttributes.AdjectiveElement.PostPositive, "final");
         }
 
-        private void AddVerbPhrase(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        private void AddAdjectivePhrase(GrammarMachineBuilder builder, BigInteger objectType, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            if (--recursion == 0) return;
+
+            var adjectivePhrase = builder.AddSubState(objectType)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+
+            AddAdverbElement(adjectivePhrase, GrammarAttributes.AdverbElement, recursion);
+
+            adjectivePhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            adjectivePhrase.AddEmptyTransition("init", GrammarAttributes.AdverbElement);
+
+            adjectivePhrase.AddTriggeredTransition(GrammarAttributes.AdverbElement, GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+
+            adjectivePhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Adjective, "final");
+        }
+
+        private void AddVerbPhrase(GrammarMachineBuilder builder, BigInteger attributes, BigInteger verbPhraseFilter, int recursion)
         {
             using var _t = Trace.Entering();
 
@@ -244,17 +266,28 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var verbElement = builder.AddSubState(attributes);
 
-            AddPresentSimple(verbElement, GrammarAttributes.VerbElement.Sememe.PresentSimpleTense, recursion);
-            AddPresentContinuous(verbElement, GrammarAttributes.VerbElement.Sememe.PresentContinuousTense, recursion);
-            AddPresentPerfect(verbElement, GrammarAttributes.VerbElement.Sememe.PresentPerfectTense, recursion);
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense, verbPhraseFilter))
+            {
+                AddPresentSimple(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense, recursion);
+            }
 
-            verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentSimpleTense);
-            verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentContinuousTense);
-            verbElement.AddEmptyTransition("init", GrammarAttributes.VerbElement.Sememe.PresentPerfectTense);
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousTense, verbPhraseFilter))
+            {
+                AddPresentContinuous(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousTense, recursion);
+            }
 
-            verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentSimpleTense, "final");
-            verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentContinuousTense, "final");
-            verbElement.AddEmptyTransition(GrammarAttributes.VerbElement.Sememe.PresentPerfectTense, "final");
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentPerfectTense, verbPhraseFilter))
+            {
+                AddPresentPerfect(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentPerfectTense, recursion);
+            }
+
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentPerfectTense);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentPerfectTense, "final");
         }
 
 
@@ -354,7 +387,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var objectOfPreposition = builder.AddSubState(objectType)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
 
-            AddVerbElement(objectOfPreposition, GrammarAttributes.VerbElement, recursion);
+            AddSingleVerbElement(objectOfPreposition, GrammarAttributes.VerbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense, recursion);
 
             objectOfPreposition.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
             objectOfPreposition.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker, GrammarAttributes.VerbElement);
