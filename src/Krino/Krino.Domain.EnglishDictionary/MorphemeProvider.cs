@@ -49,11 +49,11 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("say", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("small", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("some", GrammarAttributes.Morpheme.Free.Functional.Determiner),
-            new Morpheme("start", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
+            new Morpheme("start", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner.DefiniteArticle),
 
             new Morpheme("walk", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
-            new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Modal),
+            new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Modal | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("with", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("world", GrammarAttributes.Morpheme.Free.Lexical.Noun),
 

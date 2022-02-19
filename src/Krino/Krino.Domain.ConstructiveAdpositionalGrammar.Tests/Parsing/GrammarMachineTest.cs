@@ -11,7 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     public class GrammarMachineTest
     {
         [Test]
-        public void GetTexts_Basic()
+        public void GetTexts_PresentSimple()
         {
             var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
             var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
@@ -24,6 +24,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             grammar.Add(i);
             grammar.Add(read);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+        [Test]
+        public void GetTexts_FutureSimple()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var will = new Word("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            var k = grammar.DebugView;
+
+            grammar.Add(i);
+            grammar.Add(will);
+            grammar.Add(read);
+            grammar.Add(book);
             grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();

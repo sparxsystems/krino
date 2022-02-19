@@ -39,7 +39,8 @@ namespace Krino.GretaTest
 
             var results = parser.Parse("I will start with the good news.");
 
-            Assert.AreEqual(1, results.Count);
+            // AdverbialAdjunct vs AdverbialComplement.
+            Assert.AreEqual(2, results.Count);
         }
 
         // The world, as a small number of people have been saying lately, will not end in 11 years.
