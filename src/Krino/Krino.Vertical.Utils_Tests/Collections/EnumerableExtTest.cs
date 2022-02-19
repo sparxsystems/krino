@@ -44,6 +44,23 @@ namespace Krino.Vertical.Utils_Tests.Collections
         }
 
         [Test]
+        public void TakeFromLast()
+        {
+            List<int> l = new List<int>() { 1, 3, 3, 4, 5 };
+
+            List<int> result = l.TakeFromLast(x => x == 3).ToList();
+            Assert.AreEqual(3, result.Count);
+            Assert.AreEqual(3, result[0]);
+            Assert.AreEqual(4, result[1]);
+            Assert.AreEqual(5, result[2]);
+
+            // Empty sequence.
+            l = new List<int>();
+            result = l.TakeUntil(x => x < 3).ToList();
+            Assert.AreEqual(0, result.Count);
+        }
+
+        [Test]
         public void GetVariations()
         {
             List<List<int>> source = new List<List<int>>()

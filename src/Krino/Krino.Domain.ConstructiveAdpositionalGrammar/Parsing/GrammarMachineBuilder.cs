@@ -117,9 +117,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 foreach (var attribute in previousWordAttributes)
                 {
-                    var traceRule = ParsingRule.PreviousWordContainsAttribute(attribute);
-                    var triggerRule = ParsingRule.GetImmediateTrigger();
-                    var transitionRule = new TransitionRule<LinguisticState, IWord>(traceRule, null, null, triggerRule);
+                    var pathRule = ParsingRule.PreviousWordContainsAttribute(attribute);
+                    var triggerRule = ParsingRule.ImmediateTrigger();
+                    var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
 
                     myMachine.AddTransition(from.Value, to.Value, transitionRule);
                 }
@@ -139,9 +139,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             {
                 foreach (var attribute in previousWordAttributes)
                 {
-                    var traceRule = RuleMaker.Not(ParsingRule.PreviousWordContainsAttribute(attribute));
-                    var triggerRule = ParsingRule.GetImmediateTrigger();
-                    var transitionRule = new TransitionRule<LinguisticState, IWord>(traceRule, null, null, triggerRule);
+                    var pathRule = RuleMaker.Not(ParsingRule.PreviousWordContainsAttribute(attribute));
+                    var triggerRule = ParsingRule.ImmediateTrigger();
+                    var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
 
                     myMachine.AddTransition(from.Value, to.Value, transitionRule);
                 }

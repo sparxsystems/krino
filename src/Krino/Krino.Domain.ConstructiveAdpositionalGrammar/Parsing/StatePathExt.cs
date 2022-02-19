@@ -4,6 +4,7 @@ using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.StateMachines;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
@@ -60,7 +61,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-        public static IEnumerable<StateItem<LinguisticState, IWord>> ExtractLastSentence(IEnumerable<StateItem<LinguisticState, IWord>> statePath)
+        public static IEnumerable<StateItem<LinguisticState, IWord>> ExtractLast(IEnumerable<StateItem<LinguisticState, IWord>> statePath, BigInteger attributes)
         {
             var result = statePath.Reverse()
                 .TakeUntil(x => GrammarAttributes.Sentence.IsIn(x.Definition.Value.Attributes))
@@ -71,10 +72,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public static ISentence GetLastSentence(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
         {
-            var sentenceTrace = ExtractLastSentence(statePath);
-            var sentence = sentenceTrace.GetLinguisticStructures().FirstOrDefault() as IText;
+            var sentencePath = statePath.TakeFromLast(x => GrammarAttributes.Sentence.IsIn(x.Definition.Value.Attributes));
+            var sentence = sentencePath.GetLinguisticStructures().FirstOrDefault() as ISentence;
 
-            return sentence?.Sentences?.LastOrDefault();
+            return sentence;
+        }
+
+        public static IClause GetLastClause(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
+        {
+            var clausePath = statePath.TakeFromLast(x => GrammarAttributes.Clause.IsIn(x.Definition.Value.Attributes));
+            var clause = clausePath.GetLinguisticStructures().FirstOrDefault() as IClause;
+
+            return clause;
         }
     }
 }

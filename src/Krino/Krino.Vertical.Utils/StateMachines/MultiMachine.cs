@@ -75,7 +75,7 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public void AddTransition(TState from, TState to, TTrigger trigger) => AddTransition(from, to, DefaultTriggerRuleFactoryMethod(trigger));
 
-        public void AddTransition(TState from, TState to, IRule<TTrigger> triggerRule) => AddTransition(from, to, new TransitionRule<TState, TTrigger>(null, null, null, triggerRule));
+        public void AddTransition(TState from, TState to, IRule<TTrigger> triggerRule) => AddTransition(from, to, new TransitionRule<TState, TTrigger>() { TriggerRule = triggerRule });
 
         public void AddTransition(TState from, TState to, TransitionRule<TState, TTrigger> transitionRule) => myGraph.AddEdge(from, to, transitionRule);
 

@@ -428,14 +428,15 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var concatenatingState = builder.AddSubState(objectType);
             concatenatingState.AddStates(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
 
-            addSingleElement(concatenatingState, objectType, recursion);
+            var concatItem = objectType | GrammarAttributes.Item;
+            addSingleElement(concatenatingState, concatItem, recursion);
 
-            concatenatingState.AddEmptyTransition("init", objectType);
+            concatenatingState.AddEmptyTransition("init", concatItem);
 
-            concatenatingState.AddTriggeredTransition(objectType, GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
-            concatenatingState.AddEmptyTransition(objectType, "final");
+            concatenatingState.AddTriggeredTransition(concatItem, GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            concatenatingState.AddEmptyTransition(concatItem, "final");
 
-            concatenatingState.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating, objectType);
+            concatenatingState.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating, concatItem);
         }
     }
 }

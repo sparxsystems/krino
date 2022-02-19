@@ -47,6 +47,22 @@ namespace Krino.Vertical.Utils.Collections
         }
 
         /// <summary>
+        /// Returns the sequence from the last occurance of the predicate.
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="source"></param>
+        /// <param name="predicate"></param>
+        /// <returns></returns>
+        public static IEnumerable<T> TakeFromLast<T>(this IEnumerable<T> source, Predicate<T> predicate)
+        {
+            var result = source.Reverse()
+                .TakeUntil(x => !predicate(x))
+                .Reverse();
+
+            return result;
+        }
+
+        /// <summary>
         /// Returns true if the sequence has exactly one item.
         /// </summary>
         /// <typeparam name="T"></typeparam>

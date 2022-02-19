@@ -1,4 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.Rules;
 using System.Diagnostics;
@@ -22,6 +23,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
 
         public override bool Equals(IRule<IWord> other) => other is WordContainsAttributeRule rule && myRule.Equals(rule.myRule);
 
-        private string DebugView => Attribute.ToString();
+        private string DebugView => GrammarAttributes.Instance.GetFullName(Attribute);
     }
 }

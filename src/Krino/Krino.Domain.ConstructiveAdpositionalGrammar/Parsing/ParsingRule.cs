@@ -38,6 +38,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
 
 
-        public static ImmediateTriggerRule<IWord> GetImmediateTrigger() => myImmediateTriggerRule;
+        public static ImmediateTriggerRule<IWord> ImmediateTrigger() => myImmediateTriggerRule;
     }
 }
