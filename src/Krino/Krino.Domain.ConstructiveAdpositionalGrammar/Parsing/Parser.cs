@@ -44,6 +44,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     myGrammarMachine.Reset();
 
+                    _ = myGrammarMachine.DebugView;
+
                     foreach (var word in variation)
                     {
                         myGrammarMachine.Add(word);

@@ -297,6 +297,35 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
 
         [Test]
+        public void GetTexts_NounAsAdjective()
+        {
+            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var race = new Word("race", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var car = new Word("car", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular);
+            var fast = new Word("fast", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            grammar.Add(green);
+            grammar.Add(race);
+            grammar.Add(car);
+            grammar.Add(is_);
+            grammar.Add(fast);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+        }
+
+
+        [Test]
         public void GetTexts_TwoSentences()
         {
             var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);

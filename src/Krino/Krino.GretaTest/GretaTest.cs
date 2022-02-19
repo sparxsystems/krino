@@ -18,10 +18,9 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_1_1()
         {
-
             //Trace.StartProfiler();
 
-            var dictionary = new EnglishConstructiveDictionaryFactory() { MaxWords = 8 }.Create();
+            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
             var grammar = new EnglishMachine();
             var parser = new Parser(dictionary, grammar.Machine);
             //var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");

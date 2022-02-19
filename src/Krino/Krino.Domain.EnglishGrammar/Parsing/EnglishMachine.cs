@@ -170,12 +170,20 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var adjectiveElement = builder.AddSubState(objectType);
 
+            // If a noun can act as an adjective.
+            if (GrammarAttributes.AdjectiveElement.Attributive.IsIn(objectType))
+            {
+                adjectiveElement.AddStates(GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            }
+
             AddAdjectivePhrase(adjectiveElement, GrammarAttributes.Phrase.AdjectivePhrase, recursion);
             AddInfinitivePhrase(adjectiveElement, GrammarAttributes.Phrase.InfinitivePhrase, recursion);
 
-
+            adjectiveElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Noun);
             adjectiveElement.AddEmptyTransition("init", GrammarAttributes.Phrase.AdjectivePhrase);
             adjectiveElement.AddEmptyTransition("init", GrammarAttributes.Phrase.InfinitivePhrase);
+
+            adjectiveElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Noun, "final");
 
             adjectiveElement.AddEmptyTransition(GrammarAttributes.Phrase.AdjectivePhrase, "final");
 
@@ -228,6 +236,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             nounPhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
 
             nounPhrase.AddTriggeredTransition(GrammarAttributes.AdjectiveElement.Attributive, GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            nounPhrase.AddEmptyTransition(GrammarAttributes.AdjectiveElement.Attributive, GrammarAttributes.AdjectiveElement.Attributive);
 
             nounPhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Determiner, GrammarAttributes.AdjectiveElement.Attributive);
             nounPhrase.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Functional.Determiner, GrammarAttributes.Morpheme.Free.Lexical.Noun);

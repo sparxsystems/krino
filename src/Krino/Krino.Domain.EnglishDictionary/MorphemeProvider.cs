@@ -10,7 +10,7 @@ namespace Krino.Domain.EnglishDictionary
         {
             // Lexemes.
             new Morpheme("a", GrammarAttributes.Morpheme.Free.Functional.Determiner.IndefiniteArticle),
-            new Morpheme("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction),
+            new Morpheme("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
             new Morpheme("as", GrammarAttributes.Morpheme.Free.Functional.Conjunction),
             
             new Morpheme("bad", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
@@ -31,7 +31,7 @@ namespace Krino.Domain.EnglishDictionary
             
             new Morpheme("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective),
             new Morpheme("in", GrammarAttributes.Morpheme.Free.Functional.Preposition),
-            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular),
+            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular),
 
             new Morpheme("lately", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("news", GrammarAttributes.Morpheme.Free.Lexical.Noun),
