@@ -9,5 +9,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         string AttributesStr { get; }
 
         string Value { get; }
+
+        string GrammarStr { get; }
     }
 }

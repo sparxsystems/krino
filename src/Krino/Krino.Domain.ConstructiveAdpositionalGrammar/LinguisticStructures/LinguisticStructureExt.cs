@@ -17,9 +17,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
                 {
                     clause.Subject = subject;
                 }
+                else if (subStructure is IPredicate predicate)
+                {
+                    clause.Predicate = predicate;
+                }
                 else
                 {
-                    clause.Predicate = (IPredicate)subStructure;
+                    clause.Conjunction = (IWord)subStructure;
                 }
             }
             else if (parent is ISentence sentence)

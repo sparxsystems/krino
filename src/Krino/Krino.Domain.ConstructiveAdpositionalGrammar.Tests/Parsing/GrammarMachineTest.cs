@@ -131,7 +131,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             grammar.Add(punct);
 
             var texts = grammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
+            Assert.AreEqual(2, texts.Count);
         }
 
         [Test]
@@ -378,6 +378,42 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = grammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
             Assert.AreEqual(1, texts[0].Sentences.Count);
+        }
+
+        // Note: complex sentences consists of one main clause and one or more dependent clauses
+        [Test]
+        public void GetTexts_ComplexSentence_DependentSentence_As_DirectObject()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var want = new Word("want", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var to = new Word("to", GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
+            var see = new Word("see", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var what = new Word("what", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
+            var it = new Word("it", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular);
+
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            grammar.Add(i);
+            grammar.Add(want);
+            grammar.Add(to);
+            grammar.Add(see);
+
+            // Second dependent clause.
+            grammar.Add(what);
+            grammar.Add(it);
+            grammar.Add(is_);
+
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(4, texts.Count);
         }
 
 

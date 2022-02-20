@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
@@ -12,6 +12,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public virtual BigInteger Attributes { get; protected set; }
 
-        public string AttributesStr => GrammarAttributes.Instance.GetFullName(Attributes);
+        public string AttributesStr => Attributes.GetGrammarId();
     }
 }

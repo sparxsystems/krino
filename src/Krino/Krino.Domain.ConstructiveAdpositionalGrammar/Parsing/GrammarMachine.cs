@@ -43,8 +43,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-
-
         public string DebugView
         {
             get

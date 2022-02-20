@@ -52,6 +52,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public string Value => string.Join("", Morphemes.Select(x => x.Value));
 
+        public string GrammarStr => string.Join("", AttributesStr, "(", Value, ")");
+
         private string DebuggerDisplay => string.Join(" : ", Value, AttributesStr);
     }
 }

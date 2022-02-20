@@ -16,6 +16,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public string Value { get; private set; }
 
+        public string GrammarStr => string.Join("", AttributesStr, "('", Value, "')");
+
         /// <summary>
         /// TODO: !!
         /// </summary>

@@ -15,6 +15,6 @@
         IPhrase SubjectComplement { get; }
         IPhrase AdjectiveComplement { get; }
 
-        IPhrase Adverbial { get; }
+        IPhrase AdverbialAdjunct { get; }
     }
 }
