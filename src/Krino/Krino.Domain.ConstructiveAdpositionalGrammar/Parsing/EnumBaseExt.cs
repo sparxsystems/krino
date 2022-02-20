@@ -4,7 +4,7 @@ using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
-    internal static class EnumBaseExt
+    public static class EnumBaseExt
     {
         private static readonly string myToReplace = string.Join("", nameof(GrammarAttributes), ".");
 

@@ -64,8 +64,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public static IPhrase GetLastVerbPhrase(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
         {
-            var clausePath = statePath.TakeFromLast(x => x.Definition.StateKind == StateKind.Initial && GrammarAttributes.Phrase.VerbPhrase.IsIn(x.Definition.Parent.Attributes));
-            var clause = clausePath.GetLinguisticStructures().FirstOrDefault() as IPhrase;
+            var verbPhrasePath = statePath.TakeFromLast(x => x.Definition.StateKind == StateKind.Initial && GrammarAttributes.Phrase.VerbPhrase.IsIn(x.Definition.Parent.Attributes));
+            var clause = verbPhrasePath.GetLinguisticStructures().FirstOrDefault() as IPhrase;
 
             return clause;
         }

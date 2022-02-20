@@ -348,6 +348,38 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual(1, texts.Count);
         }
 
+        [Test]
+        public void GetTexts_CompoundSentence()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var write = new Word("write", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var and = new Word("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+
+            var english = new EnglishMachine().Machine;
+            var grammar = new GrammarMachine(english);
+
+            _ = grammar.DebugView;
+
+            // First independent clause.
+            grammar.Add(i);
+            grammar.Add(read);
+
+            grammar.Add(and);
+
+            // Second independent clause.
+            grammar.Add(i);
+            grammar.Add(write);
+            grammar.Add(punct);
+
+            var texts = grammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+            Assert.AreEqual(1, texts[0].Sentences.Count);
+        }
+
 
         [Test]
         public void GetTexts_TwoSentences()

@@ -10,7 +10,7 @@ namespace Krino.Vertical.Utils.StateMachines
         public IRule<TState> ToStateRule { get; set; } = RuleMaker.Anything<TState>();
         public IRule<TTrigger> TriggerRule { get; set; } = RuleMaker.Anything<TTrigger>();
 
-        public bool Evaluate(StatePath<TState, TTrigger> stateTrace, TState fromState, TState toState, TTrigger trigger)
+        public virtual bool Evaluate(StatePath<TState, TTrigger> stateTrace, TState fromState, TState toState, TTrigger trigger)
         {
             var result = PathRule.Evaluate(stateTrace) &&
                          FromStateRule.Evaluate(fromState) &&

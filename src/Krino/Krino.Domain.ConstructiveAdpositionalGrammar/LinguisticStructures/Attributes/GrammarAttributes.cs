@@ -50,7 +50,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
 
         /// <summary>
-        /// Indicates a concatenation item.
+        /// Indicates the concatenation group.
+        /// </summary>
+        public static EnumValue Group { get; } = new EnumValue(Instance);
+
+        /// <summary>
+        /// Indicates the concatenation item.
         /// </summary>
         public static EnumValue Item { get; } = new EnumValue(Instance);
     }

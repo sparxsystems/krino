@@ -107,66 +107,17 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordIsRule(BigInteger from, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordIsRule(from.GetGrammarId(), to.GetGrammarId(), previousWordAttributes);
+        public GrammarMachineBuilder AddEmptyTransitionWithVerbPhraseRules(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
+            => AddEmptyTransitionWithRules(from.GetGrammarId(), to.GetGrammarId(), acceptedAttributes.Select(x => ParsingRule.VerbPhraseContainsAttribute(x)).ToArray());
 
-        public GrammarMachineBuilder AddTransitionWithPreviousWordIsRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
+        public GrammarMachineBuilder AddEmptyTransitionWithRules(string fromId, string toId, params TransitionRule<LinguisticState, IWord>[] transitionRules)
         {
             using var _t = Trace.Entering();
 
-            if (TryGetStateDefinitions(fromId, toId, out var from, out var to))
+            if (transitionRules != null && transitionRules.Length > 0 && TryGetStateDefinitions(fromId, toId, out var from, out var to))
             {
-                foreach (var attribute in previousWordAttributes)
+                foreach (var transitionRule in transitionRules)
                 {
-                    var pathRule = ParsingRule.PreviousWordAttributes(attribute);
-                    var triggerRule = ParsingRule.ImmediateTrigger();
-                    var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
-
-                    myMachine.AddTransition(from.Value, to.Value, transitionRule);
-                }
-            }
-
-            return this;
-        }
-
-
-        public GrammarMachineBuilder AddTransitionWithPreviousWordNotRule(BigInteger from, BigInteger to, params BigInteger[] previousWordAttributes) => AddTransitionWithPreviousWordNotRule(from.GetGrammarId(), to.GetGrammarId(), previousWordAttributes);
-
-        public GrammarMachineBuilder AddTransitionWithPreviousWordNotRule(string fromId, string toId, params BigInteger[] previousWordAttributes)
-        {
-            using var _t = Trace.Entering();
-
-            if (TryGetStateDefinitions(fromId, toId, out var from, out var to))
-            {
-                foreach (var attribute in previousWordAttributes)
-                {
-                    var pathRule = RuleMaker.Not(ParsingRule.PreviousWordAttributes(attribute));
-                    var triggerRule = ParsingRule.ImmediateTrigger();
-                    var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
-
-                    myMachine.AddTransition(from.Value, to.Value, transitionRule);
-                }
-            }
-
-            return this;
-        }
-
-        public GrammarMachineBuilder AddTransitionWithVerbPhraseRules(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
-            => AddTransitionWithRules(from.GetGrammarId(), to.GetGrammarId(), acceptedAttributes.Select(x => ParsingRule.VerbPhraseAttributesRule(x)).ToArray());
-
-        public GrammarMachineBuilder AddTransitionWithVerbPhraseRules(string fromId, string toId, params BigInteger[] acceptedAttributes)
-            => AddTransitionWithRules(fromId, toId, acceptedAttributes.Select(x => ParsingRule.VerbPhraseAttributesRule(x)).ToArray());
-
-        public GrammarMachineBuilder AddTransitionWithRules(string fromId, string toId, params IRule<StatePath<LinguisticState, IWord>>[] pathRules)
-        {
-            using var _t = Trace.Entering();
-
-            if (pathRules != null && pathRules.Length > 0 && TryGetStateDefinitions(fromId, toId, out var from, out var to))
-            {
-                foreach (var pathRule in pathRules)
-                {
-                    var triggerRule = ParsingRule.ImmediateTrigger();
-                    var transitionRule = new TransitionRule<LinguisticState, IWord>() { PathRule = pathRule, TriggerRule = triggerRule };
-
                     myMachine.AddTransition(from.Value, to.Value, transitionRule);
                 }
             }

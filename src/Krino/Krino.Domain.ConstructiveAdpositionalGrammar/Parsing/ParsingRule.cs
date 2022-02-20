@@ -34,10 +34,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
-        public static IRule<StatePath<LinguisticState, IWord>> PreviousWordAttributes(BigInteger attribute) => new PreviousWordAttributesRule(attribute);
 
+        public static TransitionRule<LinguisticState, IWord> VerbPhraseContainsAttribute(BigInteger attribute)
+            => new TransitionRule<LinguisticState, IWord>() { PathRule = new VerbPhraseAttributesRule(attribute), TriggerRule = ImmediateTrigger() };
 
-        public static IRule<StatePath<LinguisticState, IWord>> VerbPhraseAttributesRule(BigInteger attribute) => new VerbPhraseAttributesRule(attribute);
+        public static TransitionRule<LinguisticState, IWord> IsConcatenated() => new ItemIsConcatenatedTransitionRule();
 
         public static ImmediateTriggerRule<IWord> ImmediateTrigger() => myImmediateTriggerRule;
     }

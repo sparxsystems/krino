@@ -40,15 +40,21 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             text.AddState("end_loop", 0);
 
             AddSimpleSentence(text, GrammarAttributes.Sentence.Simple, myMaxRecursion);
+            AddCompoundSentence(text, GrammarAttributes.Sentence.Compound, GrammarAttributes.Clause.Independent, myMaxRecursion);
 
             text.AddEmptyTransition("init", "start_loop");
 
             text.AddEmptyTransition("start_loop", GrammarAttributes.Sentence.Simple);
-            text.AddEmptyTransition(GrammarAttributes.Sentence.Simple, "end_loop");
+            text.AddEmptyTransition("start_loop", GrammarAttributes.Sentence.Compound);
 
-            // Next sentence.
+            text.AddEmptyTransition(GrammarAttributes.Sentence.Simple, "end_loop");
+            
+            text.AddEmptyTransition(GrammarAttributes.Sentence.Compound, "end_loop");
+
+            // If a next sentence.
             text.AddEmptyTransition("end_loop", "start_loop");
 
+            // If no other sentence.
             text.AddEmptyTransition("end_loop", "final");
 
         }
@@ -63,15 +69,17 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             var simpleSentence = builder.AddSubState(objectType)
                 .AddStates(GrammarAttributes.PunctuationMark);
 
-            AddDeclarativeClause(simpleSentence, GrammarAttributes.Clause.Declarative, recursion);
+            AddSingleIndependentClause(simpleSentence, GrammarAttributes.Clause.Independent, recursion);
 
-            simpleSentence.AddEmptyTransition("init", GrammarAttributes.Clause.Declarative);
-            simpleSentence.AddTriggeredTransition(GrammarAttributes.Clause.Declarative, GrammarAttributes.PunctuationMark);
+            simpleSentence.AddEmptyTransition("init", GrammarAttributes.Clause.Independent);
+            simpleSentence.AddTriggeredTransition(GrammarAttributes.Clause.Independent, GrammarAttributes.PunctuationMark);
             simpleSentence.AddEmptyTransition(GrammarAttributes.PunctuationMark, "final");
         }
 
+        private void AddCompoundSentence(GrammarMachineBuilder builder, EnumBase groupAttributes, EnumBase itemAttributes, int recursion)
+            => AddMandatoryConcatenation(builder, groupAttributes, itemAttributes, recursion, AddSingleIndependentClause);
 
-        private void AddDeclarativeClause(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
+        private void AddSingleIndependentClause(GrammarMachineBuilder builder, BigInteger objectType, int recursion)
         {
             using var _t = Trace.Entering();
 
@@ -132,17 +140,17 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase);
 
-            verbElement.AddTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Pentavalent);
-            verbElement.AddTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            verbElement.AddTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.AdverbialComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
-            verbElement.AddTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking);
-            verbElement.AddTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.AdverbialAdjunct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
+            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Pentavalent);
+            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.AdverbialComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
+            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking);
+            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.AdverbialAdjunct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
             verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase, "final");
 
             verbElement.AddEmptyTransition(GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Object.ObjectOfVerb.Direct);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Complement.ObjectComplement);
-            verbElement.AddTransitionWithPreviousWordIsRule(GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Complement.AdverbialComplement);
+            verbElement.AddEmptyTransition(GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Complement.AdverbialComplement);
             verbElement.AddEmptyTransition(GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.AdverbialAdjunct);
             verbElement.AddEmptyTransition(GrammarAttributes.Object.ObjectOfVerb.Direct, "final");
 
@@ -504,6 +512,26 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             concatenatingState.AddEmptyTransition(concatItem, "final");
 
             concatenatingState.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating, concatItem);
+        }
+
+        private void AddMandatoryConcatenation(GrammarMachineBuilder builder, BigInteger groupObject, BigInteger itemObject, int recursion, Action<GrammarMachineBuilder, BigInteger, int> addSingleElement)
+        {
+            using var _t = Trace.Entering();
+
+            // Do not modify the recursion.
+            if (recursion == 0) return;
+
+            var concatenatingState = builder.AddSubState(groupObject);
+            concatenatingState.AddStates(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+
+            addSingleElement(concatenatingState, itemObject, recursion);
+
+            concatenatingState.AddEmptyTransition("init", itemObject);
+
+            concatenatingState.AddTriggeredTransition(itemObject, GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            concatenatingState.AddEmptyTransitionWithRules(itemObject.GetGrammarId(), "final", ParsingRule.IsConcatenated());
+
+            concatenatingState.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating, itemObject);
         }
     }
 }
