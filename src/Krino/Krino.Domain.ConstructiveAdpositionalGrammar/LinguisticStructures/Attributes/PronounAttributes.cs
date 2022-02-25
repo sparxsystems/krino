@@ -52,7 +52,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue Reflexive { get; }
 
         /// <summary>
-        /// 
+        /// Interrogative pronouns are used to ask questions. E.g. what, which.
         /// </summary>
         public EnumValue Interrogative { get; }
 

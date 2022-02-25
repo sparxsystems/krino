@@ -44,7 +44,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public StativeVerbAttributes Stative { get; }
 
         /// <summary>
-        /// Action (or dynamic) verb.
+        /// An action verb is a verb that describes an action, like run, jump, kick, eat, break, cry, smile, or think. 
         /// </summary>
         public ActiveVerbAttributes Action { get; }
 

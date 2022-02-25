@@ -15,7 +15,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         }
 
         /// <summary>
-        /// Name of to denote a number of persons or things e.g. army, crowed, family.
+        /// A collective noun is the word used to represent a group of people, animals, or things.
         /// </summary>
         public EnumValue Collective { get; }
 
