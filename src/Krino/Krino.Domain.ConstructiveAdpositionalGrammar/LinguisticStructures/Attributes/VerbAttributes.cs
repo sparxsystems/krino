@@ -9,21 +9,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
     {
         public VerbAttributes(EnumGroupBase parent) : base(parent)
         {
-            Modal = new EnumValue(this);
             Regular = new EnumValue(this);
             Irregular = new EnumValue(this);
             Stative = new StativeVerbAttributes(this);
             Action = new ActiveVerbAttributes(this);
-            Auxiliary = new EnumValue(this);
+            Auxiliary = new AuxiliaryVerbAttributes(this);
             InfinitiveMarker = new EnumValue(this);
             Form = new VerbFormAttributes(this);
             Valency = new VerbValencyAttributes(this);
         }
 
-        /// <summary>
-        /// The verb is modal. e.g. may, can, will.
-        /// </summary>
-        public EnumValue Modal { get; }
 
         /// <summary>
         /// Regular verb.
@@ -51,7 +46,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// <summary>
         /// Helper verbs e.g. will.
         /// </summary>
-        public EnumValue Auxiliary { get; }
+        public AuxiliaryVerbAttributes Auxiliary { get; }
 
         /// <summary>
         /// 'to' which marks the infinitive.

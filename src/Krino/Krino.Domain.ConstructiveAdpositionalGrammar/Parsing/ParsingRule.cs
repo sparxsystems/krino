@@ -10,10 +10,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
     {
         private static ImmediateTriggerRule<IWord> myImmediateTriggerRule = new ImmediateTriggerRule<IWord>();
 
-        public static IRule<IWord> WordStringIs(string word, bool caseSensitive = false) => new WordStringIsRule(word, caseSensitive);
+        public static IRule<IWord> WordIs(string word, bool caseSensitive = false) => new WordStringIsRule(word, caseSensitive);
         public static IRule<IWord> WordContainsAttribute(BigInteger attribute) => new WordAttributesRule(attribute);
 
-        public static IRule<IWord> AuxiliaryWordIs(params string[] auxiliaryWords)
+        public static IRule<IWord> WordIsOneOf(params string[] auxiliaryWords)
         {
             IRule<IWord> result = null;
 
@@ -23,11 +23,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
                 if (i == 0)
                 {
-                    result = WordStringIs(wordStr, false);
+                    result = WordIs(wordStr, false);
                 }
                 else
                 {
-                    result = result.Or(WordStringIs(wordStr, true));
+                    result = result.Or(WordIs(wordStr, true));
                 }
             }
 

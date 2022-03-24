@@ -53,7 +53,7 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner.DefiniteArticle),
 
             new Morpheme("walk", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
-            new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Modal | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
+            new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("with", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("world", GrammarAttributes.Morpheme.Free.Lexical.Noun),
 
