@@ -45,3 +45,8 @@
 /src/Krino/Krino.Prolog.Client.Tests/obj
 /src/Krino/Krino.KnowledgeBase/httpd.log
 /src/Krino/Resources/~$ConstructiveDictionary.xlsx
+/src/Krino/Krino.Domain.ConstructiveAdpositionalArgumentation.Tests/bin/Debug/net6.0
+/src/Krino/Krino.Domain.EnglishDictionary.Tests/bin/Debug/net6.0
+/src/Krino/Krino.Prolog.Client.Tests/bin/Debug/net6.0
+/src/Krino/Krino.ViewModel.Tests/bin/Debug/net6.0
+/src/Krino/Krino.WebApp/bin/Debug/net6.0
