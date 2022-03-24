@@ -31,7 +31,7 @@ namespace Krino.Domain.EnglishDictionary
             
             new Morpheme("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective),
             new Morpheme("in", GrammarAttributes.Morpheme.Free.Functional.Preposition),
-            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular),
+            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
 
             new Morpheme("lately", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("news", GrammarAttributes.Morpheme.Free.Lexical.Noun),

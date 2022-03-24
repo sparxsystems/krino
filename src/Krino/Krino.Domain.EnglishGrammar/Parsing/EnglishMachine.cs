@@ -320,6 +320,29 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var verbElement = builder.AddSubState(attributes);
 
+
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastSimpleTense, verbPhraseFilter))
+            {
+                AddPastSimple(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PastSimpleTense, recursion);
+            }
+
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousTense, verbPhraseFilter))
+            {
+                AddPastContinuous(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousTense, recursion);
+            }
+
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastPerfectTense, verbPhraseFilter))
+            {
+                AddPastPerfect(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PastPerfectTense, recursion);
+            }
+
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousPerfectTense, verbPhraseFilter))
+            {
+                AddPastContinuousPerfect(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousPerfectTense, recursion);
+            }
+
+
+
             if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense, verbPhraseFilter))
             {
                 AddPresentSimple(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense, recursion);
@@ -347,12 +370,40 @@ namespace Krino.Domain.EnglishGrammar.Parsing
                 AddFutureSimple(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureSimpleTense, recursion);
             }
 
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousTense, verbPhraseFilter))
+            {
+                AddFutureContinuous(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousTense, recursion);
+            }
+
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.FuturePerfectTense, verbPhraseFilter))
+            {
+                AddFuturePerfect(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.FuturePerfectTense, recursion);
+            }
+
+            if (verbPhraseFilter == 0 || EnumBase.IsIn(GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousPerfectTense, verbPhraseFilter))
+            {
+                AddFutureContinuousPerfect(verbElement, GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousPerfectTense, recursion);
+            }
+
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PastSimpleTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PastPerfectTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousPerfectTense);
+
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense);
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousTense);
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentPerfectTense);
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousPerfectTense);
 
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureSimpleTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.FuturePerfectTense);
+            verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousPerfectTense);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastSimpleTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastPerfectTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PastContinuousPerfectTense, "final");
 
             verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentSimpleTense, "final");
             verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousTense, "final");
@@ -360,40 +411,87 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.PresentContinuousPerfectTense, "final");
 
             verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureSimpleTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.FuturePerfectTense, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase.Sememe.FutureContinuousPerfectTense, "final");
         }
 
+
+        private void AddPastSimple(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            var verbElement = builder.AddSubState(attributes)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past);
+
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past, "final");
+        }
+
+        private void AddPastContinuous(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            var verbElement = builder.AddSubState(attributes)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary,
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, ParsingRule.WordIsOneOf("was", "were"));
+
+            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+        }
+
+        private void AddPastPerfect(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            var verbElement = builder.AddSubState(attributes)
+                .AddState("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+
+            verbElement.AddTriggeredTransition("init", "had", ParsingRule.WordIsOneOf("had"));
+
+            verbElement.AddTriggeredTransition("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple, "final");
+        }
+
+        private void AddPastContinuousPerfect(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            var verbElement = builder.AddSubState(attributes)
+                .AddState("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing)
+                .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+
+            verbElement.AddTriggeredTransition("init", "had", ParsingRule.WordIsOneOf("had"));
+
+            verbElement.AddTriggeredTransition("had", "been", ParsingRule.WordIs("been"));
+
+            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+        }
 
         private void AddPresentSimple(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
         {
             using var _t = Trace.Entering();
 
-            if (--recursion == 0) return;
-
             var verbElement = builder.AddSubState(attributes)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
-                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular,
-                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentSecondPersonSingular,
-                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular,
-                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentAnyPersonPlural);
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
             verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular);
-            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentSecondPersonSingular);
-            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular);
-            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentAnyPersonPlural);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base, "final");
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentFirstPersonSingular, "final");
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentSecondPersonSingular, "final");
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentThirdPersonSingular, "final");
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentAnyPersonPlural, "final");
         }
 
         private void AddPresentContinuous(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
         {
             using var _t = Trace.Entering();
-
-            if (--recursion == 0) return;
 
             var verbElement = builder.AddSubState(attributes)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary,
@@ -410,8 +508,6 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
-            if (--recursion == 0) return;
-
             var verbElement = builder.AddSubState(attributes)
                 .AddState("have/has", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
@@ -426,8 +522,6 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         private void AddPresentContinuousPerfect(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
         {
             using var _t = Trace.Entering();
-
-            if (--recursion == 0) return;
 
             var verbElement = builder.AddSubState(attributes)
                 .AddState("have/has", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
@@ -448,18 +542,73 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
-            if (--recursion == 0) return;
-
             var verbElement = builder.AddSubState(attributes)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary,
-                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+                .AddState("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
-            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary, ParsingRule.WordIsOneOf("will"));
-            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+            verbElement.AddTriggeredTransition("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base, "final");
         }
 
+        private void AddFutureContinuous(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            var verbElement = builder.AddSubState(attributes)
+                .AddState("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal)
+                .AddState("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+
+            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+
+            verbElement.AddTriggeredTransition("will", "be", ParsingRule.WordIsOneOf("be"));
+
+            verbElement.AddTriggeredTransition("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+        }
+
+        private void AddFuturePerfect(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            var verbElement = builder.AddSubState(attributes)
+                .AddState("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal)
+                .AddState("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+
+            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+
+            verbElement.AddTriggeredTransition("will", "have", ParsingRule.WordIsOneOf("have"));
+
+            verbElement.AddTriggeredTransition("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple, "final");
+        }
+
+        private void AddFutureContinuousPerfect(GrammarMachineBuilder builder, BigInteger attributes, int recursion)
+        {
+            using var _t = Trace.Entering();
+
+            var verbElement = builder.AddSubState(attributes)
+                .AddState("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal)
+                .AddState("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing)
+                .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+
+            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+
+            verbElement.AddTriggeredTransition("will", "have", ParsingRule.WordIsOneOf("have"));
+
+            verbElement.AddTriggeredTransition("have", "been", ParsingRule.WordIsOneOf("been"));
+
+            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+        }
 
 
         private void AddPrepositionalPhrase(GrammarMachineBuilder builder, EnumBase objectType, int recursion)
