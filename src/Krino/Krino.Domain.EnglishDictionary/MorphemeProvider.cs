@@ -15,7 +15,7 @@ namespace Krino.Domain.EnglishDictionary
             
             new Morpheme("bad", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("because", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Cause),
-            new Morpheme("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple),
+            new Morpheme("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun),
 
             new Morpheme("climate", GrammarAttributes.Morpheme.Free.Lexical.Noun),
@@ -31,7 +31,7 @@ namespace Krino.Domain.EnglishDictionary
             
             new Morpheme("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective),
             new Morpheme("in", GrammarAttributes.Morpheme.Free.Functional.Preposition),
-            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
+            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson| GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
 
             new Morpheme("lately", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("news", GrammarAttributes.Morpheme.Free.Lexical.Noun),
@@ -53,7 +53,7 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner.DefiniteArticle),
 
             new Morpheme("walk", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
-            new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
+            new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal),
             new Morpheme("with", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("world", GrammarAttributes.Morpheme.Free.Lexical.Noun),
 

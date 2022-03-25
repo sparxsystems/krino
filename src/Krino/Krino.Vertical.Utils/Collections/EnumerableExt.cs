@@ -53,7 +53,7 @@ namespace Krino.Vertical.Utils.Collections
         /// <param name="source"></param>
         /// <param name="predicate"></param>
         /// <returns></returns>
-        public static IEnumerable<T> TakeFromLast<T>(this IEnumerable<T> source, Predicate<T> predicate)
+        public static IEnumerable<T> TakeFromLastOccuranceOf<T>(this IEnumerable<T> source, Predicate<T> predicate)
         {
             var result = source.Reverse()
                 .TakeUntil(x => !predicate(x))

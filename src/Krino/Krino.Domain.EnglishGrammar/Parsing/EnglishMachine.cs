@@ -165,11 +165,11 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase);
 
-            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Pentavalent);
-            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.AdverbialComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
-            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking);
-            verbElement.AddEmptyTransitionWithVerbPhraseRules(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.AdverbialAdjunct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
+            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Pentavalent);
+            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.AdverbialComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
+            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking);
+            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.AdverbialAdjunct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
             verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase, "final");
 
             verbElement.AddEmptyTransition(GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Object.ObjectOfVerb.Direct);
@@ -525,8 +525,8 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var verbElement = builder.AddSubState(attributes)
                 .AddState("have/has", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing)
-                .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+                .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
             verbElement.AddTriggeredTransition("init", "have/has", ParsingRule.WordIsOneOf("have", "has"));
 
@@ -596,8 +596,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
                 .AddState("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal)
                 .AddState("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing)
-                .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
             verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
 

@@ -1,9 +1,7 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
 using Krino.Vertical.Utils.Diagnostic;
-using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
-using System;
 using System.Linq;
 using System.Numerics;
 
@@ -107,7 +105,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddEmptyTransitionWithVerbPhraseRules(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
+        public GrammarMachineBuilder AddEmptyTransitionWithVerbValencyRule(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
             => AddEmptyTransitionWithRules(from.GetGrammarId(), to.GetGrammarId(), acceptedAttributes.Select(x => ParsingRule.VerbPhraseContainsAttribute(x)).ToArray());
 
         public GrammarMachineBuilder AddEmptyTransitionWithRules(string fromId, string toId, params TransitionRule<LinguisticState, IWord>[] transitionRules)

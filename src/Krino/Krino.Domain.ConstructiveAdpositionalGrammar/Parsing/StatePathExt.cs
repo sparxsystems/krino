@@ -4,7 +4,6 @@ using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.StateMachines;
 using System.Collections.Generic;
 using System.Linq;
-using System.Numerics;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 {
@@ -12,10 +11,16 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
     {
         public static IText GetText(this IEnumerable<StateItem<LinguisticState, IWord>> statePath) => (IText)statePath.GetLinguisticStructures().FirstOrDefault();
 
+        /// <summary>
+        /// Iterates a path from the grammar machine and creates linguistic structures.
+        /// </summary>
+        /// <param name="statePath"></param>
+        /// <returns></returns>
         public static IEnumerable<ILinguisticStructure> GetLinguisticStructures(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
         {
             var result = new List<ILinguisticStructure>();
 
+            // Factory creating the linguistic structure.
             var linguisticStructureFactory = new LinguisticStructureFactory();
 
             var stack = new Stack<ILinguisticStructure>();
@@ -26,6 +31,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 {
                     if (state.Definition.StateKind == StateKind.Initial)
                     {
+                        // Note: attributes of parent state. And the parent state represents the linguistic structure in which we are.
                         var structure = linguisticStructureFactory.Create(state.Definition.Parent.Attributes);
 
                         // If the state is not on the root then add the substate into its parent.
@@ -64,10 +70,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
 
         public static IPhrase GetLastVerbPhrase(this IEnumerable<StateItem<LinguisticState, IWord>> statePath)
         {
-            var verbPhrasePath = statePath.TakeFromLast(x => x.Definition.StateKind == StateKind.Initial && GrammarAttributes.Phrase.VerbPhrase.IsIn(x.Definition.Parent.Attributes));
-            var clause = verbPhrasePath.GetLinguisticStructures().FirstOrDefault() as IPhrase;
+            // Get portion of the path which starts with the verb phrase.
+            var verbPhrasePath = statePath.TakeFromLastOccuranceOf(x => x.Definition.StateKind == StateKind.Initial && GrammarAttributes.Phrase.VerbPhrase.IsIn(x.Definition.Parent.Attributes));
+            
+            var verbPhrase = verbPhrasePath.GetLinguisticStructures().FirstOrDefault() as IPhrase;
 
-            return clause;
+            return verbPhrase;
         }
     }
 }

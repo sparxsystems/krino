@@ -44,11 +44,11 @@ namespace Krino.Vertical.Utils_Tests.Collections
         }
 
         [Test]
-        public void TakeFromLast()
+        public void TakeFromLastOccuranceOf()
         {
             List<int> l = new List<int>() { 1, 3, 3, 4, 5 };
 
-            List<int> result = l.TakeFromLast(x => x == 3).ToList();
+            List<int> result = l.TakeFromLastOccuranceOf(x => x == 3).ToList();
             Assert.AreEqual(3, result.Count);
             Assert.AreEqual(3, result[0]);
             Assert.AreEqual(4, result[1]);

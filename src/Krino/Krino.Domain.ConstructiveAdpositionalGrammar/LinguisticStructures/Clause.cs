@@ -1,6 +1,5 @@
 ﻿using Krino.Vertical.Utils.Strings;
 using System.Numerics;
-using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
