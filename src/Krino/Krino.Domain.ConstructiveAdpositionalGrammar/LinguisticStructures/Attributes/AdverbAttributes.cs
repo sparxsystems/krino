@@ -13,6 +13,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
             Comparative = new EnumValue(this);
             Superlative = new EnumValue(this);
             ConjunctiveAdverb = new EnumValue(this);
+
+            Negation = new EnumValue(this);
+            Affirmation = new EnumValue(this);
         }
 
         /// <summary>
@@ -37,5 +40,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// E.g.: also, consequently, furthermore, however, moreover, nevertheless, therefore.
         /// </remarks>
         public EnumValue ConjunctiveAdverb { get; }
+
+        /// <summary>
+        /// Adverbs of negation e.g. not, no.
+        /// </summary>
+        public EnumValue Negation { get; }
+
+        /// <summary>
+        /// Adverbs of affirmation e.g. yes, surely, ...
+        /// </summary>
+        public EnumValue Affirmation { get; }
     }
 }

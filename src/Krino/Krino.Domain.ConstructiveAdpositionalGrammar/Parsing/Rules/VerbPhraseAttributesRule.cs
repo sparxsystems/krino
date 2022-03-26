@@ -23,6 +23,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
 
         public override bool Evaluate(StatePath<LinguisticState, IWord> value)
         {
+            using var _t = Vertical.Utils.Diagnostic.Trace.Entering();
+
             bool result = false;
 
             var verbPhrase = value.Path.GetLastVerbPhrase();

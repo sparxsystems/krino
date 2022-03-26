@@ -11,7 +11,7 @@ namespace Krino.Domain.EnglishDictionary
             // Lexemes.
             new Morpheme("a", GrammarAttributes.Morpheme.Free.Functional.Determiner.IndefiniteArticle),
             new Morpheme("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
-            new Morpheme("as", GrammarAttributes.Morpheme.Free.Functional.Conjunction),
+            new Morpheme("as", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
             
             new Morpheme("bad", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("because", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Cause),
@@ -36,7 +36,7 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("lately", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("news", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("number", GrammarAttributes.Morpheme.Free.Lexical.Noun),
-            new Morpheme("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation),
             new Morpheme("of", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("on", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             
@@ -47,6 +47,8 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("regarding", GrammarAttributes.Morpheme.Free.Functional.Preposition),
 
             new Morpheme("say", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
+            new Morpheme("saying", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing),
+
             new Morpheme("small", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("some", GrammarAttributes.Morpheme.Free.Functional.Determiner),
             new Morpheme("start", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),

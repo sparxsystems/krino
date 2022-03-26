@@ -1,4 +1,5 @@
 ﻿using Krino.Vertical.Utils.Collections;
+using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Graphs;
 using Krino.Vertical.Utils.Rules;
 using System;
@@ -82,6 +83,8 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public void Fire(TTrigger trigger)
         {
+            using var _t = Trace.Entering();
+
             var activeStates = myActiveStates.ToList();
 
             myActiveStates.Clear();
@@ -141,6 +144,8 @@ namespace Krino.Vertical.Utils.StateMachines
 
         private void AddState(TState state, StateKind stateKind)
         {
+            using var _t = Trace.Entering();
+
             myGraph.AddVertex(state);
 
             var newState = new StateDefinition<TState>(state, stateKind);
@@ -160,6 +165,8 @@ namespace Krino.Vertical.Utils.StateMachines
 
         private IEnumerable<StateDefinition<TState>> GetStatesToStart(StateDefinition<TState> state)
         {
+            using var _t = Trace.Entering();
+
             IEnumerable<StateDefinition<TState>> result;
 
             var initialSubStates = GetSubstates(state).Where(x => x.StateKind == StateKind.Initial);
@@ -177,6 +184,8 @@ namespace Krino.Vertical.Utils.StateMachines
 
         private StateDefinition<TState> GetStateToContinueFrom(StateDefinition<TState> state)
         {
+            using var _t = Trace.Entering();
+
             StateDefinition<TState> result;
             
             if (state.IsSubstate && state.StateKind == StateKind.Final && myStates.TryGetValue(state.Parent, out var parent))
@@ -202,6 +211,8 @@ namespace Krino.Vertical.Utils.StateMachines
 
         private void FireImmediateTransitions()
         {
+            using var _t = Trace.Entering();
+
             var activeStates = myActiveStates.ToList();
             myActiveStates.Clear();
 

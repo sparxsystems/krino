@@ -2,8 +2,10 @@
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishGrammar.Parsing;
+using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System.Linq;
+using System.Threading;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 {
@@ -15,29 +17,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         [OneTimeSetUp]
         public void Setup()
         {
+            //Trace.StartProfiler();
+
             var english = new EnglishMachine().Machine;
             myGrammar = new GrammarMachine(english);
-        }
 
-        [Test]
-        public void GetTexts_PresentSimple()
-        {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
-
-            _ = myGrammar.DebugView;
-
-            myGrammar.Add(i);
-            myGrammar.Add(read);
-            myGrammar.Add(book);
-            myGrammar.Add(punct);
-
-            var texts = myGrammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-
-            myGrammar.Reset();
+            //Trace.StopProfiler();
+            //Thread.Sleep(300);
         }
 
         [Test]
@@ -147,11 +133,71 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var flies = new Word("flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
             var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
+            _ = myGrammar.DebugView;
 
             myGrammar.Add(the);
             myGrammar.Add(green);
             myGrammar.Add(book);
             myGrammar.Add(flies);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+        [Test]
+        public void GetTexts_NounPhrase_With_AdjectivalPrepositionalPhrase()
+        {
+            var a = new Word("a", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var small = new Word("small", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var number = new Word("number", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var of = new Word("of", GrammarAttributes.Morpheme.Free.Functional.Preposition);
+            var people = new Word("people", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word("flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            _ = myGrammar.DebugView;
+
+            myGrammar.Add(a);
+            myGrammar.Add(small);
+            myGrammar.Add(number);
+            myGrammar.Add(of);
+            myGrammar.Add(people);
+            myGrammar.Add(flies);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+        [Test]
+        public void GetTexts_NounPhrase_With_AdjectivalClause()
+        {
+            var world = new Word("world", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var as_ = new Word("as", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
+            var few = new Word("few", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var people = new Word("people", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var says = new Word("says", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var ends = new Word("ends", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            _ = myGrammar.DebugView;
+
+            Trace.StartProfiler();
+            
+            myGrammar.Add(world);
+
+            Trace.StopProfiler();
+
+            myGrammar.Add(as_);
+            myGrammar.Add(few);
+            myGrammar.Add(people);
+            myGrammar.Add(says);
+            myGrammar.Add(ends);
             myGrammar.Add(punct);
 
             var texts = myGrammar.GetTexts().ToList();
@@ -239,6 +285,55 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             myGrammar.Reset();
         }
 
+
+        [Test]
+        public void GetTexts_PresentSimple()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            _ = myGrammar.DebugView;
+
+            myGrammar.Add(i);
+            myGrammar.Add(read);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+
+        [Test]
+        public void GetTexts_PresentSimple_Negation()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var do_ = new Word("do", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            _ = myGrammar.DebugView;
+
+            myGrammar.Add(i);
+            myGrammar.Add(do_);
+            myGrammar.Add(not);
+            myGrammar.Add(read);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+
         [Test]
         public void GetTexts_PresentContionuous()
         {
@@ -253,6 +348,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             myGrammar.Add(i);
             myGrammar.Add(am);
+            myGrammar.Add(reading);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+        [Test]
+        public void GetTexts_PresentContionuous_Negation()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var am = new Word("am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+
+            _ = myGrammar.DebugView;
+
+            myGrammar.Add(i);
+            myGrammar.Add(am);
+            myGrammar.Add(not);
             myGrammar.Add(reading);
             myGrammar.Add(book);
             myGrammar.Add(punct);
@@ -288,6 +409,32 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         }
 
         [Test]
+        public void GetTexts_PresentPerfect_Negation()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+
+            _ = myGrammar.DebugView;
+
+            myGrammar.Add(i);
+            myGrammar.Add(have);
+            myGrammar.Add(not);
+            myGrammar.Add(read);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+        [Test]
         public void GetTexts_PresentContinuousPerfect()
         {
             var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
@@ -302,6 +449,34 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             myGrammar.Add(i);
             myGrammar.Add(have);
+            myGrammar.Add(been);
+            myGrammar.Add(reading);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+        [Test]
+        public void GetTexts_PresentContinuousPerfect_Negation()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var been = new Word("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+
+            _ = myGrammar.DebugView;
+
+            myGrammar.Add(i);
+            myGrammar.Add(have);
+            myGrammar.Add(not);
             myGrammar.Add(been);
             myGrammar.Add(reading);
             myGrammar.Add(book);
@@ -420,6 +595,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             myGrammar.Add(i);
             myGrammar.Add(will);
+            myGrammar.Add(read);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
+
+            var texts = myGrammar.GetTexts().ToList();
+            Assert.AreEqual(1, texts.Count);
+
+            myGrammar.Reset();
+        }
+
+        [Test]
+        public void GetTexts_FutureSimple_Negation()
+        {
+            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var will = new Word("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
+            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+
+            _ = myGrammar.DebugView;
+
+            myGrammar.Add(i);
+            myGrammar.Add(will);
+            myGrammar.Add(not);
             myGrammar.Add(read);
             myGrammar.Add(book);
             myGrammar.Add(punct);
