@@ -34,7 +34,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
                 foreach (var wordStr in words)
                 {
                     // Try to find the word in the dictionary.
-                    var maxDistance = wordStr.Length <= 2 ? 0 : 1;
+                    var maxDistance = wordStr.Length <= 3 ? 0 : 1;
                     var foundWords = myDictionary.FindWords(wordStr, maxDistance);
                     wordAlternatives.Add(foundWords.ToList());
                 }

@@ -122,39 +122,40 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
                 localSequence.RemoveAt(localSequence.Count - 1);
             }
 
-            // Find if the word is a lexeme with suffixes.
-            var wordSuffixes = FindLexemeAndItsSuffixes(word, morphDistance, new List<IMorpheme>());
-            foreach (var sequence in wordSuffixes)
-            {
-                var wordConstruct = new Word(localSequence.Concat(sequence.Reverse()).ToList());
-                yield return wordConstruct;
-            }
+            // TODO: uncomment when prefixes and suffixes are supported.
+            //// Find if the word is a lexeme with suffixes.
+            //var wordSuffixes = FindLexemeAndItsSuffixes(word, morphDistance, new List<IMorpheme>());
+            //foreach (var sequence in wordSuffixes)
+            //{
+            //    var wordConstruct = new Word(localSequence.Concat(sequence.Reverse()).ToList());
+            //    yield return wordConstruct;
+            //}
 
-            // Find if the word is a lexeme with prefixes and suffixes.
-            for (int i = 1; i < word.Length; ++i)
-            {
-                string nonLexeme = word.Substring(0, i);
-                var prefixHomonyms = FindBoundMorphemes(nonLexeme)
-                    .Where(x => GrammarAttributes.Morpheme.Bound.Prefix.IsIn(x.Attributes));
-                if (prefixHomonyms.Any())
-                {
-                    string newWord = word.Substring(i);
+            //// Find if the word is a lexeme with prefixes and suffixes.
+            //for (int i = 1; i < word.Length; ++i)
+            //{
+            //    string nonLexeme = word.Substring(0, i);
+            //    var prefixHomonyms = FindBoundMorphemes(nonLexeme)
+            //        .Where(x => GrammarAttributes.Morpheme.Bound.Prefix.IsIn(x.Attributes));
+            //    if (prefixHomonyms.Any())
+            //    {
+            //        string newWord = word.Substring(i);
 
-                    foreach (Morpheme prefix in prefixHomonyms)
-                    {
-                        localSequence.Add(prefix);
+            //        foreach (Morpheme prefix in prefixHomonyms)
+            //        {
+            //            localSequence.Add(prefix);
 
-                        // Try if there are sub-prefixes.
-                        var words = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
-                        foreach (var wordConstruct in words)
-                        {
-                            yield return wordConstruct;
-                        }
+            //            // Try if there are sub-prefixes.
+            //            var words = FindPossibleWordConstructions(newWord, morphDistance, localSequence);
+            //            foreach (var wordConstruct in words)
+            //            {
+            //                yield return wordConstruct;
+            //            }
 
-                        localSequence.RemoveAt(localSequence.Count - 1);
-                    }
-                }
-            }
+            //            localSequence.RemoveAt(localSequence.Count - 1);
+            //        }
+            //    }
+            //}
         }
 
         private IEnumerable<IReadOnlyList<IMorpheme>> FindLexemeAndItsSuffixes(string word, int morphDistance, List<IMorpheme> localSequence)

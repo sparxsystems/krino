@@ -11,7 +11,9 @@ namespace Krino.Vertical.Utils.StateMachines
     public class MultiMachine<TState, TTrigger>
     {
         private DirectedGraph<TState, TransitionRule<TState, TTrigger>> myGraph;
-        private Dictionary<TState, StateDefinition<TState>> myStates = new Dictionary<TState, StateDefinition<TState>>();
+        private Dictionary<TState, StateDefinition<TState>> myStates;
+        private Dictionary<TState, List<StateDefinition<TState>>> mySubStates;
+
         private ImmediateTriggerRule<TTrigger> myTriggerImmediatelyRule = new ImmediateTriggerRule<TTrigger>();
 
         private Tree<StateItem<TState, TTrigger>> myMachineTrack = new Tree<StateItem<TState, TTrigger>>(null);
@@ -27,6 +29,9 @@ namespace Krino.Vertical.Utils.StateMachines
         {
             myStateEqualityComparer = stateComparer ?? EqualityComparer<TState>.Default;
             myTriggerEqualityComparer = triggerComparer ?? EqualityComparer<TTrigger>.Default;
+
+            myStates = new Dictionary<TState, StateDefinition<TState>>(myStateEqualityComparer);
+            mySubStates = new Dictionary<TState, List<StateDefinition<TState>>>(myStateEqualityComparer);
 
             // Note: TransitionRule implements IEquatable, therefore the default comparer is ok to use for triggers.
             myGraph = new DirectedGraph<TState, TransitionRule<TState, TTrigger>>(stateComparer, null);
@@ -161,6 +166,13 @@ namespace Krino.Vertical.Utils.StateMachines
                 Parent = parent,
             };
             myStates[subState] = newState;
+
+            if (!mySubStates.TryGetValue(parent, out var subStates))
+            {
+                subStates = new List<StateDefinition<TState>>();
+                mySubStates[parent] = subStates;
+            }
+            subStates.Add(newState);
         }
 
         private IEnumerable<StateDefinition<TState>> GetStatesToStart(StateDefinition<TState> state)
@@ -202,10 +214,18 @@ namespace Krino.Vertical.Utils.StateMachines
 
         private IEnumerable<StateDefinition<TState>> GetSubstates(StateDefinition<TState> state)
         {
+            IEnumerable<StateDefinition<TState>> result;
+
             // Note: initial and final state cannot have substates.
-            var result = state.StateKind == StateKind.Custom ?
-                myStates.Values.Where(x => x.IsSubstate && myStateEqualityComparer.Equals(x.Parent, state.Value)) :
-                Enumerable.Empty<StateDefinition<TState>>();
+            if (state.StateKind == StateKind.Custom && mySubStates.TryGetValue(state.Value, out var subStates))
+            {
+                result = subStates;
+            }
+            else
+            {
+                result = Enumerable.Empty<StateDefinition<TState>>();
+            }
+                
             return result;
         }
 

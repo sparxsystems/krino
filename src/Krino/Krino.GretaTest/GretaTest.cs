@@ -14,29 +14,45 @@ namespace Krino.GretaTest
     [TestFixture]
     public class GretaTest
     {
+        private IConstructiveDictionary2 myDictionary;
+        private EnglishMachine myGrammar;
+
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            //Trace.StartProfiler();
+
+            myDictionary = new EnglishConstructiveDictionaryFactory().Create();
+            myGrammar = new EnglishMachine();
+
+            //Trace.StopProfiler();
+            //Thread.Sleep(300);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            myGrammar.Machine.Reset();
+        }
 
         [Test]
         public void Sentence_1_1()
         {
             //Trace.StartProfiler();
 
-            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            var grammar = new EnglishMachine();
-            var parser = new Parser(dictionary, grammar.Machine);
+            var parser = new Parser(myDictionary, myGrammar.Machine);
             //var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
             var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
 
             // Note: 2 - because 'regarding the climate emergency' can be adverbial adjunct or adverbial complement.
-            Assert.AreEqual(2, results.Count);
+            Assert.AreEqual(5, results.Count);
         }
 
         // I will start with the good news.
         [Test]
         public void Sentence_1_2()
         {
-            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            var grammar = new EnglishMachine();
-            var parser = new Parser(dictionary, grammar.Machine);
+            var parser = new Parser(myDictionary, myGrammar.Machine);
 
             var results = parser.Parse("I will start with the good news.");
 
@@ -48,21 +64,13 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_2_1()
         {
-            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            var grammar = new EnglishMachine();
-            var parser = new Parser(dictionary, grammar.Machine);
+            var parser = new Parser(myDictionary, myGrammar.Machine);
 
             //var results = parser.Parse("the world");
             var results = parser.Parse("The world as a small number of people have been saying lately will not end in eleven years.");
 
-            //var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            //AdTreeCreator adTreeCreator = new AdTreeCreator(dictionary);
-            //List<IAdTree> results = adTreeCreator.Create("The world as a small number of people have been saying lately will not end in 11 years".ToLower().Split(" "));
-
-            //List<string> phraseElements = adTree
-            //    .Where(x => !string.IsNullOrEmpty(x.Morpheme.Morph))
-            //    .Select(x => string.Join("->", string.Join("-", new IAdTree[] { x }.Concat(x.AdPositions).Select(y => y.IsOnLeft ? "L" : y.IsOnRight ? "R" : "").Reverse()), x.Morpheme.Morph))
-            //    .ToList();
+            // AdverbialAdjunct vs AdverbialComplement.
+            Assert.AreEqual(4, results.Count);
         }
     }
 }

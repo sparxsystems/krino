@@ -26,6 +26,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             //Thread.Sleep(300);
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            myGrammar.Reset();
+        }
+
+
+
         [Test]
         public void GetTexts_DirectObject()
         {
@@ -44,9 +52,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             myGrammar.Add(punct);
 
             var texts = myGrammar.GetTexts().ToList();
-            Assert.AreEqual(1, texts.Count);
-
-            myGrammar.Reset();
+            Assert.AreEqual(4, texts.Count);
         }
 
         [Test]
@@ -68,8 +74,6 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
-
-            myGrammar.Reset();
         }
 
         [Test]
@@ -98,7 +102,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(2, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -121,7 +125,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -144,7 +148,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -171,7 +175,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -187,12 +191,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             _ = myGrammar.DebugView;
 
-            Trace.StartProfiler();
-            
             myGrammar.Add(world);
-
-            Trace.StopProfiler();
-
             myGrammar.Add(as_);
             myGrammar.Add(few);
             myGrammar.Add(people);
@@ -203,7 +202,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -226,7 +225,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -254,7 +253,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
 
@@ -282,7 +281,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(2, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
 
@@ -304,7 +303,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
 
@@ -330,7 +329,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
 
@@ -355,7 +354,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -381,7 +380,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -405,7 +404,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -431,7 +430,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -457,7 +456,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -485,7 +484,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -506,7 +505,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -530,7 +529,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -553,7 +552,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -578,7 +577,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
 
@@ -602,7 +601,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -627,7 +626,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -652,7 +651,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -677,7 +676,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -704,7 +703,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
 
@@ -732,7 +731,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
 
-            myGrammar.Reset();
+            
         }
 
         [Test]
@@ -762,12 +761,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual(1, texts.Count);
             Assert.AreEqual(1, texts[0].Sentences.Count);
 
-            myGrammar.Reset();
+            
         }
 
         // Note: complex sentences consists of one main clause and one or more dependent clauses
         [Test]
-        public void GetTexts_ComplexSentence_DependentSentence_As_DirectObject()
+        public void GetTexts_ComplexSentence_DependentClause_As_DirectObject()
         {
             var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
             var want = new Word("want", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
@@ -794,9 +793,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             myGrammar.Add(punct);
 
             var texts = myGrammar.GetTexts().ToList();
-            Assert.AreEqual(4, texts.Count);
-
-            myGrammar.Reset();
+            Assert.AreEqual(5, texts.Count);
         }
 
 
@@ -825,7 +822,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             Assert.AreEqual(1, texts.Count);
             Assert.AreEqual(2, texts[0].Sentences.Count);
 
-            myGrammar.Reset();
+            
         }
     }
 }
