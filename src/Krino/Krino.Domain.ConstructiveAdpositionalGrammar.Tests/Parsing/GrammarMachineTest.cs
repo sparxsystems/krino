@@ -52,7 +52,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             myGrammar.Add(punct);
 
             var texts = myGrammar.GetTexts().ToList();
-            Assert.AreEqual(4, texts.Count);
+            Assert.AreEqual(1, texts.Count);
         }
 
         [Test]
@@ -100,9 +100,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             myGrammar.Add(punct);
 
             var texts = myGrammar.GetTexts().ToList();
-            Assert.AreEqual(2, texts.Count);
-
-            
+            Assert.AreEqual(4, texts.Count);
         }
 
         [Test]

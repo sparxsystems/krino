@@ -10,26 +10,28 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     [TestFixture]
     public class StatePathExtTest
     {
-        [Test]
-        public void GetText()
+        private GrammarMachine myGrammar;
+
+        [OneTimeSetUp]
+        public void Setup()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            //Trace.StartProfiler();
 
-            var english = new EnglishMachine().Machine;
-            var grammar = new GrammarMachine(english);
+            var english = new EnglishMachine(true).Machine;
+            myGrammar = new GrammarMachine(english);
 
-            _ = grammar.DebugView;
+            //Trace.StopProfiler();
+            //Thread.Sleep(300);
+        }
 
-            // Although the sentence is not completed the text structure needs to contain all available elements.
-            grammar.Add(i);
-
-            var texts = grammar.ActiveStates.Select(x => x.Path.GetText()).ToList();
-            var text = texts.FirstOrDefault();
-            Assert.AreEqual("i", text.Value);
+        [TearDown]
+        public void TearDown()
+        {
+            myGrammar.Reset();
         }
 
         [Test]
-        public void GetLastSentence()
+        public void GetText()
         {
             var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
             var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
@@ -43,33 +45,30 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
 
-            var english = new EnglishMachine().Machine;
-            var grammar = new GrammarMachine(english);
-
-            _ = grammar.DebugView;
+            _ = myGrammar.DebugView;
 
             // First sentence.
-            grammar.Add(i);
-            grammar.Add(read);
-            grammar.Add(the);
-            grammar.Add(book);
-            grammar.Add(punct);
+            myGrammar.Add(i);
+            myGrammar.Add(read);
+            myGrammar.Add(the);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
 
             // Second sentence.
-            grammar.Add(i);
-            grammar.Add(give);
-            grammar.Add(him);
-            grammar.Add(a);
-            grammar.Add(book);
-            grammar.Add(punct);
+            myGrammar.Add(i);
+            myGrammar.Add(give);
+            myGrammar.Add(him);
+            myGrammar.Add(a);
+            myGrammar.Add(book);
+            myGrammar.Add(punct);
 
 
             // Although the sentence is not completed the text structure needs to contain all available elements.
-            grammar.Add(i);
+            myGrammar.Add(i);
 
-            var texts = grammar.ActiveStates.Select(x => x.Path.GetText()).ToList();
+            var texts = myGrammar.ActiveStates.Select(x => x.Path.GetText()).ToList();
             var text = texts.FirstOrDefault();
-            Assert.AreEqual("i", text.Value);
+            Assert.AreEqual("i read the book. i give him a book. i", text.Value);
         }
     }
 }

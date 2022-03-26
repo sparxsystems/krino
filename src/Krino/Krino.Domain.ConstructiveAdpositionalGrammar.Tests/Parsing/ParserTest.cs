@@ -1,4 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
+using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
 using Krino.Domain.EnglishGrammar.Parsing;
 using NUnit.Framework;
@@ -8,12 +9,31 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
     [TestFixture]
     public class ParserTest
     {
+        private IConstructiveDictionary2 myDictionary;
+        private EnglishMachine myGrammar;
+
+        [OneTimeSetUp]
+        public void Setup()
+        {
+            //Trace.StartProfiler();
+
+            myDictionary = new EnglishConstructiveDictionaryFactory().Create();
+            myGrammar = new EnglishMachine(true);
+
+            //Trace.StopProfiler();
+            //Thread.Sleep(300);
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            myGrammar.Machine.Reset();
+        }
+
         [Test]
         public void Parse_SimpleSentence()
         {
-            var dictionary = new EnglishConstructiveDictionaryFactory().Create();
-            var grammar = new EnglishMachine();
-            var parser = new Parser(dictionary, grammar.Machine);
+            var parser = new Parser(myDictionary, myGrammar.Machine);
 
             var text = parser.Parse("I read book.");
             

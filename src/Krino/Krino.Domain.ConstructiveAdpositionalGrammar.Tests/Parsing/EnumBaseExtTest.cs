@@ -16,7 +16,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
 
             // BigInteger attributes.
             var attributes = GrammarAttributes.Morpheme.Free.Lexical.Noun | GrammarAttributes.Morpheme.Free.Lexical.Verb;
-            Assert.AreEqual("Morpheme.(O.Free.Noun,I.Free.Verb)", attributes.GetGrammarId());
+            Assert.AreEqual("Morpheme.Free.Lexical.(Noun,Verb)", attributes.GetGrammarId());
 
             // The root.
             Assert.AreEqual("", GrammarAttributes.Instance.GetGrammarId());

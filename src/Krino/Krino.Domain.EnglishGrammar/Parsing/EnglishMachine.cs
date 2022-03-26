@@ -20,7 +20,17 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
 
         public EnglishMachine()
+            : this(false)
         {
+        }
+
+        public EnglishMachine(bool simpleMode)
+        {
+            if (simpleMode)
+            {
+                AddRestriction(nameof(AddSingleDependentClause));
+            }
+
             myMachine = new MultiMachine<LinguisticState, IWord>();
 
             var root = new GrammarMachineBuilder(myMachine);

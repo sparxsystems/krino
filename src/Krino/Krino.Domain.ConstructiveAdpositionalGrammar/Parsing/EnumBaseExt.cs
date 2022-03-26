@@ -15,8 +15,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
+            string result = "";
 
-            if (!myBuffer.TryGetValue(attributes, out var result))
+            if (attributes != 0 && !myBuffer.TryGetValue(attributes, out result))
             {
                 result = GrammarAttributes.Instance.GetFullName(attributes).Substring(myToReplace.Length);
                 myBuffer[attributes] = result;
