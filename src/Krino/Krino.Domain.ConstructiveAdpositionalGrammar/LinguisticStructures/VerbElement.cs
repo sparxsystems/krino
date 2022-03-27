@@ -7,5 +7,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public VerbElement(BigInteger attributes) : base(attributes)
         {
         }
+
+        protected override PhraseBase FactoryMethod() => new VerbElement(Attributes);
     }
 }

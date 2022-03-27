@@ -7,8 +7,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public ComplexSentenceAttributes(EnumGroupBase parent) : base(parent)
         {
             Argument = new EnumValue(this);
+            Condition = new EnumValue(this);
         }
 
         public EnumValue Argument { get; }
+
+        public EnumValue Condition { get; }
     }
 }

@@ -28,7 +28,10 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             if (simpleMode)
             {
-                AddRestriction(nameof(AddDependentClause));
+                // One depedent clause is allowed.
+                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.NounClause, 1);
+                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdjectiveClause, 1);
+                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdverbialClause, 0);
             }
 
             myMachine = new MultiMachine<LinguisticState, IWord>();
@@ -125,7 +128,8 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
-            if (myRestrictions.ContainsKey(nameof(AddDependentClause)))
+            if (IsRestricted(nameof(AddDependentClause)) ||
+                IsRestricted(nameof(AddDependentClause), objectType))
             {
                 return;
             }
@@ -194,11 +198,11 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             verbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.VerbPhrase);
 
-            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Pentavalent);
-            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.AdverbialComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
-            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking);
-            verbElement.AddEmptyTransitionWithVerbValencyRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.AdverbialAdjunct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
+            verbElement.AddEmptyTransitionWithVerbRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Quadrivalent, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Pentavalent);
+            verbElement.AddEmptyTransitionWithVerbRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Object.ObjectOfVerb.Direct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            verbElement.AddEmptyTransitionWithVerbRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.AdverbialComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
+            verbElement.AddEmptyTransitionWithVerbRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.Complement.SubjectComplement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking);
+            verbElement.AddEmptyTransitionWithVerbRule(GrammarAttributes.Phrase.VerbPhrase, GrammarAttributes.AdverbialAdjunct, GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent);
             verbElement.AddEmptyTransition(GrammarAttributes.Phrase.VerbPhrase, "final");
 
             verbElement.AddEmptyTransition(GrammarAttributes.Object.ObjectOfVerb.Indirect, GrammarAttributes.Object.ObjectOfVerb.Direct);
@@ -622,7 +626,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
-            if (myRestrictions.ContainsKey(nameof(AddPrepositionalPhrase)))
+            if (IsRestricted(nameof(AddPrepositionalPhrase)))
             {
                 return;
             }
@@ -647,7 +651,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             using var _t = Trace.Entering();
 
-            if (myRestrictions.ContainsKey(nameof(AddInfinitivePhrase)))
+            if (IsRestricted(nameof(AddInfinitivePhrase)))
             {
                 return;
             }
@@ -737,11 +741,20 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         }
 
 
-        public void AddRestriction(string restrictionTag)
+
+        private bool IsRestricted(string restrictionTag, BigInteger objectType) => myRestrictions.TryGetValue(string.Join("_", restrictionTag, objectType) , out var value) && value > 0;
+
+        private bool IsRestricted(string restrictionTag) => myRestrictions.TryGetValue(restrictionTag, out var value) && value > 0;
+
+        private void AddRestriction(string restrictionTag, BigInteger objectType, int initialValue) => AddRestriction(string.Join("_", restrictionTag, objectType), initialValue);
+
+        private void AddRestriction(string restrictionTag) => AddRestriction(restrictionTag, 1);
+
+        private void AddRestriction(string restrictionTag, int initialValue)
         {
             if (!myRestrictions.ContainsKey(restrictionTag))
             {
-                myRestrictions[restrictionTag] = 1;
+                myRestrictions[restrictionTag] = initialValue;
             }
             else
             {
@@ -749,20 +762,11 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             }
         }
 
-        public void RemoveRestriction(string restrictionTag)
+        private void RemoveRestriction(string restrictionTag)
         {
-            if (myRestrictions.TryGetValue(restrictionTag, out var counter))
+            if (myRestrictions.ContainsKey(restrictionTag))
             {
-                --counter;
-
-                if (counter > 0)
-                {
-                    myRestrictions[restrictionTag] = counter;
-                }
-                else
-                {
-                    myRestrictions.Remove(restrictionTag);
-                }
+                --myRestrictions[restrictionTag];
             }
         }
     }

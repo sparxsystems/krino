@@ -28,14 +28,26 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
                 if (IndependentClauses.Count > 0)
                 {
-                    var dependentClausesExist = IndependentClauses.SelectMany(x => x.DependentClauses).Any();
+                    var dependentClauses = IndependentClauses.SelectMany(x => x.DependentClauses);
+                    var dependentClausesExist = dependentClauses.Any();
 
-                    if (IndependentClauses.Count == 1 && !dependentClausesExist)
+                    if (IndependentClauses.Count == 1)
                     {
                         if (dependentClausesExist)
                         {
-                            // One independent clause and at least one dependent clause.
-                            result = GrammarAttributes.Sentence.Complex;
+                            if (dependentClauses.Any(x => GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Cause.IsIn(x.Conjunction.Attributes)))
+                            {
+                                result = GrammarAttributes.Sentence.Complex.Argument;
+                            }
+                            else if (dependentClauses.Any(x => GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Condition.IsIn(x.Conjunction.Attributes)))
+                            {
+                                result = GrammarAttributes.Sentence.Complex.Condition;
+                            }
+                            else
+                            {
+                                // One independent clause and at least one dependent clause.
+                                result = GrammarAttributes.Sentence.Complex;
+                            }
                         }
                         else
                         {
@@ -59,6 +71,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             }
 
             protected set { }
+        }
+
+        public ILinguisticStructure DeepCopy()
+        {
+            var independentClauses = IndependentClauses.Select(x => x.DeepCopy()).OfType<IClause>();
+            var result = new Sentence(Attributes);
+            result.IndependentClauses.AddRange(independentClauses);
+            return result;
         }
     }
 }

@@ -39,5 +39,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public string Value => string.Join(" ", DirectItems.Select(x => x.Value));
 
         public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", DirectItems.Select(x => x.GrammarStr)), ")");
+
+        public ILinguisticStructure DeepCopy()
+        {
+            var result = FactoryMethod();
+            var items = DirectItems.Select(x => x.DeepCopy()).OfType<IPhraseItem>();
+            result.DirectItems.AddRange(items);
+            return result;
+        }
+
+        protected abstract PhraseBase FactoryMethod();
     }
 }

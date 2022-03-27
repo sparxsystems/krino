@@ -11,5 +11,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         string Value { get; }
 
         string GrammarStr { get; }
+
+        ILinguisticStructure DeepCopy();
     }
 }

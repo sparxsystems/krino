@@ -23,12 +23,12 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue Simple { get; }
 
         /// <summary>
-        /// Contains two or more independent clauses.
+        /// Contains one independent clause and at least one dependent clause.
         /// </summary>
         public ComplexSentenceAttributes Complex { get; }
 
         /// <summary>
-        /// Contains one independent clause and one dependent clause.
+        /// Contains two or more independent clauses.
         /// </summary>
         public EnumValue Compound { get; }
 
@@ -41,12 +41,18 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         public EnumValue Declarative { get; }
 
         /// <summary>
-        /// Question.
+        /// Expresses question.
         /// </summary>
         public EnumValue Interrogative { get; }
 
+        /// <summary>
+        /// Expresses command.
+        /// </summary>
         public EnumValue Imperative { get; }
-        
+
+        /// <summary>
+        /// Expresses emotion.
+        /// </summary>
         public EnumValue Exclamative { get; }
 
     }

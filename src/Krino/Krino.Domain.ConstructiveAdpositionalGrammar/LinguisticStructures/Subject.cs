@@ -8,5 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             : base(attributes)
         {
         }
+
+        protected override PhraseBase FactoryMethod() => new Subject(Attributes);
     }
 }

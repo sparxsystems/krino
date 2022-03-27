@@ -22,6 +22,9 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         /// </summary>
         public GrammarCharacter GrammarCharacter => GrammarCharacter.e;
 
+        public ILinguisticStructure DeepCopy() => new Morpheme(Value, Attributes);
+        
+
 
         public bool Equals(IMorpheme other) => Value == other.Value && Attributes == other.Attributes;
 

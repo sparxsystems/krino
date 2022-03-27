@@ -16,5 +16,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public string Value => string.Join(" ", Sentences.Select(x => x.Value));
 
         public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", Sentences.Select(x => x.GrammarStr)), ")");
+
+        public ILinguisticStructure DeepCopy()
+        {
+            var sentences = Sentences.Select(x => x.DeepCopy()).OfType<ISentence>();
+            var result = new Text(Attributes);
+            result.Sentences.AddRange(sentences);
+            return result;
+        }
     }
 }

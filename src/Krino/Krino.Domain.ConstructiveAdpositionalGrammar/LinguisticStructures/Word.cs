@@ -54,6 +54,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public string GrammarStr => string.Join("", AttributesStr, "(", Value, ")");
 
+        public ILinguisticStructure DeepCopy()
+        {
+            var morphemes = Morphemes.Select(x => x.DeepCopy()).OfType<IMorpheme>();
+            var result = new Word(morphemes);
+            return result;
+        }
+
+
         private string DebuggerDisplay => string.Join(" : ", Value, AttributesStr);
     }
 }

@@ -11,5 +11,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         IPredicate Predicate { get; set; }
 
         IEnumerable<IClause> DependentClauses { get;}
+
+        /// <summary>
+        /// Returns this clause without independent clauses.
+        /// </summary>
+        IClause IndependentClause { get; }
     }
 }

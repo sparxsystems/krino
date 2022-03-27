@@ -28,8 +28,42 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             }
         }
 
-        public string Value => StringExt.JoinIgnoreEmpty(" ", Conjunction?.Value, Subject?.Value, Predicate?.Value);
+        public IClause IndependentClause
+        {
+            get
+            {
+                var result = DeepCopy() as IClause;
+
+                while (true)
+                {
+                    var phrases = result.Subject.AllItems.OfType<IPhrase>().Concat(result.Predicate.AllItems.OfType<IPhrase>());
+                    var phraseWithClause = phrases.FirstOrDefault(x => x.DirectItems.OfType<IClause>().Any());
+                    
+                    if (phraseWithClause != null)
+                    {
+                        phraseWithClause.DirectItems.RemoveAll(x => x is IClause);
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+
+                return result;
+            }
+        }
+
+        public string Value => StringExt.JoinIgnoreEmpty(" ", Conjunction?.Value, Subject?.Value, Predicate?.Value).Trim();
 
         public string GrammarStr => string.Join("", AttributesStr, "(", StringExt.JoinIgnoreEmpty(" ", AttributesStr, Conjunction?.GrammarStr, Subject?.GrammarStr, Predicate?.GrammarStr), ")");
+
+        public ILinguisticStructure DeepCopy()
+        {
+            var result = new Clause(Attributes);
+            result.Conjunction = Conjunction?.DeepCopy() as IWord;
+            result.Subject = Subject?.DeepCopy() as ISubject;
+            result.Predicate = Predicate?.DeepCopy() as IPredicate;
+            return result;
+        }
     }
 }

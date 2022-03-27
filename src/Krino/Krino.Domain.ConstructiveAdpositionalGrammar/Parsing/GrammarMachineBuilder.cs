@@ -109,7 +109,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         }
 
 
-        public GrammarMachineBuilder AddEmptyTransitionWithVerbValencyRule(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
+        public GrammarMachineBuilder AddEmptyTransitionWithVerbRule(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
             => AddEmptyTransitionWithRules(from.GetGrammarId(), to.GetGrammarId(), acceptedAttributes.Select(x => ParsingRule.VerbPhraseContainsAttribute(x)).ToArray());
 
         public GrammarMachineBuilder AddEmptyTransitionWithRules(string fromId, string toId, params TransitionRule<LinguisticState, IWord>[] transitionRules)
