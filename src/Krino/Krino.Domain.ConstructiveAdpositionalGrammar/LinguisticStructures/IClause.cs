@@ -1,4 +1,6 @@
-﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+﻿using System.Collections.Generic;
+
+namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public interface IClause : ILinguisticStructure, IPhraseItem
     {
@@ -7,5 +9,7 @@
         ISubject Subject { get; set; }
 
         IPredicate Predicate { get; set; }
+
+        IEnumerable<IClause> DependentClauses { get;}
     }
 }

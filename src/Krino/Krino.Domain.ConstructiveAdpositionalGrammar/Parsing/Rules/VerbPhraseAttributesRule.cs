@@ -30,7 +30,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
             var verbPhrase = value.Path.GetLastVerbPhrase();
             if (verbPhrase != null)
             {
-                var attributes = verbPhrase.Items.Select(x => x.Attributes).AccumulateEnums();
+                var attributes = verbPhrase.DirectItems.Select(x => x.Attributes).AccumulateEnums();
                 result = myRule.Evaluate(attributes);
             }
 

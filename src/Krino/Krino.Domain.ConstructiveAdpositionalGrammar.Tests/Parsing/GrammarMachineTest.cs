@@ -5,6 +5,7 @@ using Krino.Domain.EnglishGrammar.Parsing;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System.Linq;
+using System.Numerics;
 using System.Threading;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
@@ -19,7 +20,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
         {
             //Trace.StartProfiler();
 
-            var english = new EnglishMachine().Machine;
+            var english = new EnglishMachine(true).Machine;
             myGrammar = new GrammarMachine(english);
 
             //Trace.StopProfiler();
@@ -183,7 +184,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var as_ = new Word("as", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
             var few = new Word("few", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
             var people = new Word("people", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var says = new Word("says", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var say = new Word("say", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
             var ends = new Word("ends", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
             var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
 
@@ -193,7 +194,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             myGrammar.Add(as_);
             myGrammar.Add(few);
             myGrammar.Add(people);
-            myGrammar.Add(says);
+            myGrammar.Add(say);
             myGrammar.Add(ends);
             myGrammar.Add(punct);
 
@@ -758,8 +759,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
             var texts = myGrammar.GetTexts().ToList();
             Assert.AreEqual(1, texts.Count);
             Assert.AreEqual(1, texts[0].Sentences.Count);
-
-            
+            Assert.AreEqual((BigInteger)GrammarAttributes.Sentence.Compound, texts[0].Sentences[0].Attributes);
         }
 
         // Note: complex sentences consists of one main clause and one or more dependent clauses

@@ -8,7 +8,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         {
             if (parent is IPhrase term)
             {
-                term.Items.Add((IPhraseItem)subStructure);
+                term.DirectItems.Add((IPhraseItem)subStructure);
             }
 
             else if (parent is IClause clause)
@@ -30,7 +30,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             {
                 if (subStructure is IClause internalClause)
                 {
-                    sentence.Clauses.Add(internalClause);
+                    sentence.IndependentClauses.Add(internalClause);
                 }
                 else if (subStructure is IWord punctuation)
                 {

@@ -11,10 +11,33 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         {
         }
 
-        public List<IPhraseItem> Items { get; } = new List<IPhraseItem>();
+        public List<IPhraseItem> DirectItems { get; } = new List<IPhraseItem>();
 
-        public string Value => string.Join(" ", Items.Select(x => x.Value));
+        public IEnumerable<IPhraseItem> AllItems
+        {
+            get
+            {
+                var stack = new Stack<IPhraseItem>();
+                stack.Push(this);
 
-        public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", Items.Select(x => x.GrammarStr)), ")");
+                while (stack.Count > 0)
+                {
+                    var aThis = stack.Pop();
+                    yield return aThis;
+
+                    if (aThis is IPhrase aThisPhrase)
+                    {
+                        foreach (var child in aThisPhrase.DirectItems.AsEnumerable().Reverse())
+                        {
+                            stack.Push(child);
+                        }
+                    }
+                }
+            }
+        }
+
+        public string Value => string.Join(" ", DirectItems.Select(x => x.Value));
+
+        public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", DirectItems.Select(x => x.GrammarStr)), ")");
     }
 }

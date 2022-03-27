@@ -4,6 +4,11 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
     public interface IPhrase : IPhraseItem, ILinguisticStructure
     {
-        List<IPhraseItem> Items { get; }
+        List<IPhraseItem> DirectItems { get; }
+
+        /// <summary>
+        /// All items returned recursivelly.
+        /// </summary>
+        IEnumerable<IPhraseItem> AllItems { get; }
     }
 }

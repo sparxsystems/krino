@@ -28,7 +28,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
         {
             if (simpleMode)
             {
-                AddRestriction(nameof(AddSingleDependentClause));
+                AddRestriction(nameof(AddDependentClause));
             }
 
             myMachine = new MultiMachine<LinguisticState, IWord>();
@@ -50,18 +50,14 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             text.AddState("start_loop", 0);
             text.AddState("end_loop", 0);
 
-            AddSimpleSentence(text, GrammarAttributes.Sentence.Simple);
-            AddCompoundSentence(text, GrammarAttributes.Sentence.Compound, GrammarAttributes.Clause.Independent);
+            AddSentence(text, GrammarAttributes.Sentence);
 
             text.AddEmptyTransition("init", "start_loop");
 
-            text.AddEmptyTransition("start_loop", GrammarAttributes.Sentence.Simple);
-            text.AddEmptyTransition("start_loop", GrammarAttributes.Sentence.Compound);
+            text.AddEmptyTransition("start_loop", GrammarAttributes.Sentence);
 
-            text.AddEmptyTransition(GrammarAttributes.Sentence.Simple, "end_loop");
+            text.AddEmptyTransition(GrammarAttributes.Sentence, "end_loop");
             
-            text.AddEmptyTransition(GrammarAttributes.Sentence.Compound, "end_loop");
-
             // If a next sentence.
             text.AddEmptyTransition("end_loop", "start_loop");
 
@@ -70,48 +66,71 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
         }
 
-
-        private void AddSimpleSentence(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddSentence(GrammarMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
-            var simpleSentence = builder.AddSubState(objectType)
+            var sentence = builder.AddSubState(objectType)
                 .AddStates(GrammarAttributes.PunctuationMark);
 
-            AddSingleIndependentClause(simpleSentence, GrammarAttributes.Clause.Independent);
+            sentence.AddState("start_loop", 0);
+            sentence.AddState("end_loop", 0);
 
-            simpleSentence.AddEmptyTransition("init", GrammarAttributes.Clause.Independent);
-            simpleSentence.AddTriggeredTransition(GrammarAttributes.Clause.Independent, GrammarAttributes.PunctuationMark);
-            simpleSentence.AddEmptyTransition(GrammarAttributes.PunctuationMark, "final");
+            AddIndependentClause(sentence, "first_independent_clause", GrammarAttributes.Clause.Independent, true);
+            AddIndependentClause(sentence, "next_independent_clause", GrammarAttributes.Clause.Independent, false);
+
+            sentence.AddEmptyTransition("init", "first_independent_clause");
+
+            sentence.AddEmptyTransition("first_independent_clause", "start_loop");
+            sentence.AddTriggeredTransition("first_independent_clause", GrammarAttributes.PunctuationMark);
+
+            sentence.AddEmptyTransition("start_loop", "next_independent_clause");
+
+            sentence.AddEmptyTransition("next_independent_clause", "end_loop");
+
+            // If next independent clause starting with a coordinating conjunction follows.
+            sentence.AddEmptyTransition("end_loop", "start_loop");
+            sentence.AddTriggeredTransition("end_loop", GrammarAttributes.PunctuationMark);
+
+            sentence.AddEmptyTransition(GrammarAttributes.PunctuationMark, "final");
         }
 
-        private void AddCompoundSentence(GrammarMachineBuilder builder, EnumBase groupAttributes, EnumBase itemAttributes)
-            => AddMandatoryConcatenation(builder, groupAttributes, itemAttributes, AddSingleIndependentClause);
-
-        private void AddSingleIndependentClause(GrammarMachineBuilder builder, BigInteger objectType)
+        private void AddIndependentClause(GrammarMachineBuilder builder, string objectName, BigInteger objectType, bool isFirstClause)
         {
             using var _t = Trace.Entering();
 
-            var declarativeClause = builder.AddSubState(objectType);
+            var independentClauses = builder.AddSubState(objectName, objectType)
+                .AddStates(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            
+            AddNounElement(independentClauses, GrammarAttributes.Subject);
+            AddVerbElement(independentClauses, GrammarAttributes.Predicate, false);
 
-            AddNounElement(declarativeClause, GrammarAttributes.Subject);
-            AddVerbElement(declarativeClause, GrammarAttributes.Predicate, false);
+            independentClauses.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
 
-            declarativeClause.AddEmptyTransition("init", GrammarAttributes.Subject);
-            declarativeClause.AddEmptyTransition(GrammarAttributes.Subject, GrammarAttributes.Predicate);
-            declarativeClause.AddEmptyTransition(GrammarAttributes.Predicate, "final");
+            // Only the first clause can start with the subject.
+            // Independent clauses following the first one must start with a coordinating conjunction.
+            if (isFirstClause)
+            {
+                independentClauses.AddEmptyTransition("init", GrammarAttributes.Subject);
+            }
+
+
+            independentClauses.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating, GrammarAttributes.Subject);
+
+            independentClauses.AddEmptyTransition(GrammarAttributes.Subject, GrammarAttributes.Predicate);
+            independentClauses.AddEmptyTransition(GrammarAttributes.Predicate, "final");
         }
 
-        private void AddSingleDependentClause(GrammarMachineBuilder builder, BigInteger objectType)
+        private void AddDependentClause(GrammarMachineBuilder builder, BigInteger objectType)
         {
             using var _t = Trace.Entering();
 
-            if (myRestrictions.ContainsKey(nameof(AddSingleDependentClause)))
+            if (myRestrictions.ContainsKey(nameof(AddDependentClause)))
             {
                 return;
             }
 
-            AddRestriction(nameof(AddSingleDependentClause));
+            AddRestriction(nameof(AddDependentClause));
 
             var declarativeClause = builder.AddSubState(objectType)
                 .AddStates(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
@@ -127,7 +146,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             declarativeClause.AddEmptyTransition(GrammarAttributes.Predicate, "final");
 
-            RemoveRestriction(nameof(AddSingleDependentClause));
+            RemoveRestriction(nameof(AddDependentClause));
         }
 
 
@@ -140,7 +159,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             AddNounPhrase(nounElement, GrammarAttributes.Phrase.NounPhrase);
             AddInfinitivePhrase(nounElement, GrammarAttributes.Phrase.InfinitivePhrase);
-            AddSingleDependentClause(nounElement, GrammarAttributes.Clause.Dependent.NounClause);
+            AddDependentClause(nounElement, GrammarAttributes.Clause.Dependent.NounClause);
 
             nounElement.AddEmptyTransition("init", GrammarAttributes.Phrase.NounPhrase);
             nounElement.AddEmptyTransition("init", GrammarAttributes.Phrase.InfinitivePhrase);
@@ -223,7 +242,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             // If the adjectiv is postpositive then it can also be an adjective clause or adjectival prepositional phrase.
             if (GrammarAttributes.AdjectiveElement.PostPositive.IsIn(objectType))
             {
-                AddSingleDependentClause(adjectiveElement, GrammarAttributes.Clause.Dependent.AdjectiveClause);
+                AddDependentClause(adjectiveElement, GrammarAttributes.Clause.Dependent.AdjectiveClause);
                 AddPrepositionalPhrase(adjectiveElement, GrammarAttributes.Phrase.PrepositionalPhrase);
             }
 
@@ -254,7 +273,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             AddPrepositionalPhrase(adverbElement, GrammarAttributes.Phrase.PrepositionalPhrase);
             AddInfinitivePhrase(adverbElement, GrammarAttributes.Phrase.InfinitivePhrase);
-            AddSingleDependentClause(adverbElement, GrammarAttributes.Clause.Dependent.AdverbialClause);
+            AddDependentClause(adverbElement, GrammarAttributes.Clause.Dependent.AdverbialClause);
 
             adverbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Adverb);
             adverbElement.AddEmptyTransition("init", GrammarAttributes.Phrase.PrepositionalPhrase);
@@ -672,7 +691,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             AddPrepositionalPhrase(adjectiveComplement, GrammarAttributes.Phrase.PrepositionalPhrase);
             AddInfinitivePhrase(adjectiveComplement, GrammarAttributes.Phrase.InfinitivePhrase);
-            AddSingleDependentClause(adjectiveComplement, GrammarAttributes.Clause.Dependent.NounClause);
+            AddDependentClause(adjectiveComplement, GrammarAttributes.Clause.Dependent.NounClause);
 
             adjectiveComplement.AddEmptyTransition("init", GrammarAttributes.Phrase.PrepositionalPhrase);
             adjectiveComplement.AddEmptyTransition("init", GrammarAttributes.Phrase.InfinitivePhrase);
@@ -716,24 +735,6 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             concatenatingState.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating, concatItem);
         }
-
-        private void AddMandatoryConcatenation(GrammarMachineBuilder builder, BigInteger groupObject, BigInteger itemObject, Action<GrammarMachineBuilder, BigInteger> addSingleElement)
-        {
-            using var _t = Trace.Entering();
-
-            var concatenatingState = builder.AddSubState(groupObject);
-            concatenatingState.AddStates(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
-
-            addSingleElement(concatenatingState, itemObject);
-
-            concatenatingState.AddEmptyTransition("init", itemObject);
-
-            concatenatingState.AddTriggeredTransition(itemObject, GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
-            concatenatingState.AddEmptyTransitionWithRules(itemObject.GetGrammarId(), "final", ParsingRule.IsConcatenated());
-
-            concatenatingState.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating, itemObject);
-        }
-
 
 
         public void AddRestriction(string restrictionTag)

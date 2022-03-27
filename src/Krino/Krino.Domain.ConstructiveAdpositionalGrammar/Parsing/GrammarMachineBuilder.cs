@@ -76,11 +76,13 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return this;
         }
 
-        public GrammarMachineBuilder AddSubState(BigInteger attributes)
+        public GrammarMachineBuilder AddSubState(BigInteger attributes) => AddSubState(attributes.GetGrammarId(), attributes);
+
+        public GrammarMachineBuilder AddSubState(string subStateId, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
-            var newSubState = myIsSubState ? new LinguisticState(string.Concat(myParentState.Id, "|", attributes.GetGrammarId()), attributes) : new LinguisticState(attributes.GetGrammarId(), attributes);
+            var newSubState = myIsSubState ? new LinguisticState(string.Concat(myParentState.Id, "|", subStateId), attributes) : new LinguisticState(subStateId, attributes);
             myMachine.AddState(newSubState);
             var result = new GrammarMachineBuilder(myMachine, newSubState);
 
