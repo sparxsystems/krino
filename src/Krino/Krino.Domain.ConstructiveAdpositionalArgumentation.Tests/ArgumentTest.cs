@@ -35,7 +35,7 @@ namespace Krino.Domain.ConstructiveAdpositionalArgumentation.Tests
         }
 
         [Test]
-        public void Premise_Conclusion()
+        public void Premise_Conclusion_Form()
         {
             var it = new Word("it", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
             var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
@@ -61,6 +61,7 @@ namespace Krino.Domain.ConstructiveAdpositionalArgumentation.Tests
             var argument = new Argument(texts[0].Sentences[0]);
             Assert.AreEqual("it is wrong", argument.Conclusion.Value);
             Assert.AreEqual("because it is incorrect", argument.Premise.Value);
+            Assert.AreEqual(ArgumentForm.a_is_X_because_a_is_Y, argument.Form);
         }
     }
 }
