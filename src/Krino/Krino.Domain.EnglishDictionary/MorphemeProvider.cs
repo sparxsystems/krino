@@ -42,6 +42,7 @@ namespace Krino.Domain.EnglishDictionary
             
             new Morpheme("people", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
             new Morpheme("prohibit", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
+            new Morpheme("prohibited", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
 
             new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("regarding", GrammarAttributes.Morpheme.Free.Functional.Preposition),
@@ -55,6 +56,8 @@ namespace Krino.Domain.EnglishDictionary
             new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner.DefiniteArticle),
 
             new Morpheme("walk", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
+            new Morpheme("walking", GrammarAttributes.Morpheme.Free.Lexical.Noun),
+
             new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal),
             new Morpheme("with", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("world", GrammarAttributes.Morpheme.Free.Lexical.Noun),

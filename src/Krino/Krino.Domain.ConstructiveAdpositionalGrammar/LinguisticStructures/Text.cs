@@ -13,7 +13,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public List<ISentence> Sentences { get; } = new List<ISentence>();
 
-        public string Value => string.Join(" ", Sentences.Select(x => x.Value));
+        public string Value => string.Join(" ", Sentences.Select(x => x.Value)).Trim();
 
         public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", Sentences.Select(x => x.GrammarStr)), ")");
 

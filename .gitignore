@@ -49,4 +49,5 @@
 /src/Krino/Krino.Domain.EnglishDictionary.Tests/bin/Debug/net6.0
 /src/Krino/Krino.Prolog.Client.Tests/bin/Debug/net6.0
 /src/Krino/Krino.ViewModel.Tests/bin/Debug/net6.0
-/src/Krino/Krino.WebApp/bin/Debug/net6.0
+/src/Krino/Krino.App/bin/Debug
+/src/Krino/Krino.App/obj

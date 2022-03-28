@@ -1,5 +1,6 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
 using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.StateMachines;
 using System;
@@ -23,43 +24,62 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
         {
             var result = new List<IText>();
 
-            var sentences = text.ToLowerInvariant()
-                .Replace(".", " .•").Replace("?", " ?•").Replace("!", " !•")
-                .Split('•', StringSplitOptions.RemoveEmptyEntries);
-            foreach (var sentenceStr in sentences)
+            if (text != null)
             {
-                List<List<IWord>> wordAlternatives = new List<List<IWord>>();
-
-                var words = sentenceStr.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
-                foreach (var wordStr in words)
+                var sentences = text.ToLowerInvariant()
+                    .Replace(".", " .•").Replace("?", " ?•").Replace("!", " !•")
+                    .Split('•', StringSplitOptions.RemoveEmptyEntries);
+                foreach (var sentenceStr in sentences)
                 {
-                    // Try to find the word in the dictionary.
-                    var maxDistance = wordStr.Length <= 3 ? 0 : 1;
-                    var foundWords = myDictionary.FindWords(wordStr, maxDistance);
-                    wordAlternatives.Add(foundWords.ToList());
-                }
+                    List<List<IWord>> wordAlternatives = new List<List<IWord>>();
 
-                var wordVariations = wordAlternatives.GetVariations();
-                foreach (var variation in wordVariations)
-                {
-                    myGrammarMachine.Reset();
-
-                    _ = myGrammarMachine.DebugView;
-
-                    foreach (var word in variation)
+                    var words = sentenceStr.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
+                    foreach (var wordStr in words)
                     {
-                        myGrammarMachine.Add(word);
+                        // Try to find the word in the dictionary.
+                        var maxDistance = wordStr.Length <= 3 ? 0 : 1;
+                        var foundWords = myDictionary.FindWords(wordStr, maxDistance);
 
-                        if (!myGrammarMachine.IsActive)
+                        if (foundWords.Any())
                         {
-                            break;
+                            wordAlternatives.Add(foundWords.ToList());
+                        }
+                        else
+                        {
+                            // Try to asume it is a noun, adjective or a verb.
+                            var assumptions = new List<IWord>()
+                        {
+                            new Word(wordStr, GrammarAttributes.Morpheme.Free.Lexical.Noun),
+                            new Word(wordStr, GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+                            new Word(wordStr, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
+                        };
+
+                            wordAlternatives.Add(assumptions);
                         }
                     }
 
-                    if (myGrammarMachine.IsActive)
+                    var wordVariations = wordAlternatives.GetVariations();
+                    foreach (var variation in wordVariations)
                     {
-                        var texts = myGrammarMachine.GetTexts();
-                        result.AddRange(texts);
+                        myGrammarMachine.Reset();
+
+                        _ = myGrammarMachine.DebugView;
+
+                        foreach (var word in variation)
+                        {
+                            myGrammarMachine.Add(word);
+
+                            if (!myGrammarMachine.IsActive)
+                            {
+                                break;
+                            }
+                        }
+
+                        if (myGrammarMachine.IsActive)
+                        {
+                            var texts = myGrammarMachine.GetTexts();
+                            result.AddRange(texts);
+                        }
                     }
                 }
             }

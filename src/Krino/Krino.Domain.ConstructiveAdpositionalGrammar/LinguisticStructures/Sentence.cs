@@ -16,7 +16,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 
         public IMorpheme PunctuationMark { get; set; }
 
-        public string Value => string.Join("", string.Join(" ", IndependentClauses.Select(x => x.Value)), PunctuationMark?.Value);
+        public string Value => string.Join("", string.Join(" ", IndependentClauses.Select(x => x.Value)), PunctuationMark?.Value).Trim();
 
         public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", IndependentClauses.Select(x => x.GrammarStr)), ")");
 

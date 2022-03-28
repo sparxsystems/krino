@@ -36,7 +36,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
             }
         }
 
-        public string Value => string.Join(" ", DirectItems.Select(x => x.Value));
+        public string Value => string.Join(" ", DirectItems.Select(x => x.Value)).Trim();
 
         public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", DirectItems.Select(x => x.GrammarStr)), ")");
 

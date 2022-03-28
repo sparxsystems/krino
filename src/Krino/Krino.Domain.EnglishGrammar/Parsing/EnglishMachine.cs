@@ -31,7 +31,7 @@ namespace Krino.Domain.EnglishGrammar.Parsing
                 // One depedent clause is allowed.
                 AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.NounClause, 1);
                 AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdjectiveClause, 1);
-                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdverbialClause, 0);
+                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdverbialClause, 1);
             }
 
             myMachine = new MultiMachine<LinguisticState, IWord>();
@@ -331,18 +331,22 @@ namespace Krino.Domain.EnglishGrammar.Parsing
 
             var adjectivePhrase = builder.AddSubState(objectType)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple,
                            GrammarAttributes.Morpheme.Free.Lexical.Numeral.Cardinal);
 
             AddAdverbElement(adjectivePhrase, GrammarAttributes.AdverbElement);
 
             adjectivePhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            adjectivePhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
             adjectivePhrase.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Numeral.Cardinal);
             adjectivePhrase.AddEmptyTransition("init", GrammarAttributes.AdverbElement);
 
             adjectivePhrase.AddTriggeredTransition(GrammarAttributes.AdverbElement, GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            adjectivePhrase.AddTriggeredTransition(GrammarAttributes.AdverbElement, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
             adjectivePhrase.AddTriggeredTransition(GrammarAttributes.AdverbElement, GrammarAttributes.Morpheme.Free.Lexical.Numeral.Cardinal);
 
             adjectivePhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Adjective, "final");
+            adjectivePhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple, "final");
             adjectivePhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Numeral.Cardinal, "final");
         }
 
