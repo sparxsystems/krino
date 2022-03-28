@@ -72,7 +72,9 @@
                 <Template Context="item">
                     <div class="row justify-content-end" style="width:100%; padding:0; overflow:hidden;">
                         <div class="col-md" style="font-family:monospace; line-height:normal; padding-top:0.75em; background-color:@(item.Name == "KRINO" ? "aliceblue" : "beige");">
-                            @item.Value
+                            <pre>
+                                @item.Value
+                            </pre>
                         </div>
                     </div>
                 </Template>

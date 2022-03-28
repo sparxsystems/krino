@@ -1,6 +1,5 @@
 ﻿using Krino.Domain.ConstructiveAdpositionalArgumentation;
 using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -61,13 +60,16 @@ namespace Krino.ViewModel
                     }
                     else
                     {
-                        logValue.AppendLine($"The sentence '{sentence.Value}' is not an argument.");
+                        logValue.AppendLine($"The sentence is not an argument.");
                     }
                 }
                 else
                 {
-                    logValue.AppendLine("I can process only one sentence.");
+                    logValue.AppendLine("I can analyse only one argument.");
                 }
+
+                logValue.AppendLine().AppendLine("Here are details:");
+                text.BuildFormattedGrammarStr(0, logValue);
             }
             else
             {

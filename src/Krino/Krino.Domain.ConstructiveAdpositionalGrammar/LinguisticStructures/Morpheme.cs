@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Numerics;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
@@ -16,6 +17,10 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public string Value { get; private set; }
 
         public string GrammarStr => string.Join("", AttributesStr, "('", Value, "')");
+
+        public void BuildFormattedGrammarStr(int indent, StringBuilder builder) => builder
+            .Append(new string(' ', indent))
+            .Append(Value).Append(" : ").AppendLine(AttributesStr);
 
         /// <summary>
         /// TODO: !!

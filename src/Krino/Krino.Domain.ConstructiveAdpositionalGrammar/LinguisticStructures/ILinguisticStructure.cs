@@ -1,4 +1,5 @@
 ﻿using System.Numerics;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
@@ -11,6 +12,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         string Value { get; }
 
         string GrammarStr { get; }
+
+        void BuildFormattedGrammarStr(int indent, StringBuilder builder);
 
         ILinguisticStructure DeepCopy();
     }

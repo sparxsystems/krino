@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
@@ -19,6 +20,14 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public string Value => string.Join("", string.Join(" ", IndependentClauses.Select(x => x.Value)), PunctuationMark?.Value).Trim();
 
         public string GrammarStr => string.Join("", AttributesStr, "(", string.Join(" ", IndependentClauses.Select(x => x.GrammarStr)), ")");
+
+        public void BuildFormattedGrammarStr(int indent, StringBuilder builder)
+        {
+            builder.Append(new string(' ', indent)).Append(Value).Append(" : ").AppendLine(AttributesStr);
+
+            IndependentClauses.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
+            PunctuationMark?.BuildFormattedGrammarStr(indent + 4, builder);
+        }
 
         public override BigInteger Attributes
         {

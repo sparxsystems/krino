@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
+using System.Text;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
 {
@@ -53,6 +54,15 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
         public string Value => string.Join("", Morphemes.Select(x => x.Value));
 
         public string GrammarStr => string.Join("", AttributesStr, "(", Value, ")");
+
+        public void BuildFormattedGrammarStr(int indent, StringBuilder builder)
+        {
+            builder.Append(new string(' ', indent)).Append(Value).Append(" : ").AppendLine(AttributesStr);
+
+            //Prefixes.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
+            //Root.BuildFormattedGrammarStr(indent + 4, builder);
+            //Suffixes.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
+        }
 
         public ILinguisticStructure DeepCopy()
         {
