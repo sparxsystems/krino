@@ -73,7 +73,7 @@ namespace Krino.ViewModel
             }
             else
             {
-                logValue.AppendLine("The inserted text is not a sentence.");
+                logValue.AppendLine("I am not able to read the sentence.");
             }
 
             response.Value = logValue.ToString();

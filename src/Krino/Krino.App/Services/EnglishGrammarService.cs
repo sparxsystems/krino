@@ -18,7 +18,7 @@ namespace Krino.App.Services
             myInitTask = Task.Run(() =>
             {
                 myConstructiveDictionary = new EnglishConstructiveDictionaryFactory().Create();
-                myEnglishGrammar = new EnglishMachine(true);
+                myEnglishGrammar = new EnglishMachine(false);
             });
         }
 

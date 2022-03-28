@@ -23,7 +23,7 @@ namespace Krino.GretaTest
             //Trace.StartProfiler();
 
             myDictionary = new EnglishConstructiveDictionaryFactory().Create();
-            myGrammar = new EnglishMachine();
+            myGrammar = new EnglishMachine(false);
 
             //Trace.StopProfiler();
             //Thread.Sleep(300);
@@ -71,6 +71,20 @@ namespace Krino.GretaTest
 
             // AdverbialAdjunct vs AdverbialComplement.
             Assert.AreEqual(4, results.Count);
+        }
+
+
+        // Students should not have to wear school uniforms because school uniforms infringe upon students right to express their individuality.
+        [Test]
+        public void Sentence_3()
+        {
+            var parser = new Parser(myDictionary, myGrammar.Machine);
+
+            //var results = parser.Parse("the world");
+            var results = parser.Parse("Students should not have to wear school uniforms because school uniforms infringe upon students right to express their individuality.");
+
+            // AdverbialAdjunct vs AdverbialComplement.
+            Assert.AreEqual(81, results.Count);
         }
     }
 }

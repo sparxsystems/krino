@@ -33,6 +33,13 @@ namespace Krino.Domain.EnglishGrammar.Parsing
                 AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdjectiveClause, 1);
                 AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdverbialClause, 1);
             }
+            // Just for the presentation.
+            else
+            {
+                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.NounClause, 1);
+                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdjectiveClause, 1);
+                AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdverbialClause, 0);
+            }
 
             myMachine = new MultiMachine<LinguisticState, IWord>();
 
@@ -473,15 +480,15 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             using var _t = Trace.Entering();
 
             var verbElement = builder.AddSubState(attributes)
-                .AddState("do/does", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
+                .AddState("modal/do/does", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary)
                 .AddState("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
-            verbElement.AddTriggeredTransition("init", "do/does", ParsingRule.WordIsOneOf("do", "does"));
+            verbElement.AddTriggeredTransition("init", "modal/do/does", ParsingRule.WordIsOneOf("do", "does", "can", "could", "should", "would"));
             verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
-            verbElement.AddTriggeredTransition("do/does", "not", ParsingRule.WordIsOneOf("not"));
-            verbElement.AddTriggeredTransition("do/does", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            verbElement.AddTriggeredTransition("modal/do/does", "not", ParsingRule.WordIsOneOf("not"));
+            verbElement.AddTriggeredTransition("modal/do/does", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
             verbElement.AddTriggeredTransition("not", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 

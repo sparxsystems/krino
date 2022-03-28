@@ -34,6 +34,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
             return result;
         }
 
+        public static IRule<IWord> WordIsNot(params string[] auxiliaryWords) => RuleMaker.Not(WordIsOneOf(auxiliaryWords));
 
         public static TransitionRule<LinguisticState, IWord> VerbPhraseContainsAttribute(BigInteger attribute)
             => new TransitionRule<LinguisticState, IWord>() { PathRule = new VerbPhraseAttributesRule(attribute), TriggerRule = ImmediateTrigger() };
