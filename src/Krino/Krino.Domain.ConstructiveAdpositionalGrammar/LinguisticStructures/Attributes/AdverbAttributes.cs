@@ -1,4 +1,5 @@
-﻿using Krino.Vertical.Utils.Enums;
+﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes;
+using Krino.Vertical.Utils.Enums;
 
 namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes
 {
@@ -16,6 +17,8 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
 
             Negation = new EnumValue(this);
             Affirmation = new EnumValue(this);
+
+            Sememe = new AdverbSememes(this);
         }
 
         /// <summary>
@@ -50,5 +53,7 @@ namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attr
         /// Adverbs of affirmation e.g. yes, surely, ...
         /// </summary>
         public EnumValue Affirmation { get; }
+
+        public AdverbSememes Sememe { get; }
     }
 }
