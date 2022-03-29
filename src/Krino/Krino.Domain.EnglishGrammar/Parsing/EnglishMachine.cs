@@ -51,6 +51,8 @@ namespace Krino.Domain.EnglishGrammar.Parsing
             root.AddEmptyTransition(GrammarAttributes.Text, "final");
 
             myMachine.Reset();
+
+            myMachine.Trim();
         }
 
         

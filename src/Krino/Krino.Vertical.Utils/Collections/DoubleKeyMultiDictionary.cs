@@ -35,6 +35,12 @@ namespace Krino.Vertical.Utils.Collections
             myK2Values = new Dictionary<K2, List<KeyValuePair<K1, V>>>(myK2Comparer);
         }
 
+        public void Trim()
+        {
+            myK1Values.TrimExcess();
+            myK2Values.TrimExcess();
+        }
+
         public void Add(K1 key1, K2 key2, V value)
         {
             if (!myK1Values.TryGetValue(key1, out List<KeyValuePair<K2, V>> k1Values))

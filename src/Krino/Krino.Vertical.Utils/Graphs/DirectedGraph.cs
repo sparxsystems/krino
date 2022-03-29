@@ -26,6 +26,11 @@ namespace Krino.Vertical.Utils.Graphs
 
         public int Count => myVertices.Count;
 
+        public void Trim()
+        {
+            myVertices.TrimExcess();
+            myEdges.Trim();
+        }
 
         public void AddVertex(V vertex) => myVertices.Add(vertex);
 

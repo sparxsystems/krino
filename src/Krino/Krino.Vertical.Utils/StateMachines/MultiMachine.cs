@@ -44,6 +44,13 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public IEnumerable<TState> States => myGraph;
 
+        public void Trim()
+        {
+            myGraph.Trim();
+            myStates.TrimExcess();
+            mySubStates.TrimExcess();
+        }
+
         public IEnumerable<StatePath<TState, TTrigger>> GetActiveStates()
         {
             var result = myActiveStates.Select(x => new StatePath<TState, TTrigger>(x.GetPathToRoot().Reverse().Select(y => y.Value)));
