@@ -1,8 +1,8 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
+using Krino.ConstructiveGrammar.Syntax.Rules;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
-using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 

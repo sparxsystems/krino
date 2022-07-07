@@ -1,6 +1,7 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.ConstructiveGrammar.Syntax;
+using Krino.ConstructiveGrammar.Syntax.Rules;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.StateMachines;
