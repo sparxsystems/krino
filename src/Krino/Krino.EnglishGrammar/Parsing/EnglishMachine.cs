@@ -1,6 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
-using Krino.ConstructiveGrammar.Parsing;
+using Krino.ConstructiveGrammar.Syntax;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.StateMachines;
@@ -43,7 +43,7 @@ namespace Krino.EnglishGrammar.Parsing
 
             myMachine = new MultiMachine<LinguisticState, IWord>();
 
-            var root = new GrammarMachineBuilder(myMachine);
+            var root = new SyntaxMachineBuilder(myMachine);
 
             AddText(root, GrammarAttributes.Text);
 
@@ -56,7 +56,7 @@ namespace Krino.EnglishGrammar.Parsing
         }
 
         
-        private void AddText(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddText(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             var text = builder.AddSubState(objectType);
             text.AddState("start_loop", 0);
@@ -78,7 +78,7 @@ namespace Krino.EnglishGrammar.Parsing
 
         }
 
-        private void AddSentence(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddSentence(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
@@ -107,7 +107,7 @@ namespace Krino.EnglishGrammar.Parsing
             sentence.AddEmptyTransition(GrammarAttributes.PunctuationMark, "final");
         }
 
-        private void AddIndependentClause(GrammarMachineBuilder builder, string objectName, BigInteger objectType, bool isFirstClause)
+        private void AddIndependentClause(SyntaxMachineBuilder builder, string objectName, BigInteger objectType, bool isFirstClause)
         {
             using var _t = Trace.Entering();
 
@@ -133,7 +133,7 @@ namespace Krino.EnglishGrammar.Parsing
             independentClauses.AddEmptyTransition(GrammarAttributes.Predicate, "final");
         }
 
-        private void AddDependentClause(GrammarMachineBuilder builder, BigInteger objectType)
+        private void AddDependentClause(SyntaxMachineBuilder builder, BigInteger objectType)
         {
             using var _t = Trace.Entering();
 
@@ -163,8 +163,8 @@ namespace Krino.EnglishGrammar.Parsing
         }
 
 
-        private void AddNounElement(GrammarMachineBuilder builder, BigInteger attributes) => AddConcatenation(builder, attributes, AddSingleNounElement);
-        private void AddSingleNounElement(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddNounElement(SyntaxMachineBuilder builder, BigInteger attributes) => AddConcatenation(builder, attributes, AddSingleNounElement);
+        private void AddSingleNounElement(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -185,9 +185,9 @@ namespace Krino.EnglishGrammar.Parsing
             nounElement.AddEmptyTransition(GrammarAttributes.Clause.Dependent.NounClause, "final");
         }
 
-        private void AddVerbElement(GrammarMachineBuilder builder, EnumBase objectType, bool onlyPresentSimple)
+        private void AddVerbElement(SyntaxMachineBuilder builder, EnumBase objectType, bool onlyPresentSimple)
             => AddConcatenation(builder, objectType, (builder, attributes) => AddSingleVerbElement(builder, attributes, onlyPresentSimple));
-        private void AddSingleVerbElement(GrammarMachineBuilder builder, BigInteger attributes, bool onlyPresentSimple)
+        private void AddSingleVerbElement(SyntaxMachineBuilder builder, BigInteger attributes, bool onlyPresentSimple)
         {
             using var _t = Trace.Entering();
 
@@ -236,8 +236,8 @@ namespace Krino.EnglishGrammar.Parsing
             verbElement.AddEmptyTransition(GrammarAttributes.AdverbialAdjunct, "final");
         }
 
-        private void AddAdjectiveElement(GrammarMachineBuilder builder, BigInteger objectType) => AddConcatenation(builder, objectType, AddSingleAdjectiveElement);
-        private void AddSingleAdjectiveElement(GrammarMachineBuilder builder, BigInteger objectType)
+        private void AddAdjectiveElement(SyntaxMachineBuilder builder, BigInteger objectType) => AddConcatenation(builder, objectType, AddSingleAdjectiveElement);
+        private void AddSingleAdjectiveElement(SyntaxMachineBuilder builder, BigInteger objectType)
         {
             using var _t = Trace.Entering();
 
@@ -276,8 +276,8 @@ namespace Krino.EnglishGrammar.Parsing
             adjectiveElement.AddEmptyTransition(GrammarAttributes.Phrase.PrepositionalPhrase, "final");
         }
 
-        private void AddAdverbElement(GrammarMachineBuilder builder, BigInteger objectType) => AddConcatenation(builder, objectType, AddSingleAdverbElement);
-        private void AddSingleAdverbElement(GrammarMachineBuilder builder, BigInteger objectType)
+        private void AddAdverbElement(SyntaxMachineBuilder builder, BigInteger objectType) => AddConcatenation(builder, objectType, AddSingleAdverbElement);
+        private void AddSingleAdverbElement(SyntaxMachineBuilder builder, BigInteger objectType)
         {
             using var _t = Trace.Entering();
 
@@ -303,7 +303,7 @@ namespace Krino.EnglishGrammar.Parsing
 
 
 
-        private void AddNounPhrase(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddNounPhrase(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
@@ -334,7 +334,7 @@ namespace Krino.EnglishGrammar.Parsing
             nounPhrase.AddEmptyTransition(GrammarAttributes.AdjectiveElement.PostPositive, "final");
         }
 
-        private void AddAdjectivePhrase(GrammarMachineBuilder builder, BigInteger objectType)
+        private void AddAdjectivePhrase(SyntaxMachineBuilder builder, BigInteger objectType)
         {
             using var _t = Trace.Entering();
 
@@ -359,7 +359,7 @@ namespace Krino.EnglishGrammar.Parsing
             adjectivePhrase.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Numeral.Cardinal, "final");
         }
 
-        private void AddVerbPhrase(GrammarMachineBuilder builder, BigInteger attributes, bool onlyPresentSimple)
+        private void AddVerbPhrase(SyntaxMachineBuilder builder, BigInteger attributes, bool onlyPresentSimple)
         {
             using var _t = Trace.Entering();
 
@@ -417,7 +417,7 @@ namespace Krino.EnglishGrammar.Parsing
         }
 
 
-        private void AddPastSimple(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPastSimple(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -429,7 +429,7 @@ namespace Krino.EnglishGrammar.Parsing
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past, "final");
         }
 
-        private void AddPastContinuous(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPastContinuous(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -437,14 +437,14 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary,
                            GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
-            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, ParsingRule.WordIsOneOf("was", "were"));
+            verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, SyntaxRule.WordIsOneOf("was", "were"));
 
             verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
         }
 
-        private void AddPastPerfect(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPastPerfect(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -452,14 +452,14 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
 
-            verbElement.AddTriggeredTransition("init", "had", ParsingRule.WordIsOneOf("had"));
+            verbElement.AddTriggeredTransition("init", "had", SyntaxRule.WordIsOneOf("had"));
 
             verbElement.AddTriggeredTransition("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple, "final");
         }
 
-        private void AddPastContinuousPerfect(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPastContinuousPerfect(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -468,16 +468,16 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing)
                 .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
 
-            verbElement.AddTriggeredTransition("init", "had", ParsingRule.WordIsOneOf("had"));
+            verbElement.AddTriggeredTransition("init", "had", SyntaxRule.WordIsOneOf("had"));
 
-            verbElement.AddTriggeredTransition("had", "been", ParsingRule.WordIs("been"));
+            verbElement.AddTriggeredTransition("had", "been", SyntaxRule.WordIs("been"));
 
             verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
         }
 
-        private void AddPresentSimple(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPresentSimple(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -486,10 +486,10 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
-            verbElement.AddTriggeredTransition("init", "modal/do/does", ParsingRule.WordIsOneOf("do", "does", "can", "could", "should", "would"));
+            verbElement.AddTriggeredTransition("init", "modal/do/does", SyntaxRule.WordIsOneOf("do", "does", "can", "could", "should", "would"));
             verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
-            verbElement.AddTriggeredTransition("modal/do/does", "not", ParsingRule.WordIsOneOf("not"));
+            verbElement.AddTriggeredTransition("modal/do/does", "not", SyntaxRule.WordIsOneOf("not"));
             verbElement.AddTriggeredTransition("modal/do/does", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
             verbElement.AddTriggeredTransition("not", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
@@ -497,7 +497,7 @@ namespace Krino.EnglishGrammar.Parsing
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base, "final");
         }
 
-        private void AddPresentContinuous(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPresentContinuous(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -506,9 +506,9 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
-            verbElement.AddTriggeredTransition("init", "am/are/is", ParsingRule.WordIsOneOf("am", "are", "is"));
+            verbElement.AddTriggeredTransition("init", "am/are/is", SyntaxRule.WordIsOneOf("am", "are", "is"));
 
-            verbElement.AddTriggeredTransition("am/are/is", "not", ParsingRule.WordIsOneOf("not"));
+            verbElement.AddTriggeredTransition("am/are/is", "not", SyntaxRule.WordIsOneOf("not"));
             verbElement.AddTriggeredTransition("am/are/is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
             verbElement.AddTriggeredTransition("not", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
@@ -516,7 +516,7 @@ namespace Krino.EnglishGrammar.Parsing
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
         }
 
-        private void AddPresentPerfect(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPresentPerfect(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -525,17 +525,17 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
 
-            verbElement.AddTriggeredTransition("init", "have/has", ParsingRule.WordIsOneOf("have", "has"));
+            verbElement.AddTriggeredTransition("init", "have/has", SyntaxRule.WordIsOneOf("have", "has"));
             
             verbElement.AddTriggeredTransition("have/has", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
-            verbElement.AddTriggeredTransition("have/has", "not", ParsingRule.WordIsOneOf("not"));
+            verbElement.AddTriggeredTransition("have/has", "not", SyntaxRule.WordIsOneOf("not"));
 
             verbElement.AddTriggeredTransition("not", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple, "final");
         }
 
-        private void AddPresentContinuousPerfect(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddPresentContinuousPerfect(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -545,12 +545,12 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
-            verbElement.AddTriggeredTransition("init", "have/has", ParsingRule.WordIsOneOf("have", "has"));
+            verbElement.AddTriggeredTransition("init", "have/has", SyntaxRule.WordIsOneOf("have", "has"));
 
-            verbElement.AddTriggeredTransition("have/has", "been", ParsingRule.WordIs("been"));
-            verbElement.AddTriggeredTransition("have/has", "not", ParsingRule.WordIs("not"));
+            verbElement.AddTriggeredTransition("have/has", "been", SyntaxRule.WordIs("been"));
+            verbElement.AddTriggeredTransition("have/has", "not", SyntaxRule.WordIs("not"));
 
-            verbElement.AddTriggeredTransition("not", "been", ParsingRule.WordIs("been"));
+            verbElement.AddTriggeredTransition("not", "been", SyntaxRule.WordIs("been"));
 
             verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
@@ -558,7 +558,7 @@ namespace Krino.EnglishGrammar.Parsing
         }
 
 
-        private void AddFutureSimple(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddFutureSimple(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -567,17 +567,17 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
-            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+            verbElement.AddTriggeredTransition("init", "will", SyntaxRule.WordIsOneOf("will"));
 
             verbElement.AddTriggeredTransition("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            verbElement.AddTriggeredTransition("will", "not", ParsingRule.WordIsOneOf("not"));
+            verbElement.AddTriggeredTransition("will", "not", SyntaxRule.WordIsOneOf("not"));
 
             verbElement.AddTriggeredTransition("not", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base, "final");
         }
 
-        private void AddFutureContinuous(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddFutureContinuous(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -586,16 +586,16 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
-            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+            verbElement.AddTriggeredTransition("init", "will", SyntaxRule.WordIsOneOf("will"));
 
-            verbElement.AddTriggeredTransition("will", "be", ParsingRule.WordIsOneOf("be"));
+            verbElement.AddTriggeredTransition("will", "be", SyntaxRule.WordIsOneOf("be"));
 
             verbElement.AddTriggeredTransition("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
         }
 
-        private void AddFuturePerfect(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddFuturePerfect(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -604,16 +604,16 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
 
-            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+            verbElement.AddTriggeredTransition("init", "will", SyntaxRule.WordIsOneOf("will"));
 
-            verbElement.AddTriggeredTransition("will", "have", ParsingRule.WordIsOneOf("have"));
+            verbElement.AddTriggeredTransition("will", "have", SyntaxRule.WordIsOneOf("have"));
 
             verbElement.AddTriggeredTransition("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple);
 
             verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple, "final");
         }
 
-        private void AddFutureContinuousPerfect(GrammarMachineBuilder builder, BigInteger attributes)
+        private void AddFutureContinuousPerfect(SyntaxMachineBuilder builder, BigInteger attributes)
         {
             using var _t = Trace.Entering();
 
@@ -623,11 +623,11 @@ namespace Krino.EnglishGrammar.Parsing
                 .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
-            verbElement.AddTriggeredTransition("init", "will", ParsingRule.WordIsOneOf("will"));
+            verbElement.AddTriggeredTransition("init", "will", SyntaxRule.WordIsOneOf("will"));
 
-            verbElement.AddTriggeredTransition("will", "have", ParsingRule.WordIsOneOf("have"));
+            verbElement.AddTriggeredTransition("will", "have", SyntaxRule.WordIsOneOf("have"));
 
-            verbElement.AddTriggeredTransition("have", "been", ParsingRule.WordIsOneOf("been"));
+            verbElement.AddTriggeredTransition("have", "been", SyntaxRule.WordIsOneOf("been"));
 
             verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
 
@@ -635,7 +635,7 @@ namespace Krino.EnglishGrammar.Parsing
         }
 
 
-        private void AddPrepositionalPhrase(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddPrepositionalPhrase(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
@@ -660,7 +660,7 @@ namespace Krino.EnglishGrammar.Parsing
             RemoveRestriction(nameof(AddPrepositionalPhrase));
         }
 
-        private void AddInfinitivePhrase(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddInfinitivePhrase(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
@@ -685,7 +685,7 @@ namespace Krino.EnglishGrammar.Parsing
 
 
 
-        private void AddSubjectComplement(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddSubjectComplement(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
@@ -700,7 +700,7 @@ namespace Krino.EnglishGrammar.Parsing
             subjectComplement.AddEmptyTransition(GrammarAttributes.AdjectiveElement.Predicative, "final");
         }
 
-        private void AddAdjectiveComplement(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddAdjectiveComplement(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
@@ -719,7 +719,7 @@ namespace Krino.EnglishGrammar.Parsing
             adjectiveComplement.AddEmptyTransition(GrammarAttributes.Clause.Dependent.NounClause, "final");
         }
 
-        private void AddObjectComplement(GrammarMachineBuilder builder, EnumBase objectType)
+        private void AddObjectComplement(SyntaxMachineBuilder builder, EnumBase objectType)
         {
             using var _t = Trace.Entering();
 
@@ -735,7 +735,7 @@ namespace Krino.EnglishGrammar.Parsing
         }
 
 
-        private void AddConcatenation(GrammarMachineBuilder builder, BigInteger objectType, Action<GrammarMachineBuilder, BigInteger> addSingleElement)
+        private void AddConcatenation(SyntaxMachineBuilder builder, BigInteger objectType, Action<SyntaxMachineBuilder, BigInteger> addSingleElement)
         {
             using var _t = Trace.Entering();
 

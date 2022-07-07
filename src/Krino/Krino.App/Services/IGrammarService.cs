@@ -1,4 +1,4 @@
-﻿using Krino.ConstructiveGrammar.Parsing;
+﻿using Krino.ConstructiveGrammar.Syntax;
 
 namespace Krino.App.Services
 {

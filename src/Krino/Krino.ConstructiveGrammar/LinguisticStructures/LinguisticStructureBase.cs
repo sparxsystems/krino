@@ -1,4 +1,4 @@
-﻿using Krino.ConstructiveGrammar.Parsing;
+﻿using Krino.ConstructiveGrammar.Syntax;
 using System.Numerics;
 
 namespace Krino.ConstructiveGrammar.LinguisticStructures

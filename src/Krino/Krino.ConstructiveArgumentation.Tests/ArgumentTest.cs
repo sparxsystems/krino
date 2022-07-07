@@ -1,6 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
-using Krino.ConstructiveGrammar.Parsing;
+using Krino.ConstructiveGrammar.Syntax;
 using Krino.EnglishGrammar.Parsing;
 using NUnit.Framework;
 using System;
@@ -14,7 +14,7 @@ namespace Krino.ConstructiveArgumentation.Tests
     [TestFixture]
     public class ArgumentTest
     {
-        private GrammarMachine myGrammar;
+        private SyntaxMachine myGrammar;
 
         [OneTimeSetUp]
         public void Setup()
@@ -22,7 +22,7 @@ namespace Krino.ConstructiveArgumentation.Tests
             //Trace.StartProfiler();
 
             var english = new EnglishMachine(true).Machine;
-            myGrammar = new GrammarMachine(english);
+            myGrammar = new SyntaxMachine(english);
 
             //Trace.StopProfiler();
             //Thread.Sleep(300);

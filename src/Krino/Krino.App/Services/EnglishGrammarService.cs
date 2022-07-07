@@ -1,5 +1,5 @@
-﻿using Krino.ConstructiveGrammar.ConstructiveDictionaries;
-using Krino.ConstructiveGrammar.Parsing;
+﻿using Krino.ConstructiveGrammar.Dictionary;
+using Krino.ConstructiveGrammar.Syntax;
 using Krino.EnglishDictionary;
 using Krino.EnglishGrammar.Parsing;
 
