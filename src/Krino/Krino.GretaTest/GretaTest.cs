@@ -15,7 +15,6 @@ namespace Krino.GretaTest
     public class GretaTest
     {
         private IConstructiveDictionary myDictionary;
-        private EnglishMachine myGrammar;
 
         [OneTimeSetUp]
         public void Setup()
@@ -23,16 +22,9 @@ namespace Krino.GretaTest
             //Trace.StartProfiler();
 
             myDictionary = new EnglishConstructiveDictionaryFactory().Create();
-            myGrammar = new EnglishMachine(false);
 
             //Trace.StopProfiler();
             //Thread.Sleep(300);
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            myGrammar.Machine.Reset();
         }
 
         [Test]
@@ -40,9 +32,8 @@ namespace Krino.GretaTest
         {
             //Trace.StartProfiler();
 
-            var parser = new Parser(myDictionary, myGrammar.Machine);
             //var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
-            var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
+            var results = myDictionary.Parse("I have some good news and some bad news regarding the climate emergency.");
 
             // Note: 2 - because 'regarding the climate emergency' can be adverbial adjunct or adverbial complement.
             Assert.AreEqual(5, results.Count);
@@ -52,9 +43,7 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_1_2()
         {
-            var parser = new Parser(myDictionary, myGrammar.Machine);
-
-            var results = parser.Parse("I will start with the good news.");
+            var results = myDictionary.Parse("I will start with the good news.");
 
             // AdverbialAdjunct vs AdverbialComplement.
             Assert.AreEqual(2, results.Count);
@@ -64,10 +53,8 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_2_1()
         {
-            var parser = new Parser(myDictionary, myGrammar.Machine);
-
             //var results = parser.Parse("the world");
-            var results = parser.Parse("The world as a small number of people have been saying lately will not end in eleven years.");
+            var results = myDictionary.Parse("The world as a small number of people have been saying lately will not end in eleven years.");
 
             // AdverbialAdjunct vs AdverbialComplement.
             Assert.AreEqual(4, results.Count);
@@ -78,10 +65,8 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_3()
         {
-            var parser = new Parser(myDictionary, myGrammar.Machine);
-
             //var results = parser.Parse("the world");
-            var results = parser.Parse("Students should not have to wear school uniforms because school uniforms infringe upon students right to express their individuality.");
+            var results = myDictionary.Parse("Students should not have to wear school uniforms because school uniforms infringe upon students right to express their individuality.");
 
             // AdverbialAdjunct vs AdverbialComplement.
             Assert.AreEqual(81, results.Count);

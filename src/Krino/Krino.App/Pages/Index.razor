@@ -118,8 +118,8 @@
     {
         if (firstRender)
         {
-            var parser = await myGrammar.CreateParser();
-            myViewModel = new KrinoViewModel(parser);
+            var constructiveDictionary = await myGrammar.GetConstructiveDictionary();
+            myViewModel = new KrinoViewModel(constructiveDictionary);
 
             StateHasChanged();
         }

@@ -1,4 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.Dictionary;
+using Krino.EnglishGrammar.Parsing;
+using Krino.Vertical.Utils.Diagnostic;
 
 namespace Krino.EnglishDictionary
 {
@@ -6,7 +8,10 @@ namespace Krino.EnglishDictionary
     {
         public IConstructiveDictionary Create()
         {
-            var result = new ConstructiveDictionary(MorphemeProvider.Morphemes);
+            _ = Trace.Entering();
+
+            var syntax = new EnglishMachine(true);
+            var result = new ConstructiveDictionary(MorphemeProvider.Morphemes, syntax.Machine);
             return result;
         }
     }

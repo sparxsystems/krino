@@ -1,4 +1,5 @@
 ﻿using Krino.ConstructiveArgumentation;
+using Krino.ConstructiveGrammar.Dictionary;
 using Krino.ConstructiveGrammar.Syntax;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,12 +9,12 @@ namespace Krino.ViewModel
 {
     public class KrinoViewModel
     {
-        private Parser myParser;
+        private IConstructiveDictionary myDictionary;
         private Argumentation myArgumentation;
 
-        public KrinoViewModel(Parser parser)
+        public KrinoViewModel(IConstructiveDictionary dictionary)
         {
-            myParser = parser;
+            myDictionary = dictionary;
             myArgumentation = new Argumentation();
         }
 
@@ -43,7 +44,7 @@ namespace Krino.ViewModel
 
             var logValue = new StringBuilder();
 
-            var text = myParser.Parse(value).FirstOrDefault();
+            var text = myDictionary.Parse(value).FirstOrDefault();
 
             if (text != null && text.Sentences.Count > 0)
             {

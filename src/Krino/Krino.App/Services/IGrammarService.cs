@@ -1,9 +1,9 @@
-﻿using Krino.ConstructiveGrammar.Syntax;
+﻿using Krino.ConstructiveGrammar.Dictionary;
 
 namespace Krino.App.Services
 {
     public interface IGrammarService
     {
-        Task<Parser> CreateParser();
+        Task<IConstructiveDictionary?> GetConstructiveDictionary();
     }
 }

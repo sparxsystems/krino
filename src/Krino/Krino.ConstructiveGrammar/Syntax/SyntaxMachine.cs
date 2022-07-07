@@ -11,9 +11,9 @@ namespace Krino.ConstructiveGrammar.Syntax
     {
         private MultiMachine<LinguisticState, IWord> myMachine;
 
-        public SyntaxMachine(MultiMachine<LinguisticState, IWord> grammarRules)
+        public SyntaxMachine(MultiMachine<LinguisticState, IWord> syntaxRules)
         {
-            myMachine = grammarRules;
+            myMachine = syntaxRules;
         }
 
         public void Add(IWord word)
