@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
@@ -20,9 +20,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalGrammar\Krino.ConstructiveGrammar.csproj" />
-    <ProjectReference Include="..\Krino.Domain.EnglishDictionary\Krino.EnglishDictionary.csproj" />
-    <ProjectReference Include="..\Krino.Domain.EnglishGrammar\Krino.EnglishGrammar.csproj" />
+    <ProjectReference Include="..\Krino.ConstructiveGrammar\Krino.ConstructiveGrammar.csproj" />
+    <ProjectReference Include="..\Krino.EnglishDictionary\Krino.EnglishDictionary.csproj" />
+    <ProjectReference Include="..\Krino.EnglishGrammar\Krino.EnglishGrammar.csproj" />
   </ItemGroup>
 
 </Project>

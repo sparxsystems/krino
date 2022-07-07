@@ -15,17 +15,17 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Vertical.Utils", "Kri
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Vertical.Utils_Tests", "Krino.Vertical.Utils_Tests\Krino.Vertical.Utils_Tests.csproj", "{4EEED32B-9E5A-444C-93D1-B4D0BF5AB93D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveGrammar", "Krino.Domain.ConstructiveAdpositionalGrammar\Krino.ConstructiveGrammar.csproj", "{F02994F7-32A2-4D9D-9184-B55315003A77}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveGrammar", "Krino.ConstructiveGrammar\Krino.ConstructiveGrammar.csproj", "{F02994F7-32A2-4D9D-9184-B55315003A77}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveGrammar.Tests", "Krino.Domain.ConstructiveAdpositionalGrammar.Tests\Krino.ConstructiveGrammar.Tests.csproj", "{33450832-2032-4B58-B523-E456C985C4B0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveGrammar.Tests", "Krino.ConstructiveGrammar.Tests\Krino.ConstructiveGrammar.Tests.csproj", "{33450832-2032-4B58-B523-E456C985C4B0}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.GretaTest", "Krino.GretaTest\Krino.GretaTest.csproj", "{11462B2C-56BE-4021-84B3-CFC61F7F4EFA}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishGrammar", "Krino.Domain.EnglishGrammar\Krino.EnglishGrammar.csproj", "{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishGrammar", "Krino.EnglishGrammar\Krino.EnglishGrammar.csproj", "{1FE29D4C-0D92-4CB5-90ED-73CCA64A01A3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishGrammar.Tests", "Krino.Domain.EnglishGrammar.Tests\Krino.EnglishGrammar.Tests.csproj", "{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishGrammar.Tests", "Krino.EnglishGrammar.Tests\Krino.EnglishGrammar.Tests.csproj", "{D9B8C51C-AAA3-4408-AFAB-8EDB61BD4713}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveArgumentation", "Krino.Domain.ConstructiveAdpositionalArgumentation\Krino.ConstructiveArgumentation.csproj", "{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveArgumentation", "Krino.ConstructiveArgumentation\Krino.ConstructiveArgumentation.csproj", "{0B49CF96-EC0A-49EC-8D5B-0B5AE88F194C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "02 ViewModel", "02 ViewModel", "{2284589E-ACEB-455D-9085-89BFB4EB1F1C}"
 EndProject
@@ -33,11 +33,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ViewModel", "Krino.Vi
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ViewModel.Tests", "Krino.ViewModel.Tests\Krino.ViewModel.Tests.csproj", "{EED163A2-0231-470A-BB6F-1E6D587B96E5}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishDictionary", "Krino.Domain.EnglishDictionary\Krino.EnglishDictionary.csproj", "{F9B3FEB0-CE45-4143-8814-2193D224C040}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishDictionary", "Krino.EnglishDictionary\Krino.EnglishDictionary.csproj", "{F9B3FEB0-CE45-4143-8814-2193D224C040}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishDictionary.Tests", "Krino.Domain.EnglishDictionary.Tests\Krino.EnglishDictionary.Tests.csproj", "{AE91EF10-A1E6-439D-A04F-21DF36CB60BC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.EnglishDictionary.Tests", "Krino.EnglishDictionary.Tests\Krino.EnglishDictionary.Tests.csproj", "{AE91EF10-A1E6-439D-A04F-21DF36CB60BC}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveArgumentation.Tests", "Krino.Domain.ConstructiveAdpositionalArgumentation.Tests\Krino.ConstructiveArgumentation.Tests.csproj", "{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.ConstructiveArgumentation.Tests", "Krino.ConstructiveArgumentation.Tests\Krino.ConstructiveArgumentation.Tests.csproj", "{F0D4CD2C-BDF8-4BFF-9811-17B4D7B12810}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Krino.Prolog.Client", "Krino.Prolog.Client\Krino.Prolog.Client.csproj", "{CC199EC0-EABB-4E91-917E-9E4440E85D0A}"
 EndProject

@@ -1,7 +1,7 @@
-﻿using Krino.Domain.ConstructiveGrammar.ConstructiveDictionaries;
-using Krino.Domain.ConstructiveGrammar.Parsing;
-using Krino.Domain.EnglishDictionary;
-using Krino.Domain.EnglishGrammar.Parsing;
+﻿using Krino.ConstructiveGrammar.ConstructiveDictionaries;
+using Krino.ConstructiveGrammar.Parsing;
+using Krino.EnglishDictionary;
+using Krino.EnglishGrammar.Parsing;
 
 namespace Krino.App.Services
 {

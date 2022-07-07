@@ -1,8 +1,8 @@
-﻿using Krino.Domain.ConstructiveGrammar.AdTrees;
-using Krino.Domain.ConstructiveGrammar.ConstructiveDictionaries;
-using Krino.Domain.ConstructiveGrammar.Parsing;
-using Krino.Domain.EnglishDictionary;
-using Krino.Domain.EnglishGrammar.Parsing;
+﻿using Krino.ConstructiveGrammar.AdTrees;
+using Krino.ConstructiveGrammar.ConstructiveDictionaries;
+using Krino.ConstructiveGrammar.Parsing;
+using Krino.EnglishDictionary;
+using Krino.EnglishGrammar.Parsing;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System;
