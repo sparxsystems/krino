@@ -14,7 +14,7 @@ namespace Krino.GretaTest
     [TestFixture]
     public class GretaTest
     {
-        private IConstructiveDictionary2 myDictionary;
+        private IConstructiveDictionary myDictionary;
         private EnglishMachine myGrammar;
 
         [OneTimeSetUp]

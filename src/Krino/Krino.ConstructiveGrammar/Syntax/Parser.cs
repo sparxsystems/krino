@@ -11,10 +11,10 @@ namespace Krino.ConstructiveGrammar.Syntax
 {
     public class Parser
     {
-        private IConstructiveDictionary2 myDictionary;
+        private IConstructiveDictionary myDictionary;
         private SyntaxMachine myGrammarMachine;
 
-        public Parser(IConstructiveDictionary2 dictionary, MultiMachine<LinguisticState, IWord> grammarRules)
+        public Parser(IConstructiveDictionary dictionary, MultiMachine<LinguisticState, IWord> grammarRules)
         {
             myDictionary = dictionary;
             myGrammarMachine = new SyntaxMachine(grammarRules);

@@ -9,7 +9,7 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
     [TestFixture]
     public class ParserTest
     {
-        private IConstructiveDictionary2 myDictionary;
+        private IConstructiveDictionary myDictionary;
         private EnglishMachine myGrammar;
 
         [OneTimeSetUp]

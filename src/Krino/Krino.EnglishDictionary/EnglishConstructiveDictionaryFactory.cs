@@ -4,9 +4,9 @@ namespace Krino.EnglishDictionary
 {
     public class EnglishConstructiveDictionaryFactory
     {
-        public IConstructiveDictionary2 Create()
+        public IConstructiveDictionary Create()
         {
-            var result = new ConstructiveDictionary2(MorphemeProvider.Morphemes);
+            var result = new ConstructiveDictionary(MorphemeProvider.Morphemes);
             return result;
         }
     }

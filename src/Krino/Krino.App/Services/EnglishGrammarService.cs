@@ -7,7 +7,7 @@ namespace Krino.App.Services
 {
     public class EnglishGrammarService : IGrammarService
     {
-        private IConstructiveDictionary2? myConstructiveDictionary;
+        private IConstructiveDictionary? myConstructiveDictionary;
         private EnglishMachine? myEnglishGrammar;
 
         private Task myInitTask;
