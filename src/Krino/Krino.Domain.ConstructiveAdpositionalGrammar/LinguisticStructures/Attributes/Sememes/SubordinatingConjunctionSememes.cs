@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes.Sememes
 {
     /// <summary>
     /// Semantic Categories of Subordinating Conjunctions

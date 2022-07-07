@@ -1,8 +1,8 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.Domain.ConstructiveGrammar.Parsing;
 using NUnit.Framework;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
+namespace Krino.Domain.ConstructiveGrammar.Tests.Parsing
 {
     [TestFixture]
     public class EnumBaseExtTest

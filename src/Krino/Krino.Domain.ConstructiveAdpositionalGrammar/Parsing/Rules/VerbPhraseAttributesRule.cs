@@ -1,5 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
@@ -7,7 +7,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
+namespace Krino.Domain.ConstructiveGrammar.Parsing.Rules
 {
     [DebuggerDisplay("{DebugView}")]
     public class VerbPhraseAttributesRule : RuleBase<StatePath<LinguisticState, IWord>>, IRule<StatePath<LinguisticState, IWord>>

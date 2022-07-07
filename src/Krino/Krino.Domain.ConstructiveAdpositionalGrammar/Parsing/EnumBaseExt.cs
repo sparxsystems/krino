@@ -1,10 +1,10 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Enums;
 using System.Collections.Generic;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
+namespace Krino.Domain.ConstructiveGrammar.Parsing
 {
     public static class EnumBaseExt
     {

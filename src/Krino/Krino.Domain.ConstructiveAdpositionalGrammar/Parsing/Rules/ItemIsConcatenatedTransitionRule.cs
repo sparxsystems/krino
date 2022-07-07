@@ -1,10 +1,10 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
 using System.Linq;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
+namespace Krino.Domain.ConstructiveGrammar.Parsing.Rules
 {
     internal class ItemIsConcatenatedTransitionRule : TransitionRule<LinguisticState, IWord>
     {

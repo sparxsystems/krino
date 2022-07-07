@@ -1,10 +1,10 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 using System.Text;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     internal abstract class PhraseBase : LinguisticStructureBase, IPhrase
     {

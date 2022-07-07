@@ -1,9 +1,9 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries
+namespace Krino.Domain.ConstructiveGrammar.ConstructiveDictionaries
 {
     public interface IConstructiveDictionary2
     {

@@ -1,7 +1,7 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes.Sememes;
 using Krino.Vertical.Utils.Enums;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes
 {
     /// <summary>
     /// Pronoun (refers to specific people or things e.g. I, me, mine, you, yours ..., they, them) attributes.

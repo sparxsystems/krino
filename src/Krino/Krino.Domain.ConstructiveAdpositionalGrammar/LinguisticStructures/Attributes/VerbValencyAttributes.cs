@@ -1,7 +1,7 @@
 ﻿using Krino.Vertical.Utils.Enums;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes
 {
     public class VerbValencyAttributes : EnumGroupBase
     {

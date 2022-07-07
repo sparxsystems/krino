@@ -1,11 +1,11 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.Domain.ConstructiveGrammar.Parsing;
 using Krino.Domain.EnglishGrammar.Parsing;
 using NUnit.Framework;
 using System.Linq;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.Parsing
+namespace Krino.Domain.ConstructiveGrammar.Tests.Parsing
 {
     [TestFixture]
     public class StatePathExtTest

@@ -1,4 +1,4 @@
-﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+﻿namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     /// <summary>
     /// Element containing the verb phrase and all other modifiers related to the verb.

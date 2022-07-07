@@ -1,9 +1,9 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
 using Krino.Vertical.Utils.Rules;
 using System;
 using System.Diagnostics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
+namespace Krino.Domain.ConstructiveGrammar.Parsing.Rules
 {
     [DebuggerDisplay("{DebugView}")]
     internal class WordStringIsRule : RuleBase<IWord>, IRule<IWord>

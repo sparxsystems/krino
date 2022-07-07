@@ -1,7 +1,7 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveGrammar.Parsing;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     public abstract class LinguisticStructureBase
     {

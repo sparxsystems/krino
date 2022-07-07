@@ -1,6 +1,6 @@
 ﻿using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     internal class Subject : PhraseBase, ISubject
     {

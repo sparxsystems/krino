@@ -1,8 +1,8 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Krino.Domain.ConstructiveAdpositionalArgumentation
+namespace Krino.Domain.ConstructiveArgumentation
 {
     public class Argument
     {

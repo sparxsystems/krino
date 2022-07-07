@@ -1,5 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using System.Collections.Generic;
 
 namespace Krino.Domain.EnglishDictionary

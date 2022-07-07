@@ -1,11 +1,11 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.ConstructiveDictionaries;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.ConstructiveDictionaries
+namespace Krino.Domain.ConstructiveGrammar.Tests.ConstructiveDictionaries
 {
     [TestFixture]
     public class ConstructiveDictionary2Test

@@ -1,6 +1,6 @@
 ﻿using Krino.Vertical.Utils.Enums;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes.Sememes
 {
     /// <summary>
     /// The adverbs interpreted as "quantitative" include words of degree.

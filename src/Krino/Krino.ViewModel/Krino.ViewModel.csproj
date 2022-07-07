@@ -5,10 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalArgumentation\Krino.Domain.ConstructiveAdpositionalArgumentation.csproj" />
-    <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalGrammar\Krino.Domain.ConstructiveAdpositionalGrammar.csproj" />
-    <ProjectReference Include="..\Krino.Domain.EnglishDictionary\Krino.Domain.EnglishDictionary.csproj" />
-    <ProjectReference Include="..\Krino.Domain.EnglishGrammar\Krino.Domain.EnglishGrammar.csproj" />
+    <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalArgumentation\Krino.ConstructiveArgumentation.csproj" />
+    <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalGrammar\Krino.ConstructiveGrammar.csproj" />
+    <ProjectReference Include="..\Krino.Domain.EnglishDictionary\Krino.EnglishDictionary.csproj" />
+    <ProjectReference Include="..\Krino.Domain.EnglishGrammar\Krino.EnglishGrammar.csproj" />
     <ProjectReference Include="..\Krino.Vertical.Utils\Krino.Vertical.Utils.csproj" />
   </ItemGroup>
 

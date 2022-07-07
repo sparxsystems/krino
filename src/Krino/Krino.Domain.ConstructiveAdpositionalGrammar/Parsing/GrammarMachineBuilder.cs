@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
@@ -6,7 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
+namespace Krino.Domain.ConstructiveGrammar.Parsing
 {
     public class GrammarMachineBuilder
     {

@@ -1,7 +1,7 @@
 ﻿using System.Numerics;
 using System.Text;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     public interface ILinguisticStructure
     {

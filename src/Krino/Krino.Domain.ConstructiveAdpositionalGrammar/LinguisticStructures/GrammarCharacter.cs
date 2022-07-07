@@ -1,4 +1,4 @@
-﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+﻿namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     /// <summary>
     /// Types of grammar characters.

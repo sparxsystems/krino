@@ -1,4 +1,4 @@
-﻿namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
+﻿namespace Krino.Domain.ConstructiveGrammar.AdTrees
 {
     /// <summary>
     /// Type of the position for the attaching.

@@ -1,11 +1,11 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.Rules;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules
+namespace Krino.Domain.ConstructiveGrammar.Parsing.Rules
 {
     [DebuggerDisplay("{DebugView}")]
     internal class WordAttributesRule : RuleBase<IWord>, IRule<IWord>

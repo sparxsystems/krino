@@ -1,5 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveGrammar.ConstructiveDictionaries;
+using Krino.Domain.ConstructiveGrammar.Parsing;
 using Krino.Domain.EnglishDictionary;
 using Krino.Domain.EnglishGrammar.Parsing;
 

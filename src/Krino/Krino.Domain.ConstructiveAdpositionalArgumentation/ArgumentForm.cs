@@ -1,4 +1,4 @@
-﻿namespace Krino.Domain.ConstructiveAdpositionalArgumentation
+﻿namespace Krino.Domain.ConstructiveArgumentation
 {
     public enum ArgumentForm
     {

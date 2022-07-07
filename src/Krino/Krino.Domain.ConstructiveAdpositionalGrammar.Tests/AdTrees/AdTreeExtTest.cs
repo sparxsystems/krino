@@ -1,11 +1,11 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.AdTrees;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.AdTrees
+namespace Krino.Domain.ConstructiveGrammar.Tests.AdTrees
 {
     [TestFixture]
     public class AdTreeExtTest

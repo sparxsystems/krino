@@ -1,0 +1,26 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+
+    <IsPackable>false</IsPackable>
+
+    <PlatformTarget>x64</PlatformTarget>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="nunit" Version="3.13.3" />
+    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Krino.Domain.ConstructiveAdpositionalGrammar\Krino.ConstructiveGrammar.csproj" />
+    <ProjectReference Include="..\Krino.Domain.EnglishDictionary\Krino.EnglishDictionary.csproj" />
+    <ProjectReference Include="..\Krino.Domain.EnglishGrammar\Krino.EnglishGrammar.csproj" />
+  </ItemGroup>
+
+</Project>

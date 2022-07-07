@@ -1,8 +1,8 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
 using System;
 using System.Collections.Generic;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
+namespace Krino.Domain.ConstructiveGrammar.AdTrees
 {
     /// <summary>
     /// Declares the AdTree as defined in the document Constructive Adposition Grammar.

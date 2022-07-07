@@ -1,4 +1,4 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.ConstructiveDictionaries;
+﻿using Krino.Domain.ConstructiveGrammar.ConstructiveDictionaries;
 
 namespace Krino.Domain.EnglishDictionary
 {

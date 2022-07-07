@@ -1,10 +1,10 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing.Rules;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.Parsing.Rules;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
+namespace Krino.Domain.ConstructiveGrammar.Parsing
 {
     public static class ParsingRule
     {

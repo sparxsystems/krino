@@ -1,7 +1,7 @@
 ﻿using Krino.Vertical.Utils.Enums;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes.Sememes
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes.Sememes
 {
     /// <summary>
     /// “Verb aspect” refers to the flow of time.

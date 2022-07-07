@@ -1,5 +1,5 @@
-﻿using Krino.Domain.ConstructiveAdpositionalArgumentation;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveArgumentation;
+using Krino.Domain.ConstructiveGrammar.Parsing;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;

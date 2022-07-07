@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     public interface IMorpheme : ILinguisticStructure, IEquatable<IMorpheme>
     {

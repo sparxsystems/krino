@@ -1,6 +1,6 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
-using Krino.Domain.ConstructiveAdpositionalGrammar.Parsing;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.Domain.ConstructiveGrammar.Parsing;
 using Krino.Domain.EnglishGrammar.Parsing;
 using NUnit.Framework;
 using System;
@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Krino.Domain.ConstructiveAdpositionalArgumentation.Tests
+namespace Krino.Domain.ConstructiveArgumentation.Tests
 {
     [TestFixture]
     public class ArgumentTest

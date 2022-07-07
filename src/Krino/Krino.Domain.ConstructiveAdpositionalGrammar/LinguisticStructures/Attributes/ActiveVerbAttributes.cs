@@ -1,6 +1,6 @@
 ﻿using Krino.Vertical.Utils.Enums;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes
 {
     public class ActiveVerbAttributes : EnumGroupBase
     {

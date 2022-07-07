@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.AdTrees
+namespace Krino.Domain.ConstructiveGrammar.AdTrees
 {
     /// <summary>
     /// Extension helper methods for the adtree.

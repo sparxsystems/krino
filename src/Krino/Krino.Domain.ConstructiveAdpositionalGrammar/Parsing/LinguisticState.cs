@@ -1,9 +1,9 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using System;
 using System.Diagnostics;
 using System.Numerics;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Parsing
+namespace Krino.Domain.ConstructiveGrammar.Parsing
 {
     [DebuggerDisplay("{Id}")]
     public class LinguisticState : IEquatable<LinguisticState>

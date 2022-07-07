@@ -1,8 +1,8 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 using NUnit.Framework;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.Tests.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.Tests.LinguisticStructures
 {
     [TestFixture]
     public class WordTest

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     public interface IPhrase : IPhraseItem, ILinguisticStructure
     {

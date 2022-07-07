@@ -1,7 +1,7 @@
-﻿using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures;
-using Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures.Attributes;
+﻿using Krino.Domain.ConstructiveGrammar.LinguisticStructures;
+using Krino.Domain.ConstructiveGrammar.LinguisticStructures.Attributes;
 
-namespace Krino.Domain.ConstructiveAdpositionalArgumentation
+namespace Krino.Domain.ConstructiveArgumentation
 {
     public class Argumentation
     {

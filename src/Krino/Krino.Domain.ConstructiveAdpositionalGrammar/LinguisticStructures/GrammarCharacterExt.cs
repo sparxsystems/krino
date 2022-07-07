@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Linq;
 
-namespace Krino.Domain.ConstructiveAdpositionalGrammar.LinguisticStructures
+namespace Krino.Domain.ConstructiveGrammar.LinguisticStructures
 {
     /// <summary>
     /// Utility and extenstion functionality for the GrammarCharacter enum.
