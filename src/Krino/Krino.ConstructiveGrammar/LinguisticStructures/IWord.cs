@@ -11,5 +11,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         List<IMorpheme> Suffixes { get; }
 
         IEnumerable<IMorpheme> Morphemes { get; }
+
+        void BindMorpheme(IMorpheme morpheme);
     }
 }

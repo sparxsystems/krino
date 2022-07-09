@@ -2,7 +2,7 @@
 using Krino.ConstructiveGrammar.Dictionary;
 using Krino.ConstructiveGrammar.Syntax;
 using Krino.EnglishDictionary;
-using Krino.EnglishGrammar.Parsing;
+using Krino.EnglishGrammar.Syntax;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System;

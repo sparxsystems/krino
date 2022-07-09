@@ -28,10 +28,15 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         public GrammarCharacter GrammarCharacter => GrammarCharacter.e;
 
         public ILinguisticStructure DeepCopy() => new Morpheme(Value, Attributes);
-        
 
 
-        public bool Equals(IMorpheme other) => Value == other.Value && Attributes == other.Attributes;
+        public IMorphemeBinding Binding { get; init; }
+
+
+
+        public bool Equals(IMorpheme other) =>
+            Value == other.Value && Attributes == other.Attributes &&
+            (Binding == other.Binding || Binding != null && other.Binding != null && Binding.Equals(other.Binding));
 
         public override bool Equals(object obj) => obj is Morpheme other && Equals(other);
 
@@ -39,7 +44,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
         public static bool operator !=(Morpheme a, IMorpheme b) => !(a == b);
 
-        public override int GetHashCode() => HashCode.Combine(Value, Attributes);
+        public override int GetHashCode() => HashCode.Combine(Value, Attributes, Binding);
 
 
         private string DebuggerDisplay => string.Join(" : ", Value, AttributesStr);

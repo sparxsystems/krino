@@ -22,6 +22,8 @@ namespace Krino.Vertical.Utils.Transformations
             myElseTransformation = elseTransformation;
         }
 
+        public IRule<T> Rule => myRule;
+
         /// <summary>
         /// If the rule is true then it performes the transformation otherwise it performs the 'else' transformation if not null.
         /// </summary>

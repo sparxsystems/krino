@@ -6,16 +6,11 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
     {
         public BoundMorphemeAttributes(EnumGroupBase parent) : base(parent)
         {
-            Derivational = new EnumValue(this);
-            Inflectional = new EnumValue(this);
-            Prefix = new EnumValue(this);
-            Suffix = new EnumValue(this);
+            Prefix = new AffixAttributes(this);
+            Suffix = new AffixAttributes(this);
         }
 
-        public EnumValue Derivational { get; }
-        public EnumValue Inflectional { get; }
-
-        public EnumValue Prefix { get; }
-        public EnumValue Suffix { get; }
+        public AffixAttributes Prefix { get; }
+        public AffixAttributes Suffix { get; }
     }
 }

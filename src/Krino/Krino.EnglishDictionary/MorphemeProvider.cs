@@ -1,5 +1,7 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.ConstructiveGrammar.LinguisticStructures.Rules;
+using Krino.ConstructiveGrammar.Morphology;
 using System.Collections.Generic;
 
 namespace Krino.EnglishDictionary
@@ -53,10 +55,8 @@ namespace Krino.EnglishDictionary
             new Morpheme("were", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Singular.SecondPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Plural.SecondPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Plural.ThirdPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
 
             new Morpheme("damage", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
-            new Morpheme("damages", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
             new Morpheme("driving", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("end", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
-            new Morpheme("ends", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
             new Morpheme("express", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("has", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
@@ -77,7 +77,6 @@ namespace Krino.EnglishDictionary
 
             // Nouns
             new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("books", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
             new Morpheme("citizen", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("climate", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("cycling", GrammarAttributes.Morpheme.Free.Lexical.Noun),
@@ -96,11 +95,10 @@ namespace Krino.EnglishDictionary
             new Morpheme("rubber", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("school", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
             new Morpheme("student", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("students", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
             new Morpheme("suspect", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("taxes", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
             new Morpheme("trace", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("uniforms", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
+            new Morpheme("uniform", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("walking", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("world", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("year", GrammarAttributes.Morpheme.Free.Lexical.Noun.Common | GrammarAttributes.Morpheme.Free.Lexical.Noun.Countable),
@@ -246,9 +244,55 @@ namespace Krino.EnglishDictionary
             // Non-lexemes.
             new Morpheme(".", GrammarAttributes.PunctuationMark.Period),
             new Morpheme(",", GrammarAttributes.PunctuationMark.Comma),
+
             new Morpheme("ed", GrammarAttributes.Morpheme.Bound.Suffix),
             new Morpheme("ing", GrammarAttributes.Morpheme.Bound.Suffix),
-            new Morpheme("s", GrammarAttributes.Morpheme.Bound.Suffix),
+
+            new Morpheme("s", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
+                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
+                    Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+                }
+            },
+
+            new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
+                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
+                    Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+                }
+            },
+
+            new Morpheme("s", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
+                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
+                    Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                           WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular) &
+                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
+                }
+            },
+
+            new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
+                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
+                    Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                           WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular) &
+                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
+                }
+            },
         };
     }
 }

@@ -2,7 +2,7 @@
 using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.EnglishDictionary;
-using Krino.EnglishGrammar.Parsing;
+using Krino.EnglishGrammar.Syntax;
 using NUnit.Framework;
 using System.Collections.Generic;
 using System.Linq;
@@ -33,6 +33,8 @@ namespace Krino.ConstructiveGrammar.Tests.Dictionary
 
             Assert.AreEqual(1, text.Count);
             Assert.AreEqual("i read book.", text[0].Value);
+
+            var grammarStr = text[0].GrammarStr;
         }
 
         [Test]

@@ -29,7 +29,7 @@ namespace Krino.Vertical.Utils.Transformations
         /// <param name="t1"></param>
         /// <param name="t2"></param>
         /// <returns></returns>
-        public static ITransformation<T> ContinueWith<T>(this ITransformation<T> t1, ITransformation<T> t2) => new ContinueWithTransformation<T>(t1, t2);
+        public static ITransformation<T> Aggregate<T>(this ITransformation<T> t1, ITransformation<T> t2) => new AggregateTransformation<T>(t1, t2);
 
         /// <summary>
         /// Performs the transformation if the condition is met.

@@ -143,6 +143,7 @@ namespace Krino.Vertical.Utils.Enums
         /// <returns></returns>
         public bool IsIn(BigInteger value) => IsIn(Value, value);
 
+
         protected BigInteger Value
         {
             get
@@ -152,6 +153,13 @@ namespace Krino.Vertical.Utils.Enums
                 return result;
             }
         }
+
+        /// <summary>
+        /// Returns enum which is a 'base' for 
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public EnumBase GetIntersectionWith(IEnumerable<EnumBase> values) => GetIntersection(values.Prepend(this)); 
 
         protected byte[] GetCorrectBytes(BigInteger value)
         {
@@ -205,8 +213,20 @@ namespace Krino.Vertical.Utils.Enums
         /// <returns></returns>
         public static bool IsIn(BigInteger inValue, BigInteger bigValue) => (inValue & bigValue) == inValue;
 
-        public override string ToString() => GetFullName();
-        
+
+        /// <summary>
+        /// Returns intersection of provided enum values.
+        /// </summary>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        public static EnumBase GetIntersection(IEnumerable<EnumBase> values)
+        {
+            var count = values.Count();
+            var valuePathsToRoot = values.SelectMany(x => x.ParentEnums.Prepend(x));
+            var groups = valuePathsToRoot.GroupBy(x => x).OrderByDescending(x => x.Key.Value);
+            var result = groups.FirstOrDefault(x => x.Count() == count);
+            return result.Key;
+        }
 
 
         /// <summary>

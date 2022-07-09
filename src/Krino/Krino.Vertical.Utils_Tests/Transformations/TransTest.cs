@@ -8,13 +8,6 @@ namespace Krino.Vertical.Utils_Tests.Transformations
     public class TransTest
     {
         [Test]
-        public void ReplaceWith()
-        {
-            ITransformation<int> t = Trans.ReplaceWith(10);
-            Assert.AreEqual(10, t.Transform(5));
-        }
-
-        [Test]
         public void If_Then()
         {
             ITransformation<int> t = Trans.If(RuleMaker.Is(10), Trans.ReplaceWith(9));
@@ -45,9 +38,9 @@ namespace Krino.Vertical.Utils_Tests.Transformations
         }
 
         [Test]
-        public void ContinueWith()
+        public void Aggregate()
         {
-            ITransformation<int> t = Trans.ReplaceWith(10).ContinueWith(Trans.ReplaceWith(5));
+            ITransformation<int> t = Trans.ReplaceWith(10).Aggregate(Trans.ReplaceWith(5));
             Assert.AreEqual(5, t.Transform(50));
         }
     }

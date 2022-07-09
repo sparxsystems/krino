@@ -1,5 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Collections;
+using Krino.Vertical.Utils.Enums;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -13,12 +14,10 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
     {
         public Word(string word, BigInteger attributes) : this(new IMorpheme[] { new Morpheme(word, attributes) })
         {
-            Attributes = attributes;
         }
 
         public Word(IMorpheme rootMorpheme) : this(new IMorpheme[] { rootMorpheme })
         {
-            Attributes = rootMorpheme.Attributes;
         }
 
         public Word(IEnumerable<IMorpheme> morphemes)
@@ -27,7 +26,6 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
             if (morphemes.IsSingle())
             {
                 Root = morphemes.FirstOrDefault();
-                Attributes = Root.Attributes;
             }
             else
             {
@@ -43,6 +41,8 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
             }
         }
 
+        public override BigInteger Attributes { get => GetAttributes(); protected set { } }
+
         public List<IMorpheme> Prefixes { get; } = new List<IMorpheme>();
 
         public IMorpheme Root { get; set; }
@@ -54,6 +54,20 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         public string Value => string.Join("", Morphemes.Select(x => x.Value));
 
         public string GrammarStr => string.Join("", AttributesStr, "(", Value, ")");
+
+
+        public void BindMorpheme(IMorpheme morpheme)
+        {
+            if (GrammarAttributes.Morpheme.Bound.Prefix.IsIn(morpheme.Attributes))
+            {
+                Prefixes.Add(morpheme);
+            }
+            else if (GrammarAttributes.Morpheme.Bound.Suffix.IsIn(morpheme.Attributes))
+            {
+                Suffixes.Add(morpheme);
+            }
+        }
+
 
         public void BuildFormattedGrammarStr(int indent, StringBuilder builder)
         {
@@ -68,6 +82,53 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         {
             var morphemes = Morphemes.Select(x => x.DeepCopy()).OfType<IMorpheme>();
             var result = new Word(morphemes);
+            return result;
+        }
+
+
+        private BigInteger GetAttributes()
+        {
+            BigInteger result = Root.Attributes;
+
+            // Note: iterate from the root to the out. So the order must be reversed.
+            var prefixes = Prefixes.Where(x => x.Binding != null).Reverse();
+            foreach (var prefix in prefixes)
+            { 
+                var enumsToRemove = GrammarAttributes.Instance.FindEnums(prefix.Binding.AttributesToRemove);
+                foreach (var enumToRemove in enumsToRemove)
+                {
+                    if (enumsToRemove is EnumValue enumValueToRemove)
+                    {
+                        result = enumValueToRemove.Clear(result);
+                    }
+                    else if (enumsToRemove is EnumGroupBase enumGroupToRemove)
+                    {
+                        result = enumGroupToRemove.Clear(result);
+                    }
+                }
+
+                result |= prefix.Binding.AttributesToAdd;
+            }
+
+            var suffixes = Suffixes.Where(x => x.Binding != null);
+            foreach (var suffix in suffixes)
+            {
+                var enumsToRemove = GrammarAttributes.Instance.FindEnums(suffix.Binding.AttributesToRemove);
+                foreach (var enumToRemove in enumsToRemove)
+                {
+                    if (enumsToRemove is EnumValue enumValueToRemove)
+                    {
+                        result = enumValueToRemove.Clear(result);
+                    }
+                    else if (enumsToRemove is EnumGroupBase enumGroupToRemove)
+                    {
+                        result = enumGroupToRemove.Clear(result);
+                    }
+                }
+
+                result |= suffix.Binding.AttributesToAdd;
+            }
+
             return result;
         }
 

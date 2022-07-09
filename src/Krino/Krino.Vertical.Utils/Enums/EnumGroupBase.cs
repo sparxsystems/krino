@@ -176,12 +176,12 @@ namespace Krino.Vertical.Utils.Enums
         }
 
         /// <summary>
-        /// Clears all bits related to this enum group, i.e. this group and all its sub-groups and values.
+        /// Clears this group and its subgroups from the given value.
         /// </summary>
         public BigInteger Clear(BigInteger value) => ClearInternal(BitIndex, value);
 
         /// <summary>
-        /// Clears all bits related to sub-groups and sub-values of this enum.
+        /// Clears sub-groups of this group from the fiven value.
         /// </summary>
         /// <param name="value"></param>
         /// <returns></returns>

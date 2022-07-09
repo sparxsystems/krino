@@ -1,7 +1,7 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.ConstructiveGrammar.Syntax;
-using Krino.EnglishGrammar.Parsing;
+using Krino.EnglishGrammar.Syntax;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System.Linq;

@@ -3,6 +3,7 @@ using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
+using System;
 using System.Diagnostics;
 using System.Linq;
 using System.Numerics;
@@ -39,6 +40,7 @@ namespace Krino.ConstructiveGrammar.Syntax.Rules
 
         public override bool Equals(IRule<StatePath<LinguisticState, IWord>> other) => other is VerbPhraseAttributesRule rule && myRule.Equals(rule.myRule);
 
+        public override int GetHashCode() => myRule.GetHashCode();
 
         private string DebugView => GrammarAttributes.Instance.GetFullName(Attribute);
     }

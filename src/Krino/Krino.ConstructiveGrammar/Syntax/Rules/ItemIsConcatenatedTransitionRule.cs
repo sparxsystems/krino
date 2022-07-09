@@ -1,6 +1,5 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
-using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.StateMachines;
 using System.Linq;
 

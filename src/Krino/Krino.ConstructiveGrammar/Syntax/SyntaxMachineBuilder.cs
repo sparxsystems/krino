@@ -1,4 +1,5 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
+using Krino.ConstructiveGrammar.LinguisticStructures.Rules;
 using Krino.ConstructiveGrammar.Syntax.Rules;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Rules;
@@ -110,7 +111,7 @@ namespace Krino.ConstructiveGrammar.Syntax
 
 
         public SyntaxMachineBuilder AddEmptyTransitionWithVerbRule(BigInteger from, BigInteger to, params BigInteger[] acceptedAttributes)
-            => AddEmptyTransitionWithRules(from.GetGrammarId(), to.GetGrammarId(), acceptedAttributes.Select(x => SyntaxRule.VerbPhraseContainsAttribute(x)).ToArray());
+            => AddEmptyTransitionWithRules(from.GetGrammarId(), to.GetGrammarId(), acceptedAttributes.Select(x => SyntaxRules.VerbPhraseContainsAttribute(x)).ToArray());
 
         public SyntaxMachineBuilder AddEmptyTransitionWithRules(string fromId, string toId, params TransitionRule<LinguisticState, IWord>[] transitionRules)
         {
@@ -131,7 +132,7 @@ namespace Krino.ConstructiveGrammar.Syntax
 
         public SyntaxMachineBuilder AddTriggeredTransition(BigInteger from, BigInteger to) => AddTriggeredTransition(from.GetGrammarId(), to);
 
-        public SyntaxMachineBuilder AddTriggeredTransition(string fromId, BigInteger to) => AddTriggeredTransition(fromId, to, SyntaxRule.WordContainsAttribute(to));
+        public SyntaxMachineBuilder AddTriggeredTransition(string fromId, BigInteger to) => AddTriggeredTransition(fromId, to, WordRules.WordContainsAttribute(to));
 
         public SyntaxMachineBuilder AddTriggeredTransition(string fromId, BigInteger to, IRule<IWord> triggerRule) => AddTriggeredTransition(fromId, to.GetGrammarId(), triggerRule);
 
