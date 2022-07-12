@@ -1,5 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.Vertical.Utils.Rules;
+using Krino.Vertical.Utils.Transformations;
 using System;
 using System.Numerics;
 
@@ -12,6 +13,8 @@ namespace Krino.ConstructiveGrammar.Morphology
         public BigInteger AttributesToRemove { get; init; }
 
         public IRule<IWord> Rule { get; init; } = RuleMaker.Anything<IWord>();
+
+        public ITransformation<string> TransformWord { get; init; } = Trans.NothingToDo<string>();
 
         public bool Equals(IMorphemeBinding other)
             => AttributesToAdd == other.AttributesToAdd &&

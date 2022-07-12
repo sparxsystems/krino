@@ -135,5 +135,8 @@ namespace Krino.Vertical.Utils.Rules
         /// <param name="comparer"></param>
         /// <returns></returns>
         public static NotRule<T> Not<T>(T value, IEqualityComparer<T> comparer = null) where T : IEquatable<T> => new IsRule<T>(value, comparer).Not();
+
+
+        public static EndsWithStrRule EndsWithStr(string endOfString) => new EndsWithStrRule(endOfString);
     }
 }

@@ -119,5 +119,17 @@ namespace Krino.Vertical.Utils.Collections
                 }
             }
         }
+
+        public static int CalculateHashCode<T>(this IEnumerable<T> source)
+        {
+            int hash = 486187739;
+
+            foreach (var item in source)
+            {
+                hash = (hash * 16777619) ^ item.GetHashCode();
+            }
+
+            return hash;
+        }
     }
 }

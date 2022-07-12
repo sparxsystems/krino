@@ -9,6 +9,8 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
         public SuppletionBuilder Add(string value, BigInteger attributes)
         {
+            mySuppletion ??= new List<Suppletion>();
+
             mySuppletion.Add(new Suppletion(value, attributes));
             return this;
         }

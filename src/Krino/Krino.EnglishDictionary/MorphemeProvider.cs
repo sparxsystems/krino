@@ -3,7 +3,10 @@ using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.ConstructiveGrammar.LinguisticStructures.Rules;
 using Krino.ConstructiveGrammar.Morphology;
 using Krino.EnglishGrammar.Morphology;
+using Krino.Vertical.Utils.Rules;
+using Krino.Vertical.Utils.Transformations;
 using System.Collections.Generic;
+using System.Linq.Expressions;
 
 namespace Krino.EnglishDictionary
 {
@@ -55,8 +58,9 @@ namespace Krino.EnglishDictionary
             new Morpheme("was", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Singular.FirstPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Singular.ThirdPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("were", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Singular.SecondPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Plural.SecondPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Plural.ThirdPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
 
+            new Morpheme("cycle", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("damage", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
-            new Morpheme("driving", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("drive", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("end", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("express", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
@@ -69,18 +73,17 @@ namespace Krino.EnglishDictionary
             new Morpheme("prohibit", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("say", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
-            new Morpheme("saying", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("should", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal),
             new Morpheme("start", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("walk", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("wear", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal),
 
+
             // Nouns
             new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("citizen", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("climate", GrammarAttributes.Morpheme.Free.Lexical.Noun),
-            new Morpheme("cycling", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("damage", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("dutch", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("eleven", GrammarAttributes.Morpheme.Free.Lexical.Numeral.Cardinal),
@@ -123,7 +126,6 @@ namespace Krino.EnglishDictionary
             new Morpheme("tax", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("trace", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("uniform", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("walking", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("world", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("year", GrammarAttributes.Morpheme.Free.Lexical.Noun.Common | GrammarAttributes.Morpheme.Free.Lexical.Noun.Countable),
 
@@ -278,6 +280,7 @@ namespace Krino.EnglishDictionary
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
                     Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsNounInBaseForm(),
+                    TransformWord = Trans.Append("s"),
                 }
             },
             new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
@@ -288,6 +291,7 @@ namespace Krino.EnglishDictionary
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
                     Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsNounInBaseForm(),
+                    TransformWord = Trans.Append("es"),
                 }
             },
 
@@ -299,6 +303,7 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Possessive,
                     AttributesToRemove = 0,
                     Rule = WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun),
+                    TransformWord = Trans.Append("'s"),
                 }
             },
 
@@ -312,6 +317,7 @@ namespace Krino.EnglishDictionary
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
                     Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsVerbInBaseForm(),
+                    TransformWord = Trans.Append("s"),
                 }
             },
             new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
@@ -322,6 +328,7 @@ namespace Krino.EnglishDictionary
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
                     Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsVerbInBaseForm(),
+                    TransformWord = Trans.Append("es"),
                 }
             },
 
@@ -333,6 +340,7 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past,
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
                     Rule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
+                    TransformWord = Trans.Append("ed"),
                 }
             },
 
@@ -344,6 +352,7 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple,
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
                     Rule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
+                    TransformWord = Trans.Append("ed"),
                 }
             },
 
@@ -355,6 +364,15 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing,
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
                     Rule = EnglishWordRules.IsVerbInBaseForm(),
+                    TransformWord = Trans
+                         // If it ends with short vowel and consonant then double the last consonant. e.g. putting.
+                        .If(EnglishWordRules.EndsWithPhonemes(Phoneme.Consonant, Phoneme.Vowel, Phoneme.Consonant),
+                                Trans.Aggregate(EnglishWordTrans.DoubleLastLetter(), Trans.Append("ing")))
+                        // If it ends with 'e' then drop the 'e' e.g. joking.
+                        .Else(Trans
+                            .If(RuleMaker.EndsWithStr("e"),
+                                Trans.Aggregate(EnglishWordTrans.DropLastLetter(), Trans.Append("ing")))
+                            .Else(Trans.Append("ing"))),
                 }
             },
         };

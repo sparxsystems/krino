@@ -1,4 +1,5 @@
 ﻿using Krino.Vertical.Utils.Rules;
+using System;
 
 namespace Krino.Vertical.Utils.Transformations
 {
@@ -7,6 +8,8 @@ namespace Krino.Vertical.Utils.Transformations
     /// </summary>
     public static class Trans
     {
+        public static AggregateTransformation<T> Aggregate<T>(params ITransformation<T>[] transformations) => new AggregateTransformation<T>(transformations);
+
         /// <summary>
         /// Returns the same not changed value.
         /// </summary>
@@ -47,6 +50,16 @@ namespace Krino.Vertical.Utils.Transformations
         /// <param name="t"></param>
         /// <param name="otherwise"></param>
         /// <returns></returns>
-        public static ITransformation<T> Else<T>(this IfElseTransformation<T> t, ITransformation<T> otherwise) => IfElseTransformation<T>.Else(t, otherwise);
+        public static IfElseTransformation<T> Else<T>(this IfElseTransformation<T> t, ITransformation<T> otherwise) => IfElseTransformation<T>.Else(t, otherwise);
+
+        public static IfElseTransformation<T> ElseIf<T>(this IfElseTransformation<T> t, IRule<T> condition, ITransformation<T> then) => IfElseTransformation<T>.Else(t, If(condition, then));
+
+        public static AppendTransformation<T> Append<T>(T toAppend, Func<T, T, T> onAppend) => new AppendTransformation<T>(toAppend, onAppend);
+
+        public static AppendTransformation<string> Append(string toAppend) => new AppendTransformation<string>(toAppend, (value, append) => string.Concat(value, append));
+
+        public static PrependTransformation<T> Prepend<T>(T toPrepend, Func<T, T, T> onPrepend) => new PrependTransformation<T>(toPrepend, onPrepend);
+
+        public static PrependTransformation<string> Prepend(string toPrepend) => new PrependTransformation<string>(toPrepend, (prepend, value) => string.Concat(prepend, value));
     }
 }

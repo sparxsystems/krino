@@ -2,11 +2,6 @@
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.ConstructiveGrammar.LinguisticStructures.Rules;
 using Krino.Vertical.Utils.Rules;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Krino.EnglishGrammar.Morphology
 {
@@ -20,5 +15,7 @@ namespace Krino.EnglishGrammar.Morphology
             !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
 
         public static RuleBase<IWord> IsIrregularVerb() => WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Irregular);
+
+        public static EndsWithPhonemesRule EndsWithPhonemes(params Phoneme[] phonemes) => new EndsWithPhonemesRule(phonemes);
     }
 }

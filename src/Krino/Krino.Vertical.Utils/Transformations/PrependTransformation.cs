@@ -3,23 +3,23 @@ using System.Collections.Generic;
 
 namespace Krino.Vertical.Utils.Transformations
 {
-    public class PrependTransformation<T, TI> : ITransformation<T>
+    public class PrependTransformation<T> : ITransformation<T>
     {
-        private IEqualityComparer<TI> myComparer = EqualityComparer<TI>.Default;
-        private Func<T, TI, T> myOnPrepend;
+        private IEqualityComparer<T> myComparer = EqualityComparer<T>.Default;
+        private Func<T, T, T> myOnPrepend;
 
-        public PrependTransformation(TI toPrepend, Func<T, TI, T> onPrepend)
+        public PrependTransformation(T toPrepend, Func<T, T, T> onPrepend)
         {
             ToPrepend = toPrepend;
             myOnPrepend = onPrepend;
         }
 
-        public TI ToPrepend { get; private set; }
+        public T ToPrepend { get; private set; }
 
-        public T Transform(T value) => myOnPrepend(value, ToPrepend);
+        public T Transform(T value) => myOnPrepend(ToPrepend, value);
 
         public bool Equals(ITransformation<T> other) =>
-            other is PrependTransformation<T, TI> otherTransformation &&
+            other is PrependTransformation<T> otherTransformation &&
             myComparer.Equals(ToPrepend, otherTransformation.ToPrepend) &&
             ToPrepend.Equals(otherTransformation.ToPrepend);
     }

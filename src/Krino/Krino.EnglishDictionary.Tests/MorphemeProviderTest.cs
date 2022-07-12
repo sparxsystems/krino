@@ -14,7 +14,7 @@ namespace Krino.EnglishDictionary.Tests
     public class MorphemeProviderTest
     {
         [Test]
-        public void Suffix_Plural()
+        public void BindingRule_Suffix_Plural()
         {
             var word = new Word(MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "book"));
             var pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
@@ -27,6 +27,16 @@ namespace Krino.EnglishDictionary.Tests
             word = new Word(MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "people"));
             pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
             Assert.IsFalse(pluralSuffix.Binding.Rule.Evaluate(word));
+        }
+
+        [Test]
+        public void BindingTransformation_Suffix_Ing()
+        {
+            var ingSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ing" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
+
+            Assert.AreEqual("ending", ingSuffix.Binding.TransformWord.Transform("end"));
+            Assert.AreEqual("putting", ingSuffix.Binding.TransformWord.Transform("put"));
+            Assert.AreEqual("joking", ingSuffix.Binding.TransformWord.Transform("joke"));
         }
     }
 }

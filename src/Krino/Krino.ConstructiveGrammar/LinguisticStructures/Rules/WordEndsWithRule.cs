@@ -6,14 +6,16 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Rules
     [DebuggerDisplay("-{DebugView}")]
     public class WordEndsWithRule : RuleBase<IWord>, IRule<IWord>
     {
+        private EndsWithStrRule myEndsWithStrRule;
+
         public WordEndsWithRule(string endOfWord)
         {
-            EndOfWord = endOfWord;
+            myEndsWithStrRule = new EndsWithStrRule(endOfWord);
         }
 
-        public string EndOfWord { get; private set; }
+        public string EndOfWord => myEndsWithStrRule.EndOfStr;
 
-        public override bool Evaluate(IWord value) => value.Value.EndsWith(EndOfWord);
+        public override bool Evaluate(IWord value) => myEndsWithStrRule.Evaluate(value.Value);
 
         public override bool Equals(IRule<IWord> other) => other is WordEndsWithRule rule && EndOfWord == rule.EndOfWord;
 
