@@ -55,7 +55,7 @@ namespace Krino.Vertical.Utils_Tests.Enums
         [Test]
         public void Evaluate()
         {
-            IRule<BigInteger> rule = IsInValueRule.Is(DummyEnumRoot.Category1.Val12);
+            IRule<BigInteger> rule = AttributesIsInValueRule.Is(DummyEnumRoot.Category1.Val12);
             Assert.IsTrue(rule.Evaluate(DummyEnumRoot.Category1));
             Assert.IsTrue(rule.Evaluate(DummyEnumRoot.Category1.Val12));
             Assert.IsFalse(rule.Evaluate(DummyEnumRoot.Category1.Category11));

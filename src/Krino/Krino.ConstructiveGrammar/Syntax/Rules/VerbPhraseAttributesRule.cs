@@ -13,11 +13,11 @@ namespace Krino.ConstructiveGrammar.Syntax.Rules
     [DebuggerDisplay("{DebugView}")]
     public class VerbPhraseAttributesRule : RuleBase<StatePath<LinguisticState, IWord>>, IRule<StatePath<LinguisticState, IWord>>
     {
-        private ValueIsInRule myRule;
+        private ValueIsInAttributesRule myRule;
 
         public VerbPhraseAttributesRule(BigInteger attribute)
         {
-            myRule = ValueIsInRule.Is(attribute);
+            myRule = ValueIsInAttributesRule.Is(attribute);
         }
 
         public BigInteger Attribute => myRule.Value;

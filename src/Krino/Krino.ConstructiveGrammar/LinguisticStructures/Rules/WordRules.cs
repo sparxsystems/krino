@@ -6,7 +6,8 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Rules
     public static class WordRules
     {
         public static WordStringIsRule WordIs(string word, bool caseSensitive = false) => new WordStringIsRule(word, caseSensitive);
-        public static WordAttributesRule WordContainsAttribute(BigInteger attribute) => new WordAttributesRule(attribute);
+        public static WordContainsAttributeRule WordContainsAttribute(BigInteger attribute) => new WordContainsAttributeRule(attribute);
+        public static WordContainsAttributeExactlyRule WordContainsAttributeExactly(BigInteger attribute) => new WordContainsAttributeExactlyRule(attribute);
 
         public static RuleBase<IWord> WordIsOneOf(params string[] auxiliaryWords)
         {

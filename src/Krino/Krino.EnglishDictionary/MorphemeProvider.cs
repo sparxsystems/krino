@@ -2,6 +2,7 @@
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.ConstructiveGrammar.LinguisticStructures.Rules;
 using Krino.ConstructiveGrammar.Morphology;
+using Krino.EnglishGrammar.Morphology;
 using System.Collections.Generic;
 
 namespace Krino.EnglishDictionary
@@ -86,17 +87,40 @@ namespace Krino.EnglishDictionary
             new Morpheme("emergency", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("grass", GrammarAttributes.Morpheme.Free.Lexical.Noun.Common.Concrete),
             new Morpheme("individuality", GrammarAttributes.Morpheme.Free.Lexical.Noun),
+            new Morpheme("man", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular)
+            {
+                Suppletions = new SuppletionBuilder()
+                    .Add("men", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+                    .Tolist(),
+            },
+            new Morpheme("men", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+            {
+                Suppletions = new SuppletionBuilder()
+                    .Add("man", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular)
+                    .Tolist(),
+            },
             new Morpheme("news", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("number", GrammarAttributes.Morpheme.Free.Lexical.Noun),
-            new Morpheme("people", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
+            new Morpheme("people", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+            {
+                Suppletions = new SuppletionBuilder()
+                    .Add("person", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular)
+                    .Tolist(),
+            },
+            new Morpheme("person", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular)
+            {
+                Suppletions = new SuppletionBuilder()
+                    .Add("people", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+                    .Tolist(),
+            },
             new Morpheme("right", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("road", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("royals", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
+            new Morpheme("royal", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("rubber", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("school", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
+            new Morpheme("school", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("student", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("suspect", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("taxes", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural),
+            new Morpheme("tax", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("trace", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("uniform", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("walking", GrammarAttributes.Morpheme.Free.Lexical.Noun),
@@ -245,9 +269,7 @@ namespace Krino.EnglishDictionary
             new Morpheme(".", GrammarAttributes.PunctuationMark.Period),
             new Morpheme(",", GrammarAttributes.PunctuationMark.Comma),
 
-            new Morpheme("ed", GrammarAttributes.Morpheme.Bound.Suffix),
-            new Morpheme("ing", GrammarAttributes.Morpheme.Bound.Suffix),
-
+            // Noun plural
             new Morpheme("s", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
                 Binding = new AffixBinding()
@@ -255,10 +277,9 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
                     Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
-                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+                           EnglishWordRules.IsNounInBaseForm(),
                 }
             },
-
             new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
                 Binding = new AffixBinding()
@@ -266,10 +287,23 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
                     Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
-                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)
+                           EnglishWordRules.IsNounInBaseForm(),
                 }
             },
 
+            // Noun possessive
+            new Morpheme("'s", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Possessive,
+                    AttributesToRemove = 0,
+                    Rule = WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun),
+                }
+            },
+
+
+            // Verb present tense 3rd person singular
             new Morpheme("s", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
                 Binding = new AffixBinding()
@@ -277,11 +311,9 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
                     Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
-                           WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular) &
-                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
+                           EnglishWordRules.IsVerbInBaseForm(),
                 }
             },
-
             new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
                 Binding = new AffixBinding()
@@ -289,8 +321,40 @@ namespace Krino.EnglishDictionary
                     AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
                     AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
                     Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
-                           WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular) &
-                           !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
+                           EnglishWordRules.IsVerbInBaseForm(),
+                }
+            },
+
+            // Verb past-tense form
+            new Morpheme("ed", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past,
+                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
+                    Rule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
+                }
+            },
+
+            // Verb past-participle form
+            new Morpheme("ed", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple,
+                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
+                    Rule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
+                }
+            },
+
+            // Verb ing form
+            new Morpheme("ing", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing,
+                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
+                    Rule = EnglishWordRules.IsVerbInBaseForm(),
                 }
             },
         };

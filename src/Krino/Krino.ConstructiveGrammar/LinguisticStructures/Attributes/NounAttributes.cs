@@ -14,6 +14,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
             Common = new CommonNounAttributes(this);
             Countable = new EnumValue(this);
             UnCountable = new EnumValue(this);
+            Possessive = new EnumValue(this);
             Sememe = new NounSememes(this);
         }
 
@@ -36,6 +37,11 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
         /// Names of things which cannot be counted e.g. honesty, milk.
         /// </summary>
         public EnumValue UnCountable { get; }
+
+        /// <summary>
+        /// E.g. Brandon’s book.
+        /// </summary>
+        public EnumValue Possessive { get; }
 
         /// <summary>
         /// Semantic attributes.

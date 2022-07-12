@@ -9,8 +9,4 @@
     <ProjectReference Include="..\Krino.ConstructiveGrammar\Krino.ConstructiveGrammar.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Morphology\" />
-  </ItemGroup>
-
 </Project>

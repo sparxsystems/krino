@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Numerics;
 using System.Text;
@@ -32,6 +33,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
         public IMorphemeBinding Binding { get; init; }
 
+        public List<Suppletion> Suppletions { get; init; }
 
 
         public bool Equals(IMorpheme other) =>

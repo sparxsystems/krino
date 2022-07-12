@@ -55,7 +55,7 @@ namespace Semafor.Common.Aspect.Tests.Enums
         [Test]
         public void Evaluate()
         {
-            IRule<BigInteger> rule = ValueIsInRule.Is(DummyEnumRoot.Category1.Category11);
+            IRule<BigInteger> rule = ValueIsInAttributesRule.Is(DummyEnumRoot.Category1.Category11);
 
             Assert.IsTrue(rule.Evaluate(DummyEnumRoot.Category1.Category11));
             Assert.IsTrue(rule.Evaluate(DummyEnumRoot.Category1.Category11.Attr111));

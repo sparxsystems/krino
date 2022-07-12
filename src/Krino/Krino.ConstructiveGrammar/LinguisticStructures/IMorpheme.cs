@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Krino.ConstructiveGrammar.LinguisticStructures
 {
@@ -10,5 +11,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         /// Binding rules for a bound morpheme.
         /// </summary>
         IMorphemeBinding Binding { get; }
+
+        List<Suppletion> Suppletions { get; }
     }
 }
