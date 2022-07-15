@@ -11,7 +11,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
         }
 
         /// <summary>
-        /// Morphemes that changes the part of speech of the word. E.g. walk-able.
+        /// Morphemes that changes the part of speech of the word. It creates a new word E.g. walk-able.
         /// </summary>
         /// <remarks>
         /// All prefices in english are derivational.
@@ -20,7 +20,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
         public EnumValue Derivational { get; }
 
         /// <summary>
-        /// Morphemes that get added to a word, thus, adding a grammatical value to it. E.g. car-s.
+        /// It does not create a new word, it just creates a form of the same word. E.g. car-s.
         /// </summary>
         public EnumValue Inflectional { get; }
     }

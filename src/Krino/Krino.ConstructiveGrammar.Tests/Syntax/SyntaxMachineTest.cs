@@ -1,6 +1,8 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.ConstructiveGrammar.Morphology;
 using Krino.ConstructiveGrammar.Syntax;
+using Krino.EnglishGrammar.Morphology;
 using Krino.EnglishGrammar.Syntax;
 using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
@@ -14,6 +16,7 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
     public class SyntaxMachineTest
     {
         private SyntaxMachine myGrammar;
+        private IMorphology myMorphology;
 
         [OneTimeSetUp]
         public void Setup()
@@ -22,6 +25,7 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
 
             var english = new EnglishMachine(true).Machine;
             myGrammar = new SyntaxMachine(english);
+            myMorphology = new EnglishMorphology();
 
             //Trace.StopProfiler();
             //Thread.Sleep(300);
@@ -38,11 +42,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_DirectObject()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var the = new Word(myMorphology, "the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -59,12 +63,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_IndirectObject()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var give = new Word("give", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent);
-            var him = new Word("him", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var a = new Word("a", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var give = new Word(myMorphology, "give", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent);
+            var him = new Word(myMorphology, "him", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var a = new Word(myMorphology, "a", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             myGrammar.Add(i);
             myGrammar.Add(give);
@@ -80,13 +84,13 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_AdverbialAfterDirectObject()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var in_ = new Word("in", GrammarAttributes.Morpheme.Free.Functional.Preposition);
-            var room = new Word("room", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var the = new Word(myMorphology, "the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var in_ = new Word(myMorphology, "in", GrammarAttributes.Morpheme.Free.Functional.Preposition);
+            var room = new Word(myMorphology, "room", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -107,11 +111,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_SubjectComplement()
         {
-            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
-            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var the = new Word(myMorphology, "the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var is_ = new Word(myMorphology, "is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
+            var green = new Word(myMorphology, "green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -130,11 +134,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_NounPhraseSubject()
         {
-            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var flies = new Word("flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var the = new Word(myMorphology, "the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var green = new Word(myMorphology, "green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word(myMorphology, "flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -153,13 +157,13 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_NounPhrase_With_AdjectivalPrepositionalPhrase()
         {
-            var a = new Word("a", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            var small = new Word("small", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var number = new Word("number", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var of = new Word("of", GrammarAttributes.Morpheme.Free.Functional.Preposition);
-            var people = new Word("people", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var flies = new Word("flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var a = new Word(myMorphology, "a", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var small = new Word(myMorphology, "small", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var number = new Word(myMorphology, "number", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var of = new Word(myMorphology, "of", GrammarAttributes.Morpheme.Free.Functional.Preposition);
+            var people = new Word(myMorphology, "people", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word(myMorphology, "flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -180,13 +184,13 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_NounPhrase_With_AdjectivalClause()
         {
-            var world = new Word("world", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var as_ = new Word("as", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
-            var few = new Word("few", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var people = new Word("people", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var say = new Word("say", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            var ends = new Word("ends", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var world = new Word(myMorphology, "world", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var as_ = new Word(myMorphology, "as", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
+            var few = new Word(myMorphology, "few", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var people = new Word(myMorphology, "people", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var say = new Word(myMorphology, "say", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var ends = new Word(myMorphology, "ends", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -207,11 +211,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_ConcatNouns()
         {
-            var pen = new Word("pen", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var and = new Word("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var flies = new Word("fly", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var pen = new Word(myMorphology, "pen", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var and = new Word(myMorphology, "and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word(myMorphology, "fly", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -230,13 +234,13 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_ConcatAdjectives()
         {
-            var the = new Word("the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
-            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var and = new Word("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
-            var blue = new Word("blue", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var flies = new Word("flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var the = new Word(myMorphology, "the", GrammarAttributes.Morpheme.Free.Functional.Determiner);
+            var green = new Word(myMorphology, "green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var and = new Word(myMorphology, "and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            var blue = new Word(myMorphology, "blue", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var flies = new Word(myMorphology, "flies", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -260,12 +264,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_InfinitiveAsAdjectiveComplement()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var am = new Word("am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.FirstPerson);
-            var tired = new Word("tired", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var to = new Word("to", GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var am = new Word(myMorphology, "am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.FirstPerson);
+            var tired = new Word(myMorphology, "tired", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var to = new Word(myMorphology, "to", GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -287,10 +291,10 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentSimple()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -309,12 +313,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentSimple_Negation()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var do_ = new Word("do", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var do_ = new Word(myMorphology, "do", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word(myMorphology, "not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -335,11 +339,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentContionuous()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var am = new Word("am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var am = new Word(myMorphology, "am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -359,12 +363,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentContionuous_Negation()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var am = new Word("am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var am = new Word(myMorphology, "am", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word(myMorphology, "not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -385,11 +389,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentPerfect()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var have = new Word(myMorphology, "have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -409,12 +413,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentPerfect_Negation()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var have = new Word(myMorphology, "have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word(myMorphology, "not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -435,12 +439,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentContinuousPerfect()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var been = new Word("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var have = new Word(myMorphology, "have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var been = new Word(myMorphology, "been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -461,13 +465,13 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PresentContinuousPerfect_Negation()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
-            var been = new Word("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var have = new Word(myMorphology, "have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var not = new Word(myMorphology, "not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var been = new Word(myMorphology, "been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -489,10 +493,10 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PastSimple()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var wrote = new Word("wrote", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var wrote = new Word(myMorphology, "wrote", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -510,11 +514,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PastContionuous()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var was = new Word("was", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var was = new Word(myMorphology, "was", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
 
             _ = myGrammar.DebugView;
@@ -534,11 +538,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PastPerfect()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var had = new Word("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var had = new Word(myMorphology, "had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -557,12 +561,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_PastContinuousPerfect()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var had = new Word("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var been = new Word("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var had = new Word(myMorphology, "had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var been = new Word(myMorphology, "been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -583,11 +587,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_FutureSimple()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var will = new Word("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var will = new Word(myMorphology, "will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -606,12 +610,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_FutureSimple_Negation()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var will = new Word("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
-            var not = new Word("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var will = new Word(myMorphology, "will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
+            var not = new Word(myMorphology, "not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -631,12 +635,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_FutureContionuous()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var will = new Word("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
-            var be = new Word("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var will = new Word(myMorphology, "will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
+            var be = new Word(myMorphology, "be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -656,12 +660,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_FuturePerfect()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var will = new Word("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
-            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var will = new Word(myMorphology, "will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
+            var have = new Word(myMorphology, "have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -681,13 +685,13 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_FutureContinuousPerfect()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var will = new Word("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
-            var have = new Word("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var been = new Word("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
-            var reading = new Word("reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var book = new Word("book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var will = new Word(myMorphology, "will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal);
+            var have = new Word(myMorphology, "have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var been = new Word(myMorphology, "been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
+            var reading = new Word(myMorphology, "reading", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var book = new Word(myMorphology, "book", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -710,13 +714,13 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_NounAsAdjective()
         {
-            var green = new Word("green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var race = new Word("race", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var car = new Word("car", GrammarAttributes.Morpheme.Free.Lexical.Noun);
-            var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
-            var fast = new Word("fast", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var green = new Word(myMorphology, "green", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var race = new Word(myMorphology, "race", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var car = new Word(myMorphology, "car", GrammarAttributes.Morpheme.Free.Lexical.Noun);
+            var is_ = new Word(myMorphology, "is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
+            var fast = new Word(myMorphology, "fast", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
 
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -736,12 +740,12 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_CompoundSentence()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var write = new Word("write", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var and = new Word("and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var write = new Word(myMorphology, "write", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var and = new Word(myMorphology, "and", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating);
 
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -766,15 +770,15 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_ComplexSentence_DependentClause_As_DirectObject()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var want = new Word("want", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var to = new Word("to", GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
-            var see = new Word("see", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var what = new Word("what", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
-            var it = new Word("it", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var want = new Word(myMorphology, "want", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var to = new Word(myMorphology, "to", GrammarAttributes.Morpheme.Free.Lexical.Verb.InfinitiveMarker);
+            var see = new Word(myMorphology, "see", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var what = new Word(myMorphology, "what", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating);
+            var it = new Word(myMorphology, "it", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var is_ = new Word(myMorphology, "is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
 
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 
@@ -798,11 +802,11 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
         [Test]
         public void GetTexts_TwoSentences()
         {
-            var i = new Word("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var read = new Word("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
-            var write = new Word("write", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var i = new Word(myMorphology, "i", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var read = new Word(myMorphology, "read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
+            var write = new Word(myMorphology, "write", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent);
 
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 

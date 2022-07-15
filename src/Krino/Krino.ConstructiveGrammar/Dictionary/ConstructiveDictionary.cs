@@ -13,13 +13,15 @@ namespace Krino.ConstructiveGrammar.Dictionary
 {
     public class ConstructiveDictionary : IConstructiveDictionary
     {
-        private MorphologyParser myMorphologyParser;
+        private AffixParser myMorphologyParser;
+        private IMorphology myMorphology;
         private SyntaxMachine mySyntaxMachine;
 
-        public ConstructiveDictionary(IEnumerable<IMorpheme> morphemes, MultiMachine<LinguisticState, IWord> syntaxRules)
+        public ConstructiveDictionary(IMorphology morphology, MultiMachine<LinguisticState, IWord> syntax, IEnumerable<IMorpheme> morphemes)
         {
-            mySyntaxMachine = new SyntaxMachine(syntaxRules);
-            myMorphologyParser = new MorphologyParser(morphemes);
+            myMorphology = morphology;
+            mySyntaxMachine = new SyntaxMachine(syntax);
+            myMorphologyParser = new AffixParser(myMorphology, morphemes);
         }
 
         public IReadOnlyList<IText> Parse(string text)
@@ -42,7 +44,7 @@ namespace Krino.ConstructiveGrammar.Dictionary
                         var words = sentenceStr.Split(new char[] { }, StringSplitOptions.RemoveEmptyEntries);
                         foreach (var wordStr in words)
                         {
-                            var foundWords = myMorphologyParser.Parse(wordStr, 0);
+                            var foundWords = myMorphologyParser.ParseWord(wordStr, 2, 0);
                             if (foundWords.Any())
                             {
                                 wordAlternatives.Add(foundWords.ToList());
@@ -52,9 +54,9 @@ namespace Krino.ConstructiveGrammar.Dictionary
                                 // Try to asume it is a noun, adjective or a verb.
                                 var assumptions = new List<IWord>()
                         {
-                            new Word(wordStr, GrammarAttributes.Morpheme.Free.Lexical.Noun),
-                            new Word(wordStr, GrammarAttributes.Morpheme.Free.Lexical.Adjective),
-                            new Word(wordStr, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
+                            new Word(myMorphology, wordStr, GrammarAttributes.Morpheme.Free.Lexical.Noun),
+                            new Word(myMorphology, wordStr, GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+                            new Word(myMorphology, wordStr, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
                         };
 
                                 wordAlternatives.Add(assumptions);

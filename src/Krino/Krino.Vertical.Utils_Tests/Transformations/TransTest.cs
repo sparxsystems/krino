@@ -38,9 +38,9 @@ namespace Krino.Vertical.Utils_Tests.Transformations
         }
 
         [Test]
-        public void Aggregate()
+        public void Then()
         {
-            ITransformation<int> t = Trans.ReplaceWith(10).Aggregate(Trans.ReplaceWith(5));
+            ITransformation<int> t = Trans.ReplaceWith(10).Then(Trans.ReplaceWith(5));
             Assert.AreEqual(5, t.Transform(50));
         }
     }

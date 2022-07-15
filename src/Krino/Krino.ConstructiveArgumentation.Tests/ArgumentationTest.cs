@@ -1,6 +1,8 @@
 using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.ConstructiveGrammar.Morphology;
 using Krino.ConstructiveGrammar.Syntax;
+using Krino.EnglishGrammar.Morphology;
 using Krino.EnglishGrammar.Syntax;
 using NUnit.Framework;
 using System.Linq;
@@ -11,6 +13,7 @@ namespace Krino.ConstructiveArgumentation.Tests
     public class ArgumentationTest
     {
         private SyntaxMachine myGrammar;
+        private IMorphology myMorphology;
 
         [OneTimeSetUp]
         public void Setup()
@@ -19,6 +22,7 @@ namespace Krino.ConstructiveArgumentation.Tests
 
             var english = new EnglishMachine(true).Machine;
             myGrammar = new SyntaxMachine(english);
+            myMorphology = new EnglishMorphology();
 
             //Trace.StopProfiler();
             //Thread.Sleep(300);
@@ -34,12 +38,12 @@ namespace Krino.ConstructiveArgumentation.Tests
         [Test]
         public void IsArgument()
         {
-            var it = new Word("it", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
-            var is_ = new Word("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
-            var wrong = new Word("wrong", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var because = new Word("because", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Cause);
-            var incorrect = new Word("incorrect", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
-            var punct = new Word(".", GrammarAttributes.PunctuationMark.Period);
+            var it = new Word(myMorphology, "it", GrammarAttributes.Morpheme.Free.Functional.Pronoun);
+            var is_ = new Word(myMorphology, "is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson);
+            var wrong = new Word(myMorphology, "wrong", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var because = new Word(myMorphology, "because", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Cause);
+            var incorrect = new Word(myMorphology, "incorrect", GrammarAttributes.Morpheme.Free.Lexical.Adjective);
+            var punct = new Word(myMorphology, ".", GrammarAttributes.PunctuationMark.Period);
 
             _ = myGrammar.DebugView;
 

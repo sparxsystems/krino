@@ -1,4 +1,5 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.ConstructiveGrammar.Morphology;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Enums;
 using System.Collections.Generic;
@@ -12,17 +13,21 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
     [DebuggerDisplay("{DebuggerDisplay}")]
     public class Word : LinguisticStructureBase, IWord
     {
-        public Word(string word, BigInteger attributes) : this(new IMorpheme[] { new Morpheme(word, attributes) })
+        private IMorphology myMorphology;
+
+        public Word(IMorphology morphology, string word, BigInteger attributes) : this(morphology, new IMorpheme[] { new Morpheme(word, attributes) })
         {
         }
 
-        public Word(IMorpheme rootMorpheme) : this(new IMorpheme[] { rootMorpheme })
+        public Word(IMorphology morphology, IMorpheme rootMorpheme) : this(morphology, new IMorpheme[] { rootMorpheme })
         {
         }
 
-        public Word(IEnumerable<IMorpheme> morphemes)
+        public Word(IMorphology morphology, IEnumerable<IMorpheme> morphemes)
             : base(0)
         {
+            myMorphology = morphology;
+
             if (morphemes.IsSingle())
             {
                 Root = morphemes.FirstOrDefault();
@@ -51,7 +56,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
         public IEnumerable<IMorpheme> Morphemes => Prefixes.Append(Root).Concat(Suffixes).Where(x => x != null);
 
-        public string Value => string.Join("", Morphemes.Select(x => x.Value));
+        public string Value => myMorphology.GetValue(Morphemes);
 
         public string GrammarStr => string.Join("", AttributesStr, "(", Value, ")");
 
@@ -81,56 +86,12 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         public ILinguisticStructure DeepCopy()
         {
             var morphemes = Morphemes.Select(x => x.DeepCopy()).OfType<IMorpheme>();
-            var result = new Word(morphemes);
+            var result = new Word(myMorphology, morphemes);
             return result;
         }
 
 
-        private BigInteger GetAttributes()
-        {
-            BigInteger result = Root.Attributes;
-
-            // Note: iterate from the root to the out. So the order must be reversed.
-            var prefixes = Prefixes.Where(x => x.Binding != null).Reverse();
-            foreach (var prefix in prefixes)
-            { 
-                var enumsToRemove = GrammarAttributes.Instance.FindEnums(prefix.Binding.AttributesToRemove);
-                foreach (var enumToRemove in enumsToRemove)
-                {
-                    if (enumsToRemove is EnumValue enumValueToRemove)
-                    {
-                        result = enumValueToRemove.Clear(result);
-                    }
-                    else if (enumsToRemove is EnumGroupBase enumGroupToRemove)
-                    {
-                        result = enumGroupToRemove.Clear(result);
-                    }
-                }
-
-                result |= prefix.Binding.AttributesToAdd;
-            }
-
-            var suffixes = Suffixes.Where(x => x.Binding != null);
-            foreach (var suffix in suffixes)
-            {
-                var enumsToRemove = GrammarAttributes.Instance.FindEnums(suffix.Binding.AttributesToRemove);
-                foreach (var enumToRemove in enumsToRemove)
-                {
-                    if (enumsToRemove is EnumValue enumValueToRemove)
-                    {
-                        result = enumValueToRemove.Clear(result);
-                    }
-                    else if (enumsToRemove is EnumGroupBase enumGroupToRemove)
-                    {
-                        result = enumGroupToRemove.Clear(result);
-                    }
-                }
-
-                result |= suffix.Binding.AttributesToAdd;
-            }
-
-            return result;
-        }
+        private BigInteger GetAttributes() => myMorphology.GetAttributes(Morphemes);
 
 
         private string DebuggerDisplay => string.Join(" : ", Value, AttributesStr);

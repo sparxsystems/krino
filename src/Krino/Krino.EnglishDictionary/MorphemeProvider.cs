@@ -276,22 +276,22 @@ namespace Krino.EnglishDictionary
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
-                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
-                    Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
+                    CanBindRule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsNounInBaseForm(),
-                    TransformWord = Trans.Append("s"),
+                    TransformValue = Trans.Append("s"),
                 }
             },
             new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
-                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
-                    Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
+                    CanBindRule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsNounInBaseForm(),
-                    TransformWord = Trans.Append("es"),
+                    TransformValue = Trans.Append("es"),
                 }
             },
 
@@ -300,10 +300,10 @@ namespace Krino.EnglishDictionary
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Noun.Possessive,
-                    AttributesToRemove = 0,
-                    Rule = WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun),
-                    TransformWord = Trans.Append("'s"),
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun.Possessive,
+                    AttributesToDrop = 0,
+                    CanBindRule = WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Noun),
+                    TransformValue = Trans.Append("'s"),
                 }
             },
 
@@ -313,22 +313,22 @@ namespace Krino.EnglishDictionary
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
-                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
-                    Rule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
+                    CanBindRule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsVerbInBaseForm(),
-                    TransformWord = Trans.Append("s"),
+                    TransformValue = Trans.Append("s"),
                 }
             },
             new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
-                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
-                    Rule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular,
+                    CanBindRule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
                            EnglishWordRules.IsVerbInBaseForm(),
-                    TransformWord = Trans.Append("es"),
+                    TransformValue = Trans.Append("es"),
                 }
             },
 
@@ -337,10 +337,10 @@ namespace Krino.EnglishDictionary
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past,
-                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
-                    Rule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
-                    TransformWord = Trans.Append("ed"),
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
+                    CanBindRule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
+                    TransformValue = Trans.Append("ed"),
                 }
             },
 
@@ -349,10 +349,10 @@ namespace Krino.EnglishDictionary
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple,
-                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
-                    Rule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
-                    TransformWord = Trans.Append("ed"),
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
+                    CanBindRule = EnglishWordRules.IsVerbInBaseForm() & !EnglishWordRules.IsIrregularVerb(),
+                    TransformValue = Trans.Append("ed"),
                 }
             },
 
@@ -361,17 +361,17 @@ namespace Krino.EnglishDictionary
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToAdd = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing,
-                    AttributesToRemove = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
-                    Rule = EnglishWordRules.IsVerbInBaseForm(),
-                    TransformWord = Trans
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base,
+                    CanBindRule = EnglishWordRules.IsVerbInBaseForm(),
+                    TransformValue = Trans
                          // If it ends with short vowel and consonant then double the last consonant. e.g. putting.
                         .If(EnglishWordRules.EndsWithPhonemes(Phoneme.Consonant, Phoneme.Vowel, Phoneme.Consonant),
-                                Trans.Aggregate(EnglishWordTrans.DoubleLastLetter(), Trans.Append("ing")))
+                                Trans.Then(EnglishWordTrans.DoubleLastLetter(), Trans.Append("ing")))
                         // If it ends with 'e' then drop the 'e' e.g. joking.
                         .Else(Trans
                             .If(RuleMaker.EndsWithStr("e"),
-                                Trans.Aggregate(EnglishWordTrans.DropLastLetter(), Trans.Append("ing")))
+                                Trans.Then(EnglishWordTrans.DropLastLetter(), Trans.Append("ing")))
                             .Else(Trans.Append("ing"))),
                 }
             },

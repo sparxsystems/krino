@@ -1,5 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Rules;
+using Krino.EnglishGrammar.Morphology;
 using NUnit.Framework;
 
 namespace Krino.ConstructiveGrammar.Tests.LinguisticStructures.Rules
@@ -10,10 +11,12 @@ namespace Krino.ConstructiveGrammar.Tests.LinguisticStructures.Rules
         [Test]
         public void AuxiliaryWordIs()
         {
-            var rule = WordRules.WordIsOneOf("have", "has");
-            Assert.IsTrue(rule.Evaluate(new Word("have", 0)));
+            var morphology = new EnglishMorphology();
 
-            Assert.IsFalse(rule.Evaluate(new Word("bla", 0)));
+            var rule = WordRules.WordIsOneOf("have", "has");
+            Assert.IsTrue(rule.Evaluate(new Word(morphology, "have", 0)));
+
+            Assert.IsFalse(rule.Evaluate(new Word(morphology, "bla", 0)));
         }
     }
 }

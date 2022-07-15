@@ -1,18 +1,17 @@
-﻿using Krino.Vertical.Utils.Rules;
-using Krino.Vertical.Utils.Transformations;
-using System;
+﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 
 namespace Krino.ConstructiveGrammar.LinguisticStructures
 {
     public interface IMorphemeBinding : IEquatable<IMorphemeBinding>
     {
-        BigInteger AttributesToAdd { get; }
+        BigInteger AttributesToPick { get; }
 
-        BigInteger AttributesToRemove { get; }
+        bool CanBind(IWord word);
 
-        IRule<IWord> Rule { get; }
+        string TransformValue(string word);
 
-        ITransformation<string> TransformWord { get; }
+        BigInteger TransformAttributes(BigInteger wordAttributes);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using Krino.ConstructiveGrammar.Dictionary;
+using Krino.EnglishGrammar.Morphology;
 using Krino.EnglishGrammar.Syntax;
 using Krino.Vertical.Utils.Diagnostic;
 
@@ -11,7 +12,8 @@ namespace Krino.EnglishDictionary
             _ = Trace.Entering();
 
             var syntax = new EnglishMachine(true);
-            var result = new ConstructiveDictionary(MorphemeProvider.Morphemes, syntax.Machine);
+            var morphology = new EnglishMorphology();
+            var result = new ConstructiveDictionary(morphology, syntax.Machine, MorphemeProvider.Morphemes);
             return result;
         }
     }

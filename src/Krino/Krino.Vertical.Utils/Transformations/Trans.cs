@@ -8,14 +8,14 @@ namespace Krino.Vertical.Utils.Transformations
     /// </summary>
     public static class Trans
     {
-        public static AggregateTransformation<T> Aggregate<T>(params ITransformation<T>[] transformations) => new AggregateTransformation<T>(transformations);
+        public static BlockTransformation<T> Block<T>(params ITransformation<T>[] transformations) => new BlockTransformation<T>(transformations);
 
         /// <summary>
         /// Returns the same not changed value.
         /// </summary>
         /// <typeparam name="T"></typeparam>
         /// <returns></returns>
-        public static ITransformation<T> NothingToDo<T>() => new NothingToDoTransformation<T>();
+        public static NothingToDoTransformation<T> NothingToDo<T>() => new NothingToDoTransformation<T>();
 
         /// <summary>
         /// Replaces the value with the new value.
@@ -23,7 +23,7 @@ namespace Krino.Vertical.Utils.Transformations
         /// <typeparam name="T"></typeparam>
         /// <param name="newValue"></param>
         /// <returns></returns>
-        public static ITransformation<T> ReplaceWith<T>(T newValue) => new ReplaceWithTransformation<T>(newValue);
+        public static ReplaceWithTransformation<T> ReplaceWith<T>(T newValue) => new ReplaceWithTransformation<T>(newValue);
 
         /// <summary>
         /// Concatenates the next transformation.
@@ -32,7 +32,7 @@ namespace Krino.Vertical.Utils.Transformations
         /// <param name="t1"></param>
         /// <param name="t2"></param>
         /// <returns></returns>
-        public static ITransformation<T> Aggregate<T>(this ITransformation<T> t1, ITransformation<T> t2) => new AggregateTransformation<T>(t1, t2);
+        public static BlockTransformation<T> Then<T>(this ITransformation<T> t1, ITransformation<T> t2) => new BlockTransformation<T>(t1, t2);
 
         /// <summary>
         /// Performs the transformation if the condition is met.
