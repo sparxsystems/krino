@@ -43,11 +43,11 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
 
             List<Morpheme> morphemes = new List<Morpheme>()
             {
-                new Morpheme("ex", GrammarAttributes.Morpheme.Bound.Prefix),
-                new Morpheme("extra", GrammarAttributes.Morpheme.Bound.Prefix),
-                new Morpheme("re", GrammarAttributes.Morpheme.Bound.Prefix),
-                new Morpheme("er", GrammarAttributes.Morpheme.Bound.Suffix),
-                new Morpheme("less", GrammarAttributes.Morpheme.Bound.Suffix),
+                new Morpheme("ex", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = AffixBinding.Prefix("ex") },
+                new Morpheme("extra", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = AffixBinding.Prefix("extra") },
+                new Morpheme("re", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = AffixBinding.Prefix("re") },
+                new Morpheme("er", GrammarAttributes.Morpheme.Bound.Suffix) { Binding = AffixBinding.Suffix("er") },
+                new Morpheme("less", GrammarAttributes.Morpheme.Bound.Suffix) { Binding = AffixBinding.Suffix("less") },
                 new Morpheme("write", GrammarAttributes.Morpheme.Free.Lexical.Verb),
                 new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb),
             };
@@ -59,13 +59,13 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(1, result[0].Prefixes.Count);
             Assert.AreEqual("re", result[0].Prefixes[0].Value);
-            Assert.AreEqual("write", result[0].Root.Value);
+            Assert.AreEqual("write", result[0].Roots[0].Value);
 
             // suffix 'er'
             result = dictionary.ParseWord("reader", 0, 0).ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(1, result[0].Suffixes.Count);
-            Assert.AreEqual("read", result[0].Root.Value);
+            Assert.AreEqual("read", result[0].Roots[0].Value);
             Assert.AreEqual("er", result[0].Suffixes[0].Value);
 
             // multiple prefixes and sufixes
@@ -75,7 +75,7 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
             Assert.AreEqual(2, result[0].Suffixes.Count);
             Assert.AreEqual("extra", result[0].Prefixes[0].Value);
             Assert.AreEqual("re", result[0].Prefixes[1].Value);
-            Assert.AreEqual("read", result[0].Root.Value);
+            Assert.AreEqual("read", result[0].Roots[0].Value);
             Assert.AreEqual("er", result[0].Suffixes[0].Value);
             Assert.AreEqual("less", result[0].Suffixes[1].Value);
 
@@ -93,7 +93,7 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
             List<Morpheme> morphemes = new List<Morpheme>()
             {
                 new Morpheme("write", GrammarAttributes.Morpheme.Free.Lexical.Verb),
-                new Morpheme("er", GrammarAttributes.Morpheme.Bound.Suffix),
+                new Morpheme("er", GrammarAttributes.Morpheme.Bound.Suffix) { Binding = AffixBinding.Suffix("er") },
             };
 
             var dictionary = new AffixParser(morphology, morphemes);
@@ -103,11 +103,11 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
 
             // 'writer' is very similar to write so it will just return 'write'.
             Assert.AreEqual(1, morphemeSequences[0].Morphemes.Count());
-            Assert.AreEqual("write", morphemeSequences[0].Root.Value);
+            Assert.AreEqual("write", morphemeSequences[0].Roots[0].Value);
 
             // Then it shall also return the sequence with the recognized suffix.
             Assert.AreEqual(2, morphemeSequences[1].Morphemes.Count());
-            Assert.AreEqual("write", morphemeSequences[1].Root.Value);
+            Assert.AreEqual("write", morphemeSequences[1].Roots[0].Value);
             Assert.AreEqual("er", morphemeSequences[1].Suffixes[0].Value);
         }
     }

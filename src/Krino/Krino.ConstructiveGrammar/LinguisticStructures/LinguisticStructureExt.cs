@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 
 namespace Krino.ConstructiveGrammar.LinguisticStructures
 {
@@ -34,7 +35,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
                 }
                 else if (subStructure is IWord punctuation)
                 {
-                    sentence.PunctuationMark = punctuation.Root;
+                    sentence.PunctuationMark = punctuation.Roots.FirstOrDefault();
                 }
             }
             else if (parent is IText text)

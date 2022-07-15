@@ -10,6 +10,9 @@ namespace Krino.ConstructiveGrammar.Morphology
 {
     public class AffixBinding : IMorphemeBinding
     {
+        public static AffixBinding Prefix(string prefix) => new AffixBinding() { TransformValue = Trans.Prepend(prefix) };
+        public static AffixBinding Suffix(string suffix) => new AffixBinding() { TransformValue = Trans.Append(suffix) };
+
         public BigInteger AttributesToPick { get; init; }
 
         public BigInteger AttributesToDrop { get; init; }

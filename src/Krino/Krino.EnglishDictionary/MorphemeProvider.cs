@@ -266,6 +266,9 @@ namespace Krino.EnglishDictionary
             new Morpheme("with", GrammarAttributes.Morpheme.Free.Functional.Preposition),
 
 
+            // Roots (Cannot stan alone. They comes from latin or greek.)
+            new Morpheme("with", GrammarAttributes.Morpheme.Bound.Root),
+
 
             // Non-lexemes.
             new Morpheme(".", GrammarAttributes.PunctuationMark.Period),

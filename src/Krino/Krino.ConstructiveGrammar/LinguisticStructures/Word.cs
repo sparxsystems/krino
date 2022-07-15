@@ -30,19 +30,15 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
             if (morphemes.IsSingle())
             {
-                Root = morphemes.FirstOrDefault();
+                Roots.Add(morphemes.FirstOrDefault());
             }
             else
             {
-                var prefixes = morphemes.TakeWhile(x => GrammarAttributes.Morpheme.Bound.Prefix.IsIn(x.Attributes));
-                Prefixes.AddRange(prefixes);
+                var decomp = myMorphology.Decompose(morphemes);
 
-                Root = morphemes.FirstOrDefault(x => GrammarAttributes.Morpheme.Free.IsIn(x.Attributes));
-
-                var suffixes = morphemes.SkipWhile(x => !GrammarAttributes.Morpheme.Bound.Suffix.IsIn(x.Attributes))
-                    .TakeWhile(x => GrammarAttributes.Morpheme.Bound.Suffix.IsIn(x.Attributes));
-
-                Suffixes.AddRange(suffixes);
+                Prefixes.AddRange(decomp.Prefixes.Reverse());
+                Roots.AddRange(decomp.Roots);
+                Suffixes.AddRange(decomp.Suffixes);
             }
         }
 
@@ -50,11 +46,11 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
         public List<IMorpheme> Prefixes { get; } = new List<IMorpheme>();
 
-        public IMorpheme Root { get; set; }
+        public List<IMorpheme> Roots { get; set; } = new List<IMorpheme>();
 
         public List<IMorpheme> Suffixes { get; } = new List<IMorpheme>();
 
-        public IEnumerable<IMorpheme> Morphemes => Prefixes.Append(Root).Concat(Suffixes).Where(x => x != null);
+        public IEnumerable<IMorpheme> Morphemes => Prefixes.Concat(Roots).Concat(Suffixes).Where(x => x != null);
 
         public string Value => myMorphology.GetValue(Morphemes);
 

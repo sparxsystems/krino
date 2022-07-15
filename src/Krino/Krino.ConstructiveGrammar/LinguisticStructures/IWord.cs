@@ -6,7 +6,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
     {
         List<IMorpheme> Prefixes { get; }
 
-        IMorpheme Root { get; set; }
+        List<IMorpheme> Roots { get; set; }
 
         List<IMorpheme> Suffixes { get; }
 

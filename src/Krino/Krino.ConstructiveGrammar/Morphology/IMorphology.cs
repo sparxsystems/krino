@@ -9,5 +9,7 @@ namespace Krino.ConstructiveGrammar.Morphology
         string GetValue(IEnumerable<IMorpheme> morphemes);
 
         BigInteger GetAttributes(IEnumerable<IMorpheme> morphemes);
+
+        (IEnumerable<IMorpheme> Prefixes, IEnumerable<IMorpheme> Roots, IEnumerable<IMorpheme> Suffixes) Decompose(IEnumerable<IMorpheme> morphemes);
     }
 }
