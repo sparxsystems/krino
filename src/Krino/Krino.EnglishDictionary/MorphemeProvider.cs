@@ -404,16 +404,9 @@ namespace Krino.EnglishDictionary
             new Morpheme("anti", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("anti"), } },
             new Morpheme("auto", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("auto"), } },
             new Morpheme("co", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("co"), } },
-            new Morpheme("de", GrammarAttributes.Morpheme.Bound.Prefix)
-            {
-                Binding = new AffixBinding()
-                {
-                    CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(),
-                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb,
-                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Noun, 
-                    TransformValue = Trans.Prepend("de"),
-                }
-            },
+            new Morpheme("con", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("con"), } },
+            new Morpheme("de", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb() | EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("de"), } },
+
             new Morpheme("dis", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("dis"), } },
             new Morpheme("en", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("en"), } },
             new Morpheme("ex", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() |EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("ex"), } },
@@ -430,8 +423,24 @@ namespace Krino.EnglishDictionary
 
             new Morpheme("inter", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective(), TransformValue = Trans.Prepend("inter"), } },
 
+            new Morpheme("macro", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("macro"), } },
+            new Morpheme("micro", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("micro"), } },
+            new Morpheme("mono", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("mono"), } },
+            new Morpheme("non", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("non"), } },
+            new Morpheme("post", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("post"), } },
+
+            new Morpheme("pre", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective(), TransformValue = Trans.Prepend("pre"), } },
 
             new Morpheme("re", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("re"), } },
+
+            new Morpheme("sub", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("sub"), } },
+
+            new Morpheme("tele", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("tele"), } },
+
+            new Morpheme("trans", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb() | EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("trans"), } },
+
+            new Morpheme("uni", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsAdjective() | EnglishWordRules.IsAdverb(), TransformValue = Trans.Prepend("uni"), } },
+
             new Morpheme("up", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("up"), } },
         };
     }

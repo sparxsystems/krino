@@ -15,6 +15,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public static RuleBase<IWord> IsAdjective() => WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Adjective);
 
+        public static RuleBase<IWord> IsAdverb() => WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Adverb);
+
 
         public static RuleBase<IWord> IsVerb() => WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb);
 
