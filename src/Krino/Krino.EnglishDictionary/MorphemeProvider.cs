@@ -274,6 +274,8 @@ namespace Krino.EnglishDictionary
             new Morpheme(".", GrammarAttributes.PunctuationMark.Period),
             new Morpheme(",", GrammarAttributes.PunctuationMark.Comma),
 
+
+
             // Noun plural
             new Morpheme("s", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
@@ -378,6 +380,59 @@ namespace Krino.EnglishDictionary
                             .Else(Trans.Append("ing"))),
                 }
             },
+
+
+
+
+            new Morpheme("a", GrammarAttributes.Morpheme.Bound.Prefix)
+            {
+                Binding = new AffixBinding()
+                {
+                    CanBindRule = EnglishWordRules.IsLexical() & EnglishWordRules.WordBeginsWithPhonemes(Phoneme.Vowel),
+                    TransformValue = Trans.Prepend("a"),
+                }
+            },
+            new Morpheme("an", GrammarAttributes.Morpheme.Bound.Prefix)
+            {
+                Binding = new AffixBinding()
+                {
+                    CanBindRule = EnglishWordRules.IsLexical() & EnglishWordRules.WordBeginsWithPhonemes(Phoneme.Consonant),
+                    TransformValue = Trans.Prepend("an"),
+                }
+            },
+            new Morpheme("ante", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("ante"), } },
+            new Morpheme("anti", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("anti"), } },
+            new Morpheme("auto", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("auto"), } },
+            new Morpheme("co", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("co"), } },
+            new Morpheme("de", GrammarAttributes.Morpheme.Bound.Prefix)
+            {
+                Binding = new AffixBinding()
+                {
+                    CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(),
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Noun, 
+                    TransformValue = Trans.Prepend("de"),
+                }
+            },
+            new Morpheme("dis", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("dis"), } },
+            new Morpheme("en", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("en"), } },
+            new Morpheme("ex", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() |EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("ex"), } },
+            new Morpheme("extra", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective(), TransformValue = Trans.Prepend("extra"), } },
+            new Morpheme("hetero", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() | EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("hetero"), } },
+            new Morpheme("homo", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() | EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("homo"), } },
+            new Morpheme("homeo", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() | EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("homeo"), } },
+            new Morpheme("hyper", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() | EnglishWordRules.IsNoun(), TransformValue = Trans.Prepend("hyper"), } },
+           
+            new Morpheme("il", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() & EnglishWordRules.WordBeginsWithStr("l"), TransformValue = Trans.Prepend("il"), } },
+            new Morpheme("im", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() & (EnglishWordRules.WordBeginsWithStr("b") | EnglishWordRules.WordBeginsWithStr("m") | EnglishWordRules.WordBeginsWithStr("p")), TransformValue = Trans.Prepend("im"), } },
+            new Morpheme("in", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() & !EnglishWordRules.WordBeginsWithStr("l") & !EnglishWordRules.WordBeginsWithStr("b") & !EnglishWordRules.WordBeginsWithStr("m") & !EnglishWordRules.WordBeginsWithStr("p") & !EnglishWordRules.WordBeginsWithStr("r"), TransformValue = Trans.Prepend("in"), } },
+            new Morpheme("ir", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsAdjective() & EnglishWordRules.WordBeginsWithStr("r"), TransformValue = Trans.Prepend("ir"), } },
+
+            new Morpheme("inter", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective(), TransformValue = Trans.Prepend("inter"), } },
+
+
+            new Morpheme("re", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("re"), } },
+            new Morpheme("up", GrammarAttributes.Morpheme.Bound.Prefix) { Binding = new AffixBinding() { CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(), TransformValue = Trans.Prepend("up"), } },
         };
     }
 }

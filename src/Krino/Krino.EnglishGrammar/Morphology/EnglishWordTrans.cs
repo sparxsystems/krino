@@ -2,6 +2,7 @@
 {
     public static class EnglishWordTrans
     {
+        public static DoubleFirstLetterTrans DoubleFirstLetter() => new DoubleFirstLetterTrans();
         public static DoubleLastLetterTrans DoubleLastLetter() => new DoubleLastLetterTrans();
 
         public static DropLastLetterTrans DropLastLetter() => new DropLastLetterTrans();

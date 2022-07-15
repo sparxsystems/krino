@@ -22,7 +22,7 @@ namespace Krino.EnglishGrammar.Morphology
         public override bool Evaluate(string value)
         {
             bool result = value != null && myPhonemes.Length <= value.Length &&
-                value.Reverse().Take(myPhonemes.Length).Select(x => x.GetPhoneme()).SequenceEqual(myPhonemes);
+                value.Reverse().Take(myPhonemes.Length).Select(x => x.GetPhoneme()).SequenceEqual(myPhonemes.Reverse());
 
             return result;
         }

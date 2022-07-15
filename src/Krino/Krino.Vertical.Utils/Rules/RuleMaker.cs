@@ -137,6 +137,7 @@ namespace Krino.Vertical.Utils.Rules
         public static NotRule<T> Not<T>(T value, IEqualityComparer<T> comparer = null) where T : IEquatable<T> => new IsRule<T>(value, comparer).Not();
 
 
+        public static BeginsWithStrRule BeginsWithStr(string beginningOfStr) => new BeginsWithStrRule(beginningOfStr);
         public static EndsWithStrRule EndsWithStr(string endOfString) => new EndsWithStrRule(endOfString);
     }
 }
