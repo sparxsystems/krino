@@ -381,7 +381,7 @@ namespace Krino.EnglishDictionary
                 }
             },
 
-#region Suffixes creating nouns
+            #region Suffixes creating nouns
 
             new Morpheme("age", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
             {
@@ -783,7 +783,7 @@ namespace Krino.EnglishDictionary
                 }
             },
 
-            #region
+            #endregion
 
             // Prefixes
             new Morpheme("a", GrammarAttributes.Morpheme.Bound.Prefix)
