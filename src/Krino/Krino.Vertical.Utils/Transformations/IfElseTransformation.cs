@@ -9,7 +9,11 @@ namespace Krino.Vertical.Utils.Transformations
     /// <typeparam name="T"></typeparam>
     public class IfElseTransformation<T> : ITransformation<T>
     {
-        internal static IfElseTransformation<T> Else(IfElseTransformation<T> provider, ITransformation<T> otherwise) => new IfElseTransformation<T>(provider.myRule, provider.myTransformation, otherwise);
+        internal static IfElseTransformation<T> Else(IfElseTransformation<T> provider, ITransformation<T> elseTransformation)
+        {
+            provider.myElseTransformation = elseTransformation;
+            return provider;
+        }
 
         private IRule<T> myRule;
         private ITransformation<T> myTransformation;

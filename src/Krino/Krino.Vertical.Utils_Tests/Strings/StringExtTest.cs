@@ -14,6 +14,8 @@ namespace Krino.Vertical.Utils_Tests.Strings
 
             // 1 letter must be added.
             Assert.AreEqual(1, "writ".Distance("write"));
+
+            Assert.AreEqual(2, "colli".Distance("collide"));
         }
 
         [Test]

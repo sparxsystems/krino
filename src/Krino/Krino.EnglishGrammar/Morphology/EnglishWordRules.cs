@@ -28,6 +28,23 @@ namespace Krino.EnglishGrammar.Morphology
 
 
         public static WordBeginsWithStrRule WordBeginsWithStr(string beginningOfStr) => new WordBeginsWithStrRule(beginningOfStr);
+        public static WordEndsWithStrRule WordEndsWithStr(string endOfStr) => new WordEndsWithStrRule(endOfStr);
+
+        public static RuleBase<IWord> WordEndsWithOneOfStr(params string[] strs)
+        {
+            RuleBase<IWord> result = WordEndsWithStr(strs[0]);
+
+            if (strs.Length > 1)
+            {
+                for (int i = 1; i < strs.Length; ++i)
+                {
+                    result |= WordEndsWithStr(strs[1]);
+                }
+            }
+
+            return result;
+        }
+
 
         public static BeginsWithPhonemesRule BeginsWithPhonemes(params Phoneme[] phonemes) => new BeginsWithPhonemesRule(phonemes);
         public static WordBeginsWithPhonemesRule WordBeginsWithPhonemes(params Phoneme[] phonemes) => new WordBeginsWithPhonemesRule(phonemes);

@@ -372,18 +372,406 @@ namespace Krino.EnglishDictionary
                     TransformValue = Trans
                          // If it ends with short vowel and consonant then double the last consonant. e.g. putting.
                         .If(EnglishWordRules.EndsWithPhonemes(Phoneme.Consonant, Phoneme.Vowel, Phoneme.Consonant),
-                                Trans.Then(EnglishWordTrans.DoubleLastLetter(), Trans.Append("ing")))
+                                Trans.ContinueWith(EnglishWordTrans.DoubleLastLetter(), Trans.Append("ing")))
                         // If it ends with 'e' then drop the 'e' e.g. joking.
                         .Else(Trans
                             .If(RuleMaker.EndsWithStr("e"),
-                                Trans.Then(EnglishWordTrans.DropLastLetter(), Trans.Append("ing")))
+                                Trans.ContinueWith(Trans.DropFromEnd(0, 1), Trans.Append("ing")))
                             .Else(Trans.Append("ing"))),
+                }
+            },
+
+#region Suffixes creating nouns
+
+            new Morpheme("age", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("age")
+                        ),
+                }
+            },
+
+            new Morpheme("al", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("y") & EnglishWordRules.EndsWithPhonemes(Phoneme.Consonant, Phoneme.Vowel), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            )
+                            ,
+                            Trans.Append("al")
+                        ),
+                }
+            },
+
+            new Morpheme("ance", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb | GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective() & EnglishWordRules.WordEndsWithStr("ant"),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ant") | RuleMaker.EndsWithStr("ate"), Trans.DropFromEnd(0, 3))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                                )
+                            )
+                            ,
+                            Trans.Append("ance")
+                        ),
+                }
+            },
+
+            new Morpheme("ance", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb | GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective() & EnglishWordRules.WordEndsWithStr("ant"),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ant") | RuleMaker.EndsWithStr("ate"), Trans.DropFromEnd(0, 3))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                                )
+                            )
+                            ,
+                            Trans.Append("ance")
+                        ),
+                }
+            },
+
+            new Morpheme("dom", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    CanBindRule = EnglishWordRules.IsAdjective(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("d"), Trans.DropFromEnd(0, 1))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("ee"), Trans.NothingToDo<string>())
+                                .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                                )
+                            )
+                            ,
+                            Trans.Append("dom")
+                        ),
+                }
+            },
+
+            new Morpheme("ee", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("ee")
+                        ),
+                }
+            },
+
+            new Morpheme("ence", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb | GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective() & EnglishWordRules.WordEndsWithStr("ent"),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ent"), Trans.DropFromEnd(0, 3))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("ur"), Trans.Append("r"))
+                                )
+                            )
+                            ,
+                            Trans.Append("ence")
+                        ),
+                }
+            },
+
+            new Morpheme("er", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("er")
+                        ),
+                }
+            },
+
+
+            new Morpheme("ery", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("b"), Trans.Append("b"))
+                            )
+                            ,
+                            Trans.Append("ery")
+                        ),
                 }
             },
 
 
 
+            new Morpheme("ption", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb() & EnglishWordRules.WordEndsWithOneOfStr("pt", "scribe", "ceive", "sume"),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("pt"), Trans.DropFromEnd(0, 1))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("scribe"), Trans.DropFromEnd(0, 2))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("ceive"), Trans.DropFromEnd(0, 3))
+                                    .Else(Trans.If(RuleMaker.EndsWithStr("sume"), Trans.DropFromEnd(0, 1))
+                                    )
+                                )
+                            )
+                            ,
+                            Trans.Append("ption")
+                        ),
+                }
+            },
+            new Morpheme("tion", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb() & (EnglishWordRules.WordEndsWithOneOfStr("ct", "ete", "ute", "it", "ite", "tain", "ose", "vene", "vent", "rt") | EnglishWordRules.WordEndsWithOneOfStr("intend", "contend")),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ct"), Trans.DropFromEnd(0, 1)) 
+                            .Else(Trans.If(RuleMaker.EndsWithStr("ete"), Trans.DropFromEnd(0, 2))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("ute"), Trans.DropFromEnd(0, 1))
+                                    .Else(Trans.If(RuleMaker.EndsWithStr("it"), Trans.DropFromEnd(0, 1))
+                                        .Else(Trans.If(RuleMaker.EndsWithStr("ite"), Trans.DropFromEnd(0, 2))
+                                            .Else(Trans.If(RuleMaker.EndsWithStr("tain"), Trans.DropFromEnd(0, 3), Trans.Append("e"))
+                                                .Else(Trans.If(RuleMaker.EndsWithStr("ose"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                                                    .Else(Trans.If(RuleMaker.EndsWithStr("olve"), Trans.DropFromEnd(0, 2), Trans.Append("u"))
+                                                        .Else(Trans.If(RuleMaker.EndsWithStr("vene") | RuleMaker.EndsWithStr("vent"), Trans.DropFromEnd(0, 1))
+                                                            // Note: end - 2 exception words.
+                                                            .Else(Trans.If(RuleMaker.EndsWithStr("end") | RuleMaker.EndsWithStr("rt"), Trans.DropFromEnd(0, 1))
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            ,
+                            Trans.Append("tion")
+                        ),
+                }
+            },
 
+
+            new Morpheme("sion", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb() & EnglishWordRules.WordEndsWithOneOfStr("de", "ise", "use", "pel", "mit", "cede", "ss", "end", "cline", "vert", "erse", "ur") & !EnglishWordRules.WordEndsWithOneOfStr("intend", "contend"),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("de"), Trans.DropFromEnd(0, 2))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("ise") | RuleMaker.EndsWithStr("use"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("pel"), Trans.DropFromEnd(0, 2), Trans.Append("ul"))
+                                    .Else(Trans.If(RuleMaker.EndsWithStr("mit"), Trans.DropFromEnd(0, 1), Trans.Append("ss"))
+                                        .Else(Trans.If(RuleMaker.EndsWithStr("cede"), Trans.DropFromEnd(0, 2), Trans.Append("ss"))
+                                            .Else(Trans.If(RuleMaker.EndsWithStr("ss"), Trans.DropFromEnd(0, 1))
+                                                .Else(Trans.If(RuleMaker.EndsWithStr("end") | RuleMaker.EndsWithStr("and"), Trans.DropFromEnd(0, 1))
+                                                    .Else(Trans.If(RuleMaker.EndsWithStr("cline"), Trans.DropFromEnd(0, 3), Trans.Append("n"))
+                                                        .Else(Trans.If(RuleMaker.EndsWithStr("vert"), Trans.DropFromEnd(0, 1))
+                                                            .Else(Trans.If(RuleMaker.EndsWithStr("erse") | RuleMaker.EndsWithStr("erge"), Trans.DropFromEnd(0, 2))
+                                                                .Else(Trans.If(RuleMaker.EndsWithStr("ur"), Trans.NothingToDo<string>())
+                                                                )
+                                                            )
+                                                        )
+                                                    )
+                                                )
+                                            )
+                                        )
+                                    )
+                                )
+                            )
+                            ,
+                            Trans.Append("sion")
+                        ),
+                }
+            },
+
+
+            new Morpheme("ication", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb() & EnglishWordRules.WordEndsWithStr("fy"),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            ,
+                            Trans.Append("ication")
+                        ),
+                }
+            },
+
+            new Morpheme("ism", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb | GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ze"), Trans.DropFromEnd(0, 2))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            )
+                            ,
+                            Trans.Append("ism")
+                        ),
+                }
+            },
+
+            new Morpheme("ist", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ize"), Trans.DropFromEnd(0, 3))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                                )
+                            )
+                            ,
+                            Trans.Append("ist")
+                        ),
+                }
+            },
+
+            new Morpheme("ity", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    CanBindRule = EnglishWordRules.IsAdjective(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("le"), Trans.DropFromEnd(0, 2), Trans.Append("il"))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("ine") | RuleMaker.EndsWithStr("ure"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                                    .Else(Trans.If(RuleMaker.EndsWithStr("ous"), Trans.DropFromEnd(0, 3))
+                                    )
+                                )
+                            )
+                            ,
+                            Trans.Append("ity")
+                        ),
+                }
+            },
+
+            new Morpheme("ment", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e") & EnglishWordRules.EndsWithPhonemes(Phoneme.Consonant, Phoneme.Consonant, Phoneme.Vowel), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("ment")
+                        ),
+                }
+            },
+
+            new Morpheme("ness", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    CanBindRule = EnglishWordRules.IsAdjective(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            ,
+                            Trans.Append("ness")
+                        ),
+                }
+            },
+
+            new Morpheme("or", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("or")
+                        ),
+                }
+            },
+
+#endregion
+
+
+            // Prefixes
             new Morpheme("a", GrammarAttributes.Morpheme.Bound.Prefix)
             {
                 Binding = new AffixBinding()

@@ -41,5 +41,30 @@ namespace Krino.EnglishDictionary.Tests
             Assert.AreEqual("putting", ingSuffix.Binding.TransformValue("put"));
             Assert.AreEqual("joking", ingSuffix.Binding.TransformValue("joke"));
         }
+
+        [Test]
+        public void BindingTransformation_Suffix_Ation()
+        {
+            var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ation" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
+
+            Assert.AreEqual("exploration", suffix.Binding.TransformValue("explore"));
+            Assert.AreEqual("flirtation", suffix.Binding.TransformValue("flirt"));
+        }
+
+        [Test]
+        public void BindingTransformation_Suffix_Sion()
+        {
+            var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "sion" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
+
+            Assert.AreEqual("invasion", suffix.Binding.TransformValue("invade"));
+        }
+
+        [Test]
+        public void BindingTransformation_Suffix_Tion()
+        {
+            var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "tion" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
+
+            Assert.AreEqual("resolution", suffix.Binding.TransformValue("resolve"));
+        }
     }
 }
