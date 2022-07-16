@@ -768,8 +768,22 @@ namespace Krino.EnglishDictionary
                 }
             },
 
-#endregion
+            #endregion
 
+            #region Suffixes creating adjectives
+
+            new Morpheme("ive", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb,
+                    CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective(),
+                    TransformValue = Trans.Append("ive"),
+                }
+            },
+
+            #region
 
             // Prefixes
             new Morpheme("a", GrammarAttributes.Morpheme.Bound.Prefix)
