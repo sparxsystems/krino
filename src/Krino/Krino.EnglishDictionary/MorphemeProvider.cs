@@ -83,10 +83,10 @@ namespace Krino.EnglishDictionary
             new Morpheme("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("bean", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("bear", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            // ??? -ful
             new Morpheme("beatiful", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("beer", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("bed", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("bedroom", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("behave", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("before", GrammarAttributes.Morpheme.Free.Functional.Preposition),
@@ -161,6 +161,623 @@ namespace Krino.EnglishDictionary
             new Morpheme("buy", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("by", GrammarAttributes.Morpheme.Free.Functional.Preposition),
 
+            new Morpheme("cake", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("call", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            //???
+            new Morpheme("can", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal),
+            new Morpheme("candle", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("cap", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("car", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("card", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("care", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("carry", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("case", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("cat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("catch", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("central", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("cat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("century", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("certain", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("chair", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("change", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            //???
+            new Morpheme("chase", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("cheap", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("cheese", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("chicken", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("child", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("chocolate", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("choice", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("choose", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("circle", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("city", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("class", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("clever", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("clean", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("clear", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("climb", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("clock", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("cloth", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("cloud", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("cloudy", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("close", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("coffee", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("coat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("coin", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("cold", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("collect", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("collect", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("colour", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("comb", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("come", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("comfortable", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("common", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("compare", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("complete", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("computer", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("condition", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("continue", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("control", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("cook", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("cool", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("cooper", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("corn", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("corner", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("correct", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("cost", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("contain", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("count", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("country", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("course", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("cover", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("crash", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("crash", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("crease", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("crease", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("cross", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("cross", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("cry", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("cry", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("cup", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("cut", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+
+            new Morpheme("dance", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("dance", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("danger", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("dangerous", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("dark", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //??? plural ma tiez dark
+            new Morpheme("dark", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("daugther", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("day", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("dead", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("dead", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("decide", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("decrease", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("decrease", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("deep", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("deep", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("deep", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("deer", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("depend", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("desk", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("destroy", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("develop", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("die", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("die", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("different", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("dinner", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("direction", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("dish", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("do", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("dog", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("door", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("double", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("double", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("double", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            //???
+            new Morpheme("double", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("down", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("down", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("down", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("down", GrammarAttributes.Morpheme.Free.Functional.Preposition),
+            //???
+            new Morpheme("down", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("draw", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("dream", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("dream", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("dress", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("dress", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("drink", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("drink", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("drive", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("drive", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("drop", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("drop", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("dry", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("dry", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("dry", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("duck", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("dust", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("dust", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("duty", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("destroy", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            //???
+            new Morpheme("dedicate", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+
+            new Morpheme("each", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("each", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            new Morpheme("each", GrammarAttributes.Morpheme.Free.Functional.Pronoun),
+            new Morpheme("ear", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("early", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("early", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("earn", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("earth", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("east", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("east", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("east", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("easy", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("easy", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("eat", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("education", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("effect", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("effect", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("egg", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? chceme aj cisla
+            new Morpheme("eight", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("either", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            new Morpheme("either", GrammarAttributes.Morpheme.Free.Functional.Pronoun),
+            new Morpheme("either", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("electric", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("electric", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("elephant", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("else", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("empty", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("empty", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("empty", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("end", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("end", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("enemy", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("enjoy", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("enough", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            new Morpheme("enough", GrammarAttributes.Morpheme.Free.Functional.Pronoun),
+            new Morpheme("enough", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("enter", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("equal", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("equal", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("equal", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("entrance", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("entrance", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("escape", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("escape", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("even", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("even", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("even", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("evening", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("event", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("ever", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Sememe.OfFrequency),
+            new Morpheme("every", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            //???
+            new Morpheme("exact", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("exactly", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("examination", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("example", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("except", GrammarAttributes.Morpheme.Free.Functional.Preposition),
+            //??? ci je to Subordinating
+            new Morpheme("except", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
+            //???
+            new Morpheme("except", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("excite", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("exercise", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("exercise", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("expect", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("expensive", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("explain", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("extremely", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("eye", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+
+            new Morpheme("face", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("face", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fact", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fail", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fail", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fall", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fall", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("false", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("false", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("family", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("famous", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("far", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("far", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("farm", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("farm", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("father", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fast", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fast", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("fast", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fat", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("fault", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fault", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("fault", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fear", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fault", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("feed", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("feed", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("feel", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("feel", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("female", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fever", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? aky determiner a je to aj pronoun ale aky
+            new Morpheme("few", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            new Morpheme("flight", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("flight", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fill", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fill", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("film", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("film", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fild", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fild", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fine", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fine", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("fine", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("finger", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? cudne sloveso
+            new Morpheme("finger", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("finish", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("finish", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fire", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fire", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //??? toto je aj determiner a adverb
+            new Morpheme("first", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fit", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fit", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("fit", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fix", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fix", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("flag", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? cudne sloveso
+            new Morpheme("flag", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("flat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("flat", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("fix", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("float", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("float", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("floor", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("floor", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("flour", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("flour", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("flower", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("flower", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fly", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fly", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fly", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("fold", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fold", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("food", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fool", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fool", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fool", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("foot", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? cudne sloveso
+            new Morpheme("foot", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //??? je to aj preposition
+            new Morpheme("for", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
+            new Morpheme("force", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("force", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("foreign", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("forest", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("forget", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("forgive", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fork", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? cudne sloveso
+            new Morpheme("fork", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("form", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("form", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fox", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("free", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("free", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("freeze", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("freeze", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fresh", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("friend", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("friendly", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("from", GrammarAttributes.Morpheme.Free.Functional.Preposition),
+            new Morpheme("front", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("front", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("front", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("fruit", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("fruit", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //??? ako to napisat full - fully
+            new Morpheme("full", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("fully", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("fun", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("fun", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("furniture", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("further", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //??? cudne sloveso
+            new Morpheme("further", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("future", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("future", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+
+            new Morpheme("game", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("game", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("game", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("garden", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("garden", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("gate", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("general", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("general", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //??? meni sa forma na men
+            new Morpheme("gentleman", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("get", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("gift", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("gift", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("give", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("give", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("glad", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("glass", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("glass", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("go", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("goat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("god", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("gold", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("gold", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("good", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("good", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("grass", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("grass", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("grave", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("grave", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("great", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("great", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("green", GrammarAttributes.Morpheme.Free.Lexical.Noun),
+            new Morpheme("grey", GrammarAttributes.Morpheme.Free.Lexical.Noun),
+            new Morpheme("gray", GrammarAttributes.Morpheme.Free.Lexical.Noun),
+            new Morpheme("ground", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("ground", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("grass", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("group", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("group", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            //???
+            new Morpheme("grow", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("gun", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("gun", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+
+            new Morpheme("hair", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("half", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("half", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("half", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            new Morpheme("hall", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("hammer", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hammer", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("hand", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hand", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            //???
+            new Morpheme("happen", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("happy", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("hard", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("hat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("hate", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hate", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
+            new Morpheme("he", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Masculine),
+            new Morpheme("head", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("head", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("healthy", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("hear", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("heavy", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("heavy", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //??? toto je aj exclamation
+            new Morpheme("hello", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? toto je aj exclamation
+            new Morpheme("help", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("help", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("heart", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("heart", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("heaven", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("height", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("hen", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("her", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
+            new Morpheme("here", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Sememe.OfPlace),
+            new Morpheme("hers", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Feminine),
+            new Morpheme("hide", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hide", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("high", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("high", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("hill", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("him", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Masculine),
+            new Morpheme("his", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Masculine),
+            new Morpheme("hit", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hit", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("hobby", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("hold", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hold", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("hole", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hold", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("holiday", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("holiday", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("home", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("home", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("home", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("hope", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hope", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("horse", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("horse", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("hospital", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("hot", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("hot", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("hotel", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("house", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("house", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("how", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            //??? aj cislovky chceme
+            new Morpheme("hundred", GrammarAttributes.Morpheme.Free.Lexical.Numeral.Cardinal),
+            new Morpheme("hungry", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("hour", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("hurry", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("hurry", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("husband", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("husband", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("hurt", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("hurt", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("hurt", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+
+            new Morpheme("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.First | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular),
+            new Morpheme("ice", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("ice", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("idea", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? je to aj noun
+            new Morpheme("if", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("if", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
+            new Morpheme("important", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //??? je to aj noun
+            new Morpheme("in", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("in", GrammarAttributes.Morpheme.Free.Functional.Preposition),
+            new Morpheme("in", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("into", GrammarAttributes.Morpheme.Free.Functional.Preposition),
+            //???
+            new Morpheme("introduce", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            //???
+            new Morpheme("invent", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("iron", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("iron", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("iron", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("invitation", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("invite", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson| GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
+            new Morpheme("island", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("it", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Neuter),
+            new Morpheme("its", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
+
+            new Morpheme("jelly", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("job", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("join", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("join", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+
+
+
+            new Morpheme("side", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("sided", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("side", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
 
 
 
@@ -168,30 +785,23 @@ namespace Krino.EnglishDictionary
 
             // Determiniers
             new Morpheme("a", GrammarAttributes.Morpheme.Free.Functional.Determiner.IndefiniteArticle),
-            new Morpheme("every", GrammarAttributes.Morpheme.Free.Functional.Determiner),
             new Morpheme("some", GrammarAttributes.Morpheme.Free.Functional.Determiner),
             new Morpheme("the", GrammarAttributes.Morpheme.Free.Functional.Determiner.DefiniteArticle),
-
             new Morpheme("my", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
             new Morpheme("your", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
             new Morpheme("his", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
-            new Morpheme("her", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
-            new Morpheme("its", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
             new Morpheme("their", GrammarAttributes.Morpheme.Free.Functional.Determiner.Possessive),
 
 
             // Conjunctions (onle 7 coordinating conjunctions)
-            new Morpheme("for", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
             new Morpheme("nor", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
             new Morpheme("or", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
             new Morpheme("so", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
             new Morpheme("yet", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Coordinating),
-
             new Morpheme("after", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
             new Morpheme("although", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
             new Morpheme("as", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
             new Morpheme("because", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Cause),
-            new Morpheme("if", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
             new Morpheme("since", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating.Sememe.Cause),
             new Morpheme("that", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
             new Morpheme("though", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
@@ -201,7 +811,6 @@ namespace Krino.EnglishDictionary
 
             // Verbs
             new Morpheme("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
-            new Morpheme("is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson| GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("was", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Singular.FirstPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Singular.ThirdPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("were", GrammarAttributes.Morpheme.Free.Lexical.Verb.Stative.Linking | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Singular.SecondPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Plural.SecondPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past.Plural.ThirdPerson | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
 
@@ -210,7 +819,6 @@ namespace Krino.EnglishDictionary
             new Morpheme("drive", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("end", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("express", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
-            new Morpheme("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base),
             new Morpheme("has", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson),
             new Morpheme("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple),
 
@@ -276,23 +884,17 @@ namespace Krino.EnglishDictionary
             new Morpheme("year", GrammarAttributes.Morpheme.Free.Lexical.Noun.Common | GrammarAttributes.Morpheme.Free.Lexical.Noun.Countable),
 
             // Pronouns
-            new Morpheme("i", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.First | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular),
             new Morpheme("you", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Second | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Plural),
-            new Morpheme("he", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Masculine),
             new Morpheme("she", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Feminine),
-            new Morpheme("it", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Neuter),
             new Morpheme("they", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Subjective  | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Plural),
 
             new Morpheme("me", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.First | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular),
-            new Morpheme("him", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Masculine),
             new Morpheme("her", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Feminine),
             new Morpheme("us", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.First | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Plural),
             new Morpheme("them", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Objective | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Plural),
 
             new Morpheme("maine", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.First | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular),
             new Morpheme("yours", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Second | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Plural),
-            new Morpheme("his", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Masculine),
-            new Morpheme("hers", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Gender.Feminine),
             new Morpheme("theirs", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Third | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Plural),
 
             
@@ -314,19 +916,12 @@ namespace Krino.EnglishDictionary
             new Morpheme("currently", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("directly", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("daily", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Sememe.OfFrequency),
-            new Morpheme("early", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("easily", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("else", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("especially", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("eventually", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("ever", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Sememe.OfFrequency),
-            new Morpheme("exactly", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("extremely", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("fast", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("finally", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("fully", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("generally", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("here", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Sememe.OfPlace),
             new Morpheme("however", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("instead", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("lately", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
@@ -358,9 +953,6 @@ namespace Krino.EnglishDictionary
 
 
             // Colors
-            new Morpheme("green", GrammarAttributes.Morpheme.Free.Lexical.Noun),
-            new Morpheme("gray", GrammarAttributes.Morpheme.Free.Lexical.Noun),
-            new Morpheme("grey", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("orange", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("pink", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("purple", GrammarAttributes.Morpheme.Free.Lexical.Noun),
@@ -373,10 +965,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("it", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("but", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("during", GrammarAttributes.Morpheme.Free.Functional.Preposition),
-            new Morpheme("except", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("fro", GrammarAttributes.Morpheme.Free.Functional.Preposition),
-            new Morpheme("from", GrammarAttributes.Morpheme.Free.Functional.Preposition),
-            new Morpheme("in", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("like", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("of", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("off", GrammarAttributes.Morpheme.Free.Functional.Preposition),
