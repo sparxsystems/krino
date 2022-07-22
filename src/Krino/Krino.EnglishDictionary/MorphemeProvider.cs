@@ -1044,20 +1044,13 @@ namespace Krino.EnglishDictionary
                 {
                     AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
                     AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
-                    CanBindRule = !WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
-                           EnglishWordRules.IsNounInBaseForm(),
-                    TransformValue = Trans.Append("s"),
-                }
-            },
-            new Morpheme("es", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
-            {
-                Binding = new AffixBinding()
-                {
-                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural,
-                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular,
-                    CanBindRule = WordRules.WordEndsWithOneOf("s", "x", "z", "sh", "ch") &
-                           EnglishWordRules.IsNounInBaseForm(),
-                    TransformValue = Trans.Append("es"),
+                    CanBindRule = EnglishWordRules.IsNounInBaseForm(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("s") | RuleMaker.EndsWithStr("x") | RuleMaker.EndsWithStr("z") | RuleMaker.EndsWithStr("sh") | RuleMaker.EndsWithStr("ch"), Trans.Append("e"))
+                            ,
+                            Trans.Append("s")
+                        ),
                 }
             },
 
