@@ -771,6 +771,51 @@ namespace Krino.EnglishDictionary
             new Morpheme("join", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("join", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("juice", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("juice", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("jump", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("jump", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("just", GrammarAttributes.Morpheme.Free.Lexical.Adverb | GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            
+            new Morpheme("keep", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("keep", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("key", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("key", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("key", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("kid", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //??? nebolo to jasne na googli
+            new Morpheme("kid", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            //???
+            new Morpheme("kid", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("kill", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("kill", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("kind", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("kind", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("king", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("kitchen", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("knee", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("knee", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("knife", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("knife", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("knock", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("knock", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("know", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            //???
+            new Morpheme("know", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+
+
+
+
+
+
 
 
 
