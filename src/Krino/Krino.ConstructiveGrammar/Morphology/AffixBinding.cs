@@ -27,9 +27,9 @@ namespace Krino.ConstructiveGrammar.Morphology
         string IMorphemeBinding.TransformValue(string word) => TransformValue.Transform(word);
 
 
-        public BigInteger TransformAttributes(BigInteger attributes)
+        public BigInteger TransformAttributes(BigInteger wordAttributes)
         {
-            BigInteger result = attributes;
+            BigInteger result = wordAttributes;
 
             var enumsToRemove = GrammarAttributes.Instance.FindEnums(AttributesToDrop);
             foreach (var enumToRemove in enumsToRemove)
@@ -52,10 +52,10 @@ namespace Krino.ConstructiveGrammar.Morphology
 
 
         public bool Equals(IMorphemeBinding other)
-            => GetType() == other.GetType() && other is AffixBinding otherBinding &&
-                (CanBindRule == otherBinding.CanBindRule || CanBindRule != null && otherBinding.CanBindRule != null && CanBindRule.Equals(otherBinding.CanBindRule)) &&
-                AttributesToPick == otherBinding.AttributesToPick && AttributesToDrop == otherBinding.AttributesToDrop &&
-                (TransformValue == otherBinding.TransformValue || TransformValue != null && otherBinding.TransformValue != null && TransformValue.Equals(otherBinding.TransformValue));
+            => other is AffixBinding otherBinding &&
+               (CanBindRule == otherBinding.CanBindRule || CanBindRule != null && otherBinding.CanBindRule != null && CanBindRule.Equals(otherBinding.CanBindRule)) &&
+               AttributesToPick == otherBinding.AttributesToPick && AttributesToDrop == otherBinding.AttributesToDrop &&
+               (TransformValue == otherBinding.TransformValue || TransformValue != null && otherBinding.TransformValue != null && TransformValue.Equals(otherBinding.TransformValue));
 
 
         public override bool Equals(object obj) => obj is AffixBinding other && Equals(other);

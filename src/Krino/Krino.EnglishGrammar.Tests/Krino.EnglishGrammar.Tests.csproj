@@ -15,6 +15,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Krino.EnglishDictionary\Krino.EnglishDictionary.csproj" />
     <ProjectReference Include="..\Krino.EnglishGrammar\Krino.EnglishGrammar.csproj" />
   </ItemGroup>
 

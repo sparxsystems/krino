@@ -12,6 +12,7 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
         IEnumerable<IMorpheme> Morphemes { get; }
 
-        void BindMorpheme(IMorpheme morpheme);
+        bool CanBind(IMorpheme morpheme);
+        void Bind(IMorpheme morpheme);
     }
 }

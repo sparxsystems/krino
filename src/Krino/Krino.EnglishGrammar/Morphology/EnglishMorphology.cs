@@ -2,6 +2,7 @@
 using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.ConstructiveGrammar.Morphology;
+using Krino.Vertical.Utils.Collections;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -32,23 +33,59 @@ namespace Krino.EnglishGrammar.Morphology
             return (prefixes, root, suffixes);
         }
 
-        public BigInteger GetAttributes(IEnumerable<IMorpheme> morphemes)
+        public IEnumerable<IEnumerable<IMorpheme>> GetDerivationSequence(IEnumerable<IMorpheme> morphemes)
         {
-            var decomp = Decompose(morphemes);
+            IEnumerable<List<IMorpheme>> result;
 
-            // Attributes of root morphemes. E.g. wheelchair - the last root 'chair' defines the root attributes.
-            var result = decomp.Roots.Last().Attributes;
 
-            // Add prefixes and calculate attributes.
-            foreach (var prefix in decomp.Prefixes)
+            if (morphemes.IsSingle())
             {
-                result = prefix.Binding.TransformAttributes(result);
+                result = new List<List<IMorpheme>>() { morphemes.ToList() };
+            }
+            else
+            {
+                var decomposition = Decompose(morphemes);
+                if (decomposition.Roots.Any())
+                {
+                    var prefixes = decomposition.Prefixes.ToList();
+                    var roots = decomposition.Roots.Reverse().ToList();
+                    var suffixes = decomposition.Suffixes.ToList();
+                    var tmpResult = new List<IMorpheme>();
+
+                    var allCombinations = GetAllMorphemeCombinations(0, 0, 0, prefixes, roots, suffixes, tmpResult);
+                    result = allCombinations.Where(x => IsSequenceMeaningful(x));
+                }
+                else
+                {
+                    result = Enumerable.Empty<List<IMorpheme>>();
+                }
             }
 
-            // Add suffixes and calculate attributes.
-            foreach (var suffix in decomp.Suffixes)
+            return result;
+        }
+
+        public BigInteger GetAttributes(IEnumerable<IMorpheme> morphemes)
+        {
+            BigInteger result = 0;
+
+            var derivationSequence = GetDerivationSequence(morphemes).FirstOrDefault();
+            if (derivationSequence != null && derivationSequence.Any())
             {
-                result = suffix.Binding.TransformAttributes(result);
+                result = derivationSequence.First().Attributes;
+
+                foreach (var morpheme in derivationSequence.Skip(1))
+                {
+                    // Note: prefixes and suffixes has defined binding.
+                    if (morpheme.Binding != null)
+                    {
+                        result = morpheme.Binding.TransformAttributes(result);
+                    }
+                    // Note: compound roots has not defined binding by default.
+                    else
+                    {
+                        // Note: other root is put before the main root and it does not affect attributes.
+                    }
+                }
             }
 
             return result;
@@ -56,24 +93,116 @@ namespace Krino.EnglishGrammar.Morphology
 
         public string GetValue(IEnumerable<IMorpheme> morphemes)
         {
-            var decomp = Decompose(morphemes);
+            string result = "";
 
-            // Attributes of the root morpheme.
-            var result = string.Concat(decomp.Roots.Select(x => x.Value));
-
-            // Add prefixes.
-            foreach (var prefix in decomp.Prefixes)
+            var derivationSequence = GetDerivationSequence(morphemes).FirstOrDefault();
+            if (derivationSequence != null)
             {
-                result = prefix.Binding.TransformValue(result);
-            }
-
-            // Add suffixes.
-            foreach (var suffix in decomp.Suffixes)
-            {
-                result = suffix.Binding.TransformValue(result);
+                foreach (var morpheme in derivationSequence)
+                {
+                    // Note: prefixes and suffixes has defined binding.
+                    if (morpheme.Binding != null)
+                    {
+                        result = morpheme.Binding.TransformValue(result);
+                    }
+                    // Note: compound roots has not defined binding by default.
+                    else
+                    {
+                        // Note: other root is put before the main root.
+                        result = string.Concat(morpheme.Value, result);
+                    }
+                }
             }
 
             return result;
         }
+
+        private IEnumerable<List<IMorpheme>> GetAllMorphemeCombinations(
+            int prefixIdx, int rootIdx, int suffixIdx,
+            List<IMorpheme> prefixes, List<IMorpheme> roots, List<IMorpheme> suffixes,
+            List<IMorpheme> tmpResult)
+        {
+            if (prefixIdx >= prefixes.Count && rootIdx >= roots.Count && suffixIdx >= suffixes.Count)
+            {
+                // All morphemes are used so retun the result.
+                yield return tmpResult.ToList();
+            }
+            else
+            {
+                if (rootIdx < roots.Count)
+                {
+                    var morpheme = roots[rootIdx];
+                    tmpResult.Add(morpheme);
+
+                    var results = GetAllMorphemeCombinations(prefixIdx, rootIdx + 1, suffixIdx, prefixes, roots, suffixes, tmpResult);
+                    foreach (var result in results)
+                    {
+                        yield return result;
+                    }
+
+                    tmpResult.RemoveAt(tmpResult.Count - 1);
+                }
+                else
+                {
+                    if (prefixIdx < prefixes.Count)
+                    {
+                        var morpheme = prefixes[prefixIdx];
+                        tmpResult.Add(morpheme);
+
+                        var results = GetAllMorphemeCombinations(prefixIdx + 1, rootIdx, suffixIdx, prefixes, roots, suffixes, tmpResult);
+                        foreach (var result in results)
+                        {
+                            yield return result;
+                        }
+
+                        tmpResult.RemoveAt(tmpResult.Count - 1);
+                    }
+
+                    if (suffixIdx < suffixes.Count)
+                    {
+                        var morpheme = suffixes[suffixIdx];
+                        tmpResult.Add(morpheme);
+
+                        var results = GetAllMorphemeCombinations(prefixIdx, rootIdx, suffixIdx + 1, prefixes, roots, suffixes, tmpResult);
+                        foreach (var result in results)
+                        {
+                            yield return result;
+                        }
+
+                        tmpResult.RemoveAt(tmpResult.Count - 1);
+                    }
+                }
+            }
+            
+        }
+
+        private bool IsSequenceMeaningful(IEnumerable<IMorpheme> morphemes)
+        {
+            IWord word = null;
+
+            foreach (var morpheme in morphemes)
+            {
+                if (word == null)
+                {
+                    word = new Word(this, morpheme);
+                }
+                else
+                {
+                    if (word.CanBind(morpheme))
+                    {
+                        word.Bind(morpheme);
+                    }
+                    else
+                    {
+                        return false;
+                    }
+                }
+            }
+
+            return true;
+        }
+
+        
+
     }
 }

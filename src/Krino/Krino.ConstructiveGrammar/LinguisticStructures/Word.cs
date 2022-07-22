@@ -57,15 +57,40 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         public string GrammarStr => string.Join("", AttributesStr, "(", Value, ")");
 
 
-        public void BindMorpheme(IMorpheme morpheme)
+        public bool CanBind(IMorpheme morpheme)
+        {
+            bool result = false;
+
+            // If prefix or suffix.
+            if (GrammarAttributes.Morpheme.Bound.Prefix.IsIn(morpheme.Attributes) ||
+                GrammarAttributes.Morpheme.Bound.Suffix.IsIn(morpheme.Attributes))
+            {
+                result = morpheme.Binding.CanBind(this);
+            }
+            // If compound roots.
+            else if (!Prefixes.Any() && GrammarAttributes.Morpheme.Free.Lexical.IsIn(morpheme.Attributes))
+            {
+                result = true;
+            }
+
+            return result;
+        }
+
+        public void Bind(IMorpheme morpheme)
         {
             if (GrammarAttributes.Morpheme.Bound.Prefix.IsIn(morpheme.Attributes))
             {
+                // Note: the order of prefixes is from inside to outside.
                 Prefixes.Add(morpheme);
             }
             else if (GrammarAttributes.Morpheme.Bound.Suffix.IsIn(morpheme.Attributes))
             {
                 Suffixes.Add(morpheme);
+            }
+            else
+            {
+                // Compound roots.
+                Roots.Insert(0, morpheme);
             }
         }
 
