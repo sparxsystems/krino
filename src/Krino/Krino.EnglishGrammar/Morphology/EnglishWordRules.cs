@@ -20,6 +20,10 @@ namespace Krino.EnglishGrammar.Morphology
 
         public static RuleBase<IWord> IsVerb() => WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb);
 
+        public static RuleBase<IWord> IsBoundRoot() => WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Bound.Root);
+
+        public static RuleBase<IWord> IsAnything() => RuleMaker.Anything<IWord>();
+
         public static RuleBase<IWord> IsVerbInBaseForm() =>
             WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base) &
             !WordRules.WordContainsAttribute(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular) &

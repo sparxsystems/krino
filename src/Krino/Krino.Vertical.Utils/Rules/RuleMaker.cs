@@ -139,5 +139,26 @@ namespace Krino.Vertical.Utils.Rules
 
         public static BeginsWithStrRule BeginsWithStr(string beginningOfStr) => new BeginsWithStrRule(beginningOfStr);
         public static EndsWithStrRule EndsWithStr(string endOfString) => new EndsWithStrRule(endOfString);
+
+        public static RuleBase<string> EndsWithOneOfStr(params string[] suffixes)
+        {
+            RuleBase<string> result = null;
+
+            for (int i = 0; i < suffixes.Length; ++i)
+            {
+                var suffix = suffixes[i];
+
+                if (i == 0)
+                {
+                    result = EndsWithStr(suffix);
+                }
+                else
+                {
+                    result |= EndsWithStr(suffix);
+                }
+            }
+
+            return result;
+        }
     }
 }

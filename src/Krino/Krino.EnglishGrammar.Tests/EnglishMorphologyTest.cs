@@ -2,11 +2,7 @@
 using Krino.EnglishDictionary;
 using Krino.EnglishGrammar.Morphology;
 using NUnit.Framework;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Krino.EnglishGrammar.Tests
 {
@@ -18,11 +14,19 @@ namespace Krino.EnglishGrammar.Tests
         {
             var morphology = new EnglishMorphology();
 
-            var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ing" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
             var lex = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "eat" && GrammarAttributes.Morpheme.Free.Lexical.Verb.IsIn(x.Attributes));
+            var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ing" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
 
             var result = morphology.GetDerivationSequence(new[] { lex, suffix }).ToList();
             Assert.AreEqual(1, result.Count);
+
+
+            var prefix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "un" && GrammarAttributes.Morpheme.Bound.Prefix.IsIn(x.Attributes));
+            lex = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "happy" && GrammarAttributes.Morpheme.Free.Lexical.Adjective.IsIn(x.Attributes));
+            suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ness" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
+
+            result = morphology.GetDerivationSequence(new[] { prefix, lex, suffix }).ToList();
+            Assert.AreEqual(2, result.Count);
         }
     }
 }
