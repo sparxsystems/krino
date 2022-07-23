@@ -20,9 +20,6 @@ namespace Krino.EnglishDictionary
             new Morpheme("above", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("across", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("act", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
-            new Morpheme("actor", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("active", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
-            new Morpheme("activity", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("add", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
             new Morpheme("afraid", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("after", GrammarAttributes.Morpheme.Free.Functional.Preposition),
@@ -83,8 +80,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary),
             new Morpheme("bean", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("bear", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            // ??? -ful
-            new Morpheme("beatiful", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("beauty", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("beer", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("bed", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
@@ -102,7 +98,6 @@ namespace Krino.EnglishDictionary
             new Morpheme("big", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("bird", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("birth", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("birthday", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("bit", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("bite", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("black", GrammarAttributes.Morpheme.Free.Lexical.Noun),
@@ -205,7 +200,6 @@ namespace Krino.EnglishDictionary
             new Morpheme("clock", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("cloth", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("cloud", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("cloudy", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("close", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("coffee", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("coat", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -213,13 +207,15 @@ namespace Krino.EnglishDictionary
             new Morpheme("cold", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //???
             new Morpheme("collect", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
-            //???
-            new Morpheme("collect", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            // e.g. collect call
+            new Morpheme("collect", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+
             new Morpheme("colour", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("color", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("comb", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("come", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
-            new Morpheme("comfortable", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("comfort", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("common", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //???
             new Morpheme("compare", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
@@ -265,7 +261,6 @@ namespace Krino.EnglishDictionary
             //???
             new Morpheme("dance", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("danger", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("dangerous", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("dark", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //??? plural ma tiez dark
             new Morpheme("dark", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
