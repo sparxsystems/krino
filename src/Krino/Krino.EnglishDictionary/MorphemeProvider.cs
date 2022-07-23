@@ -1635,6 +1635,24 @@ namespace Krino.EnglishDictionary
                 }
             },
 
+            new Morpheme("al", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithOneOfStr("e", "a"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("al"), Trans.DropFromEnd(0, 2))
+                                )
+                            ,
+                            Trans.Append("al")
+                        ),
+                }
+            },
+
             new Morpheme("en", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
             {
                 Binding = new AffixBinding()
@@ -1647,6 +1665,39 @@ namespace Krino.EnglishDictionary
                             Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
                             ,
                             Trans.Append("en")
+                        ),
+                }
+            },
+
+            new Morpheme("ful", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            ,
+                            Trans.Append("ful")
+                        ),
+                }
+            },
+
+            // Note: variation of the suffix al. But there is no clear rule when to use which.
+            new Morpheme("ial", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithOneOfStr("e", "a"), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("ial")
                         ),
                 }
             },
@@ -1690,6 +1741,23 @@ namespace Krino.EnglishDictionary
                     AttributesToDrop = GrammarAttributes.Morpheme.Free,
                     CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective(),
                     TransformValue = Trans.Append("ive"),
+                }
+            },
+
+            // Note: variation of the suffix al. But there is no clear rule when to use which.
+            new Morpheme("ual", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithOneOfStr("e", "a"), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("ual")
+                        ),
                 }
             },
 
