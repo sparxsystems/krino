@@ -1280,6 +1280,22 @@ namespace Krino.EnglishDictionary
                 }
             },
 
+            new Morpheme("ful", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithOneOfStr("ty", "cy", "dy", "ly"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            ,
+                            Trans.Append("ful")
+                        ),
+                }
+            },
+
             new Morpheme("hood", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
             {
                 Binding = new AffixBinding()
@@ -1678,7 +1694,7 @@ namespace Krino.EnglishDictionary
                     CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(),
                     TransformValue = Trans
                         .Block(
-                            Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            Trans.If(RuleMaker.EndsWithOneOfStr("ty", "cy", "dy", "ly"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
                             ,
                             Trans.Append("ful")
                         ),
@@ -1733,6 +1749,38 @@ namespace Krino.EnglishDictionary
                 }
             },
 
+            new Morpheme("ic", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            ,
+                            Trans.Append("ic")
+                        ),
+                }
+            },
+
+            new Morpheme("ical", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithOneOfStr("y", "e"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                            ,
+                            Trans.Append("ical")
+                        ),
+                }
+            },
+
             new Morpheme("ive", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
             {
                 Binding = new AffixBinding()
@@ -1741,6 +1789,50 @@ namespace Krino.EnglishDictionary
                     AttributesToDrop = GrammarAttributes.Morpheme.Free,
                     CanBindRule = EnglishWordRules.IsVerb() | EnglishWordRules.IsAdjective(),
                     TransformValue = Trans.Append("ive"),
+                }
+            },
+
+            new Morpheme("ish", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans.Append("ish"),
+                }
+            },
+
+            new Morpheme("less", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans.Append("less"),
+                }
+            },
+
+            new Morpheme("ly", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans.Append("ly"),
+                }
+            },
+
+            new Morpheme("ous", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans.Append("ous"),
                 }
             },
 
@@ -1757,6 +1849,22 @@ namespace Krino.EnglishDictionary
                             Trans.If(RuleMaker.EndsWithOneOfStr("e", "a"), Trans.DropFromEnd(0, 1))
                             ,
                             Trans.Append("ual")
+                        ),
+                }
+            },
+
+            new Morpheme("y", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Adjective,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun() | EnglishWordRules.IsVerb(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                            ,
+                            Trans.Append("y")
                         ),
                 }
             },
