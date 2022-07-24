@@ -9,6 +9,8 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
     [DebuggerDisplay("{DebuggerDisplay}")]
     public class Morpheme : LinguisticStructureBase, IMorpheme
     {
+        private List<IMorpheme> mySuppletions = new List<IMorpheme>();
+
         public Morpheme(string value, BigInteger attributes)
             : base(attributes)
         {
@@ -33,7 +35,18 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
 
         public IMorphemeBinding Binding { get; init; }
 
-        public List<Suppletion> Suppletions { get; init; }
+
+        public IMorpheme BaseForm { get; set; }
+
+        public IMorpheme AddSuppletion(IMorpheme suppletion)
+        {
+            suppletion.BaseForm = this;
+            mySuppletions.Add(suppletion);
+            return this;
+        }
+
+
+        public IReadOnlyList<IMorpheme> Suppletions => mySuppletions;
 
 
         public bool Equals(IMorpheme other) =>

@@ -12,6 +12,10 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         /// </summary>
         IMorphemeBinding Binding { get; }
 
-        List<Suppletion> Suppletions { get; }
+        IMorpheme BaseForm { get; internal set; }
+
+        IMorpheme AddSuppletion(IMorpheme suppletion);
+
+        IReadOnlyList<IMorpheme> Suppletions { get; }
     }
 }
