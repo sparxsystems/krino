@@ -86,7 +86,7 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
         }
 
         [Test]
-        public void FindMorphemeSequences_SuffixChangesFreeMorpheme()
+        public void FindMorphemeSequences_DropE()
         {
             var morphology = new EnglishMorphology();
 
