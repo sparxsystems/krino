@@ -910,8 +910,8 @@ namespace Krino.EnglishDictionary
             new Morpheme("lie", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //??? 
             new Morpheme("lie", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
-            //??? life je plural lives
-            new Morpheme("life", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("life", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular)
+                .AddSuppletion(new Morpheme("lives", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural)),
             new Morpheme("light", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("light", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("light", GrammarAttributes.Morpheme.Free.Lexical.Adjective),

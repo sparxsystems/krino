@@ -27,6 +27,14 @@ namespace Krino.ConstructiveGrammar.Morphology
                 if (GrammarAttributes.Morpheme.Free.IsIn(morpheme.Attributes))
                 {
                     myFreeMorphemes.Add(morpheme.Value, morpheme);
+
+                    if (morpheme.Suppletions != null)
+                    {
+                        foreach (var suppletion in morpheme.Suppletions)
+                        {
+                            myFreeMorphemes.Add(suppletion.Value, suppletion);
+                        }
+                    }
                 }
                 else
                 {
