@@ -33,6 +33,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("ahead", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("air", GrammarAttributes.Morpheme.Free.Lexical.Noun),
             new Morpheme("all", GrammarAttributes.Morpheme.Free.Functional.Determiner),
+            new Morpheme("allow", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
             new Morpheme("almost", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("alone", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("alone", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
@@ -1385,6 +1386,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("reach", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("reach", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("react", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("read", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
@@ -1419,6 +1421,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("report", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("report", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("response", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("rest", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("rest", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
@@ -1986,6 +1989,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("walk", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("walk", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("wall", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("want", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("want", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
