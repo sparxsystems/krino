@@ -75,7 +75,12 @@ namespace Krino.EnglishDictionary
             new Morpheme("baby", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("base", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("back", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("bad", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("bad", GrammarAttributes.Morpheme.Free.Lexical.Adjective)
+                .AddSuppletion(new Morpheme("worse", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Comparative))
+                .AddSuppletion(new Morpheme("worst", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Superlative)),
+            new Morpheme("badly", GrammarAttributes.Morpheme.Free.Lexical.Adverb)
+                .AddSuppletion(new Morpheme("worse", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Comparative))
+                .AddSuppletion(new Morpheme("worst", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Superlative)),
             new Morpheme("bag", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("ball", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("bank", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -102,8 +107,6 @@ namespace Krino.EnglishDictionary
             new Morpheme("bell", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("below", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("besides", GrammarAttributes.Morpheme.Free.Functional.Preposition),
-            new Morpheme("best", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
-            new Morpheme("better", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("between", GrammarAttributes.Morpheme.Free.Functional.Preposition),
             new Morpheme("big", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("bird", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -161,6 +164,8 @@ namespace Krino.EnglishDictionary
             new Morpheme("buy", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("buy", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
             new Morpheme("by", GrammarAttributes.Morpheme.Free.Functional.Preposition),
+            
+            
             new Morpheme("cake", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("cake", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent),
             new Morpheme("call", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -421,7 +426,11 @@ namespace Krino.EnglishDictionary
             new Morpheme("false", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("family", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("famous", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
-            new Morpheme("far", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("far", GrammarAttributes.Morpheme.Free.Lexical.Adjective)
+                .AddSuppletion(new Morpheme("further", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Comparative))
+                .AddSuppletion(new Morpheme("farther", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Comparative))
+                .AddSuppletion(new Morpheme("furthest", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Superlative))
+                .AddSuppletion(new Morpheme("farthest", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Superlative)),
             new Morpheme("far", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("farm", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
@@ -542,6 +551,8 @@ namespace Krino.EnglishDictionary
             //???
             new Morpheme("form", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("fox", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("frame", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("frame", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("free", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
             new Morpheme("free", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //???
@@ -569,7 +580,6 @@ namespace Krino.EnglishDictionary
             new Morpheme("fun", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("furniture", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("further", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("further", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //???
             new Morpheme("further", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("future", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -606,7 +616,9 @@ namespace Krino.EnglishDictionary
             new Morpheme("gold", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("gold", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("good", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("good", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("good", GrammarAttributes.Morpheme.Free.Lexical.Adjective)
+                .AddSuppletion(new Morpheme("better", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Comparative))
+                .AddSuppletion(new Morpheme("best", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Superlative)),
             new Morpheme("grass", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("grass", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("grave", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -743,6 +755,8 @@ namespace Krino.EnglishDictionary
             //??? je to aj noun
             new Morpheme("if", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("if", GrammarAttributes.Morpheme.Free.Functional.Conjunction.Subordinating),
+            new Morpheme("image", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("imagine", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("important", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //??? je to aj noun
             new Morpheme("in", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -762,7 +776,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("iron", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("iron", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //???
-            new Morpheme("iron", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("iron", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             //???
             new Morpheme("invite", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("island", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
@@ -880,8 +894,12 @@ namespace Krino.EnglishDictionary
             new Morpheme("listen", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("listen", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
-            new Morpheme("little", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("little", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
+            new Morpheme("little", GrammarAttributes.Morpheme.Free.Lexical.Adjective)
+                .AddSuppletion(new Morpheme("less", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Comparative))
+                .AddSuppletion(new Morpheme("least", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Superlative)),
+            new Morpheme("little", GrammarAttributes.Morpheme.Free.Lexical.Adverb)
+                .AddSuppletion(new Morpheme("less", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Comparative))
+                .AddSuppletion(new Morpheme("least", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Superlative)),
             //??? aky determiner a je to aj pronoun ale aky
             new Morpheme("little", GrammarAttributes.Morpheme.Free.Functional.Determiner),
             //??? live  ma dva vyznamy
@@ -889,7 +907,7 @@ namespace Krino.EnglishDictionary
             new Morpheme("live", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("lock", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
-            new Morpheme("lock", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
+            new Morpheme("lock", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("lonely", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("long", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("long", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Sememe.OfTime),
@@ -922,7 +940,9 @@ namespace Krino.EnglishDictionary
             new Morpheme("maine", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.First | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular),
             new Morpheme("make", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
-            new Morpheme("make", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
+            new Morpheme("make", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent)
+                .AddSuppletion(new Morpheme("made", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Past | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent))
+                .AddSuppletion(new Morpheme("made", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PastParticiple | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Trivalent)),
             new Morpheme("male", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("male", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("man", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular)
@@ -1023,7 +1043,12 @@ namespace Krino.EnglishDictionary
             new Morpheme("move", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             //??? aky determiner a je to aj pronoun ale aky
             new Morpheme("much", GrammarAttributes.Morpheme.Free.Functional.Determiner),
-            new Morpheme("much", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("much", GrammarAttributes.Morpheme.Free.Lexical.Adverb)
+                .AddSuppletion(new Morpheme("more", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Comparative))
+                .AddSuppletion(new Morpheme("most", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Superlative)),
+            new Morpheme("much", GrammarAttributes.Morpheme.Free.Lexical.Adjective)
+                .AddSuppletion(new Morpheme("more", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Comparative))
+                .AddSuppletion(new Morpheme("most", GrammarAttributes.Morpheme.Free.Lexical.Adjective.Superlative)),
             new Morpheme("music", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("must", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
@@ -2001,7 +2026,9 @@ namespace Krino.EnglishDictionary
             new Morpheme("welcome", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //??? well je aj exclamation
             new Morpheme("well", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-            new Morpheme("well", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
+            new Morpheme("well", GrammarAttributes.Morpheme.Free.Lexical.Adverb)
+                .AddSuppletion(new Morpheme("better", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Comparative))
+                .AddSuppletion(new Morpheme("best", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Superlative)),
             new Morpheme("well", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             new Morpheme("west", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             new Morpheme("west", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
@@ -2077,7 +2104,6 @@ namespace Krino.EnglishDictionary
             //???
             new Morpheme("worst", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent),
             new Morpheme("worst", GrammarAttributes.Morpheme.Free.Lexical.Adverb),
-            new Morpheme("worst", GrammarAttributes.Morpheme.Free.Lexical.Adjective),
             //???
             new Morpheme("write", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
             new Morpheme("wrong", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
