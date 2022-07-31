@@ -176,6 +176,8 @@ namespace Krino.ConstructiveGrammar.Morphology
         {
             using var _t = Trace.Entering();
 
+            // TODO: how to recognize root morphemes after they were modified (e.g. letter 'e' was removed) after applying a suffix.
+
             // Find if the word is a lexeme.
             var freeMorphemes = FindFreeMorphemes(word, maxTypoDistance);
             foreach (var freeMorpheme in freeMorphemes)
