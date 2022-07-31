@@ -33,7 +33,7 @@ namespace Krino.EnglishGrammar.Morphology
             return (prefixes, root, suffixes);
         }
 
-        public IEnumerable<IEnumerable<IMorpheme>> GetDerivationSequence(IEnumerable<IMorpheme> morphemes)
+        public IEnumerable<IEnumerable<IMorpheme>> GetDerivationSequences(IEnumerable<IMorpheme> morphemes)
         {
             IEnumerable<List<IMorpheme>> result;
 
@@ -68,7 +68,7 @@ namespace Krino.EnglishGrammar.Morphology
         {
             BigInteger result = 0;
 
-            var derivationSequence = GetDerivationSequence(morphemes).FirstOrDefault();
+            var derivationSequence = GetDerivationSequences(morphemes).FirstOrDefault();
             if (derivationSequence != null && derivationSequence.Any())
             {
                 result = derivationSequence.First().Attributes;
@@ -95,7 +95,7 @@ namespace Krino.EnglishGrammar.Morphology
         {
             string result = "";
 
-            var derivationSequence = GetDerivationSequence(morphemes).FirstOrDefault();
+            var derivationSequence = GetDerivationSequences(morphemes).FirstOrDefault();
             if (derivationSequence != null)
             {
                 foreach (var morpheme in derivationSequence)

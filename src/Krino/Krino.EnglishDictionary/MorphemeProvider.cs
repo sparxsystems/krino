@@ -2101,15 +2101,21 @@ namespace Krino.EnglishDictionary
             new Morpheme("yours", GrammarAttributes.Morpheme.Free.Functional.Pronoun.Possessive | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Person.Second | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Singular | GrammarAttributes.Morpheme.Free.Functional.Pronoun.Sememe.Number.Plural),
 
             //??? zero
-             new Morpheme("zoo", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
-             new Morpheme("zoom", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("zoo", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
+            new Morpheme("zoom", GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Singular),
             //???
             new Morpheme("zoom", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Monovalent | GrammarAttributes.Morpheme.Free.Lexical.Verb.Valency.Bivalent),
 
             
             // Non-lexemes.
             new Morpheme(".", GrammarAttributes.PunctuationMark.Period),
+            new Morpheme("!", GrammarAttributes.PunctuationMark.ExclamationPoint),
+            new Morpheme("?", GrammarAttributes.PunctuationMark.QuestionMark),
             new Morpheme(",", GrammarAttributes.PunctuationMark.Comma),
+            new Morpheme(";", GrammarAttributes.PunctuationMark.Semicolon),
+            new Morpheme(":", GrammarAttributes.PunctuationMark.Colon),
+            new Morpheme("-", GrammarAttributes.PunctuationMark.Dash),
+            new Morpheme("-", GrammarAttributes.PunctuationMark.Hyphen),
 
 
 

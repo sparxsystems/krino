@@ -9,6 +9,17 @@ namespace Krino.Vertical.Utils_Tests.Collections
     public class EnumerableExtTest
     {
         [Test]
+        public void Split()
+        {
+            var items = new int[] { 1, 2, 0, 3, 4, 0, 5, 6};
+            var result = items.Split(x => x == 0).ToList();
+            Assert.AreEqual(3, result.Count);
+            CollectionAssert.AreEqual(new int[] { 1, 2, 0 }, result[0]);
+            CollectionAssert.AreEqual(new int[] { 3, 4, 0 }, result[1]);
+            CollectionAssert.AreEqual(new int[] { 5, 6 }, result[2]);
+        }
+
+        [Test]
         public void FindSimilar()
         {
             List<string> source = new List<string>()

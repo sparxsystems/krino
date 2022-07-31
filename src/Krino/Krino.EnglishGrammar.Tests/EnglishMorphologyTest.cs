@@ -17,7 +17,7 @@ namespace Krino.EnglishGrammar.Tests
             var lex = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "eat" && GrammarAttributes.Morpheme.Free.Lexical.Verb.IsIn(x.Attributes));
             var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ing" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
 
-            var result = morphology.GetDerivationSequence(new[] { lex, suffix }).ToList();
+            var result = morphology.GetDerivationSequences(new[] { lex, suffix }).ToList();
             Assert.AreEqual(1, result.Count);
 
 
@@ -25,7 +25,7 @@ namespace Krino.EnglishGrammar.Tests
             lex = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "happy" && GrammarAttributes.Morpheme.Free.Lexical.Adjective.IsIn(x.Attributes));
             suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ness" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
 
-            result = morphology.GetDerivationSequence(new[] { prefix, lex, suffix }).ToList();
+            result = morphology.GetDerivationSequences(new[] { prefix, lex, suffix }).ToList();
             Assert.AreEqual(2, result.Count);
         }
     }

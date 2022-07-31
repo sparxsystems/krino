@@ -11,6 +11,28 @@ namespace Krino.Vertical.Utils.Collections
     /// </summary>
     public static class EnumerableExt
     {
+        public static IEnumerable<IReadOnlyList<T>> Split<T>(this IEnumerable<T> source, Predicate<T> untilPredicate)
+        {
+            List<T> chunk = null;
+            foreach (var item in source)
+            {
+                chunk ??= new List<T>();
+
+                chunk.Add(item);
+
+                if (untilPredicate(item))
+                {
+                    yield return chunk;
+                    chunk = null;
+                }
+            }
+
+            if (chunk != null)
+            {
+                yield return chunk;
+            }
+        }
+
         /// <summary>
         /// Finds all similar strings using Levenshtein algorithm.
         /// </summary>

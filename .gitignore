@@ -3,7 +3,7 @@
 ################################################################################
 
 *.suo
-/src/Krino/.vs/Krino
+/src/Krino/.vs
 /src/Krino/Krino.DomainModel.Logic.AdTree/obj
 /src/Krino/Krino.Vertical.Utils/bin
 /src/Krino/Krino.Vertical.Utils/obj
