@@ -2191,12 +2191,12 @@ namespace Krino.EnglishDictionary
                 }
             },
 
-            // Verb ing form
+            // Verb ing form - inflectional
             new Morpheme("ing", GrammarAttributes.Morpheme.Bound.Suffix.Inflectional)
             {
                 Binding = new AffixBinding()
                 {
-                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing,
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple,
                     AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical.Verb.Form,
                     CanBindRule = EnglishWordRules.IsVerbInBaseForm(),
                     TransformValue = Trans
@@ -2431,7 +2431,26 @@ namespace Krino.EnglishDictionary
                 }
             },
 
-
+            // Verb ing form - derivational gerundium
+            new Morpheme("ing", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun | GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Gerund,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free.Lexical,
+                    CanBindRule = EnglishWordRules.IsVerbInBaseForm(),
+                    TransformValue = Trans
+                        .Block(
+                            // If it ends with short vowel and consonant then double the last consonant. e.g. putting.
+                            Trans.If(EnglishWordRules.EndsWithPhonemes(Phoneme.Consonant, Phoneme.Vowel, Phoneme.Consonant), EnglishWordTrans.DoubleLastLetter())
+                                // If it ends with 'e' then drop the 'e' e.g. joking.
+                                .Else(Trans.If(RuleMaker.EndsWithStr("e"), Trans.DropFromEnd(0, 1))
+                                )
+                            ,
+                            Trans.Append("ing")
+                        ),
+                }
+            },
 
             new Morpheme("ption", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
             {

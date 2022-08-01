@@ -34,11 +34,11 @@ namespace Krino.ConstructiveGrammar.Morphology
             var enumsToRemove = GrammarAttributes.Instance.FindEnums(AttributesToDrop);
             foreach (var enumToRemove in enumsToRemove)
             {
-                if (enumsToRemove is EnumValue enumValueToRemove)
+                if (enumToRemove is EnumValue enumValueToRemove)
                 {
                     result = enumValueToRemove.Clear(result);
                 }
-                else if (enumsToRemove is EnumGroupBase enumGroupToRemove)
+                else if (enumToRemove is EnumGroupBase enumGroupToRemove)
                 {
                     result = enumGroupToRemove.Clear(result);
                 }

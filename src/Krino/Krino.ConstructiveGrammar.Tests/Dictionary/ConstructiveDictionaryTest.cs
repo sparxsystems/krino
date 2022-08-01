@@ -46,6 +46,11 @@ namespace Krino.ConstructiveGrammar.Tests.Dictionary
             grammarStr = text[0].GrammarStr;
             Assert.AreEqual(1, text.Count);
             Assert.AreEqual("i reread antibooks.", text[0].Value);
+
+            text = myDictionary.Parse("Cycling is healthy.");
+            grammarStr = text[0].GrammarStr;
+            Assert.AreEqual(1, text.Count);
+            Assert.AreEqual("cycling is healthy.", text[0].Value);
         }
 
         [Test]

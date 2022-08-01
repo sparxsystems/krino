@@ -437,13 +437,13 @@ namespace Krino.EnglishGrammar.Syntax
 
             var verbElement = builder.AddSubState(attributes)
                 .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary,
-                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+                           GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
             verbElement.AddTriggeredTransition("init", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, WordRules.WordIsOneOf("was", "were"));
 
-            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary, GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple, "final");
         }
 
         private void AddPastPerfect(SyntaxMachineBuilder builder, BigInteger attributes)
@@ -467,16 +467,16 @@ namespace Krino.EnglishGrammar.Syntax
 
             var verbElement = builder.AddSubState(attributes)
                 .AddState("had", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing)
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple)
                 .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary);
 
             verbElement.AddTriggeredTransition("init", "had", WordRules.WordIsOneOf("had"));
 
             verbElement.AddTriggeredTransition("had", "been", WordRules.WordIs("been"));
 
-            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple, "final");
         }
 
         private void AddPresentSimple(SyntaxMachineBuilder builder, BigInteger attributes)
@@ -506,16 +506,16 @@ namespace Krino.EnglishGrammar.Syntax
             var verbElement = builder.AddSubState(attributes)
                 .AddState("am/are/is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddState("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
             verbElement.AddTriggeredTransition("init", "am/are/is", WordRules.WordIsOneOf("am", "are", "is"));
 
             verbElement.AddTriggeredTransition("am/are/is", "not", WordRules.WordIsOneOf("not"));
-            verbElement.AddTriggeredTransition("am/are/is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition("am/are/is", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
-            verbElement.AddTriggeredTransition("not", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition("not", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple, "final");
         }
 
         private void AddPresentPerfect(SyntaxMachineBuilder builder, BigInteger attributes)
@@ -545,7 +545,7 @@ namespace Krino.EnglishGrammar.Syntax
                 .AddState("have/has", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddState("not", GrammarAttributes.Morpheme.Free.Lexical.Adverb.Negation)
                 .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
             verbElement.AddTriggeredTransition("init", "have/has", WordRules.WordIsOneOf("have", "has"));
 
@@ -554,9 +554,9 @@ namespace Krino.EnglishGrammar.Syntax
 
             verbElement.AddTriggeredTransition("not", "been", WordRules.WordIs("been"));
 
-            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple, "final");
         }
 
 
@@ -586,15 +586,15 @@ namespace Krino.EnglishGrammar.Syntax
             var verbElement = builder.AddSubState(attributes)
                 .AddState("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal)
                 .AddState("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
             verbElement.AddTriggeredTransition("init", "will", WordRules.WordIsOneOf("will"));
 
             verbElement.AddTriggeredTransition("will", "be", WordRules.WordIsOneOf("be"));
 
-            verbElement.AddTriggeredTransition("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition("be", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple, "final");
         }
 
         private void AddFuturePerfect(SyntaxMachineBuilder builder, BigInteger attributes)
@@ -623,7 +623,7 @@ namespace Krino.EnglishGrammar.Syntax
                 .AddState("will", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Modal)
                 .AddState("have", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
                 .AddState("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Auxiliary.Primary)
-                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+                .AddStates(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
             verbElement.AddTriggeredTransition("init", "will", WordRules.WordIsOneOf("will"));
 
@@ -631,9 +631,9 @@ namespace Krino.EnglishGrammar.Syntax
 
             verbElement.AddTriggeredTransition("have", "been", WordRules.WordIsOneOf("been"));
 
-            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing);
+            verbElement.AddTriggeredTransition("been", GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple);
 
-            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing, "final");
+            verbElement.AddEmptyTransition(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.PresentParticiple, "final");
         }
 
 

@@ -30,7 +30,7 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
 
             var words = parser.ParseWord("cycling").ToList();
             Assert.AreEqual(1, words.Count);
-            Assert.IsTrue(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing.IsIn(words[0].Attributes));
+            Assert.IsTrue(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Gerund.IsIn(words[0].Attributes));
             Assert.AreEqual(1, words[0].Roots.Count);
             Assert.AreEqual("cycle", words[0].Roots[0].Value);
             Assert.AreEqual(1, words[0].Suffixes.Count);
@@ -38,7 +38,7 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
 
             words = parser.ParseWord("recycling").ToList();
             Assert.AreEqual(1, words.Count);
-            Assert.IsTrue(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing.IsIn(words[0].Attributes));
+            Assert.IsTrue(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Gerund.IsIn(words[0].Attributes));
             Assert.AreEqual(1, words[0].Roots.Count);
             Assert.AreEqual("cycle", words[0].Roots[0].Value);
             Assert.AreEqual(1, words[0].Suffixes.Count);

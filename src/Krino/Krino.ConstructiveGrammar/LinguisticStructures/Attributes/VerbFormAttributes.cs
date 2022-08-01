@@ -9,7 +9,6 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
             Base = new VerbNumberForm(this);
             Past = new VerbNumberForm(this);
             PastParticiple = new EnumValue(this);
-            Ing = new EnumValue(this);
             PresentParticiple = new EnumValue(this);
             Gerund = new EnumValue(this);
         }
@@ -29,12 +28,6 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
         /// (Third form of the verb.)
         /// </summary>
         public EnumValue PastParticiple { get; }
-
-        /// <summary>
-        /// ???
-        /// Ing form of the verb acting as gerund or present participle.
-        /// </summary>
-        public EnumValue Ing { get; }
 
         /// <summary>
         /// The present participle verb form is created by adding -ing to the root word.
