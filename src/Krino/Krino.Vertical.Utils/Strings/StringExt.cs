@@ -10,6 +10,29 @@ namespace Krino.Vertical.Utils.Strings
     /// </summary>
     public static class StringExt
     {
+        public static int StartsWithSameCount(this string src, string other)
+        {
+            int result = 0;
+
+            if (!string.IsNullOrEmpty(src) && !string.IsNullOrEmpty(other))
+            {
+                var minLength = Math.Min(src.Length, other.Length);
+                for (int i = 0; i < minLength; ++i)
+                {
+                    if (src[i] == other[i])
+                    {
+                        ++result;
+                    }
+                    else
+                    {
+                        break;
+                    }
+                }
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// Calculates Levenshtein distance between two strings.
         /// </summary>

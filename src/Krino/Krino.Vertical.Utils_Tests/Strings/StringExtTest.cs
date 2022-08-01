@@ -7,6 +7,24 @@ namespace Krino.Vertical.Utils_Tests.Strings
     public class StringExtTest
     {
         [Test]
+        public void StartsWithSameCount()
+        {
+            Assert.AreEqual(1, "a".StartsWithSameCount("a"));
+            Assert.AreEqual(4, "abcd".StartsWithSameCount("abcd"));
+            Assert.AreEqual(3, "abcd".StartsWithSameCount("abcx"));
+
+            Assert.AreEqual(0, "abcd".StartsWithSameCount("zbcx"));
+            Assert.AreEqual(0, "abcd".StartsWithSameCount(""));
+            Assert.AreEqual(0, "abcd".StartsWithSameCount(null));
+            Assert.AreEqual(0, "".StartsWithSameCount("ab"));
+            Assert.AreEqual(0, "".StartsWithSameCount(""));
+            Assert.AreEqual(0, "".StartsWithSameCount(null));
+            Assert.AreEqual(0, ((string)null).StartsWithSameCount("ab"));
+            Assert.AreEqual(0, ((string)null).StartsWithSameCount(""));
+            Assert.AreEqual(0, ((string)null).StartsWithSameCount(null));
+        }
+
+        [Test]
         public void Distance()
         {
             // 'o' must be replaced by 'y', 'u' must be added, 'i' must be added. = 3 changes. 

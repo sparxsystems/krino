@@ -45,7 +45,7 @@ namespace Krino.ConstructiveGrammar.Dictionary
                         {
                             if (!myMorphemeParser.IsPunctuationMark(sentenceItem))
                             {
-                                var foundWords = myMorphemeParser.ParseWord(sentenceItem, 2, 0);
+                                var foundWords = myMorphemeParser.ParseWord(sentenceItem);
                                 if (foundWords.Any())
                                 {
                                     wordAlternatives.Add(foundWords.ToList());

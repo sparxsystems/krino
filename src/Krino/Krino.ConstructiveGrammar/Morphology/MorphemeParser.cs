@@ -2,6 +2,7 @@
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.Vertical.Utils.Collections;
 using Krino.Vertical.Utils.Diagnostic;
+using Krino.Vertical.Utils.Strings;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -98,19 +99,11 @@ namespace Krino.ConstructiveGrammar.Morphology
             return result;
         }
 
-
-        /// <summary>
-        /// Parses a word.
-        /// </summary>
-        /// <param name="word"></param>
-        /// <param name="maxMorphDistance">string distance for affixes in the word.</param>
-        /// <param name="maxTypoDistance">string distance for a typo of a free morpheme in the word.</param>
-        /// <returns></returns>
-        public IEnumerable<IWord> ParseWord(string word, int maxMorphDistance, int maxTypoDistance)
+        public IEnumerable<IWord> ParseWord(string word)
         {
             using var _t = Trace.Entering();
 
-            var wordConstructs = FindPossibleWordConstructions(word, maxMorphDistance, maxTypoDistance, new List<IMorpheme>())
+            var wordConstructs = FindPossibleWordConstructions(word, new List<IMorpheme>())
                 // Note: as an input parameter there is the list which is filled during the iteration.
                 //       Therefore it must be iterated in once - so it must be converted to the list.
                 .ToList();
@@ -132,36 +125,6 @@ namespace Krino.ConstructiveGrammar.Morphology
         }
 
 
-        private IEnumerable<IMorpheme> FindFreeMorphemes(string value, int maxDistance)
-        {
-            using var _t = Trace.Entering();
-
-            var result = Enumerable.Empty<IMorpheme>();
-
-            // Try to find exact morphemes.
-            if (myFreeMorphemes.TryGetValues(value, out var freeMorpheme))
-            {
-                result = freeMorpheme;
-            }
-
-            if (maxDistance > 0)
-            {
-                // Also try to find morphemes which have similar value.
-                var similarMorphs = myFreeMorphemes.Keys.FindSimilar(value, maxDistance);
-
-                if (freeMorpheme != null)
-                {
-                    // Note: skip morphemes already returned among exact lexemes.
-                    result = result.Concat(similarMorphs.SelectMany(x => myFreeMorphemes[x].Where(y => !freeMorpheme.Contains(y))));
-                }
-                else
-                {
-                    result = result.Concat(similarMorphs.SelectMany(x => myFreeMorphemes[x]));
-                }
-            }
-
-            return result;
-        }
 
         private IEnumerable<IMorpheme> FindBoundMorphemes(string value)
         {
@@ -172,14 +135,15 @@ namespace Krino.ConstructiveGrammar.Morphology
         }
 
 
-        private IEnumerable<IWord> FindPossibleWordConstructions(string word, int maxMorphDistance, int maxTypoDistance, List<IMorpheme> localSequence)
+        private IEnumerable<IWord> FindPossibleWordConstructions(string word, List<IMorpheme> localSequence)
         {
             using var _t = Trace.Entering();
 
-            // TODO: how to recognize root morphemes after they were modified (e.g. letter 'e' was removed) after applying a suffix.
-
             // Find if the word is a lexeme.
-            var freeMorphemes = FindFreeMorphemes(word, maxTypoDistance);
+            var freeMorphemes = localSequence != null && localSequence.Any() ? 
+                FindFreeMorphemes(word, localSequence.Last()) :
+                FindFreeMorphemes(word);
+
             foreach (var freeMorpheme in freeMorphemes)
             {
                 localSequence.Add(freeMorpheme);
@@ -189,7 +153,7 @@ namespace Krino.ConstructiveGrammar.Morphology
             }
 
             // Find if the word is a lexeme with suffixes.
-            var wordWithSuffixes = FindLexemeAndItsSuffixes(word, maxMorphDistance, maxTypoDistance, new List<IMorpheme>());
+            var wordWithSuffixes = FindLexemeAndItsSuffixes(word, new List<IMorpheme>());
             foreach (var sequence in wordWithSuffixes)
             {
                 var wordConstruct = new Word(myMorphology, localSequence.Concat(sequence.Reverse()).ToList());
@@ -211,7 +175,7 @@ namespace Krino.ConstructiveGrammar.Morphology
                         localSequence.Add(prefix);
 
                         // Try if there are sub-prefixes.
-                        var words = FindPossibleWordConstructions(newWord, maxMorphDistance, maxTypoDistance, localSequence);
+                        var words = FindPossibleWordConstructions(newWord, localSequence);
                         foreach (var wordConstruct in words)
                         {
                             yield return wordConstruct;
@@ -223,17 +187,14 @@ namespace Krino.ConstructiveGrammar.Morphology
             }
         }
 
-        private IEnumerable<IReadOnlyList<IMorpheme>> FindLexemeAndItsSuffixes(string word, int maxMorphDistance, int maxTypoDistance, List<IMorpheme> localSequence)
+        private IEnumerable<IReadOnlyList<IMorpheme>> FindLexemeAndItsSuffixes(string word, List<IMorpheme> localSequence)
         {
             using var _t = Trace.Entering();
 
             // If there are some suffixes.
             if (localSequence.Count > 0)
             {
-                // If the word is a lexeme.
-                // Note: morphDistance allows to find root words which are modified by suffix morphology rules.
-                //       E.g. the word joking has the root word 'joke' and the suffix 'ing'.
-                var freeMorphemes = FindFreeMorphemes(word, maxTypoDistance);
+                var freeMorphemes = FindFreeMorphemes(word, localSequence.Last());
                 foreach (var freeMorpheme in freeMorphemes)
                 {
                     localSequence.Add(freeMorpheme);
@@ -252,11 +213,11 @@ namespace Krino.ConstructiveGrammar.Morphology
                 {
                     var newWord = word.Substring(0, i);
 
-                    foreach (Morpheme suffix in suffixes)
+                    foreach (var suffix in suffixes)
                     {
                         localSequence.Add(suffix);
 
-                        var sequences = FindLexemeAndItsSuffixes(newWord, maxMorphDistance, maxTypoDistance, localSequence);
+                        var sequences = FindLexemeAndItsSuffixes(newWord, localSequence);
                         foreach (var sequence in sequences)
                         {
                             yield return sequence;
@@ -268,5 +229,47 @@ namespace Krino.ConstructiveGrammar.Morphology
             }
         }
 
+
+        /// <summary>
+        /// Finds a free morpheme for the value which was transformed by the affix.
+        /// </summary>
+        /// <param name="value"></param>
+        /// <param name="affix"></param>
+        /// <returns></returns>
+        private IEnumerable<IMorpheme> FindFreeMorphemes(string value, IMorpheme affix)
+        {
+            Func<string, string> concat = val => GrammarAttributes.Morpheme.Bound.Suffix.IsIn(affix.Attributes) ?
+                string.Concat(val, affix.Value) :
+                string.Concat(affix.Value, val);
+
+            var freeMorphemeWithAffix = concat(value);
+
+            var relevantFreeMorphemes = myFreeMorphemes
+                .Where(x => x.Key.StartsWithSameCount(value) > 1 && (affix.Binding == null || affix.Binding.CanBind(new Word(myMorphology, x.Value))));
+
+            var result = relevantFreeMorphemes
+                .Where(x => affix.Binding != null ?
+                    affix.Binding.TransformValue(x.Key) == freeMorphemeWithAffix :
+                    concat(x.Key) == freeMorphemeWithAffix)
+                .Select(x => x.Value);
+
+            return result;
+        }
+
+
+        private IEnumerable<IMorpheme> FindFreeMorphemes(string value)
+        {
+            using var _t = Trace.Entering();
+
+            var result = Enumerable.Empty<IMorpheme>();
+
+            // Try to find exact morphemes.
+            if (myFreeMorphemes.TryGetValues(value, out var freeMorpheme))
+            {
+                result = freeMorpheme;
+            }
+
+            return result;
+        }
     }
 }

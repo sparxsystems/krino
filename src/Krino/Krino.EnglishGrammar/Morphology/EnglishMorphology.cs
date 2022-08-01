@@ -53,7 +53,7 @@ namespace Krino.EnglishGrammar.Morphology
                     var tmpResult = new List<IMorpheme>();
 
                     var allCombinations = GetAllMorphemeCombinations(0, 0, 0, prefixes, roots, suffixes, tmpResult);
-                    result = allCombinations.Where(x => IsSequenceMeaningful(x));
+                    result = allCombinations.Where(x => IsMeaningful(x));
                 }
                 else
                 {
@@ -176,7 +176,7 @@ namespace Krino.EnglishGrammar.Morphology
             
         }
 
-        private bool IsSequenceMeaningful(IEnumerable<IMorpheme> morphemes)
+        private bool IsMeaningful(IEnumerable<IMorpheme> morphemes)
         {
             IWord word = null;
 

@@ -23,37 +23,31 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
         }
 
         [Test]
-        public void ParseWord()
+        public void ParseWord_Affixes()
         {
             var morphology = new EnglishMorphology();
             var parser = new MorphemeParser(morphology, MorphemeProvider.Morphemes);
 
-            var words = parser.ParseWord("cycling", 2, 0);
-        }
+            var words = parser.ParseWord("cycling").ToList();
+            Assert.AreEqual(1, words.Count);
+            Assert.IsTrue(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing.IsIn(words[0].Attributes));
+            Assert.AreEqual(1, words[0].Roots.Count);
+            Assert.AreEqual("cycle", words[0].Roots[0].Value);
+            Assert.AreEqual(1, words[0].Suffixes.Count);
+            Assert.AreEqual("ing", words[0].Suffixes[0].Value);
 
-        [Test]
-        public void FindFreeMorphemes_Similar()
-        {
-            var morphology = new EnglishMorphology();
+            words = parser.ParseWord("recycling").ToList();
+            Assert.AreEqual(1, words.Count);
+            Assert.IsTrue(GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Ing.IsIn(words[0].Attributes));
+            Assert.AreEqual(1, words[0].Roots.Count);
+            Assert.AreEqual("cycle", words[0].Roots[0].Value);
+            Assert.AreEqual(1, words[0].Suffixes.Count);
+            Assert.AreEqual("ing", words[0].Suffixes[0].Value);
+            Assert.AreEqual(1, words[0].Prefixes.Count);
+            Assert.AreEqual("re", words[0].Prefixes[0].Value);
 
-            var morphemes = new List<Morpheme>()
-            {
-                new Morpheme("write", GrammarAttributes.Morpheme.Free.Lexical.Verb),
-                new Morpheme("book", GrammarAttributes.Morpheme.Free.Lexical.Noun),
-            };
-
-            var dictionary = new MorphemeParser(morphology, morphemes);
-
-            var result = dictionary.ParseWord("writ", 1, 1).ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("write", result[0].Value);
-
-            // Try not similar but exactly matching morph.
-            // Note: it cannot return two same morphemes (one exactly matching and then
-            //       again the same morpheme as the similar one) but only one morpheme.
-            result = dictionary.ParseWord("write", 1, 1).ToList();
-            Assert.AreEqual(1, result.Count);
-            Assert.AreEqual("write", result[0].Value);
+            words = parser.ParseWord("xxxing").ToList();
+            Assert.AreEqual(0, words.Count);
         }
 
         [Test]
@@ -75,21 +69,21 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
             var dictionary = new MorphemeParser(morphology, morphemes);
 
             // prefix 're'
-            var result = dictionary.ParseWord("rewrite", 0, 0).ToList();
+            var result = dictionary.ParseWord("rewrite").ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(1, result[0].Prefixes.Count);
             Assert.AreEqual("re", result[0].Prefixes[0].Value);
             Assert.AreEqual("write", result[0].Roots[0].Value);
 
             // suffix 'er'
-            result = dictionary.ParseWord("reader", 0, 0).ToList();
+            result = dictionary.ParseWord("reader").ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(1, result[0].Suffixes.Count);
             Assert.AreEqual("read", result[0].Roots[0].Value);
             Assert.AreEqual("er", result[0].Suffixes[0].Value);
 
             // multiple prefixes and sufixes
-            result = dictionary.ParseWord("extrarereaderless", 0, 0).ToList();
+            result = dictionary.ParseWord("extrarereaderless").ToList();
             Assert.AreEqual(1, result.Count);
             Assert.AreEqual(2, result[0].Prefixes.Count);
             Assert.AreEqual(2, result[0].Suffixes.Count);
@@ -101,7 +95,7 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
 
 
             // 're' is the prefix but 'bla' is not a known lexeme.
-            result = dictionary.ParseWord("rebla", 0, 0).ToList();
+            result = dictionary.ParseWord("rebla").ToList();
             Assert.AreEqual(0, result.Count);
         }
 
@@ -118,7 +112,7 @@ namespace Krino.ConstructiveGrammar.Tests.Morphology
 
             var dictionary = new MorphemeParser(morphology, morphemes);
 
-            var morphemeSequences = dictionary.ParseWord("writer", 1, 1).ToList();
+            var morphemeSequences = dictionary.ParseWord("writer").ToList();
             Assert.AreEqual(2, morphemeSequences.Count);
 
             // 'writer' is very similar to write so it will just return 'write'.
