@@ -2,7 +2,6 @@
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.ConstructiveGrammar.LinguisticStructures.Rules;
 using Krino.ConstructiveGrammar.Syntax;
-using Krino.ConstructiveGrammar.Syntax.Rules;
 using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.StateMachines;
@@ -18,11 +17,6 @@ namespace Krino.EnglishGrammar.Syntax
 
         public MultiMachine<LinguisticState, IWord> Machine { get; private set; }
 
-
-        public EnglishMachine()
-            : this(false)
-        {
-        }
 
         public EnglishMachine(bool simpleMode)
         {
