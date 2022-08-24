@@ -13,15 +13,15 @@ namespace Krino.ConstructiveGrammar.Dictionary
 {
     public class ConstructiveDictionary : IConstructiveDictionary
     {
-        private MorphemeParser myMorphemeParser;
+        private MorphologyParser myMorphemeParser;
         private IMorphology myMorphology;
-        private SyntaxMachine mySyntaxMachine;
+        private SyntaxParser mySyntaParser;
 
         public ConstructiveDictionary(IMorphology morphology, MultiMachine<LinguisticState, IWord> syntax, IEnumerable<IMorpheme> morphemes)
         {
             myMorphology = morphology;
-            mySyntaxMachine = new SyntaxMachine(syntax);
-            myMorphemeParser = new MorphemeParser(myMorphology, morphemes);
+            mySyntaParser = new SyntaxParser(syntax);
+            myMorphemeParser = new MorphologyParser(myMorphology, morphemes);
         }
 
         public IReadOnlyList<IText> Parse(string text)
@@ -75,23 +75,23 @@ namespace Krino.ConstructiveGrammar.Dictionary
                         var wordVariations = wordAlternatives.GetVariations();
                         foreach (var wordVariation in wordVariations)
                         {
-                            mySyntaxMachine.Reset();
+                            mySyntaParser.Reset();
 
-                            _ = mySyntaxMachine.DebugView;
+                            _ = mySyntaParser.DebugView;
 
                             foreach (var word in wordVariation)
                             {
-                                mySyntaxMachine.Add(word);
+                                mySyntaParser.Add(word);
 
-                                if (!mySyntaxMachine.IsActive)
+                                if (!mySyntaParser.IsActive)
                                 {
                                     break;
                                 }
                             }
 
-                            if (mySyntaxMachine.IsActive)
+                            if (mySyntaParser.IsActive)
                             {
-                                var texts = mySyntaxMachine.GetTexts();
+                                var texts = mySyntaParser.GetTexts();
                                 result.AddRange(texts);
                             }
                         }
@@ -102,7 +102,7 @@ namespace Krino.ConstructiveGrammar.Dictionary
             }
             finally
             {
-                mySyntaxMachine.Reset();
+                mySyntaParser.Reset();
             }
         }
 

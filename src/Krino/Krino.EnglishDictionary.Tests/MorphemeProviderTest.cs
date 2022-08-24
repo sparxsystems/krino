@@ -20,15 +20,17 @@ namespace Krino.EnglishDictionary.Tests
             var morphology = new EnglishMorphology();
 
             var word = new Word(morphology, MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "book"));
-            var pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
+            var pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural.IsIn(x.Binding.AttributesToPick));
             Assert.IsTrue(pluralSuffix.Binding.CanBind(word));
 
-            word = new Word(morphology, MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "tax"));
-            pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
+            pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson.IsIn(x.Binding.AttributesToPick));
             Assert.IsFalse(pluralSuffix.Binding.CanBind(word));
 
-            word = new Word(morphology, MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "people"));
-            pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && GrammarAttributes.Morpheme.Bound.Suffix.Inflectional.IsIn(x.Attributes));
+            word = new Word(morphology, MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "person")
+                .Suppletions.FirstOrDefault(x => x.Value == "people"));
+            pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural.IsIn(x.Binding.AttributesToPick));
+
+            // Note: 'people' is not a noun in its base form so binding the plural suffix is not allowed.
             Assert.IsFalse(pluralSuffix.Binding.CanBind(word));
         }
 
@@ -46,25 +48,51 @@ namespace Krino.EnglishDictionary.Tests
         public void BindingTransformation_Suffix_Ation()
         {
             var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "ation" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
-
             Assert.AreEqual("exploration", suffix.Binding.TransformValue("explore"));
             Assert.AreEqual("flirtation", suffix.Binding.TransformValue("flirt"));
+            Assert.AreEqual("dramatization", suffix.Binding.TransformValue("dramatize"));
+            Assert.AreEqual("aplification", suffix.Binding.TransformValue("aplify"));
+            Assert.AreEqual("proclaimation", suffix.Binding.TransformValue("proclaim"));
         }
 
         [Test]
         public void BindingTransformation_Suffix_Sion()
         {
             var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "sion" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
-
             Assert.AreEqual("invasion", suffix.Binding.TransformValue("invade"));
+            Assert.AreEqual("commission", suffix.Binding.TransformValue("commit"));
+            Assert.AreEqual("recession", suffix.Binding.TransformValue("recede"));
+            Assert.AreEqual("impression", suffix.Binding.TransformValue("impress"));
+            Assert.AreEqual("suspension", suffix.Binding.TransformValue("suspend"));
+            Assert.AreEqual("diversion", suffix.Binding.TransformValue("divert"));
+            Assert.AreEqual("aversion", suffix.Binding.TransformValue("averse"));
         }
 
         [Test]
         public void BindingTransformation_Suffix_Tion()
         {
             var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "tion" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
-
             Assert.AreEqual("resolution", suffix.Binding.TransformValue("resolve"));
+            Assert.AreEqual("education", suffix.Binding.TransformValue("educate"));
+
+            // -efy
+            Assert.AreEqual("putrefaction", suffix.Binding.TransformValue("putrefy"));
+
+            Assert.AreEqual("adoption", suffix.Binding.TransformValue("adopt"));
+            Assert.AreEqual("description", suffix.Binding.TransformValue("describe"));
+            Assert.AreEqual("perception", suffix.Binding.TransformValue("perceive"));
+            Assert.AreEqual("assumption", suffix.Binding.TransformValue("assume"));
+            Assert.AreEqual("evolution", suffix.Binding.TransformValue("evolve"));
+            Assert.AreEqual("invention", suffix.Binding.TransformValue("invent"));
+            Assert.AreEqual("assertion", suffix.Binding.TransformValue("assert"));
+        }
+
+        [Test]
+        public void BindingTransformation_Suffix_Cian()
+        {
+            var suffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "cian" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
+            Assert.AreEqual("magician", suffix.Binding.TransformValue("magic"));
+            Assert.AreEqual("dietician", suffix.Binding.TransformValue("diet"));
         }
     }
 }

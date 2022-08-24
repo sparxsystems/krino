@@ -12,7 +12,7 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
     [TestFixture]
     public class StatePathExtTest
     {
-        private SyntaxMachine myGrammar;
+        private SyntaxParser myGrammar;
         private IMorphology myMorphology;
 
         [OneTimeSetUp]
@@ -21,7 +21,7 @@ namespace Krino.ConstructiveGrammar.Tests.Syntax
             //Trace.StartProfiler();
 
             var english = new EnglishMachine(true).Machine;
-            myGrammar = new SyntaxMachine(english);
+            myGrammar = new SyntaxParser(english);
             myMorphology = new EnglishMorphology();
 
             //Trace.StopProfiler();

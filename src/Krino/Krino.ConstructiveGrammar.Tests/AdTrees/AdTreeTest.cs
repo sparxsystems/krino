@@ -201,20 +201,20 @@ namespace Krino.ConstructiveGrammar.Tests.AdTrees
             Assert.IsTrue(adTree.Right.Right == adTree.Right.Left.GetMyGovernor());
 
             // the governor of 'book'-adposition is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Left.GetMyGovernor());
+            Assert.IsTrue(adTree.Right == adTree.Left.GetMyGovernor());
 
             // the governor of 'book' is the 'read'.
             // Note: the book is already the governor so the governor of the governor shall be found.
-            Assert.IsTrue(adTree.Right.Right == adTree.Left.Right.GetMyGovernor());
+            Assert.IsTrue(adTree.Right == adTree.Left.Right.GetMyGovernor());
 
             // the governor of 'the' is the 'book'.
             Assert.IsTrue(adTree.Left.Right == adTree.Left.Left.GetMyGovernor());
 
             // the governor of the root is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.GetMyGovernor());
+            Assert.IsTrue(adTree.Right == adTree.GetMyGovernor());
 
             // the governor of the 'read'-adposition is the 'read'.
-            Assert.IsTrue(adTree.Right.Right == adTree.Right.GetMyGovernor());
+            Assert.IsTrue(adTree.Right == adTree.Right.GetMyGovernor());
         }
 
         [Test]

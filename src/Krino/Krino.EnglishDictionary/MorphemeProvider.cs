@@ -2313,6 +2313,52 @@ namespace Krino.EnglishDictionary
                 }
             },
 
+            new Morpheme("ation", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsVerb() & (EnglishWordRules.WordEndsWithOneOfStr("ne", "ve", "re", "ize", "ify", "aim")),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ne"), Trans.DropFromEnd(0, 1))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("ve"), Trans.DropFromEnd(0, 1))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("re"), Trans.DropFromEnd(0, 1))
+                                    .Else(Trans.If(RuleMaker.EndsWithStr("ize"), Trans.DropFromEnd(0, 1))
+                                        .Else(Trans.If(RuleMaker.EndsWithStr("ify"), Trans.DropFromEnd(0, 1), Trans.Append("ic"))
+                                        )
+                                    )
+                                )
+                            )
+                            ,
+                            Trans.Append("ation")
+                        ),
+                }
+            },
+
+            new Morpheme("cian", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
+            {
+                Binding = new AffixBinding()
+                {
+                    AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
+                    AttributesToDrop = GrammarAttributes.Morpheme.Free,
+                    CanBindRule = EnglishWordRules.IsNoun(),
+                    TransformValue = Trans
+                        .Block(
+                            Trans.If(RuleMaker.EndsWithStr("ic"), Trans.DropFromEnd(0, 1))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("y"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("ic"), Trans.DropFromEnd(0, 1))
+                                    .Else(Trans.If(EnglishWordRules.EndsWithPhonemes(Phoneme.Consonant), Trans.Append("i"))
+                                    )
+                                )
+                            )
+                            ,
+                            Trans.Append("cian")
+                        ),
+                }
+            },
+
             new Morpheme("dom", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
             {
                 Binding = new AffixBinding()
@@ -2473,26 +2519,43 @@ namespace Krino.EnglishDictionary
                         ),
                 }
             },
+
+            // https://www.thefreedictionary.com/Commonly-Confused-Suffixes-tion-vs-sion.htm
             new Morpheme("tion", GrammarAttributes.Morpheme.Bound.Suffix.Derivational)
             {
                 Binding = new AffixBinding()
                 {
                     AttributesToPick = GrammarAttributes.Morpheme.Free.Lexical.Noun,
                     AttributesToDrop = GrammarAttributes.Morpheme.Free,
-                    CanBindRule = EnglishWordRules.IsVerb() & (EnglishWordRules.WordEndsWithOneOfStr("ct", "ete", "ute", "it", "ite", "tain", "ose", "vene", "vent", "rt") | EnglishWordRules.WordEndsWithOneOfStr("intend", "contend")),
+                    CanBindRule = EnglishWordRules.IsVerb() & (EnglishWordRules.WordEndsWithOneOfStr("ate", "ct", "ete", "ute", "it", "ite", "tain", "ose", "vene", "vent", "rt", "efy", "pt", "scribe", "ceive", "sume", "olve") | EnglishWordRules.WordEndsWithOneOfStr("intend", "contend")),
                     TransformValue = Trans
                         .Block(
-                            Trans.If(RuleMaker.EndsWithStr("ct"), Trans.DropFromEnd(0, 1)) 
-                            .Else(Trans.If(RuleMaker.EndsWithStr("ete"), Trans.DropFromEnd(0, 2))
-                                .Else(Trans.If(RuleMaker.EndsWithStr("ute"), Trans.DropFromEnd(0, 1))
-                                    .Else(Trans.If(RuleMaker.EndsWithStr("it"), Trans.DropFromEnd(0, 1))
-                                        .Else(Trans.If(RuleMaker.EndsWithStr("ite"), Trans.DropFromEnd(0, 2))
-                                            .Else(Trans.If(RuleMaker.EndsWithStr("tain"), Trans.DropFromEnd(0, 3), Trans.Append("e"))
-                                                .Else(Trans.If(RuleMaker.EndsWithStr("ose"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
-                                                    .Else(Trans.If(RuleMaker.EndsWithStr("olve"), Trans.DropFromEnd(0, 2), Trans.Append("u"))
-                                                        .Else(Trans.If(RuleMaker.EndsWithStr("vene") | RuleMaker.EndsWithStr("vent"), Trans.DropFromEnd(0, 1))
-                                                            // Note: end - 2 exception words.
-                                                            .Else(Trans.If(RuleMaker.EndsWithStr("end") | RuleMaker.EndsWithStr("rt"), Trans.DropFromEnd(0, 1))
+                            Trans.If(RuleMaker.EndsWithStr("ate"), Trans.DropFromEnd(0, 2))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("ct"), Trans.DropFromEnd(0, 1))
+                                    .Else(Trans.If(RuleMaker.EndsWithStr("ete"), Trans.DropFromEnd(0, 2))
+                                        .Else(Trans.If(RuleMaker.EndsWithStr("ute"), Trans.DropFromEnd(0, 1))
+                                            .Else(Trans.If(RuleMaker.EndsWithStr("it"), Trans.DropFromEnd(0, 1))
+                                                .Else(Trans.If(RuleMaker.EndsWithStr("ite"), Trans.DropFromEnd(0, 2))
+                                                    .Else(Trans.If(RuleMaker.EndsWithStr("tain"), Trans.DropFromEnd(0, 3), Trans.Append("e"))
+                                                        .Else(Trans.If(RuleMaker.EndsWithStr("ose"), Trans.DropFromEnd(0, 1), Trans.Append("i"))
+                                                            .Else(Trans.If(RuleMaker.EndsWithStr("olve"), Trans.DropFromEnd(0, 2), Trans.Append("u"))
+                                                                .Else(Trans.If(RuleMaker.EndsWithStr("vene") | RuleMaker.EndsWithStr("vent"), Trans.DropFromEnd(0, 1))
+                                                                    // Note: end - 2 exception words.
+                                                                    .Else(Trans.If(RuleMaker.EndsWithStr("end") | RuleMaker.EndsWithStr("rt"), Trans.DropFromEnd(0, 1))
+                                                                        .Else(Trans.If(RuleMaker.EndsWithStr("efy"), Trans.DropFromEnd(0, 1), Trans.Append("ac"))
+                                                                            .Else(Trans.If(RuleMaker.EndsWithStr("pt"), Trans.DropFromEnd(0, 1))
+                                                                                .Else(Trans.If(RuleMaker.EndsWithStr("scribe"), Trans.DropFromEnd(0, 2), Trans.Append("p"))
+                                                                                    .Else(Trans.If(RuleMaker.EndsWithStr("ceive"), Trans.DropFromEnd(0, 3), Trans.Append("p"))
+                                                                                        .Else(Trans.If(RuleMaker.EndsWithStr("sume"), Trans.DropFromEnd(0, 1), Trans.Append("p"))
+                                                                                            .Else(Trans.If(RuleMaker.EndsWithStr("olve"), Trans.DropFromEnd(0, 2), Trans.Append("u"))
+                                                                                            )
+                                                                                        )
+                                                                                    )
+                                                                                )
+                                                                            )
+                                                                        )
+                                                                    )
+                                                                )
                                                             )
                                                         )
                                                     )
@@ -2501,7 +2564,6 @@ namespace Krino.EnglishDictionary
                                         )
                                     )
                                 )
-                            )
                             ,
                             Trans.Append("tion")
                         ),
@@ -2516,11 +2578,11 @@ namespace Krino.EnglishDictionary
                     CanBindRule = EnglishWordRules.IsVerb() & EnglishWordRules.WordEndsWithOneOfStr("de", "ise", "use", "pel", "mit", "cede", "ss", "end", "cline", "vert", "erse", "ur") & !EnglishWordRules.WordEndsWithOneOfStr("intend", "contend"),
                     TransformValue = Trans
                         .Block(
-                            Trans.If(RuleMaker.EndsWithStr("de"), Trans.DropFromEnd(0, 2))
-                            .Else(Trans.If(RuleMaker.EndsWithStr("ise") | RuleMaker.EndsWithStr("use"), Trans.DropFromEnd(0, 1))
-                                .Else(Trans.If(RuleMaker.EndsWithStr("pel"), Trans.DropFromEnd(0, 2), Trans.Append("ul"))
-                                    .Else(Trans.If(RuleMaker.EndsWithStr("mit"), Trans.DropFromEnd(0, 1), Trans.Append("ss"))
-                                        .Else(Trans.If(RuleMaker.EndsWithStr("cede"), Trans.DropFromEnd(0, 2), Trans.Append("ss"))
+                            Trans.If(RuleMaker.EndsWithStr("cede"), Trans.DropFromEnd(0, 2), Trans.Append("s"))
+                            .Else(Trans.If(RuleMaker.EndsWithStr("de"), Trans.DropFromEnd(0, 2))
+                                .Else(Trans.If(RuleMaker.EndsWithStr("ise") | RuleMaker.EndsWithStr("use"), Trans.DropFromEnd(0, 1))
+                                    .Else(Trans.If(RuleMaker.EndsWithStr("pel"), Trans.DropFromEnd(0, 2), Trans.Append("ul"))
+                                        .Else(Trans.If(RuleMaker.EndsWithStr("mit"), Trans.DropFromEnd(0, 1), Trans.Append("s"))
                                             .Else(Trans.If(RuleMaker.EndsWithStr("ss"), Trans.DropFromEnd(0, 1))
                                                 .Else(Trans.If(RuleMaker.EndsWithStr("end") | RuleMaker.EndsWithStr("and"), Trans.DropFromEnd(0, 1))
                                                     .Else(Trans.If(RuleMaker.EndsWithStr("cline"), Trans.DropFromEnd(0, 3), Trans.Append("n"))

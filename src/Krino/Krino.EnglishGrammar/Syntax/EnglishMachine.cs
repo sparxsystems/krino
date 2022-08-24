@@ -14,11 +14,9 @@ namespace Krino.EnglishGrammar.Syntax
 {
     public class EnglishMachine
     {
-        private MultiMachine<LinguisticState, IWord> myMachine;
         private Dictionary<string, int> myRestrictions = new Dictionary<string, int>();
 
-
-        public MultiMachine<LinguisticState, IWord> Machine => myMachine;
+        public MultiMachine<LinguisticState, IWord> Machine { get; private set; }
 
 
         public EnglishMachine()
@@ -43,18 +41,17 @@ namespace Krino.EnglishGrammar.Syntax
                 AddRestriction(nameof(AddDependentClause), GrammarAttributes.Clause.Dependent.AdverbialClause, 0);
             }
 
-            myMachine = new MultiMachine<LinguisticState, IWord>();
 
-            var root = new SyntaxMachineBuilder(myMachine);
+            var root = new SyntaxMachineBuilder();
 
             AddText(root, GrammarAttributes.Text);
 
             root.AddEmptyTransition("init", GrammarAttributes.Text);
             root.AddEmptyTransition(GrammarAttributes.Text, "final");
 
-            myMachine.Reset();
-
-            myMachine.Trim();
+            Machine = root.SyntaxMachine;
+            Machine.Reset();
+            Machine.Trim();
         }
 
         

@@ -15,11 +15,11 @@ namespace Krino.ConstructiveGrammar.Syntax
         private LinguisticState myParentState;
         private bool myIsSubState;
 
-        public SyntaxMachineBuilder(MultiMachine<LinguisticState, IWord> machine)
+        public SyntaxMachineBuilder()
         {
             using var _t = Trace.Entering();
 
-            myMachine = machine;
+            myMachine = new MultiMachine<LinguisticState, IWord>();
 
             var initState = new LinguisticState("init", 0);
             myMachine.AddInitialState(initState);
@@ -44,6 +44,8 @@ namespace Krino.ConstructiveGrammar.Syntax
         }
 
         public LinguisticState ParentState => myParentState;
+
+        public MultiMachine<LinguisticState, IWord> SyntaxMachine => myMachine;
 
         public SyntaxMachineBuilder AddStates(params BigInteger[] attributes)
         {
