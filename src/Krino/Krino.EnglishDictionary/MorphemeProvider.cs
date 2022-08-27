@@ -2131,7 +2131,7 @@ namespace Krino.EnglishDictionary
                     CanBindRule = EnglishWordRules.IsNounInBaseForm(),
                     TransformValue = Trans
                         .Block(
-                            Trans.If(RuleMaker.EndsWithStr("s") | RuleMaker.EndsWithStr("x") | RuleMaker.EndsWithStr("z") | RuleMaker.EndsWithStr("sh") | RuleMaker.EndsWithStr("ch"), Trans.Append("e"))
+                            Trans.If(RuleMaker.EndsWithOneOfStr("s", "x", "z", "sh", "ch"), Trans.Append("e"))
                             ,
                             Trans.Append("s")
                         ),

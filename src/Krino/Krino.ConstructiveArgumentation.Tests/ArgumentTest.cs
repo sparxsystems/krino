@@ -15,7 +15,7 @@ namespace Krino.ConstructiveArgumentation.Tests
     [TestFixture]
     public class ArgumentTest
     {
-        private SyntaxParser myGrammar;
+        private SyntaxReader myGrammar;
 
         [OneTimeSetUp]
         public void Setup()
@@ -23,7 +23,7 @@ namespace Krino.ConstructiveArgumentation.Tests
             //Trace.StartProfiler();
 
             var english = new EnglishMachine(true).Machine;
-            myGrammar = new SyntaxParser(english);
+            myGrammar = new SyntaxReader(english);
 
             //Trace.StopProfiler();
             //Thread.Sleep(300);

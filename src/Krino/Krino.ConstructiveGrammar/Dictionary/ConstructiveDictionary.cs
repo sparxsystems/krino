@@ -13,18 +13,18 @@ namespace Krino.ConstructiveGrammar.Dictionary
 {
     public class ConstructiveDictionary : IConstructiveDictionary
     {
-        private MorphologyParser myMorphemeParser;
+        private MorphologyReader myMorphemeParser;
         private IMorphology myMorphology;
-        private SyntaxParser mySyntaParser;
+        private SyntaxReader mySyntaxParser;
 
         public ConstructiveDictionary(IMorphology morphology, MultiMachine<LinguisticState, IWord> syntax, IEnumerable<IMorpheme> morphemes)
         {
             myMorphology = morphology;
-            mySyntaParser = new SyntaxParser(syntax);
-            myMorphemeParser = new MorphologyParser(myMorphology, morphemes);
+            mySyntaxParser = new SyntaxReader(syntax);
+            myMorphemeParser = new MorphologyReader(myMorphology, morphemes);
         }
 
-        public IReadOnlyList<IText> Parse(string text)
+        public IReadOnlyList<IText> AnalyzeText(string text)
         {
             _ = Trace.Entering();
 
@@ -34,18 +34,18 @@ namespace Krino.ConstructiveGrammar.Dictionary
 
                 if (!string.IsNullOrEmpty(text))
                 {
-                    var textItems = myMorphemeParser.Split(text.ToLowerInvariant());
+                    var textItems = myMorphemeParser.SplitSentences(text.ToLowerInvariant());
                     var sentences = textItems.Split(x => myMorphemeParser.IsEndOfSentencePunctuationMark(x));
 
                     foreach (var sentence in sentences)
                     {
-                        List<List<IWord>> wordAlternatives = new List<List<IWord>>();
+                        var wordAlternatives = new List<List<IWord>>();
 
                         foreach (var sentenceItem in sentence)
                         {
                             if (!myMorphemeParser.IsPunctuationMark(sentenceItem))
                             {
-                                var foundWords = myMorphemeParser.ParseWord(sentenceItem);
+                                var foundWords = myMorphemeParser.ReadWord(sentenceItem);
                                 if (foundWords.Any())
                                 {
                                     wordAlternatives.Add(foundWords.ToList());
@@ -75,23 +75,23 @@ namespace Krino.ConstructiveGrammar.Dictionary
                         var wordVariations = wordAlternatives.GetVariations();
                         foreach (var wordVariation in wordVariations)
                         {
-                            mySyntaParser.Reset();
+                            mySyntaxParser.Reset();
 
-                            _ = mySyntaParser.DebugView;
+                            _ = mySyntaxParser.DebugView;
 
                             foreach (var word in wordVariation)
                             {
-                                mySyntaParser.Add(word);
+                                mySyntaxParser.Add(word);
 
-                                if (!mySyntaParser.IsActive)
+                                if (!mySyntaxParser.IsActive)
                                 {
                                     break;
                                 }
                             }
 
-                            if (mySyntaParser.IsActive)
+                            if (mySyntaxParser.IsActive)
                             {
-                                var texts = mySyntaParser.GetTexts();
+                                var texts = mySyntaxParser.GetTexts();
                                 result.AddRange(texts);
                             }
                         }
@@ -102,7 +102,7 @@ namespace Krino.ConstructiveGrammar.Dictionary
             }
             finally
             {
-                mySyntaParser.Reset();
+                mySyntaxParser.Reset();
             }
         }
 

@@ -44,7 +44,7 @@ namespace Krino.ViewModel
 
             var logValue = new StringBuilder();
 
-            var text = myDictionary.Parse(value).FirstOrDefault();
+            var text = myDictionary.AnalyzeText(value).FirstOrDefault();
 
             if (text != null && text.Sentences.Count > 0)
             {

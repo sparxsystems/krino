@@ -30,24 +30,24 @@ namespace Krino.ConstructiveGrammar.Tests.Dictionary
         public void Parse_SimpleSentence()
         {
             // Simple sentence.
-            var text = myDictionary.Parse("I read book.");
+            var text = myDictionary.AnalyzeText("I read book.");
             var grammarStr = text[0].GrammarStr;
             Assert.AreEqual(1, text.Count);
             Assert.AreEqual("i read book.", text[0].Value);
             
             // Simple sentence with suffixes.
-            text = myDictionary.Parse("He reads books.");
+            text = myDictionary.AnalyzeText("He reads books.");
             grammarStr = text[0].GrammarStr;
             Assert.AreEqual(1, text.Count);
             Assert.AreEqual("he reads books.", text[0].Value);
 
             // Simple sentence with prefixes.
-            text = myDictionary.Parse("I reread antibooks.");
+            text = myDictionary.AnalyzeText("I reread antibooks.");
             grammarStr = text[0].GrammarStr;
             Assert.AreEqual(1, text.Count);
             Assert.AreEqual("i reread antibooks.", text[0].Value);
 
-            text = myDictionary.Parse("Cycling is healthy.");
+            text = myDictionary.AnalyzeText("Cycling is healthy.");
             grammarStr = text[0].GrammarStr;
             Assert.AreEqual(1, text.Count);
             Assert.AreEqual("cycling is healthy.", text[0].Value);
@@ -56,7 +56,7 @@ namespace Krino.ConstructiveGrammar.Tests.Dictionary
         [Test]
         public void Parse_Argument()
         {
-            var texts = myDictionary.Parse("Cycling on the grass is prohibited because walking on the grass is prohibited.");
+            var texts = myDictionary.AnalyzeText("Cycling on the grass is prohibited because walking on the grass is prohibited.");
             Assert.AreEqual(1, texts.Count);
         }
     }

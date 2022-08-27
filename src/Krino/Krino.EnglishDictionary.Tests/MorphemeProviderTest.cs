@@ -15,23 +15,43 @@ namespace Krino.EnglishDictionary.Tests
     public class MorphemeProviderTest
     {
         [Test]
-        public void BindingRule_Suffix_Plural()
+        public void CanBind()
         {
             var morphology = new EnglishMorphology();
 
+            // plural suffix -s
             var word = new Word(morphology, MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "book"));
             var pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural.IsIn(x.Binding.AttributesToPick));
             Assert.IsTrue(pluralSuffix.Binding.CanBind(word));
 
-            pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson.IsIn(x.Binding.AttributesToPick));
-            Assert.IsFalse(pluralSuffix.Binding.CanBind(word));
-
+            // plural suffix -s on a plural word.
             word = new Word(morphology, MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "person")
                 .Suppletions.FirstOrDefault(x => x.Value == "people"));
             pluralSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural.IsIn(x.Binding.AttributesToPick));
-
-            // Note: 'people' is not a noun in its base form so binding the plural suffix is not allowed.
             Assert.IsFalse(pluralSuffix.Binding.CanBind(word));
+
+            // third person suffix -s on a noun
+            var thirdPersonSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Verb.Form.Base.Singular.ThirdPerson.IsIn(x.Binding.AttributesToPick));
+            Assert.IsFalse(thirdPersonSuffix.Binding.CanBind(word));
+        }
+
+
+        [Test]
+        public void BindingRule_Suffix_Plural()
+        {
+            var morphology = new EnglishMorphology();
+
+            var sSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "s" && x.Binding != null && GrammarAttributes.Morpheme.Free.Lexical.Noun.Sememe.Number.Plural.IsIn(x.Binding.AttributesToPick));
+            Assert.AreEqual("books", sSuffix.Binding.TransformValue("book"));
+            Assert.AreEqual("hashes", sSuffix.Binding.TransformValue("hash"));
+        }
+
+        [Test]
+        public void BindingTransformation_Suffix_Er_Derivational()
+        {
+            var ingSuffix = MorphemeProvider.Morphemes.FirstOrDefault(x => x.Value == "er" && GrammarAttributes.Morpheme.Bound.Suffix.Derivational.IsIn(x.Attributes));
+
+            Assert.AreEqual("writer", ingSuffix.Binding.TransformValue("write"));
         }
 
         [Test]

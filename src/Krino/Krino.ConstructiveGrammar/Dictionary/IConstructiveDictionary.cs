@@ -10,6 +10,6 @@ namespace Krino.ConstructiveGrammar.Dictionary
         /// </summary>
         /// <param name="text"></param>
         /// <returns></returns>
-        IReadOnlyList<IText> Parse(string text);
+        IReadOnlyList<IText> AnalyzeText(string text);
     }
 }

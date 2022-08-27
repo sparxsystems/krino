@@ -33,7 +33,7 @@ namespace Krino.GretaTest
             //Trace.StartProfiler();
 
             //var results = parser.Parse("I have some good news and some bad news regarding the climate emergency.");
-            var results = myDictionary.Parse("I have some good news and some bad news regarding the climate emergency.");
+            var results = myDictionary.AnalyzeText("I have some good news and some bad news regarding the climate emergency.");
 
             // Note: 2 - because 'regarding the climate emergency' can be adverbial adjunct or adverbial complement.
             Assert.AreEqual(5, results.Count);
@@ -43,7 +43,7 @@ namespace Krino.GretaTest
         [Test]
         public void Sentence_1_2()
         {
-            var results = myDictionary.Parse("I will start with the good news.");
+            var results = myDictionary.AnalyzeText("I will start with the good news.");
 
             // AdverbialAdjunct vs AdverbialComplement.
             Assert.AreEqual(2, results.Count);
@@ -54,7 +54,7 @@ namespace Krino.GretaTest
         public void Sentence_2_1()
         {
             //var results = parser.Parse("the world");
-            var results = myDictionary.Parse("The world as a small number of people have been saying lately will not end in eleven years.");
+            var results = myDictionary.AnalyzeText("The world as a small number of people have been saying lately will not end in eleven years.");
 
             // AdverbialAdjunct vs AdverbialComplement.
             Assert.AreEqual(4, results.Count);
@@ -66,7 +66,7 @@ namespace Krino.GretaTest
         public void Sentence_3()
         {
             //var results = parser.Parse("the world");
-            var results = myDictionary.Parse("Students should not have to wear school uniforms because school uniforms infringe upon students right to express their individuality.");
+            var results = myDictionary.AnalyzeText("Students should not have to wear school uniforms because school uniforms infringe upon students right to express their individuality.");
 
             // AdverbialAdjunct vs AdverbialComplement.
             Assert.AreEqual(81, results.Count);
