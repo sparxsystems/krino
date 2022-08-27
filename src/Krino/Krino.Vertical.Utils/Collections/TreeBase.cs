@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Krino.Vertical.Utils.Diagnostic;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -208,6 +209,8 @@ namespace Krino.Vertical.Utils.Collections
         /// </summary>
         public void Clear()
         {
+            //using var _t = Trace.Entering();
+
             // Recursivelly clear children.
             foreach (C aChild in myChildren)
             {
@@ -255,7 +258,7 @@ namespace Krino.Vertical.Utils.Collections
 
 
         /// <summary>
-        /// Recurivelly counts number of children (not only direct but all).
+        /// Recursivelly counts number of children (not only direct but all).
         /// </summary>
         public int Count
         {

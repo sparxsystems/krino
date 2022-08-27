@@ -1,5 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.Enums;
 using Krino.Vertical.Utils.Rules;
 using Krino.Vertical.Utils.Transformations;
@@ -29,6 +30,8 @@ namespace Krino.ConstructiveGrammar.Morphology
 
         public BigInteger TransformAttributes(BigInteger wordAttributes)
         {
+            using var _t = Trace.Entering();
+
             BigInteger result = wordAttributes;
 
             var enumsToRemove = GrammarAttributes.Instance.FindEnums(AttributesToDrop);

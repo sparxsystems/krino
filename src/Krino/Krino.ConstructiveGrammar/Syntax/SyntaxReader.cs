@@ -1,5 +1,6 @@
 ﻿using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
+using Krino.Vertical.Utils.Diagnostic;
 using Krino.Vertical.Utils.StateMachines;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,6 +19,8 @@ namespace Krino.ConstructiveGrammar.Syntax
 
         public void Add(IWord word)
         {
+            using var _t = Trace.Entering();
+
             myMachine.Fire(word);
         }
 
@@ -29,6 +32,8 @@ namespace Krino.ConstructiveGrammar.Syntax
 
         public IEnumerable<IText> GetTexts()
         {
+            using var _t = Trace.Entering();
+
             var result = new List<IText>();
 
             var relevantActiveStates = ActiveStates.Where(x => x.IsCompleted);

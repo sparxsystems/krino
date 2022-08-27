@@ -18,6 +18,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public (IEnumerable<IMorpheme> Prefixes, IEnumerable<IMorpheme> Roots, IEnumerable<IMorpheme> Suffixes) Decompose(IEnumerable<IMorpheme> morphemes)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             // Note: get prefixes from the root to the out. So the order must be reversed.
             var prefixes = morphemes.TakeWhile(x => GrammarAttributes.Morpheme.Bound.Prefix.IsIn(x.Attributes))
                 .Where(x => x.Binding != null)
@@ -35,6 +37,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public IEnumerable<IEnumerable<IMorpheme>> GetDerivationSequences(IEnumerable<IMorpheme> morphemes)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             IEnumerable<List<IMorpheme>> result;
 
 
@@ -66,6 +70,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public BigInteger GetAttributes(IEnumerable<IMorpheme> morphemes)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             BigInteger result = 0;
 
             var derivationSequence = GetDerivationSequences(morphemes).FirstOrDefault();
@@ -93,6 +99,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public string GetValue(IEnumerable<IMorpheme> morphemes)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             string result = "";
 
             var derivationSequence = GetDerivationSequences(morphemes).FirstOrDefault();
@@ -122,6 +130,8 @@ namespace Krino.EnglishGrammar.Morphology
             List<IMorpheme> prefixes, List<IMorpheme> roots, List<IMorpheme> suffixes,
             List<IMorpheme> tmpResult)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             if (prefixIdx >= prefixes.Count && rootIdx >= roots.Count && suffixIdx >= suffixes.Count)
             {
                 // All morphemes are used so retun the result.
@@ -178,6 +188,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         private bool IsMeaningful(IEnumerable<IMorpheme> morphemes)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             IWord word = null;
 
             foreach (var morpheme in morphemes)

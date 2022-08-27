@@ -37,6 +37,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public static RuleBase<IWord> WordEndsWithOneOfStr(params string[] strs)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             RuleBase<IWord> result = WordEndsWithStr(strs[0]);
 
             if (strs.Length > 1)

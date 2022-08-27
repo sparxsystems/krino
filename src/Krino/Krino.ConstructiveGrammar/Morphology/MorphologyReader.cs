@@ -92,6 +92,8 @@ namespace Krino.ConstructiveGrammar.Morphology
 
         public bool IsEndOfSentencePunctuationMark(string item)
         {
+            using var _ = Trace.Entering();
+
             myPunctuationMarks.TryGetValues(item, out var morphemes);
             if (morphemes != null)
             {
@@ -104,6 +106,8 @@ namespace Krino.ConstructiveGrammar.Morphology
 
         public IEnumerable<IMorpheme> FindPunctuationMark(string item)
         {
+            using var _ = Trace.Entering();
+
             myPunctuationMarks.TryGetValues(item, out var result);
             return result;
         }
@@ -253,6 +257,8 @@ namespace Krino.ConstructiveGrammar.Morphology
         /// <returns></returns>
         private IEnumerable<IMorpheme> FindFreeMorphemes(string value, IMorpheme affix)
         {
+            using var _ = Trace.Entering();
+
             // In case the binding is not specified this is a default function to concatenate affix with a word.
             Func<string, string> concat = val => GrammarAttributes.Morpheme.Bound.Suffix.IsIn(affix.Attributes) ?
                 // Suffix

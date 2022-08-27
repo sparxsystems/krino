@@ -26,7 +26,7 @@ namespace Krino.ConstructiveGrammar.Dictionary
 
         public IReadOnlyList<IText> AnalyzeText(string text)
         {
-            _ = Trace.Entering();
+            using var _t = Trace.Entering();
 
             try
             {

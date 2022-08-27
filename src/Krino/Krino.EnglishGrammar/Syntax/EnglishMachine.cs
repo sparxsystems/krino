@@ -20,6 +20,8 @@ namespace Krino.EnglishGrammar.Syntax
 
         public EnglishMachine(bool simpleMode)
         {
+            using var _t = Trace.Entering();
+
             if (simpleMode)
             {
                 // One depedent clause is allowed.
@@ -51,6 +53,8 @@ namespace Krino.EnglishGrammar.Syntax
         
         private void AddText(SyntaxMachineBuilder builder, EnumBase objectType)
         {
+            using var _t = Trace.Entering();
+
             var text = builder.AddSubState(objectType);
             text.AddState("start_loop", 0);
             text.AddState("end_loop", 0);

@@ -3,9 +3,12 @@ using Krino.ConstructiveGrammar.LinguisticStructures;
 using Krino.ConstructiveGrammar.LinguisticStructures.Attributes;
 using Krino.EnglishDictionary;
 using Krino.EnglishGrammar.Syntax;
+using Krino.Vertical.Utils.Diagnostic;
 using NUnit.Framework;
 using System.Collections.Generic;
+
 using System.Linq;
+using System.Threading;
 
 namespace Krino.ConstructiveGrammar.Tests.Dictionary
 {
@@ -56,8 +59,13 @@ namespace Krino.ConstructiveGrammar.Tests.Dictionary
         [Test]
         public void Parse_Argument()
         {
+            //Trace.StartProfiler();
+
             var texts = myDictionary.AnalyzeText("Cycling on the grass is prohibited because walking on the grass is prohibited.");
             Assert.AreEqual(1, texts.Count);
+
+            //Trace.StopProfiler();
+            //Thread.Sleep(300);
         }
     }
 }

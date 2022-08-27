@@ -9,6 +9,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public static Phoneme GetPhoneme(this char c)
         {
+            //using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             switch (char.ToLower(c))
             {
                 case 'b':

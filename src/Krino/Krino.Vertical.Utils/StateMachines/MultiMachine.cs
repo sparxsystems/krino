@@ -12,6 +12,7 @@ namespace Krino.Vertical.Utils.StateMachines
     {
         private DirectedGraph<TState, TransitionRule<TState, TTrigger>> myGraph;
         private Dictionary<TState, StateDefinition<TState>> myStates;
+        private List<StateDefinition<TState>> myRootInitialStates;
         private Dictionary<TState, List<StateDefinition<TState>>> mySubStates;
 
         private ImmediateTriggerRule<TTrigger> myTriggerImmediatelyRule = new ImmediateTriggerRule<TTrigger>();
@@ -32,6 +33,7 @@ namespace Krino.Vertical.Utils.StateMachines
 
             myStates = new Dictionary<TState, StateDefinition<TState>>(myStateEqualityComparer);
             mySubStates = new Dictionary<TState, List<StateDefinition<TState>>>(myStateEqualityComparer);
+            myRootInitialStates = new List<StateDefinition<TState>>();
 
             // Note: TransitionRule implements IEquatable, therefore the default comparer is ok to use for triggers.
             myGraph = new DirectedGraph<TState, TransitionRule<TState, TTrigger>>(stateComparer, null);
@@ -46,6 +48,8 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public void Trim()
         {
+            using var _t = Trace.Entering();
+
             myGraph.Trim();
             myStates.TrimExcess();
             mySubStates.TrimExcess();
@@ -140,14 +144,14 @@ namespace Krino.Vertical.Utils.StateMachines
 
         public void Reset()
         {
+            using var _t = Trace.Entering();
+
             myMachineTrack.Clear();
             myActiveStates.Clear();
             myUnhandledStates.Clear();
 
-            var allTopLevelInitialStates = myStates.Values.Where(x => x.StateKind == StateKind.Initial && !x.IsSubstate);
-
             // Note: initial state cannot have substates.
-            var newRecords = allTopLevelInitialStates.Select(x => new Tree<StateItem<TState, TTrigger>>(new StateItem<TState, TTrigger>(x, null, default(TTrigger))));
+            var newRecords = myRootInitialStates.Select(x => new Tree<StateItem<TState, TTrigger>>(new StateItem<TState, TTrigger>(x, null, default(TTrigger))));
 
             myActiveStates.AddRange(newRecords);
 
@@ -162,10 +166,17 @@ namespace Krino.Vertical.Utils.StateMachines
 
             var newState = new StateDefinition<TState>(state, stateKind);
             myStates[state] = newState;
+
+            if (newState.StateKind == StateKind.Initial)
+            {
+                myRootInitialStates.Add(newState);
+            }
         }
 
         private void AddSubState(TState parent, TState subState, StateKind stateKind)
         {
+            using var _t = Trace.Entering();
+
             myGraph.AddVertex(subState);
 
             var newState = new StateDefinition<TState>(subState, stateKind)
@@ -221,6 +232,8 @@ namespace Krino.Vertical.Utils.StateMachines
 
         private IEnumerable<StateDefinition<TState>> GetSubstates(StateDefinition<TState> state)
         {
+            using var _t = Trace.Entering();
+
             IEnumerable<StateDefinition<TState>> result;
 
             // Note: initial and final state cannot have substates.

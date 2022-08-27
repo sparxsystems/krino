@@ -21,6 +21,8 @@ namespace Krino.EnglishGrammar.Morphology
 
         public override bool Evaluate(string value)
         {
+            using var _ = Krino.Vertical.Utils.Diagnostic.Trace.Entering();
+
             bool result = value != null && myPhonemes.Length <= value.Length &&
                 value.Reverse().Take(myPhonemes.Length).Select(x => x.GetPhoneme()).SequenceEqual(myPhonemes.Reverse());
 
