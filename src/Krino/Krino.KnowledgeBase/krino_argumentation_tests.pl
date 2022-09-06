@@ -23,6 +23,7 @@ touches(on(cycling, grass), grass).
 offends(on(gazing, grass), grass).
 
 
+
 is_verb(is_prohibited).
 is_verb(damages).
 is_verb(touches).

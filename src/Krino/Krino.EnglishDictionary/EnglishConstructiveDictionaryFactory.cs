@@ -11,7 +11,7 @@ namespace Krino.EnglishDictionary
         {
             _ = Trace.Entering();
 
-            var syntax = new EnglishMachine(false);
+            var syntax = new EnglishMachine(true);
             var morphology = new EnglishMorphology();
             var result = new ConstructiveDictionary(morphology, syntax.Machine, MorphemeProvider.Morphemes);
             return result;
