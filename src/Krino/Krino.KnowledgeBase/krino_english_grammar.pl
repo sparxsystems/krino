@@ -4,45 +4,54 @@
     ]).
 
 % Eliminate the left recusion infinite loop.
-:- table k_clause/3.
-:- table k_subject/3.
-:- table k_predicate/3.
-:- table k_noun_phrase/3.
-:- table k_adjective_phrase/3.
-:- table k_adverb_phrase/3.
+:- table sentence/3.
+:- table clause/3.
+:- table subject/3.
+:- table predicate/3.
+:- table noun_phrase/3.
+:- table adjective_phrase/3.
+:- table adverb_phrase/3.
 
 
-k_clause(Clause) --> k_subject(Subject), k_predicate(Predicate), { Clause = clause(Subject, Predicate)}.
+sentence(Sentence) --> first_independent_clause(Clause), punctuation_mark(PunctuationMark), { Sentence = sentence([Clause], PunctuationMark) }.
+sentence(Sentence) --> first_independent_clause(Clause1), next_independent_clause(Clause2), punctuation_mark(PunctuationMark), { Sentence = sentence([Clause1, Clause2], PunctuationMark) }.
 
-k_subject(Subject) --> k_noun_phrase(NounPhrase), { Subject = subject(NounPhrase) }.
+clause(Clause) --> subject(Subject), predicate(Predicate), { Clause = clause(independent, Subject, Predicate)}.
+clause(Clause) --> coordinating_conjunction(Conjunction), subject(Subject), predicate(Predicate), { Clause = clause(independent, Conjunction, Subject, Predicate)}.
+clause(Clause) --> subordinating_conjunction(Conjunction), subject(Subject), predicate(Predicate), { Clause = clause(dependent, Conjunction, Subject, Predicate)}.
+first_independent_clause(Clause) --> clause(Clause), { Clause = clause(independent, _, _) }.
+next_independent_clause(Clause) --> clause(Clause), { Clause = clause(independent, _, _, _) }.
+dependent_clause(Clause) --> clause(Clause), { Clause = clause(dependent, _, _, _) }.
 
-k_predicate(Predicate) --> k_verb_phrase(VerbPhrase), { Predicate = predicate(intransitive, VerbPhrase) }.
-k_predicate(Predicate) --> k_verb_phrase(VerbPhrase), k_noun_phrase(NounPhrase), { Predicate = predicate(monotransitive, VerbPhrase, direct_object(NounPhrase)) }.
-k_predicate(Predicate) --> k_verb_phrase(VerbPhrase), k_noun_phrase(IndirectObject), k_noun_phrase(DirectObject), { Predicate = predicate(ditransitive, VerbPhrase, indirect_object(IndirectObject), direct_object(DirectObject)) }.
+subject(Subject) --> noun_phrase(NounPhrase), { Subject = subject(NounPhrase) }.
 
-k_noun_phrase(NounPhrase) --> k_pronoun(NounPhrase) ; k_noun(NounPhrase).
-k_noun_phrase(NounPhrase) --> k_adjective_phrase(AttributiveAdjective), k_noun(Noun), { NounPhrase = noun_phrase(attributive_adjective(AttributiveAdjective), Noun) }.
-k_noun_phrase(NounPhrase) --> k_noun(Noun), k_adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(Noun, postpositive_adjective(PostpositiveAdjective)) }.
-k_noun_phrase(NounPhrase) --> k_adjective_phrase(AttributiveAdjective), k_noun(Noun), k_adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(attributive_adjective(AttributiveAdjective), Noun, postpositive_adjective(PostpositiveAdjective)) }.
+predicate(Predicate) --> verb_phrase(VerbPhrase), { Predicate = predicate(intransitive, VerbPhrase) }.
+predicate(Predicate) --> verb_phrase(VerbPhrase), noun_phrase(NounPhrase), { Predicate = predicate(monotransitive, VerbPhrase, direct_object(NounPhrase)) }.
+predicate(Predicate) --> verb_phrase(VerbPhrase), noun_phrase(IndirectObject), noun_phrase(DirectObject), { Predicate = predicate(ditransitive, VerbPhrase, indirect_object(IndirectObject), direct_object(DirectObject)) }.
 
-k_noun_phrase(NounPhrase) --> k_determiner(Determiner), k_noun(Noun), { NounPhrase = noun_phrase(Determiner, Noun) }.
-k_noun_phrase(NounPhrase) --> k_determiner(Determiner), k_adjective_phrase(AttributiveAdjective), k_noun(Noun), { NounPhrase = noun_phrase(Determiner, attributive_adjective(AttributiveAdjective), Noun) }.
-k_noun_phrase(NounPhrase) --> k_determiner(Determiner), k_noun(Noun), k_adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(Determiner, Noun, postpositive_adjective(PostpositiveAdjective)) }.
-k_noun_phrase(NounPhrase) --> k_determiner(Determiner), k_adjective_phrase(AttributiveAdjective), k_noun(Noun), k_adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(Determiner, attributive_adjective(AttributiveAdjective), Noun, postpositive_adjective(PostpositiveAdjective)) }.
+noun_phrase(NounPhrase) --> pronoun(NounPhrase) ; noun(NounPhrase).
+noun_phrase(NounPhrase) --> adjective_phrase(AttributiveAdjective), noun(Noun), { NounPhrase = noun_phrase(attributive_adjective(AttributiveAdjective), Noun) }.
+noun_phrase(NounPhrase) --> noun(Noun), adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(Noun, postpositive_adjective(PostpositiveAdjective)) }.
+noun_phrase(NounPhrase) --> adjective_phrase(AttributiveAdjective), noun(Noun), adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(attributive_adjective(AttributiveAdjective), Noun, postpositive_adjective(PostpositiveAdjective)) }.
 
-k_noun_phrase(NounPhrase) --> k_noun_phrase(Phrase1), k_coordinating_conjunction(Conjunction), k_noun_phrase(Phrase2), { NounPhrase = noun_phrase(conjunction(coordinating, Conjunction, Phrase1, Phrase2)) }.
+noun_phrase(NounPhrase) --> determiner(Determiner), noun(Noun), { NounPhrase = noun_phrase(Determiner, Noun) }.
+noun_phrase(NounPhrase) --> determiner(Determiner), adjective_phrase(AttributiveAdjective), noun(Noun), { NounPhrase = noun_phrase(Determiner, attributive_adjective(AttributiveAdjective), Noun) }.
+noun_phrase(NounPhrase) --> determiner(Determiner), noun(Noun), adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(Determiner, Noun, postpositive_adjective(PostpositiveAdjective)) }.
+noun_phrase(NounPhrase) --> determiner(Determiner), adjective_phrase(AttributiveAdjective), noun(Noun), adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(Determiner, attributive_adjective(AttributiveAdjective), Noun, postpositive_adjective(PostpositiveAdjective)) }.
+
+noun_phrase(NounPhrase) --> noun_phrase(Phrase1), coordinating_conjunction(Conjunction), noun_phrase(Phrase2), { NounPhrase = noun_phrase(conjunction(Conjunction, Phrase1, Phrase2)) }.
 
 
-k_verb_phrase(VerbPhrase) --> k_verb(VerbPhrase), { VerbPhrase = verb(present_simple, _) }.
+verb_phrase(VerbPhrase) --> present_simple(VerbPhrase).
 
 
-k_adjective_phrase(AdjectivePhrase) --> k_adjective(AdjectivePhrase) ; k_cardinal(AdjectivePhrase) ; k_past_participle(AdjectivePhrase).
-k_adjective_phrase(AdjectivePhrase) --> k_adverb_phrase(Adverb), k_adjective_phrase(Adjective), { AdjectivePhrase = adjective_phrase(Adverb, Adjective) }.
-k_adjective_phrase(AdjectivePhrase) --> k_adjective_phrase(Phrase1), k_coordinating_conjunction(Conjunction), k_adjective_phrase(Phrase2), { AdjectivePhrase = adjective_phrase(conjunction(coordinating, Conjunction, Phrase1, Phrase2)) }.
+adjective_phrase(AdjectivePhrase) --> adjective(AdjectivePhrase) ; cardinal(AdjectivePhrase) ; past_participle(AdjectivePhrase).
+adjective_phrase(AdjectivePhrase) --> adverb_phrase(Adverb), adjective_phrase(Adjective), { AdjectivePhrase = adjective_phrase(Adverb, Adjective) }.
+adjective_phrase(AdjectivePhrase) --> adjective_phrase(Phrase1), coordinating_conjunction(Conjunction), adjective_phrase(Phrase2), { AdjectivePhrase = adjective_phrase(conjunction(Conjunction, Phrase1, Phrase2)) }.
 
-k_adverb_phrase(AdverbPhrase) --> k_adverb(AdverbPhrase).
-k_adverb_phrase(AdverbPhrase) --> k_adverb_phrase(Adverb1), k_adverb_phrase(Adverb2), { AdverbPhrase = adverb_phrase(Adverb1, Adverb2) }.
-k_adverb_phrase(AdverbPhrase) --> k_adverb_phrase(Phrase1), k_coordinating_conjunction(Conjunction), k_adverb_phrase(Phrase2), { AdverbPhrase = adverb_phrase(conjunction(coordinating, Conjunction, Phrase1, Phrase2)) }.
+adverb_phrase(AdverbPhrase) --> adverb(AdverbPhrase).
+adverb_phrase(AdverbPhrase) --> adverb_phrase(Adverb1), adverb_phrase(Adverb2), { AdverbPhrase = adverb_phrase(Adverb1, Adverb2) }.
+adverb_phrase(AdverbPhrase) --> adverb_phrase(Phrase1), coordinating_conjunction(Conjunction), adverb_phrase(Phrase2), { AdverbPhrase = adverb_phrase(conjunction(Conjunction, Phrase1, Phrase2)) }.
 
 
 
@@ -53,30 +62,37 @@ k_adverb_phrase(AdverbPhrase) --> k_adverb_phrase(Phrase1), k_coordinating_conju
 % concatenates(Conjunction, Phrase1, Phrase2, ResultTerm) :- ResultTerm =.. [Conjunction, Phrase1, Phrase2].
 % infinitive(InfinitiveMarker, Verb, inf(InfinitiveMarker, Verb)).
 
-k_verb(verb(present_simple, read)) --> [read].
-k_verb(verb(present_simple, write)) --> [write].
-k_verb(verb(present_simple, is)) --> ['is'].
-k_verb(verb(linking, is)) --> ['is'].
+verb(verb(present_simple, read)) --> [read].
+verb(verb(present_simple, write)) --> [write].
+verb(verb(present_simple, is)) --> ['is'].
+verb(verb(linking, is)) --> ['is'].
+
+present_simple(Verb) --> verb(Verb), { Verb = verb(present_simple, _) }.
 
 
-k_determiner(the) --> [the].
+determiner(the) --> [the].
 
-k_pronoun(he) --> [he].
+pronoun(he) --> [he].
 
-k_noun(john) --> [john].
-k_noun(annie) --> [annie].
+noun(john) --> [john].
+noun(annie) --> [annie].
 
-k_past_participle(colored) --> [colored].
+past_participle(colored) --> [colored].
 
-k_adjective(green) --> [green].
+adjective(green) --> [green].
 
-k_adverb(clearly) --> [clearly].
-k_adverb(very) --> [very].
+adverb(clearly) --> [clearly].
+adverb(very) --> [very].
 
-k_cardinal(10) --> [10].
+cardinal(10) --> [10].
 
-k_coordinating_conjunction(and) --> [and].
+conjunction(conjunction(coordinating, and)) --> [and].
+coordinating_conjunction(Conjunction) --> conjunction(Conjunction), { Conjunction = conjunction(coordinating, _) }.
+subordinating_conjunction(Conjunction) --> conjunction(Conjunction), { Conjunction = conjunction(subordinating, _) }.
 
-k_infinitive_marker(to) --> [to].
+
+infinitive_marker(to) --> [to].
+
+punctuation_mark(punctuation_mark(period, '.')) --> ['.'].
 
 
