@@ -20,7 +20,7 @@ k_predicate(Predicate) --> k_verb_phrase(VerbPhrase), { Predicate = predicate(in
 k_predicate(Predicate) --> k_verb_phrase(VerbPhrase), k_noun_phrase(NounPhrase), { Predicate = predicate(monotransitive, VerbPhrase, direct_object(NounPhrase)) }.
 k_predicate(Predicate) --> k_verb_phrase(VerbPhrase), k_noun_phrase(IndirectObject), k_noun_phrase(DirectObject), { Predicate = predicate(ditransitive, VerbPhrase, indirect_object(IndirectObject), direct_object(DirectObject)) }.
 
-k_noun_phrase(NounPhrase) --> k_pronoun(NounPhrase) ; k_noun(NounPhrase).
+k_noun_phrase(NounPhrase) --> k_pronoun(Pronoun) ; k_noun(Noun).
 k_noun_phrase(NounPhrase) --> k_adjective_phrase(AttributiveAdjective), k_noun(Noun), { NounPhrase = noun_phrase(attributive_adjective(AttributiveAdjective), Noun) }.
 k_noun_phrase(NounPhrase) --> k_noun(Noun), k_adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(Noun, postpositive_adjective(PostpositiveAdjective)) }.
 k_noun_phrase(NounPhrase) --> k_adjective_phrase(AttributiveAdjective), k_noun(Noun), k_adjective_phrase(PostpositiveAdjective), { NounPhrase = noun_phrase(attributive_adjective(AttributiveAdjective), Noun, postpositive_adjective(PostpositiveAdjective)) }.
