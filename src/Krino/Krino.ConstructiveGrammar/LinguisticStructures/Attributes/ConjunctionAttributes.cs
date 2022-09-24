@@ -11,11 +11,11 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
         {
             Coordinating = new EnumValue(this);
             Subordinating = new SubordinatingConjunctionAttribute(this);
-            Starting = new EnumValue(this);
+            Correlative = new EnumValue(this);
         }
 
         /// <summary>
-        /// Connects equal phrases e.g. and, or, but.
+        /// Connect items that are grammatically equal.
         /// </summary>
         /// <remarks>
         /// The seven coordinating conjunctions used as connecting words at the beginning of
@@ -31,11 +31,14 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures.Attributes
         /// </remarks>
         public SubordinatingConjunctionAttribute Subordinating { get; }
 
-        
+
 
         /// <summary>
-        /// Conjuction which can be at the begnnig of the sentence e.g. And, But.
+        /// This type of conjunction always comes in a pair and is used to join grammatically equal elements in a sentence.
         /// </summary>
-        public EnumValue Starting { get; }
+        /// <remarks>
+        /// Common pairs include either … or, neither … nor, not only … but also, and both … and. In most cases, no comma should be used between the two elements.
+        /// </remarks>
+        public EnumValue Correlative { get; }
     }
 }
