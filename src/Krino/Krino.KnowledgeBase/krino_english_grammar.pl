@@ -56,6 +56,12 @@ present_simple(PresentSimple) --> verb(AuxVerb), present_verb(Verb),
         (AuxVerb = verb(auxiliary(primary(_))) ; AuxVerb = verb(auxiliary(modal(_)))),
         PresentSimple = present_simple(AuxVerb, Verb)
     }.
+present_simple(PresentSimple) --> verb(AuxVerb), [not], present_verb(Verb),
+    { 
+        (AuxVerb = verb(auxiliary(primary(_))) ; AuxVerb = verb(auxiliary(modal(_)))),
+        PresentSimple = present_simple(AuxVerb, not, Verb)
+    }.
+
 
 
 adjective_phrase(AdjectivePhrase) --> adjective(AdjectivePhrase) ; cardinal(AdjectivePhrase) ; past_participle(AdjectivePhrase).
@@ -108,15 +114,14 @@ all_verb_forms(VerbTerm, Base,
 
 
 
-
 verb(Verb) --> ['be'], { Verb = verb(irregular(be)) ; all_verb_forms(Verb, be,  am, are, 'is', are, are, are,  was, were, was, were, were, were,  been) }.
 verb(verb(linking('be'))) --> ['be'].
 
 verb(Verb) --> [do], { irregular_tense_verb(Verb, do, did, done) }.
 verb(verb(auxiliary(primary(do)))) --> [do].
 
-verb(verb(present_simple, read)) --> [read].
-verb(verb(present_simple, write)) --> [write].
+verb(Verb) --> [read], { irregular_tense_verb(Verb, read, read, read) }.
+verb(Verb) --> [write], { irregular_tense_verb(Verb, write, wrote, written) }.
 
 
 
@@ -133,6 +138,7 @@ past_participle(colored) --> [colored].
 adjective(green) --> [green].
 
 adverb(clearly) --> [clearly].
+adverb(Adverb) --> [not], { Adverb = adverb(negation(not)) }.
 adverb(very) --> [very].
 
 cardinal(10) --> [10].
