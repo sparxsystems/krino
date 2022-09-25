@@ -13,15 +13,18 @@
 :- table adverb_phrase/3.
 
 
-sentence(Sentence) --> first_independent_clause(Clause), punctuation_mark(PunctuationMark), { Sentence = sentence([Clause], PunctuationMark) }.
-sentence(Sentence) --> first_independent_clause(Clause1), next_independent_clause(Clause2), punctuation_mark(PunctuationMark), { Sentence = sentence([Clause1, Clause2], PunctuationMark) }.
+sentence(Sentence) --> independent_clauses(Clauses), punctuation_mark(PunctuationMark), { Sentence = sentence(Clauses, PunctuationMark) }.
 
 clause(Clause) --> subject(Subject), predicate(Predicate), { Clause = clause(independent, Subject, Predicate)}.
 clause(Clause) --> coordinating_conjunction(Conjunction), subject(Subject), predicate(Predicate), { Clause = clause(independent, Conjunction, Subject, Predicate)}.
 clause(Clause) --> subordinating_conjunction(Conjunction), subject(Subject), predicate(Predicate), { Clause = clause(dependent, Conjunction, Subject, Predicate)}.
-first_independent_clause(Clause) --> clause(Clause), { Clause = clause(independent, _, _) }.
-next_independent_clause(Clause) --> clause(Clause), { Clause = clause(independent, _, _, _) }.
+
+independent_clause(Clause) --> clause(Clause), { Clause = clause(independent, _, _, _) ;  Clause = clause(independent, _, _) }.
 dependent_clause(Clause) --> clause(Clause), { Clause = clause(dependent, _, _, _) }.
+
+independent_clauses([Clause]) --> independent_clause(Clause).
+independent_clauses(Clauses) --> independent_clause(Clause), independent_clauses(NextClauses), { append([Clause], NextClauses, Clauses) }.
+
 
 subject(Subject) --> noun_phrase(NounPhrase), { Subject = subject(NounPhrase) }.
 
