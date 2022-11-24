@@ -88,16 +88,18 @@
         </div>
     </div>
 
-    <div class="row">
-        <div class="col-md">
-            <div class="input-group mb-3">
-                <input type="text" class="form-control" placeholder="" @bind-value=UserInput readonly=@IsReadOnly >
-                <div class="input-group-append">
-                    <button class="btn btn-outline-primary" type="button" @onclick=OnOkClick>ok</button>
+    <RadzenTemplateForm Data="myDummy">
+        <div class="row">
+            <div class="col-md">
+                <div class="input-group mb-3">
+                        <input type="text" class="form-control" placeholder="" @bind-value=UserInput readonly=@IsReadOnly>
+                        <div class="input-group-append">
+                            <button class="btn btn-outline-primary" type="submit" @onclick=OnOkClick>ok</button>
+                        </div>
                 </div>
             </div>
         </div>
-    </div>
+    </RadzenTemplateForm>
 
     <p>
         <b>Examples to use (copy/paste):</b>
@@ -112,6 +114,7 @@
 </div>
 
 @code {
+    private object myDummy;
     private KrinoViewModel? myViewModel;
 
     protected override async Task OnAfterRenderAsync(bool firstRender)

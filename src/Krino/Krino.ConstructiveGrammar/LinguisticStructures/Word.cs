@@ -99,9 +99,9 @@ namespace Krino.ConstructiveGrammar.LinguisticStructures
         {
             builder.Append(new string(' ', indent)).Append(Value).Append(" : ").AppendLine(AttributesStr);
 
-            //Prefixes.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
-            //Root.BuildFormattedGrammarStr(indent + 4, builder);
-            //Suffixes.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
+            Prefixes.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
+            Roots.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
+            Suffixes.ForEach(x => x.BuildFormattedGrammarStr(indent + 4, builder));
         }
 
         public ILinguisticStructure DeepCopy()
