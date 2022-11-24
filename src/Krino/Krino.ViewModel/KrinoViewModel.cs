@@ -55,9 +55,9 @@ namespace Krino.ViewModel
                     if (argument != null)
                     {
                         logValue.AppendLine($"Yes, the sentence is an argument.");
-                        logValue.AppendLine($"The premise is: '{argument.Premise.Value}'");
-                        logValue.AppendLine($"The conclusion is: '{argument.Conclusion.Value}'");
-                        logValue.AppendLine($"The argument form is: {argument.Form.ToString().Replace("_", " ")}.");
+                        logValue.AppendLine($"The premise: '{argument.Premise.Value}'");
+                        logValue.AppendLine($"The conclusion: '{argument.Conclusion.Value}'");
+                        logValue.AppendLine($"The form: {argument.Form.ToString().Replace("_", " ")}.");
                     }
                     else
                     {
@@ -69,7 +69,7 @@ namespace Krino.ViewModel
                     logValue.AppendLine("I can analyse only one argument.");
                 }
 
-                logValue.AppendLine().AppendLine("Here are details:");
+                logValue.AppendLine().AppendLine("Details:");
                 text.BuildFormattedGrammarStr(0, logValue);
             }
             else

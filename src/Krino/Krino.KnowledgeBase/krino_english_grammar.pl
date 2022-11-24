@@ -126,7 +126,7 @@ verb(Verb) --> [write], { irregular_tense_verb(Verb, write, wrote, written) }.
 
 
 
-determiner(the) --> [the].
+determiner(the) --> [determiner_DefiniteArticle].
 
 pronoun(he) --> [he].
 

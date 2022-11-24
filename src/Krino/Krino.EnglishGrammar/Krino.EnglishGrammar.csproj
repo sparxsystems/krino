@@ -6,6 +6,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="Antlr4.Runtime.Standard" Version="4.9.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\Krino.ConstructiveGrammar\Krino.ConstructiveGrammar.csproj" />
   </ItemGroup>
 
