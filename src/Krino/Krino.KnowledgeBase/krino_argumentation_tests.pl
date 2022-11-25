@@ -1,4 +1,5 @@
 :- use_module(krino_argumentation).
+:- use_module(krino_proof_meta_interpreter).
 
 
 % If an activity damages the grass then it is prohibited.
